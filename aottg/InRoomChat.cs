@@ -1500,10 +1500,6 @@ public class InRoomChat : Photon.MonoBehaviour
 	[MyCommand("revive")]
 	private void PlayerRevive(string[] args)
 	{
-		if (!PhotonNetwork.isMasterClient)
-		{
-			return;
-		}
 		int num = Convert.ToInt32(args[1]);
 		if (NetworkingPeer.mActors.TryGetValue(num, out var value))
 		{
@@ -1520,10 +1516,6 @@ public class InRoomChat : Photon.MonoBehaviour
 	[MyCommand("reviveall")]
 	private void PlayerReviveAll(string[] args)
 	{
-		if (!PhotonNetwork.isMasterClient)
-		{
-			return;
-		}
 		Chat("<color=#FFCC00>All players have been revived.</color>");
 		PhotonPlayer[] playerList = PhotonNetwork.playerList;
 		foreach (PhotonPlayer photonPlayer in playerList)
