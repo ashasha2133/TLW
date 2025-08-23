@@ -3,6 +3,7 @@ import requests
 import urllib.parse
 import json
 from openai import OpenAI
+from openai import APIError, APIConnectionError, RateLimitError, Timeout
 
 def get_definition(term):
     url = "https://api.urbandictionary.com/v0/define?term=" + urllib.parse.quote(term)
@@ -11,34 +12,30 @@ def get_definition(term):
     return resp.json()
 
 def get_ai_response(something):
-    API_KEY = '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'
-    API_URL = 'https://openrouter.ai/api/v1/chat/completions'
+    client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key="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",
+    )
 
-    # Define the headers for the API request
-    headers = {
-        'Authorization': f'Bearer {API_KEY}',
-        'Content-Type': 'application/json'
-    }
+    try:
+        completion = client.chat.completions.create(
+            model="deepseek/deepseek-r1-0528-qwen3-8b:free",
+            messages=[
+                {"role": "system", "content": "short answer, maximum 2 sentences."},
+                {"role": "user", "content": something}
+            ]
+        )
 
-    # Define the request payload (data)
-    data = {
-        "model": "deepseek/deepseek-chat:free",
-        "messages": [
-            {"role": "system", "content": "short answer, maximum 2 sentences."},
-            {"role": "user", "content": something}
-        ]
-    }
+        return completion.choices[0].message.content
 
-    # Send the POST request to the DeepSeek API
-    response = requests.post(API_URL, json=data, headers=headers)
-
-    # Check if the request was successful
-    if response.status_code == 200:
-        result = response.json()
-        message = result['choices'][0]['message']['content']
-        return message
-    else:
-        return "Failed to fetch data from API. Status Code:", response.status_code
+    except APIError as e:
+        return "API Error: ", e
+    except APIConnectionError as e:
+        return "Connection Error: ", e
+    except RateLimitError as e:
+        return "Rate Limit Error: ", e
+    except Timeout as e:
+        return "Request timed out: ", e
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
