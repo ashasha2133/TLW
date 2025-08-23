@@ -3500,7 +3500,14 @@ public class TITAN : MONO
 		}
 		else if (state == TitanState.attack)
 		{
-			if (attackAnimation == "combo")
+            foreach (var src in GameObject.FindObjectsOfType<AudioSource>())
+            {
+                if (src.name != "NotificationSound")
+                {
+                    src.mute = true;
+                }
+            }
+            if (attackAnimation == "combo")
 			{
 				if (nonAI)
 				{

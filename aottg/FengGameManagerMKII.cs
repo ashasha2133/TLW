@@ -655,10 +655,6 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 
 	private void Awake()
 	{
-        foreach (var src in GameObject.FindObjectsOfType<AudioSource>())
-        {
-            src.mute = true;
-        }
         isBackground = true;
 		(PView = base.photonView).isBackground = true;
 		instance = this;
@@ -835,19 +831,6 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 		StartCoroutine(ThymesUtils.TranslateText(text, num, callback));
 	}
 
-    IEnumerator WaitAndTurnOffVolume()
-    {
-        yield return new WaitForSeconds(0.5f);
-        AudioListener.volume = 0;
-    }
-
-    IEnumerator WaitAndPlayNotification()
-    {
-        yield return new WaitForSeconds(0.5f);
-        Camera.main.gameObject.AddComponent<AudioSource>().PlayOneShot(ToClick, 1);
-        StartCoroutine(WaitAndTurnOffVolume());
-    }
-
     IEnumerator WaitAndSendAM(string msg, string name = "")
     {
         yield return new WaitForSeconds(1f);
@@ -880,8 +863,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			if(name != "")
 			{
                 var source = Camera.main.gameObject.AddComponent<AudioSource>();
-				source.mute = false;
-                source.volume = 1f; // independent from AudioListener
+                source.name = "NotificationSound"; // give it a name for filtering
                 source.PlayOneShot(ToClick, 1);
                 Destroy(source, ToClick.length);
             }
@@ -10164,7 +10146,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			GUI.DrawTexture(mapRect, textureBackgroundBlack);
 			mapRect = GUI.Window(211, mapRect, SkinsMapsGUI, "Loading File...");
 		}
-	}
+    }
 
 	private void NetworkingInfo()
 	{
@@ -14649,8 +14631,8 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			accum += Time.timeScale / Time.deltaTime;
 			frames++;
 		}
-		//AutorejoinPorts();
-	}
+        //AutorejoinPorts();
+    }
 
 	private IEnumerator FPS()
 	{

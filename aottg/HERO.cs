@@ -5301,7 +5301,7 @@ public class HERO : MONO, IAnarchyScriptHero
 		}
 		else if (myGroup == GROUP.A && (int)FengGameManagerMKII.settings[189] == 2)
 		{
-			text = text + (currentSpeed * 0.4f / 100f).ToString("F2") + "K  |  " + (currentSpeed / 100f).ToString("F2") + "K  |  " + (currentSpeed * 0.6f / 100f).ToString("F2") + " K";
+			text = text + (currentSpeed * 0.4f / 100f).ToString("F2") + "K  |  " + (currentSpeed / 100f).ToString("F2") + "K  |  " + (currentSpeed * 0.6f / 100f).ToString("F2") + "K";
 		}
 		else if ((int)FengGameManagerMKII.settings[189] == 2)
 		{
@@ -6189,7 +6189,7 @@ public class HERO : MONO, IAnarchyScriptHero
 						{
 							break;
 						}
-						if (FengCustomInputs.Inputs.isInput[InputCode.attack1])
+                        if (FengCustomInputs.Inputs.isInput[InputCode.attack1])
 						{
 							leftArmAim = true;
 							rightArmAim = true;
@@ -6316,10 +6316,20 @@ public class HERO : MONO, IAnarchyScriptHero
 						{
 							changeBlade();
 						}
-						break;
+                        break;
 					}
 				case HERO_STATE.Attack:
-					if (!usingAhss)
+					if (usingAhss)
+					{
+                        foreach (var src in GameObject.FindObjectsOfType<AudioSource>())
+                        {
+                            if (src.name != "NotificationSound")
+                            {
+                                src.mute = true;
+                            }
+                        }
+                    }
+                    if (!usingAhss)
 					{
                         if (!FengCustomInputs.Inputs.isInput[InputCode.attack0])
 						{
@@ -6513,7 +6523,7 @@ public class HERO : MONO, IAnarchyScriptHero
 					}
 					if (!attackReleased && baseA[attackAnimation].normalizedTime > 0.167f && usingAhss)
 					{
-						attackReleased = true;
+                        attackReleased = true;
 						if (basePV.isMine && GameSettings.GunsShot > 0)
 						{
 							//CustomAudioManager.Play(CustomAudioManager.AudioFile.GunsShot);

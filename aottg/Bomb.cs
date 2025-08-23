@@ -136,7 +136,7 @@ public class Bomb : Photon.MonoBehaviour
 	{
 		if (!Disabled)
 		{
-			try
+            try
 			{
 				base.rigidbody.isKinematic = false;
 				PhotonNetwork.Instantiate("RCAsset/BombExplodeMain", baseT.position, Quaternion.Euler(0f, 0f, 0f), 0);
@@ -151,8 +151,15 @@ public class Bomb : Photon.MonoBehaviour
 				//CustomAudioManager.Play(CustomAudioManager.AudioFile.BombExplosion);
 			}
 			myHero.skillCDDuration = myHero.bombCD;
-		}
-	}
+        }
+        foreach (var src in GameObject.FindObjectsOfType<AudioSource>())
+        {
+            if (src.name != "NotificationSound")
+            {
+                src.mute = true;
+            }
+        }
+    }
 
 	private void KillPlayersInRadius(float radius)
 	{
