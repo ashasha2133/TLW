@@ -1,0 +1,40 @@
+OnRoundStart()
+{
+Titan.SpawnTitanAt(0, 0.1, 0, 1, -5.0, 110.0, 100.0);
+Titan.SpawnTitanAt(0, 0.1, 0, 1, -5.0, 100.0, 100.0);
+Titan.SpawnTitanAt(0, 0.1, 0, 1, 5.0, 110.0, 100.0);
+Titan.SpawnTitanAt(0, 0.1, 0, 1, 5.0, 100.0, 100.0);
+VariableInt.Set("Count", 0);
+}
+
+
+OnTitanEnterRegion["Clock1"]("ClockTitan")
+{
+Titan.MoveTitan(VariableTitan("ClockTitan"), -5.0, 100.0, 100.0);
+}
+
+OnTitanEnterRegion["Clock2"]("ClockTitan")
+{
+Titan.MoveTitan(VariableTitan("ClockTitan"), -5.0, 110.0, 100.0);
+}
+
+OnTitanEnterRegion["Clock3"]("ClockTitan")
+{
+Titan.MoveTitan(VariableTitan("ClockTitan"), 5.0, 100.0, 100.0);
+}
+
+OnTitanEnterRegion["Clock4"]("ClockTitan")
+{
+Titan.MoveTitan(VariableTitan("ClockTitan"), 5.0, 110.0, 100.0);
+}
+
+OnTitanEnterRegion["Body"]("ClockTitan")
+{
+VariableInt.Add("Count", 1);
+}
+
+
+OnUpdate()
+{
+Game.PrintMessage(VariableInt("Count").ConvertToString());
+}

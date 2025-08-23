@@ -1,0 +1,708 @@
+OnRoundStart()
+{
+  VariableString.Set("map", "MB12-Rocky Mountains");
+
+  If (String.Equals(VariableString("map"),"cowcowtony-Modern City"))
+  {
+    VariableInt.Set("numberOfPoints", 10);
+    VariableInt.Set("numberOfCheckpoints", 9);
+
+    VariableString.Set("point0Name", "[ff0000]0");
+    VariableInt.Set("point0Type", 1);
+    VariableFloat.Set("point0X", 720.0);
+    VariableFloat.Set("point0Y", 145.0);
+    VariableFloat.Set("point0Z", -880.0);
+    VariableFloat.Set("point0L", 28.0);
+    VariableFloat.Set("point0H", 3.0);
+    VariableFloat.Set("point0W", 15.0);
+
+    VariableString.Set("point1Name", "[ff7f00]0");
+    VariableInt.Set("point1Type", 1);
+    VariableFloat.Set("point1X", 811.0);
+    VariableFloat.Set("point1Y", 57.5);
+    VariableFloat.Set("point1Z", 485.0);
+    VariableFloat.Set("point1L", 11.0);
+    VariableFloat.Set("point1H", 6.0);
+    VariableFloat.Set("point1W", 9.0);
+
+    VariableString.Set("point2Name", "[ffff00]0");
+    VariableInt.Set("point2Type", 1);
+    VariableFloat.Set("point2X", -1504.0);
+    VariableFloat.Set("point2Y", 1495.0);
+    VariableFloat.Set("point2Z", -2106.0);
+    VariableFloat.Set("point2L", 20.0);
+    VariableFloat.Set("point2H", 20.0);
+    VariableFloat.Set("point2W", 20.0);
+
+    VariableString.Set("point3Name", "[00ff00]0");
+    VariableInt.Set("point3Type", 1);
+    VariableFloat.Set("point3X", 96.75);
+    VariableFloat.Set("point3Y", 247.5);
+    VariableFloat.Set("point3Z", -48.0);
+    VariableFloat.Set("point3L", 5.0);
+    VariableFloat.Set("point3H", 4.0);
+    VariableFloat.Set("point3W", 35.0);
+
+    VariableString.Set("point4Name", "[0000ff]0");
+    VariableInt.Set("point4Type", 1);
+    VariableFloat.Set("point4X", -220.0);
+    VariableFloat.Set("point4Y", 47.5);
+    VariableFloat.Set("point4Z", -93.0);
+    VariableFloat.Set("point4L", 15.0);
+    VariableFloat.Set("point4H", 4.2);
+    VariableFloat.Set("point4W", 6.0);
+
+    VariableString.Set("point5Name", "[7f00ff]0");
+    VariableInt.Set("point5Type", 1);
+    VariableFloat.Set("point5X", -755.0);
+    VariableFloat.Set("point5Y", 152.5);
+    VariableFloat.Set("point5Z", -5.0);
+    VariableFloat.Set("point5L", 13.0);
+    VariableFloat.Set("point5H", 5.0);
+    VariableFloat.Set("point5W", 13.0);
+
+    VariableString.Set("point6Name", "[ff69b4]0");
+    VariableInt.Set("point6Type", 1);
+    VariableFloat.Set("point6X", 960.0);
+    VariableFloat.Set("point6Y", 315.0);
+    VariableFloat.Set("point6Z", 450.0);
+    VariableFloat.Set("point6L", 8.0);
+    VariableFloat.Set("point6H", 3.1);
+    VariableFloat.Set("point6W", 20.0);
+
+    VariableString.Set("point7Name", "[ffffff]0");
+    VariableInt.Set("point7Type", 1);
+    VariableFloat.Set("point7X", -180.0);
+    VariableFloat.Set("point7Y", 1610.0);
+    VariableFloat.Set("point7Z", 20.0);
+    VariableFloat.Set("point7L", 10.0);
+    VariableFloat.Set("point7H", 5.1);
+    VariableFloat.Set("point7W", 10.0);
+
+    VariableString.Set("point8Name", "[000000]0");
+    VariableInt.Set("point8Type", 1);
+    VariableFloat.Set("point8X", -577.5);
+    VariableFloat.Set("point8Y", 155.0);
+    VariableFloat.Set("point8Z", -577.5);
+    VariableFloat.Set("point8L", 10.0);
+    VariableFloat.Set("point8H", 5.1);
+    VariableFloat.Set("point8W", 10.0);
+
+    VariableInt.Set("point9Type", 2);
+    VariableFloat.Set("point9X", -1017.5);
+    VariableFloat.Set("point9Y", 160.0);
+    VariableFloat.Set("point9Z", -1367.5);
+    VariableFloat.Set("point9L", 57.5);
+    VariableFloat.Set("point9H", 8.0);
+    VariableFloat.Set("point9W", 15.0);
+  }
+
+  If (String.Equals(VariableString("map"),"JahKirstein-Trost"))
+  {
+    VariableInt.Set("numberOfPoints", 10);
+    VariableInt.Set("numberOfCheckpoints", 8);
+
+    VariableString.Set("point0Name", "[ff0000]0");
+    VariableInt.Set("point0Type", 1);
+    VariableFloat.Set("point0X", -218.6647);
+    VariableFloat.Set("point0Y", 83.16206);
+    VariableFloat.Set("point0Z", -1496.192);
+    VariableFloat.Set("point0L", 8.0);
+    VariableFloat.Set("point0H", 4.0);
+    VariableFloat.Set("point0W", 8.0);
+
+    VariableString.Set("point1Name", "[ff7f00]0");
+    VariableInt.Set("point1Type", 1);
+    VariableFloat.Set("point1X", 1124.089);
+    VariableFloat.Set("point1Y", 95.12916);
+    VariableFloat.Set("point1Z", -776.8763);
+    VariableFloat.Set("point1L", 8.0);
+    VariableFloat.Set("point1H", 8.0);
+    VariableFloat.Set("point1W", 8.0);
+
+    VariableString.Set("point2Name", "[ffff00]0");
+    VariableInt.Set("point2Type", 1);
+    VariableFloat.Set("point2X", 1770.846);
+    VariableFloat.Set("point2Y", 83.0);
+    VariableFloat.Set("point2Z", -405.0);
+    VariableFloat.Set("point2L", 6.0);
+    VariableFloat.Set("point2H", 4.0);
+    VariableFloat.Set("point2W", 6.0);
+
+    VariableString.Set("point3Name", "[00ff00]0");
+    VariableInt.Set("point3Type", 1);
+    VariableFloat.Set("point3X", -385.366);
+    VariableFloat.Set("point3Y", 77.81215);
+    VariableFloat.Set("point3Z", 348.6618);
+    VariableFloat.Set("point3L", 5.0);
+    VariableFloat.Set("point3H", 3.0);
+    VariableFloat.Set("point3W", 5.0);
+
+    VariableString.Set("point4Name", "[0000ff]0");
+    VariableInt.Set("point4Type", 1);
+    VariableFloat.Set("point4X", -381.8787);
+    VariableFloat.Set("point4Y", 83.25622);
+    VariableFloat.Set("point4Z", -436.9568);
+    VariableFloat.Set("point4L", 5.0);
+    VariableFloat.Set("point4H", 4.2);
+    VariableFloat.Set("point4W", 18.0);
+
+    VariableString.Set("point5Name", "[7f00ff]0");
+    VariableInt.Set("point5Type", 1);
+    VariableFloat.Set("point5X", 663.3318);
+    VariableFloat.Set("point5Y", 27.5);
+    VariableFloat.Set("point5Z", -1810.24);
+    VariableFloat.Set("point5L", 5.0);
+    VariableFloat.Set("point5H", 7.0);
+    VariableFloat.Set("point5W", 10.0);
+
+    VariableString.Set("point6Name", "[ff69b4]0");
+    VariableInt.Set("point6Type", 1);
+    VariableFloat.Set("point6X", 896.7685);
+    VariableFloat.Set("point6Y", 128.1566);
+    VariableFloat.Set("point6Z", -212.6658);
+    VariableFloat.Set("point6L", 6.0);
+    VariableFloat.Set("point6H", 3.0);
+    VariableFloat.Set("point6W", 6.0);
+
+    VariableString.Set("point7Name", "[000000]0");
+    VariableInt.Set("point7Type", 1);
+    VariableFloat.Set("point7X", 1266.881);
+    VariableFloat.Set("point7Y", 72.33654);
+    VariableFloat.Set("point7Z", -1614.371);
+    VariableFloat.Set("point7L", 2.1);
+    VariableFloat.Set("point7H", 2.4);
+    VariableFloat.Set("point7W", 3.1);
+
+    VariableInt.Set("point8Type", 2);
+    VariableFloat.Set("point8X", 495.0);
+    VariableFloat.Set("point8Y", 177.5);
+    VariableFloat.Set("point8Z", -592.0);
+    VariableFloat.Set("point8L", 4.0);
+    VariableFloat.Set("point8H", 15.0);
+    VariableFloat.Set("point8W", 4.0);
+
+    VariableInt.Set("point9Type", 2);
+    VariableFloat.Set("point9X", 495.0);
+    VariableFloat.Set("point9Y", 122.5);
+    VariableFloat.Set("point9Z", -592.0);
+    VariableFloat.Set("point9L", 16.0);
+    VariableFloat.Set("point9H", 4.0);
+    VariableFloat.Set("point9W", 8.0);
+  }
+
+  If (String.Equals(VariableString("map"),"MB12-Rocky Mountains"))
+  {
+    VariableInt.Set("numberOfPoints", 24);
+    VariableInt.Set("numberOfCheckpoints", 22);
+    //people who have finished;mech;
+
+    VariableString.Set("point0Name", "[FF0000]0");
+    VariableInt.Set("point0Type", 1);
+    VariableFloat.Set("point0X", -432.0876);
+    VariableFloat.Set("point0Y", 39.18491);
+    VariableFloat.Set("point0Z", -594.3502);
+    VariableFloat.Set("point0L", 1.0);
+    VariableFloat.Set("point0H", 1.0);
+    VariableFloat.Set("point0W", 1.0);
+
+    VariableString.Set("point1Name", "[550000]0");
+    VariableInt.Set("point1Type", 1);
+    VariableFloat.Set("point1X", -297.3697);
+    VariableFloat.Set("point1Y", 163.8414);
+    VariableFloat.Set("point1Z", -514.1451);
+    VariableFloat.Set("point1L", 1.0);
+    VariableFloat.Set("point1H", 1.0);
+    VariableFloat.Set("point1W", 1.0);
+
+    VariableString.Set("point2Name", "[FF8080]0");
+    VariableInt.Set("point2Type", 1);
+    VariableFloat.Set("point2X", -591.602);
+    VariableFloat.Set("point2Y", 3.899019);
+    VariableFloat.Set("point2Z", 636.8041);
+    VariableFloat.Set("point2L", 1.0);
+    VariableFloat.Set("point2H", 1.0);
+    VariableFloat.Set("point2W", 1.0);
+
+    VariableString.Set("point3Name", "[FF8000]0");
+    VariableInt.Set("point3Type", 1);
+    VariableFloat.Set("point3X", 327.9432);
+    VariableFloat.Set("point3Y", 4.173243);
+    VariableFloat.Set("point3Z", 60.05257);
+    VariableFloat.Set("point3L", 1.0);
+    VariableFloat.Set("point3H", 1.0);
+    VariableFloat.Set("point3W", 1.0);
+
+    VariableString.Set("point4Name", "[552A00]0");
+    VariableInt.Set("point4Type", 1);
+    VariableFloat.Set("point4X", -264.4085);
+    VariableFloat.Set("point4Y", 4.313686);
+    VariableFloat.Set("point4Z", 447.4826);
+    VariableFloat.Set("point4L", 1.0);
+    VariableFloat.Set("point4H", 1.0);
+    VariableFloat.Set("point4W", 1.0);
+
+    VariableString.Set("point5Name", "[FFAA55]0");
+    VariableInt.Set("point5Type", 1);
+    VariableFloat.Set("point5X", -422.8524);
+    VariableFloat.Set("point5Y", 30.43399);
+    VariableFloat.Set("point5Z", -41.89697);
+    VariableFloat.Set("point5L", 1.0);
+    VariableFloat.Set("point5H", 1.0);
+    VariableFloat.Set("point5W", 1.0);
+
+    VariableString.Set("point6Name", "[FFFF00]0");
+    VariableInt.Set("point6Type", 1);
+    VariableFloat.Set("point6X", -307.597);
+    VariableFloat.Set("point6Y", 62.80393);
+    VariableFloat.Set("point6Z", -179.339);
+    VariableFloat.Set("point6L", 1.0);
+    VariableFloat.Set("point6H", 1.0);
+    VariableFloat.Set("point6W", 1.0);
+
+    VariableString.Set("point7Name", "[555500]0");
+    VariableInt.Set("point7Type", 1);
+    VariableFloat.Set("point7X", -160.7216);
+    VariableFloat.Set("point7Y", 0.2749964);
+    VariableFloat.Set("point7Z", -202.2682);
+    VariableFloat.Set("point7L", 1.0);
+    VariableFloat.Set("point7H", 1.0);
+    VariableFloat.Set("point7W", 1.0);
+
+    VariableString.Set("point8Name", "[FFFF55]0");
+    VariableInt.Set("point8Type", 1);
+    VariableFloat.Set("point8X", -569.2565);
+    VariableFloat.Set("point8Y", 4.194269);
+    VariableFloat.Set("point8Z", 504.3852);
+    VariableFloat.Set("point8L", 1.0);
+    VariableFloat.Set("point8H", 1.0);
+    VariableFloat.Set("point8W", 1.0);
+
+    VariableString.Set("point9Name", "[00FF00]0");
+    VariableInt.Set("point9Type", 1);
+    VariableFloat.Set("point9X", -241.5583);
+    VariableFloat.Set("point9Y", 73.40927);
+    VariableFloat.Set("point9Z", -342.604);
+    VariableFloat.Set("point9L", 1.0);
+    VariableFloat.Set("point9H", 1.0);
+    VariableFloat.Set("point9W", 1.0);
+
+    VariableString.Set("point10Name", "[005500]0");
+    VariableInt.Set("point10Type", 1);
+    VariableFloat.Set("point10X", 464.254);
+    VariableFloat.Set("point10Y", 0.8077099);
+    VariableFloat.Set("point10Z", 398.9438);
+    VariableFloat.Set("point10L", 1.0);
+    VariableFloat.Set("point10H", 1.0);
+    VariableFloat.Set("point10W", 1.0);
+
+    VariableString.Set("point11Name", "[80FF80]0");
+    VariableInt.Set("point11Type", 1);
+    VariableFloat.Set("point11X", 264.2325);
+    VariableFloat.Set("point11Y", 69.75076);
+    VariableFloat.Set("point11Z", 485.0571);
+    VariableFloat.Set("point11L", 1.0);
+    VariableFloat.Set("point11H", 1.0);
+    VariableFloat.Set("point11W", 1.0);
+
+    VariableString.Set("point12Name", "[0000FF]0");
+    VariableInt.Set("point12Type", 1);
+    VariableFloat.Set("point12X", 305.8861);
+    VariableFloat.Set("point12Y", 3.885659);
+    VariableFloat.Set("point12Z", -464.6095);
+    VariableFloat.Set("point12L", 1.0);
+    VariableFloat.Set("point12H", 1.0);
+    VariableFloat.Set("point12W", 1.0);
+
+    VariableString.Set("point13Name", "[000055]0");
+    VariableInt.Set("point13Type", 1);
+    VariableFloat.Set("point13X", 371.2513);
+    VariableFloat.Set("point13Y", 3.612307);
+    VariableFloat.Set("point13Z", 274.444);
+    VariableFloat.Set("point13L", 1.0);
+    VariableFloat.Set("point13H", 1.0);
+    VariableFloat.Set("point13W", 1.0);
+
+    VariableString.Set("point14Name", "[00AAFF]0");
+    VariableInt.Set("point14Type", 1);
+    VariableFloat.Set("point14X", 475.5799);
+    VariableFloat.Set("point14Y", 144.0152);
+    VariableFloat.Set("point14Z", -313.5016);
+    VariableFloat.Set("point14L", 1.0);
+    VariableFloat.Set("point14H", 1.0);
+    VariableFloat.Set("point14W", 1.0);
+
+    VariableString.Set("point15Name", "[8000FF]0");
+    VariableInt.Set("point15Type", 1);
+    VariableFloat.Set("point15X", 349.5224);
+    VariableFloat.Set("point15Y", 134.7898);
+    VariableFloat.Set("point15Z", 160.9544);
+    VariableFloat.Set("point15L", 1.0);
+    VariableFloat.Set("point15H", 1.0);
+    VariableFloat.Set("point15W", 1.0);
+
+    VariableString.Set("point16Name", "[550080]0");
+    VariableInt.Set("point16Type", 1);
+    VariableFloat.Set("point16X", -361.0291);
+    VariableFloat.Set("point16Y", 90.16308);
+    VariableFloat.Set("point16Z", 466.3764);
+    VariableFloat.Set("point16L", 1.0);
+    VariableFloat.Set("point16H", 1.0);
+    VariableFloat.Set("point16W", 1.0);
+
+    VariableString.Set("point17Name", "[FF00FF]0");
+    VariableInt.Set("point17Type", 1);
+    VariableFloat.Set("point17X", -374.4629);
+    VariableFloat.Set("point17Y", 105.1342);
+    VariableFloat.Set("point17Z", 217.0626);
+    VariableFloat.Set("point17L", 1.0);
+    VariableFloat.Set("point17H", 1.0);
+    VariableFloat.Set("point17W", 1.0);
+
+    VariableString.Set("point18Name", "[FFFFFF]0");
+    VariableInt.Set("point18Type", 1);
+    VariableFloat.Set("point18X", 493.1188);
+    VariableFloat.Set("point18Y", 170.8479);
+    VariableFloat.Set("point18Z", -445.5925);
+    VariableFloat.Set("point18L", 1.0);
+    VariableFloat.Set("point18H", 1.0);
+    VariableFloat.Set("point18W", 1.0);
+
+    VariableString.Set("point19Name", "[808080]0");
+    VariableInt.Set("point19Type", 1);
+    VariableFloat.Set("point19X", 227.0379);
+    VariableFloat.Set("point19Y", 4.533385);
+    VariableFloat.Set("point19Z", -384.643);
+    VariableFloat.Set("point19L", 1.0);
+    VariableFloat.Set("point19H", 1.0);
+    VariableFloat.Set("point19W", 1.0);
+
+    VariableString.Set("point20Name", "[333333]0");
+    VariableInt.Set("point20Type", 1);
+    VariableFloat.Set("point20X", 405.1976);
+    VariableFloat.Set("point20Y", 137.3965);
+    VariableFloat.Set("point20Z", -348.2707);
+    VariableFloat.Set("point20L", 1.0);
+    VariableFloat.Set("point20H", 1.0);
+    VariableFloat.Set("point20W", 1.0);
+
+    VariableString.Set("point21Name", "[000000]0");
+    VariableInt.Set("point21Type", 1);
+    VariableFloat.Set("point21X", -552.2741);
+    VariableFloat.Set("point21Y", 4.565095);
+    VariableFloat.Set("point21Z", -527.9809);
+    VariableFloat.Set("point21L", 1.0);
+    VariableFloat.Set("point21H", 1.0);
+    VariableFloat.Set("point21W", 1.0);
+
+    VariableInt.Set("point22Type", 2);
+    VariableFloat.Set("point22X", 34.54452);
+    VariableFloat.Set("point22Y", 568.5);
+    VariableFloat.Set("point22Z", -63.44831);
+    VariableFloat.Set("point22L", 8.0);
+    VariableFloat.Set("point22H", 13.0);
+    VariableFloat.Set("point22W", 8.0);
+
+    VariableInt.Set("point23Type", 2);
+    VariableFloat.Set("point23X", 34.87501);
+    VariableFloat.Set("point23Y", 589.0);
+    VariableFloat.Set("point23Z", -65.64787);
+    VariableFloat.Set("point23L", 13.0);
+    VariableFloat.Set("point23H", 7.5);
+    VariableFloat.Set("point23W", 13.0);
+  }
+
+
+  //setup default guild string;
+  VariableString.Set("guildString", "");
+  VariableInt.Set("i", 0);
+  While (Int.LessThanOrEqual(VariableInt("i"),VariableInt("numberOfPoints")))
+  {
+    VariableString.Set("pointTypeString", "point");
+    VariableString.Append("pointTypeString", VariableInt("i").ConvertToString());
+    VariableString.Append("pointTypeString", "Type");
+    If (Int.Equals(VariableInt(VariableString("pointTypeString")), 1))
+    {
+      VariableString.Set("pointNameString", "point");
+      VariableString.Append("pointNameString", VariableInt("i").ConvertToString());
+      VariableString.Append("pointNameString", "Name");
+      VariableString.Append("guildString", VariableString(VariableString("pointNameString")));
+    }
+    VariableInt.Add("i", 1);
+  }
+
+  VariablePlayer.Set("player", VariablePlayer("player"));
+}
+
+
+
+OnChatInput("cmd")
+{
+  If (String.Equals(VariableString("cmd"),"/clear"))
+  {
+    Game.PrintMessage("space<size=1>111111</size>space")
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+  }
+
+  If (String.Equals(VariableString("cmd"),"/r"))
+  {
+    Game.Restart(true);
+  }
+
+  If (String.Equals(VariableString("cmd"),"/pos"))
+  {
+    Game.PrintMessage(VariablePlayer("playerMC").GetPositionX().ConvertToString());
+    Game.PrintMessage(VariablePlayer("playerMC").GetPositionY().ConvertToString());
+    Game.PrintMessage(VariablePlayer("playerMC").GetPositionZ().ConvertToString());
+  }
+}
+
+
+
+OnPlayerEnterRegion["MC"]("p")
+{
+  VariablePlayer.Set("playerMC", VariablePlayer("p"));
+}
+
+OnTitanDie("myTitan","myPlayer")
+{
+  VariablePlayer.Set("e","ee");
+}
+
+
+OnUpdate()
+{
+  ForeachPlayer("player")
+  {
+    //check if this player breaks the logic somehow and initialize their custom variables;
+    //setup;
+    VariableString.Set("playerSkipPlayerString", VariablePlayer("player").GetName());
+    VariableString.Append("playerSkipPlayerString", "SkipPlayer");
+    //if we have not done this check/initialized variables on this player yet;
+    If (String.Equals(VariableString(VariableString("playerSkipPlayerString")), VariableString("NotAValidString")))
+    {
+      VariableString.Set(VariableString("playerSkipPlayerString"), "true");
+
+      //put things that might break here;
+      //start;
+
+      If (String.Equals(VariablePlayer("player").GetCustomString(), "Literally anything"))
+      {
+      }
+      If (String.Equals(VariablePlayer("player").GetGuildName(), "Literally anything"))
+      {
+      }
+
+      //end;
+
+      //initialize stuff here;
+      //start;
+
+      Player.SetGuildName(VariablePlayer("player"), VariableString("guildString"));
+
+      VariableString.Set("playerCheckpointNamesString", VariablePlayer("player").GetName());
+      VariableString.Append("playerCheckpointNamesString", "CheckpointNames");
+      VariableString.Set(VariableString("playerCheckpointNamesString"), "");
+
+      VariableString.Set("playerCheckpointCountString", VariablePlayer("player").GetName());
+      VariableString.Append("playerCheckpointCountString", "CheckpointCount");
+      VariableInt.Set(VariableString("playerCheckpointCountString"), 0);
+
+      //end;
+      VariableString.Set(VariableString("playerSkipPlayerString"), "false");
+    }
+
+
+
+    If (String.Equals(VariableString(VariableString("playerSkipPlayerString")), "false"))
+    {
+
+      //if the player is alive;
+      If (Boolean.Equals(VariablePlayer("player").GetIsAlive(), true))
+      {
+        VariableString.Set("playerCheckpointCountString", VariablePlayer("player").GetName());
+        VariableString.Append("playerCheckpointCountString", "CheckpointCount");
+        //If the player has not got any checkpoints yet;
+        If (Int.Equals(VariableInt(VariableString("playerCheckpointCountString")), 0))
+        {
+          //check if they have their guild set;
+          If (String.NotEquals(VariablePlayer("player").GetGuildName(), VariableString("guildString")))
+          {
+            Player.SetGuildName(VariablePlayer("player"), VariableString("guildString"));
+            Player.KillPlayer(VariablePlayer("player"), "Setting_Guild");
+            //Game.PrintMessage("SettingNewPlayersGuild");
+            Player.SpawnPlayer(VariablePlayer("player"));
+          }
+
+        }
+
+        //if the player is not finish with the map;
+        If (Int.NotEquals(VariableInt(VariableString("playerCheckpointCountString")), VariableInt("numberOfCheckpoints")))
+        {
+          //check if this player is in any of the checkpoints;
+          VariableInt.Set("j",0);
+          While(Int.LessThanOrEqual(VariableInt("j"),VariableInt("numberOfPoints")))
+          {
+            //setup point stuff;
+            VariableString.Set("stringPoint", "point");
+            VariableString.Append("stringPoint", VariableInt("j").ConvertToString());
+
+            //x general;
+            VariableString.Set("stringX", VariableString("stringPoint"));
+            VariableString.Set("stringL", VariableString("stringPoint"));
+            VariableString.Append("stringX", "X");
+            VariableString.Append("stringL", "L");
+            VariableFloat.Set("floatX", VariableFloat(VariableString("stringX")));
+            VariableFloat.Set("floatL", VariableFloat(VariableString("stringL")));
+            VariableFloat.Multiply("floatL", 5.0);
+            //x min;
+            VariableFloat.Set("minX", VariableFloat("floatX"));
+            VariableFloat.Subtract("minX", VariableFloat("floatL"));
+            If (Float.GreaterThanOrEqual(VariablePlayer("player").GetPositionX(), VariableFloat("minX")))
+            {
+              VariableFloat.Set("maxX", VariableFloat("floatX"));
+              VariableFloat.Add("maxX", VariableFloat("floatL"));
+              If (Float.LessThanOrEqual(VariablePlayer("player").GetPositionX(), VariableFloat("maxX")))
+              {
+                //z general;
+                VariableString.Set("stringZ", VariableString("stringPoint"));
+                VariableString.Set("stringW", VariableString("stringPoint"));
+                VariableString.Append("stringZ", "Z");
+                VariableString.Append("stringW", "W");
+                VariableFloat.Set("floatZ", VariableFloat(VariableString("stringZ")));
+                VariableFloat.Set("floatW", VariableFloat(VariableString("stringW")));
+                VariableFloat.Multiply("floatW", 5.0);
+                //z min;
+                VariableFloat.Set("minZ", VariableFloat("floatZ"));
+                VariableFloat.Subtract("minZ", VariableFloat("floatW"));
+                If (Float.GreaterThanOrEqual(VariablePlayer("player").GetPositionZ(), VariableFloat("minZ")))
+                {
+                  VariableFloat.Set("maxZ", VariableFloat("floatZ"));
+                  VariableFloat.Add("maxZ", VariableFloat("floatW"));
+                  If (Float.LessThanOrEqual(VariablePlayer("player").GetPositionZ(), VariableFloat("maxZ")))
+                  {
+                    //y general;
+                    VariableString.Set("stringY", VariableString("stringPoint"));
+                    VariableString.Set("stringH", VariableString("stringPoint"));
+                    VariableString.Append("stringY", "Y");
+                    VariableString.Append("stringH", "H");
+                    VariableFloat.Set("floatY", VariableFloat(VariableString("stringY")));
+                    VariableFloat.Set("floatH", VariableFloat(VariableString("stringH")));
+                    VariableFloat.Multiply("floatH", 5.0);
+                    //y min;
+                    VariableFloat.Set("minY", VariableFloat("floatY"));
+                    VariableFloat.Subtract("minY", VariableFloat("floatH"));
+                    If (Float.GreaterThanOrEqual(VariablePlayer("player").GetPositionY(), VariableFloat("minY")))
+                    {
+                      VariableFloat.Set("maxY", VariableFloat("floatY"));
+                      VariableFloat.Add("maxY", VariableFloat("floatH"));
+                      If (Float.LessThanOrEqual(VariablePlayer("player").GetPositionY(), VariableFloat("maxY")))
+                      {
+                        //the player is inside of a point;
+                        VariableString.Set("stringType", VariableString("stringPoint"));
+                        VariableString.Append("stringType", "Type");
+
+                        If (Int.Equals(VariableInt(VariableString("stringType")), 1))
+                        {
+                          VariableString.Set("playerCheckpointNamesString", VariablePlayer("player").GetName());
+                          VariableString.Append("playerCheckpointNamesString", "CheckpointNames");
+                          VariableString.Set("stringName", VariableString("stringPoint"));
+                          VariableString.Append("stringName", "Name");
+
+                          If (String.NotContains(VariableString(VariableString("playerCheckpointNamesString")), VariableString("stringName")))
+                          {
+                            VariableString.Append(VariableString("playerCheckpointNamesString"), VariableString("stringName"));
+
+                            VariableInt.Add(VariableString("playerCheckpointCountString"), 1);
+                            
+                            //set the guild
+                            VariableString.Set("newGuildName", "");
+
+                            VariableInt.Set("k",0);
+                            While(Int.LessThanOrEqual(VariableInt("k"),VariableInt("numberOfPoints")))
+                            {
+                              VariableString.Set("stringPointk", "point");
+                              VariableString.Append("stringPointk", VariableInt("k").ConvertToString());
+
+                              VariableString.Set("stringTypek", VariableString("stringPointk"));
+                              VariableString.Append("stringTypek", "Type");
+
+                              VariableString.Set("stringNamek", VariableString("stringPointk"));
+                              VariableString.Append("stringNamek", "Name");
+
+                              If (Int.Equals(VariableInt(VariableString("stringTypek")), 1))
+                              {
+                                If (String.NotContains(VariableString(VariableString("playerCheckpointNamesString")), VariableString("stringNamek")))
+                                {
+                                  VariableString.Append("newGuildName", VariableString(VariableString("stringNamek")));
+                                }
+                              }
+                              VariableInt.Add("k",1);
+                            }
+                            Player.SetGuildName(VariablePlayer("player"), VariableString("newGuildName"));
+                            VariableFloat.Set("playerX", VariablePlayer("player").GetPositionX());
+                            VariableFloat.Set("playerY", VariablePlayer("player").GetPositionY());
+                            VariableFloat.Set("playerZ", VariablePlayer("player").GetPositionZ());
+                            VariableString.Set("killString", "Found_");
+                            VariableString.Append("killString", VariableString(VariableString("stringName")));
+                            Player.KillPlayer(VariablePlayer("player"), VariableString("killString"));
+                            Player.SpawnPlayerAt(VariablePlayer("player"), VariableFloat("playerX"), VariableFloat("playerY"), VariableFloat("playerZ"));
+                          }
+
+                        }
+                        If (Int.Equals(VariableInt(VariableString("stringType")), 2))
+                        {
+                          //Check if they have touched all the checkpoints
+                          If (Int.Equals(VariableInt(VariableString("playerCheckpointCountString")), VariableInt("numberOfCheckpoints")))
+                          {
+                            //Game.PrintMessage("this player is done");
+                          }
+                          Else
+                          {
+                            Player.KillPlayer(VariablePlayer("player"), "Not_Finished");
+                          }
+
+                        }
+
+
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+
+
+            VariableInt.Add("j",1);
+          }
+        }
+      }
+    }
+  }
+
+
+
+
+
+
+
+}
+
+
+
+

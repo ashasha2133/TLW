@@ -1,0 +1,36 @@
+
+ 5:22:38 [1] Level skins enabled.
+
+ 5:22:44 [22] ashasha: -avg 1
+
+ 5:22:44 [22] : ashasha's Average DMG: 1536
+
+ 5:22:45 [1] : ashasha's Average DMG: 1536
+
+ 5:22:52 [22] ashasha: -avg 1
+
+ 5:22:52 [22] : ashasha's Average DMG: 1536
+
+ 5:22:52 [1] : ashasha's Average DMG: 1536
+
+ 5:24:00 [1] Wave : 45
+
+ 5:24:24 [1] Level skins enabled.
+
+ 5:24:29 [24] ashasha: -avg 1
+
+ 5:24:29 [24] : ashasha's Average DMG: 1536
+
+ 5:24:30 [1] : ashasha's Average DMG: 1536
+
+ 5:24:38 [24] ashasha: -avg 1
+
+ 5:24:38 [24] : ashasha's Average DMG: 1536
+
+ 5:24:38 [24] (In Blade Numbers: 2560)
+
+ 5:24:38 [1] : ashasha's Average DMG: 1536
+
+ 5:24:45 [24] ashasha: lets go
+
+ 5:24:48 [24] ashasha: hehe

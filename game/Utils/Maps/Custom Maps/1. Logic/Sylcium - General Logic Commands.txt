@@ -1,0 +1,60 @@
+/checklevel
+/room max #
+/room time #
+/resetkd
+/pm ID message
+/team #
+/restart
+/motd 0 or off -disables
+/motd text     -sets mot
+/mode maxwave #
+/mode endless #
+/mode explode #
+/mode bomb on/off
+/mode health #
+/mode damage #
+/mode team
+/mode pvp off/team/ffa
+/mode point #
+/mode size # #
+/mode spawn # # # # # (normal, abnormal, jumper, crawler, punk)
+/mode infection #
+/antieren off/on
+/antirock off/on
+/friendly off/on
+/mode titan #
+/mode wave #
+/kick ID
+/ban ID
+/banlist
+/unban ID
+/rules
+
+
+
+
+
+COMMMANDS:
+M ONLY-------
+/restart
+/kick ID
+/ban ID
+/banlist - displays current banned players & their IDs
+/unban ID
+/room time # - adds x seconds to the clock (negative for subtract)
+/room max # - sets the maximum allowed players in room
+/revive ID - revive a player by ID
+/reviveall - revive all players
+/resetkdall - reset all players' KD ratios
+/pause - pause the game.
+/unpause - unpause the game.
+
+ANY------
+/kick ID - calls for a vote kick if not M (unless M is running this mod)
+/pm ID - private message someone by ID
+/resetkd - reset all stats
+/team 0 - join individuals
+/team 1 OR /team cyan - join team cyan
+/team 2 OR /team magenta - join team magenta
+/rules - list the current gamemodes
+/fov # - set your camera's field of view to an integer. Default value is 50.

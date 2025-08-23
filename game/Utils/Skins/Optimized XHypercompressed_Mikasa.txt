@@ -1,0 +1,15 @@
+Horse:transparent
+Hair:https://i.imgur.com/aptxBKw.png
+Eyes:https://i.imgur.com/0LG5df2.png
+Glass:transparent
+Face:transparent
+Skin:https://i.imgur.com/k0ldtZm.png
+Hoodie:transparent
+Costume:https://i.imgur.com/OD02GlA.png
+Cape:transparent
+Blade1:https://i.imgur.com/NeL2TZS.png
+Blade2:https://i.imgur.com/NeL2TZS.png
+Gas:transparent
+Trail:transparent
+Thunderspear L:transparent
+Thunderspear R:transparent

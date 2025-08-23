@@ -1,0 +1,65 @@
+New!
+- Riblei's Nano Fusion Lava and Speed Versions!
+- Riblei's Makina Royale + Machina II!
+	- +Custom Logic
+- Aila's Racing Maps A-12 And Aila 1!
+- Soy Yakari - Akatsuki
+- JahKirstein - Trost (Beta)
+- Unknown - Shiganima Aesthetic Map
+- Unknown - Trost (New)
+- Unknown - Unknown (Kiss the Goat)
+- Unknown - Unknown (Kiss the Goat 2)
+- Eliope - PvP Arena Box (Beta)
+- Unknown - Unfinished PvE Map
+- Unknown - Trost Expedition Roleplay Map (Incomplete Rip)
+- Mew - 1k and UP ,K Map AOTTG (Blue Skate Edit)
+- Unknown - Survive 20 Waves
+- Unknown - Skate PvP (Cookie)
+- Unknown - Unknown (Cool City Block)
+- Unknown - Unknown (Treehouse)
+- Unknown - Map Testing
+- Unknown - Twilight
+- Unknown - Soccer Court (PvP Blade)
+- Mew + Vanta - 1k and Up ,K Map AOTTG (Extended Edit)
+- Sylcium - Map Picker v1.0 (Logic)
+- Sylcium - One Life Logic (Origional, May Bug)
+- Cowcowtony - Blackhole
+- Fex - New Bark Town
+- Eliope - Port Racers 1 (Beta)
+- Gameboy8 - Nyan Galaxy
+- Zechten - V-ASO
+- ZeroX - City And Beyond
+- Unknown - TCTWAN CITY
+- KristaLenzYW - Meteor City
+- KristaLenzYW - Trading Outpost
+- Eliope + Aride - The Way Of The Racers (Dry Retexture)
+- Rin - Bus to Hell
+- Naito's Asthetic and High Damage Maps with korean names
+- Pixel - Winter Speed (Origional)
+- Madzik + Hixan - Secret Colloseum
+- Alexforthewin - Makina Racers (Alpi's Penis)
+- Cowcowtony - Hard Isolated City Racing (Ultra Basic)
+- Cowcowtony - Skate Arena Board 1 and 2
+- Alexforthewin - PP
+- A few maps only for map making purposes located in broken
+- Unknown - Fox
+- Cowcowtony's Don't Move Prototypes
+- Unknown - Thickness
+- Unknown - Colossus (Huge file)
+- Unknown - Colossal 
+- Riblei + Eliope - Machina 2 Shortened
+- Riblei + Eliope - Machina 2 (+Training Elevator Checkpoint)
+- Cowcowtony - The Park Human Size
+
+=============================================================
+
+Thank you too Riblei, Appolina, Alpi, Aila and Summer for your contributions!
+
+Edits:
+- Minor Bug Fixes
+- ZeroX - Reel In Practice is now considered Broken due to missing start barrier but has been replaced by a fixed version, the origional can be found in its appropriate folder
+- Unknown - Nyan Racing Map now has appropriate credit, it is made by Gameboy8 or ---x---
+- Unknown - Boobs Now has appropriate credit, it was made by Alexforthewin (Congrats?)
+- B-Frogs Wishlist has been updated
+- A few minor fixes relating to names and missing scripts
+- Name Fixes for spelling errors

@@ -1,0 +1,1672 @@
+OnRoundStart()
+{
+  ___________________________________________________________________________________________
+ 
+  ----------------------------------One Life Default Settings--------------------------------
+  ___________________________________________________________________________________________
+
+  The settings used when you open a new game and first load One Life Logic:
+
+  VariableInt.Set("numberOfLives", 1);
+  VariableInt.Set("noRestartAfter", 999999);
+  VariableInt.Set("afkTimeout", 15);
+  VariableBool.Set("noCheckpointMode", false);
+  VariableString.Set("restartMessage", "");
+  VariableInt.Set("restartDelay", 5);
+
+  VariableBool.Set("printSettingsWhenChanged", true);
+  VariableBool.Set("teleportLosersAway", true);
+
+  -------------------------------------------------------------------------------------------
+
+
+  Explanation of each setting:
+
+  numberOfLives.....................How many times people can die before they are teleported away and can't race. If no
+                                    checkpoint mode is on, players out of lives sent back to the start.
+
+  noRestartAfter....................Even after everyone has lost all of their lives, the game will not automatically
+                                    restart after the given time.
+
+  afkTimeout........................How many seconds before an idle player is considered AFK ane are taken out of the race.
+
+  noCheckpiontMode..................Instead of teleporting people away from the map when they run out of lives, respawn them
+                                    at the start of the race. As long as a player has more than 0 lives, they can spawn at
+                                    the last checkpoint they reached.
+
+  restartMessage....................If the restart message is blank, the default message will be used. The restart message is
+                                    displayed once everyone has died and the game is restarting. For spaces, either use
+                                    underscores or <color=#0000>-</color>
+
+  restartDelay......................How long after everyone has lost all of their lives the game will restart. This is always
+                                    take atleast 1 seccond.
+
+  printSettingsWhenChanged..........If any of the default settings have been changed, display them in the chat the next time
+                                    the round starts.
+
+  teleportLosersAway................If true, teleport losers with no more lives left out of the map. If false, players can
+                                    continue to play until everone loses all of their lives. Unlike noCheckpointMode, players
+                                    will spawn at the last checkpoint they reached.
+
+
+
+  ___________________________________________________________________________________________
+ 
+  ---------------------------------Map Picker Default Settings-------------------------------
+  ___________________________________________________________________________________________
+
+  VariableInt.Set("difficultyMax", 12);
+  VariableInt.Set("difficultyMin", 1);
+
+  -------------------------------------------------------------------------------------------
+
+
+  Explanation of each setting:
+
+  difficultyMax.....................Sets the maximum difficulty that a chosen map can be. The largest value is 12.
+
+  difficultyMin.....................Sets the minimum difficulty that a chosen map can be. The smallest value is 1.
+
+
+
+  ___________________________________________________________________________________________
+
+  --------------------------------------One Life Commands------------------------------------
+  ___________________________________________________________________________________________
+
+  The settings changed using commands will stay even if you restart or close the server.
+  If you close AOTTG and open it again, the settings will revert to the defaults.
+
+  Commands are not case sensitive.
+
+
+  /help.............................Display all commands.
+
+  /r................................Restart the game.
+  /clear............................Clear chat.
+  /settings.........................Display the current settings.
+  /report...........................Display all players alive and the number of lives they have.
+  /default..........................Reset all settings to their default values.
+
+  /lives (number)...................Set the number of lives each player has.
+  /noRestartAfter (number)..........Set the time limit past which the game will not automatically restart.
+  /afkTimeout (number)..............Set how many seconds a player needs to stand still to be considered AFK.
+  /noCheckpointMode (on/off)........Toggle the "No Checkpoint Mode"
+  /restartDelay (on/off)............Toggle the time after all players have died before the game restarts.
+
+
+  Hidden Commands:
+
+  /printSettingsWhenChanged.........(on/off)
+  /teleportLosersAway...............(on/off)
+
+
+
+  ___________________________________________________________________________________________
+
+  -------------------------------------Map Picker Commands-----------------------------------
+  ___________________________________________________________________________________________
+
+  /map..............................The main point of this logic. Picks 1 random player, 3 random maps, and prints them to chat.
+  /repeat...........................Repeats the result of the last /map. Does not carry through a restart.
+  /max (number).....................Sets the maximum difficulty that /map will pick its maps from. Changes get reverted back to the
+                                    'difficultyMax' setting when the game restarts.
+  /min (number).....................Sets the minimum difficulty that /map will pick its maps from. Changes get reverted back to the
+                                    'difficultyMin' setting when the game restarts.
+  /countdown (number)...............Starts a countdown of X seconds that can be seen in the MC's total damage stat. When the
+                                    countdown hits 0 the game will restart. There is a warning when there is only 20 seconds left.
+                                    Using a negative number will turn off the countdown.
+  /cd (number)......................A shorter version of /countdown
+
+
+
+  ___________________________________________________________________________________________
+
+  ------------------------------------Map Picker Map List------------------------------------
+  ___________________________________________________________________________________________
+
+                      -------------------Removing Maps-------------------                    
+
+  Find the map that you want to remove and set its 'enabled' bool to false. 
+  DO NOT just delete the map. That will break the map picker. You can replace the map with a different one if you want.
+
+
+                      --------------------Adding Maps--------------------                    
+
+  Copy the three lines of code that each map has.
+  Set the 'map#' on each line to the new number.
+  Change the string variable to the name of the map.
+    Replace spaces with <color=#0000>-</color>
+    Use an overall color to show its difficulty if you want
+      Red(12,11,10) = #C22
+      Orange(9,8,7) = #D83
+      Yellow(6,5,4) = #FC3
+      Green(3,2,1)  = #7C5
+  Be sure to set the appropriate difficulty for the map if you are going to be using the difficulty max/min feature.
+
+
+                      --------------------Map List--------------------    
+
+  VariableBool.Set("map0Enabled", true);
+  VariableString.Set("map0", "<b><color=#C22>Appolina<color=#0000>-</color>-<color=#0000>-</color>Reverse<color=#0000>-</color>Mirrored<color=#0000>-</color>Akina</color></b>");
+  VariableInt.Set("map0Difficulty", 12);
+
+  VariableBool.Set("map1Enabled", true);
+  VariableString.Set("map1", "<b><color=#C22>cowcowtony<color=#0000>-</color>-<color=#0000>-</color>Bug<color=#0000>-</color>on<color=#0000>-</color>the<color=#0000>-</color>Rose</color></b>");
+  VariableInt.Set("map1Difficulty", 12);
+
+  VariableBool.Set("map2Enabled", true);
+  VariableString.Set("map2", "<b><color=#C22>Eliope<color=#0000>-</color>-<color=#0000>-</color>BoTR<color=#0000>-</color>II</color></b>");
+  VariableInt.Set("map2Difficulty", 12);
+
+  VariableBool.Set("map3Enabled", true);
+  VariableString.Set("map3", "<b><color=#C22>Eliope<color=#0000>-</color>-<color=#0000>-</color>Race<color=#0000>-</color>King<color=#0000>-</color>Volcano</color></b>");
+  VariableInt.Set("map3Difficulty", 12);
+
+  VariableBool.Set("map4Enabled", true);
+  VariableString.Set("map4", "<b><color=#C22>Esli<color=#0000>-</color>-<color=#0000>-</color>World<color=#0000>-</color>of<color=#0000>-</color>Lava</color></b>");
+  VariableInt.Set("map4Difficulty", 12);
+
+  VariableBool.Set("map5Enabled", true);
+  VariableString.Set("map5", "<b><color=#C22>Naito<color=#0000>-</color>-<color=#0000>-</color>Naito<color=#0000>-</color>1</color></b>");
+  VariableInt.Set("map5Difficulty", 12);
+
+  VariableBool.Set("map6Enabled", true);
+  VariableString.Set("map6", "<b><color=#C22>Naito<color=#0000>-</color>-<color=#0000>-</color>Naito<color=#0000>-</color>5</color></b>");
+  VariableInt.Set("map6Difficulty", 12);
+
+  VariableBool.Set("map7Enabled", true);
+  VariableString.Set("map7", "<b><color=#C22>Eliope<color=#0000>-</color>-<color=#0000>-</color>BoTR<color=#0000>-</color>BE</color></b>");
+  VariableInt.Set("map7Difficulty", 11);
+
+  VariableBool.Set("map8Enabled", true);
+  VariableString.Set("map8", "<b><color=#C22>Eliope<color=#0000>-</color>-<color=#0000>-</color>Makina<color=#0000>-</color>Volcano</color></b>");
+  VariableInt.Set("map8Difficulty", 11);
+
+  VariableBool.Set("map9Enabled", true);
+  VariableString.Set("map9", "<b><color=#C22>Eliope<color=#0000>-</color>-<color=#0000>-</color>BoTR</color></b>");
+  VariableInt.Set("map9Difficulty", 10);
+
+  VariableBool.Set("map10Enabled", true);
+  VariableString.Set("map10", "<b><color=#C22>MaskSlave<color=#0000>-</color>-<color=#0000>-</color>TitanTv<3Mikasa</color></b>");
+  VariableInt.Set("map10Difficulty", 10);
+
+  VariableBool.Set("map11Enabled", true);
+  VariableString.Set("map11", "<b><color=#C22>Mb12<color=#0000>-</color>-<color=#0000>-</color>Tomb<color=#0000>-</color>Escape<color=#0000>-</color>2</color></b>");
+  VariableInt.Set("map11Difficulty", 10);
+
+  VariableBool.Set("map12Enabled", true);
+  VariableString.Set("map12", "<b><color=#C22>Naito<color=#0000>-</color>-<color=#0000>-</color>Naito<color=#0000>-</color>4</color></b>");
+  VariableInt.Set("map12Difficulty", 10);
+
+  VariableBool.Set("map13Enabled", true);
+  VariableString.Set("map13", "<b><color=#D83>Naito<color=#0000>-</color>-<color=#0000>-</color>Naito<color=#0000>-</color>2</color></b>");
+  VariableInt.Set("map13Difficulty", 9);
+
+  VariableBool.Set("map14Enabled", true);
+  VariableString.Set("map14", "<b><color=#D83>Naito<color=#0000>-</color>-<color=#0000>-</color>Naito<color=#0000>-</color>3</color></b>");
+  VariableInt.Set("map14Difficulty", 9);
+
+  VariableBool.Set("map15Enabled", true);
+  VariableString.Set("map15", "<b><color=#D83>Eliope<color=#0000>-</color>-<color=#0000>-</color>Makina<color=#0000>-</color>ABC</color></b>");
+  VariableInt.Set("map15Difficulty", 8);
+
+  VariableBool.Set("map16Enabled", true);
+  VariableString.Set("map16", "<b><color=#D83>Eliope<color=#0000>-</color>-<color=#0000>-</color>Makina<color=#0000>-</color>Dro</color></b>");
+  VariableInt.Set("map16Difficulty", 8);
+
+  VariableBool.Set("map17Enabled", true);
+  VariableString.Set("map17", "<b><color=#D83>Eliope<color=#0000>-</color>-<color=#0000>-</color>Makina<color=#0000>-</color>Source<color=#0000>-</color>level<color=#0000>-</color>II</color></b>");
+  VariableInt.Set("map17Difficulty", 8);
+
+  VariableBool.Set("map18Enabled", true);
+  VariableString.Set("map18", "<b><color=#D83>cowcowtony<color=#0000>-</color>-<color=#0000>-</color>Future<color=#0000>-</color>Trax</color></b>");
+  VariableInt.Set("map18Difficulty", 7);
+
+  VariableBool.Set("map19Enabled", true);
+  VariableString.Set("map19", "<b><color=#D83>Hong<color=#0000>-</color>-<color=#0000>-</color>Hong<color=#0000>-</color>Racing<color=#0000>-</color>(FULL<color=#0000>-</color>LAVA<color=#0000>-</color>BLOOD<color=#0000>-</color>RACING)</color></b>");
+  VariableInt.Set("map19Difficulty", 7);
+
+  VariableBool.Set("map20Enabled", true);
+  VariableString.Set("map20", "<b><color=#FC3>Mb12<color=#0000>-</color>-<color=#0000>-</color>Lava<color=#0000>-</color>Madness</color></b>");
+  VariableInt.Set("map20Difficulty", 6);
+
+  VariableBool.Set("map21Enabled", true);
+  VariableString.Set("map21", "<b><color=#FC3>Mb12<color=#0000>-</color>-<color=#0000>-</color>Original<color=#0000>-</color>Lava<color=#0000>-</color>Madness</color></b>");
+  VariableInt.Set("map21Difficulty", 6);
+
+  VariableBool.Set("map22Enabled", true);
+  VariableString.Set("map22", "<b><color=#FC3>Eliope<color=#0000>-</color>-<color=#0000>-</color>Makina<color=#0000>-</color>Red</color></b>");
+  VariableInt.Set("map22Difficulty", 5);
+
+  VariableBool.Set("map23Enabled", true);
+  VariableString.Set("map23", "<b><color=#FC3>Mb12<color=#0000>-</color>-<color=#0000>-</color>Tomb<color=#0000>-</color>Escape</color></b>");
+  VariableInt.Set("map23Difficulty", 5);
+
+  VariableBool.Set("map24Enabled", true);
+  VariableString.Set("map24", "<b><color=#FC3>Pixell<color=#0000>-</color>-<color=#0000>-</color>Antartica</color></b>");
+  VariableInt.Set("map24Difficulty", 5);
+
+  VariableBool.Set("map25Enabled", true);
+  VariableString.Set("map25", "<b><color=#FC3>Sylcium<color=#0000>-</color>-<color=#0000>-</color>Hard<color=#0000>-</color>Racing<color=#0000>-</color>Map</color></b>");
+  VariableInt.Set("map25Difficulty", 5);
+
+  VariableBool.Set("map26Enabled", true);
+  VariableString.Set("map26", "<b><color=#FC3>cowcowtony<color=#0000>-</color>-<color=#0000>-</color>Circular<color=#0000>-</color>Race<color=#0000>-</color>(Full<color=#0000>-</color>Lava)</color></b>");
+  VariableInt.Set("map26Difficulty", 4);
+
+  VariableBool.Set("map27Enabled", true);
+  VariableString.Set("map27", "<b><color=#FC3>Hong<color=#0000>-</color>-<color=#0000>-</color>Hong's<color=#0000>-</color>Laboratory<color=#0000>-</color>(lava)</color></b>");
+  VariableInt.Set("map27Difficulty", 4);
+
+  VariableBool.Set("map28Enabled", true);
+  VariableString.Set("map28", "<b><color=#FC3>Hong<color=#0000>-</color>-<color=#0000>-</color>Hong's<color=#0000>-</color>Racing<color=#0000>-</color>Akina</color></b>");
+  VariableInt.Set("map28Difficulty", 4);
+
+  VariableBool.Set("map29Enabled", true);
+  VariableString.Set("map29", "<b><color=#7C5>cowcowtony<color=#0000>-</color>-<color=#0000>-</color>Interstellar<color=#0000>-</color>Future<color=#0000>-</color>Trax</color></b>");
+  VariableInt.Set("map29Difficulty", 3);
+
+  VariableBool.Set("map30Enabled", true);
+  VariableString.Set("map30", "<b><color=#7C5>Eliope<color=#0000>-</color>-<color=#0000>-</color>Makina<color=#0000>-</color>Honor</color></b>");
+  VariableInt.Set("map30Difficulty", 3);
+
+  VariableBool.Set("map31Enabled", true);
+  VariableString.Set("map31", "<b><color=#7C5>Hong<color=#0000>-</color>-<color=#0000>-</color>Hard<color=#0000>-</color>Racing<color=#0000>-</color>Akina</color></b>");
+  VariableInt.Set("map31Difficulty", 3);
+
+  VariableBool.Set("map32Enabled", true);
+  VariableString.Set("map32", "<b><color=#7C5>Pixell<color=#0000>-</color>-<color=#0000>-</color>AWWG</color></b>");
+  VariableInt.Set("map32Difficulty", 3);
+
+  VariableBool.Set("map33Enabled", true);
+  VariableString.Set("map33", "<b><color=#7C5>Zechten<color=#0000>-</color>-<color=#0000>-</color>Velocity<color=#0000>-</color>Buraun</color></b>");
+  VariableInt.Set("map33Difficulty", 3);
+
+  VariableBool.Set("map34Enabled", true);
+  VariableString.Set("map34", "<b><color=#7C5>cowcowtony<color=#0000>-</color>-<color=#0000>-</color>Simple<color=#0000>-</color>Marathon</color></b>");
+  VariableInt.Set("map34Difficulty", 2);
+
+  VariableBool.Set("map35Enabled", true);
+  VariableString.Set("map35", "<b><color=#7C5>Eliope<color=#0000>-</color>-<color=#0000>-</color>Makina<color=#0000>-</color>Joconde</color></b>");
+  VariableInt.Set("map35Difficulty", 2);
+
+  VariableBool.Set("map36Enabled", true);
+  VariableString.Set("map36", "<b><color=#7C5>Eliope<color=#0000>-</color>-<color=#0000>-</color>Makina<color=#0000>-</color>Royal</color></b>");
+  VariableInt.Set("map36Difficulty", 2);
+
+  VariableBool.Set("map37Enabled", true);
+  VariableString.Set("map37", "<b><color=#7C5>Eliope<color=#0000>-</color>-<color=#0000>-</color>Makina<color=#0000>-</color>Source<color=#0000>-</color>level<color=#0000>-</color>I</color></b>");
+  VariableInt.Set("map37Difficulty", 2);
+
+  VariableBool.Set("map38Enabled", true);
+  VariableString.Set("map38", "<b><color=#7C5>Eliope<color=#0000>-</color>-<color=#0000>-</color>Makina<color=#0000>-</color>Speed<color=#0000>-</color>(ASO)</color></b>");
+  VariableInt.Set("map38Difficulty", 2);
+
+  VariableBool.Set("map39Enabled", true);
+  VariableString.Set("map39", "<b><color=#7C5>Eliope<color=#0000>-</color>-<color=#0000>-</color>The<color=#0000>-</color>Way<color=#0000>-</color>of<color=#0000>-</color>the<color=#0000>-</color>Racers</color></b>");
+  VariableInt.Set("map39Difficulty", 2);
+
+  VariableBool.Set("map40Enabled", true);
+  VariableString.Set("map40", "<b><color=#7C5>Fex<color=#0000>-</color>-<color=#0000>-</color>IKEA<color=#0000>-</color>racing<color=#0000>-</color>map<color=#0000>-</color>(wip)</color></b>");
+  VariableInt.Set("map40Difficulty", 2);
+
+  VariableBool.Set("map41Enabled", true);
+  VariableString.Set("map41", "<b><color=#7C5>Sylcium<color=#0000>-</color>-<color=#0000>-</color>Long<color=#0000>-</color>Racing<color=#0000>-</color>Map</color></b>");
+  VariableInt.Set("map41Difficulty", 2);
+
+  VariableBool.Set("map42Enabled", true);
+  VariableString.Set("map42", "<b><color=#7C5>Zechten<color=#0000>-</color>-<color=#0000>-</color>Velocity<color=#0000>-</color>Midori</color></b>");
+  VariableInt.Set("map42Difficulty", 2);
+
+  VariableBool.Set("map43Enabled", true);
+  VariableString.Set("map43", "<b><color=#7C5>cowcowtony<color=#0000>-</color>-<color=#0000>-</color>Circular<color=#0000>-</color>Race</color></b>");
+  VariableInt.Set("map43Difficulty", 1);
+
+  VariableBool.Set("map44Enabled", true);
+  VariableString.Set("map44", "<b><color=#7C5>cowcowtony<color=#0000>-</color>-<color=#0000>-</color>Three<color=#0000>-</color>Lap<color=#0000>-</color>Racing</color></b>");
+  VariableInt.Set("map44Difficulty", 1);
+
+  VariableBool.Set("map45Enabled", true);
+  VariableString.Set("map45", "<b><color=#7C5>Eliope<color=#0000>-</color>-<color=#0000>-</color>District<color=#0000>-</color>Racers</color></b>");
+  VariableInt.Set("map45Difficulty", 1);
+
+  VariableBool.Set("map46Enabled", true);
+  VariableString.Set("map46", "<b><color=#7C5>Eliope<color=#0000>-</color>-<color=#0000>-</color>Makina<color=#0000>-</color>Fire</color></b>");
+  VariableInt.Set("map46Difficulty", 1);
+
+  VariableBool.Set("map47Enabled", true);
+  VariableString.Set("map47", "<b><color=#7C5>Eliope<color=#0000>-</color>-<color=#0000>-</color>Makina<color=#0000>-</color>Ice</color></b>");
+  VariableInt.Set("map47Difficulty", 1);
+
+  VariableBool.Set("map48Enabled", true);
+  VariableString.Set("map48", "<b><color=#7C5>Eliope<color=#0000>-</color>-<color=#0000>-</color>Makina<color=#0000>-</color>Team</color></b>");
+  VariableInt.Set("map48Difficulty", 1);
+
+  VariableBool.Set("map49Enabled", true);
+  VariableString.Set("map49", "<b><color=#7C5>Eliope<color=#0000>-</color>-<color=#0000>-</color>Port<color=#0000>-</color>Racers</color></b>");
+  VariableInt.Set("map49Difficulty", 1);
+
+  VariableBool.Set("map50Enabled", false);
+  VariableString.Set("map50", "<b><color=#7C5>Feng<color=#0000>-</color>-<color=#0000>-</color>Akina</color></b>");
+  VariableInt.Set("map50Difficulty", 1);
+
+  VariableBool.Set("map51Enabled", true);
+  VariableString.Set("map51", "<b><color=#7C5>Hong<color=#0000>-</color>-<color=#0000>-</color>Going<color=#0000>-</color>Around</color></b>");
+  VariableInt.Set("map51Difficulty", 1);
+
+  VariableBool.Set("map52Enabled", true);
+  VariableString.Set("map52", "<b><color=#7C5>Hong<color=#0000>-</color>-<color=#0000>-</color>Hong<color=#0000>-</color>Racing</color></b>");
+  VariableInt.Set("map52Difficulty", 1);
+
+  VariableBool.Set("map53Enabled", true);
+  VariableString.Set("map53", "<b><color=#7C5>Hong<color=#0000>-</color>-<color=#0000>-</color>Hong's<color=#0000>-</color>Laboratory</color></b>");
+  VariableInt.Set("map53Difficulty", 1);
+
+  VariableBool.Set("map54Enabled", true);
+  VariableString.Set("map54", "<b><color=#7C5>Sylcium<color=#0000>-</color>-<color=#0000>-</color>Akina</color></b>");
+  VariableInt.Set("map54Difficulty", 1);
+
+  VariableBool.Set("map55Enabled", true);
+  VariableString.Set("map55", "<b><color=#7C5>Sylcium<color=#0000>-</color>-<color=#0000>-</color>Akina<color=#0000>-</color>Reversed</color></b>");
+  VariableInt.Set("map55Difficulty", 1);
+
+  VariableBool.Set("map56Enabled", true);
+  VariableString.Set("map56", "<b><color=#7C5>Sylcium<color=#0000>-</color>-<color=#0000>-</color>Indigo<color=#0000>-</color>Racing</color></b>");
+  VariableInt.Set("map56Difficulty", 1);
+
+  VariableBool.Set("map57Enabled", false);
+  VariableString.Set("map57", "<b>Sylcium<color=#0000>-</color>-<color=#0000>-</color>Special<color=#0000>-</color>Surprise</b>");
+  VariableInt.Set("map57Difficulty", 1);
+
+  VariableBool.Set("map58Enabled", false);
+  VariableString.Set("map58", "<b><color=#FC3>SmoothCatRider<color=#0000>-</color>-<color=#0000>-</color>Unnamed<color=#0000>-</color>Map</color></b>");
+  VariableInt.Set("map58Difficulty", 4);
+
+  VariableBool.Set("map59Enabled", false);
+  VariableString.Set("map59", "<b><color=#C22>Maskslave<color=#0000>-</color>-<color=#0000>-</color>II</color></b>");
+  VariableInt.Set("map59Difficulty", 10);
+
+  VariableBool.Set("map60Enabled", false);
+  VariableString.Set("map60", "<b><color=#C22>Azis<color=#0000>-</color>Akerman<color=#0000>-</color>-<color=#0000>-</color>Puzzle<color=#0000>-</color>Map</color></b>");
+  VariableInt.Set("map60Difficulty", 10);
+
+
+
+  ///////////////////////////////////////////////////////////////////////////////////////////
+  //////////                    NO NEED TO GO BEYOND THIS POINT                    //////////
+  ///////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+  ___________________________________________________________________________________________
+
+  ------------------------------------One Life Logic Setup-----------------------------------
+  ___________________________________________________________________________________________
+
+  VariableBool.Set("isRestarting", false);
+  VariablePlayer.Set("player", VariablePlayer("player"));
+  VariableBool.Set("isOnUpdateBroken", false);
+  VariableInt.Set("timer", -19);
+  VariableBool.Set("spawnLoaded", false);
+  VariableInt.Set("restartCountdown", VariableInt("restartDelay"));
+
+  VariableInt.Set("defaultNumberOfLives", VariableInt("numberOfLives"));
+  VariableInt.Set("defaultnoRestartAfter", VariableInt("noRestartAfter"));
+  VariableInt.Set("defaultAfkTimeout", VariableInt("afkTimeout"));
+  VariableBool.Set("defaultNoCheckpointMode", VariableBool("noCheckpointMode"));
+  VariableInt.Set("defaultRestartDelay", VariableInt("restartDelay"));
+  VariableBool.Set("defaultPrintSettingsWhenChanged", VariableBool("printSettingsWhenChanged"));
+  VariableBool.Set("defaultTeleportLosersAway", VariableBool("teleportLosersAway"));
+
+
+
+  ___________________________________________________________________________________________
+
+  -----------------------------------Map Picker Logic Setup----------------------------------
+  ___________________________________________________________________________________________
+
+  VariableInt.Set("mapCount", 0);
+  VariableBool.Set("isMapStringValid", true);
+  While (Bool.Equals(VariableBool("isMapStringValid"), true))
+  {
+    VariableString.Set("mapString", "map");
+    VariableString.Append("mapString", VariableInt("mapCount").ConvertToString());
+
+    If (String.NotEquals(VariableString(VariableString("mapString")), VariableString("null")))
+    {
+      VariableInt.Add("mapCount", 1);
+    }
+    Else
+    {
+      VariableBool.Set("isMapStringValid", false);
+    }
+  }
+
+  VariableInt.Add("difficultyMax", 1);
+  VariableInt.Subtract("difficultyMin", 1);
+  VariableInt.Set("randomPlayerIndex", 0);
+  VariableInt.Set("playerCount", 0);
+  VariableString.Set("pickerMessageName", "");
+  VariablePlayer.Set("pickedPlayer", VariablePlayer("player"));
+  VariableInt.Set("countdown", -10);
+  VariableString.Set("restartIn20Seconds", "<color=#FC0>Restart<color=#0000>-</color>in<color=#0000>-</color>20<color=#0000>-</color>seconds</color>");
+  VariableString.Set("pickAMap", "<color=#FC0>Pick<color=#0000>-</color>a<color=#0000>-</color>map:<color=#0000>-</color></color>");
+
+
+
+  ___________________________________________________________________________________________
+
+  -----------------------------------String Parser Setup-------------------------------------
+  ___________________________________________________________________________________________
+
+  VariableString.Set("0", "0");
+  VariableString.Set("1", "1");
+  VariableString.Set("2", "2");
+  VariableString.Set("3", "3");
+  VariableString.Set("4", "4");
+  VariableString.Set("5", "5");
+  VariableString.Set("6", "6");
+  VariableString.Set("7", "7");
+  VariableString.Set("8", "8");
+  VariableString.Set("9", "9");
+  VariableString.Set("10", "a");
+  VariableString.Set("11", "b");
+  VariableString.Set("12", "c");
+  VariableString.Set("13", "d");
+  VariableString.Set("14", "e");
+  VariableString.Set("15", "f");
+  VariableString.Set("16", "g");
+  VariableString.Set("17", "h");
+  VariableString.Set("18", "i");
+  VariableString.Set("19", "j");
+  VariableString.Set("20", "k");
+  VariableString.Set("21", "l");
+  VariableString.Set("22", "m");
+  VariableString.Set("23", "n");
+  VariableString.Set("24", "o");
+  VariableString.Set("25", "p");
+  VariableString.Set("26", "q");
+  VariableString.Set("27", "r");
+  VariableString.Set("28", "s");
+  VariableString.Set("29", "t");
+  VariableString.Set("30", "u");
+  VariableString.Set("31", "v");
+  VariableString.Set("32", "w");
+  VariableString.Set("33", "x");
+  VariableString.Set("34", "y");
+  VariableString.Set("35", "z");
+  VariableString.Set("36", "A");
+  VariableString.Set("37", "B");
+  VariableString.Set("38", "C");
+  VariableString.Set("39", "D");
+  VariableString.Set("40", "E");
+  VariableString.Set("41", "F");
+  VariableString.Set("42", "G");
+  VariableString.Set("43", "H");
+  VariableString.Set("44", "I");
+  VariableString.Set("45", "J");
+  VariableString.Set("46", "K");
+  VariableString.Set("47", "L");
+  VariableString.Set("48", "M");
+  VariableString.Set("49", "N");
+  VariableString.Set("50", "O");
+  VariableString.Set("51", "P");
+  VariableString.Set("52", "Q");
+  VariableString.Set("53", "R");
+  VariableString.Set("54", "S");
+  VariableString.Set("55", "T");
+  VariableString.Set("56", "U");
+  VariableString.Set("57", "V");
+  VariableString.Set("58", "W");
+  VariableString.Set("59", "X");
+  VariableString.Set("60", "Y");
+  VariableString.Set("61", "Z");
+  VariableString.Set("62", "-");
+  VariableString.Set("63", "!");
+  VariableString.Set("64", """, """);
+  VariableString.Set("65", "#");
+  VariableString.Set("66", "$");
+  VariableString.Set("67", "%");
+  VariableString.Set("68", "&");
+  VariableString.Set("69", "'");
+  VariableString.Set("70", "(", ")");
+  VariableString.Set("71", ")", "(");
+  VariableString.Set("72", "*");
+  VariableString.Set("73", "+");
+  VariableString.Set("74", "/");
+  VariableString.Set("75", ":");
+  VariableString.Set("76", "<");
+  VariableString.Set("77", "=");
+  VariableString.Set("78", ">");
+  VariableString.Set("79", "?");
+  VariableString.Set("80", "@");
+  VariableString.Set("81", "X");
+  VariableString.Set("82", "Y");
+  VariableString.Set("83", "Z");
+  VariableString.Set("84", "[");
+  VariableString.Set("85", "\");
+  VariableString.Set("86", "]");
+  VariableString.Set("87", "^");
+  VariableString.Set("88", "_");
+  VariableString.Set("89", "`");
+  VariableString.Set("90", "{");
+  VariableString.Set("91", "|");
+  VariableString.Set("92", "}");
+  VariableString.Set("93", "~");
+
+
+
+  ___________________________________________________________________________________________
+
+  ----------------------------------Loading Saved Settings-----------------------------------
+  ___________________________________________________________________________________________
+
+  VariableBool.Set("masterClient", true);
+
+  ForeachPlayer("player")
+  {
+    If(Bool.Equals(VariableBool("masterClient"), true))
+    {
+       VariableString.Set("settings", VariablePlayer("player").GetCustomString());
+       VariableBool.Set("masterClient", false);
+    }
+  }
+
+  If(String.NotEquals(VariableString("settings"), VariableString("nullString")))
+  {
+    VariableBool.Set("Loop", true);
+    VariableString.Set("Word", "");
+    VariableString.Set("GuessWord", "placeholder");
+    VariableInt.Set("CurrentChar", -1);
+    VariableString.Set("TempChar", "");
+
+    VariableInt.Set("elementNumber", 0);
+    VariableString.Set("currentElement", "");
+
+    While(Bool.Equals(VariableBool("Loop"), true))
+    {
+      While(String.NotStartsWith(VariableString("settings"), VariableString("GuessWord")))
+      {
+        If(Int.Equals(VariableInt("CurrentChar"), 62))
+        {
+          VariableBool.Set("Loop", false);
+          VariableString.Set("Command", VariableString("Word"));
+          VariableString.Set("GuessWord", VariableString("settings"));
+        }
+        Else
+        {
+          VariableString.Set("GuessWord", VariableString("Word"));
+          VariableInt.Add("CurrentChar", 1);
+          VariableString.Set("TempChar", VariableInt("CurrentChar").ConvertToString());
+          VariableString.Append("GuessWord", VariableString(VariableString("TempChar")));
+        }
+      }
+
+      If(String.Equals(VariableString(VariableString("TempChar")), "-"))
+      {
+        If(Int.Equals(VariableInt("elementNumber"), 0))
+        {
+          VariableInt.Set("numberOfLives", VariableString("currentElement").ConvertToInt());
+        }
+
+        If(Int.Equals(VariableInt("elementNumber"), 1))
+        {
+          VariableInt.Set("noRestartAfter", VariableString("currentElement").ConvertToInt());
+        }
+
+        If(Int.Equals(VariableInt("elementNumber"), 2))
+        {
+          VariableInt.Set("afkTimeout", VariableString("currentElement").ConvertToInt());
+        }
+
+        If(Int.Equals(VariableInt("elementNumber"), 3))
+        {
+          VariableBool.Set("noCheckpointMode", VariableString("currentElement").ConvertToBool());
+        }
+
+        If(Int.Equals(VariableInt("elementNumber"), 4))
+        {
+          VariableInt.Set("restartDelay", VariableString("currentElement").ConvertToInt());
+          VariableInt.Set("restartCountdown", VariableInt("restartDelay"));
+        }
+
+        If(Int.Equals(VariableInt("elementNumber"), 5))
+        {
+          VariableBool.Set("printSettingsWhenChanged", VariableString("currentElement").ConvertToBool());
+        }
+
+        If(Int.Equals(VariableInt("elementNumber"), 6))
+        {
+          VariableBool.Set("teleportLosersAway", VariableString("currentElement").ConvertToBool());
+        }
+
+        VariableString.Set("currentElement", "");
+        VariableInt.Add("elementNumber", 1);
+      }
+      Else
+      {
+        VariableString.Append("currentElement", VariableString(VariableString("TempChar")));
+      }
+
+      VariableInt.Set("CurrentChar", -1);
+      VariableString.Set("Word", VariableString("GuessWord"));
+      VariableString.Set("GuessWord", "placeholder");
+    }
+  }
+
+  ___________________________________________________________________________________________
+
+  -----------------------------Printing Settings On First Load-------------------------------
+  ___________________________________________________________________________________________
+
+
+
+  If(String.Equals(VariableString("firstLoad"), "true"))
+  {
+    If(Bool.Equals(VariableBool("printSettingsWhenChanged"), true))
+    {
+      Game.PrintMessage("");
+      VariableString.Set("chatMessage", "<b><color=#42dcf4>One<color=#0000>-</color>Life<color=#0000>-</color>Logic<color=#0000>-</color>Version<color=#0000>-</color>2</color></b>");
+      Game.PrintMessage(VariableString("chatMessage"));
+
+      VariableString.Concat("chatMessage", "<b>Number<color=#0000>-</color>of<color=#0000>-</color>lives<color=#0000>-</color>=<color=#0000>-</color><color=#42dcf4>", VariableInt("numberOfLives").ConvertToString(), "</color></b>");
+      Game.PrintMessage(VariableString("chatMessage"));
+
+      VariableString.Concat("chatMessage", "<b>Don't<color=#0000>-</color>restart<color=#0000>-</color>after<color=#0000>-</color><color=#42dcf4>", VariableInt("noRestartAfter").ConvertToString(), "</color><color=#0000>-</color>seconds</b>");
+
+      Game.PrintMessage(VariableString("chatMessage"));
+
+      VariableString.Concat("chatMessage", "<b>Players<color=#0000>-</color>idle<color=#0000>-</color>for<color=#0000>-</color><color=#42dcf4>", VariableInt("afkTimeout").ConvertToString(), "</color><color=#0000>-</color>seconds<color=#0000>-</color>are<color=#0000>-</color>AFK</b>");
+      Game.PrintMessage(VariableString("chatMessage"));
+
+      If(Bool.Equals(VariableBool("noCheckpointMode"), true))
+      {
+        VariableString.Set("chatMessage", "<b>No<color=#0000>-</color>checkpoint<color=#0000>-</color>mode<color=#0000>-</color>=<color=#0000>-</color><color=#42f442>True</color></b>");
+      }
+      Else
+      {
+        VariableString.Set("chatMessage", "<b>No<color=#0000>-</color>checkpoint<color=#0000>-</color>mode<color=#0000>-</color>=<color=#0000>-</color><color=#f44141>False</color></b>");
+      }
+
+      Game.PrintMessage(VariableString("chatMessage"));
+
+      VariableString.Concat("chatMessage", "<b>Wait<color=#0000>-</color><color=#42dcf4>", VariableInt("restartDelay").ConvertToString(), "</color><color=#0000>-</color>seconds<color=#0000>-</color>before<color=#0000>-</color>restarting</b>");
+      Game.PrintMessage(VariableString("chatMessage"));
+
+      Game.PrintMessage("");
+      Game.PrintMessage("<b>Type<color=#0000>-</color><color=#42dcf4>/help</color><color=#0000>-</color>to<color=#0000>-</color>see<color=#0000>-</color>all<color=#0000>-</color>of<color=#0000>-</color>the<color=#0000>-</color>commands</b>");
+    }
+  }
+}
+
+
+OnFirstLoad()
+{
+  VariableString.Set("firstLoad", "true");
+}
+
+
+
+  ___________________________________________________________________________________________
+
+  --------------------------------------One Life Logic---------------------------------------
+  ___________________________________________________________________________________________
+
+OnUpdate()
+{
+  If(Bool.Equals(VariableBool("isOnUpdateBroken"), true))
+  {
+    VariableString.Concat("skipPlayerString", VariableString("currentPlayer"), "SkipPlayer");
+    VariableString.Set(VariableString("skipPlayerString"), "true");
+  }
+
+  VariableBool.Set("isOnUpdateBroken", true);
+  VariableBool.Set("isReadyToRestart", true);
+
+  If(Int.Equals(VariableInt("timer"), VariableInt("noRestartAfter")))
+  {
+    Game.PrintMessage("<b>Auto<color=#0000>-</color>restart<color=#0000>-</color><color=#f44141>disabled</color></b>");
+  }
+
+  ForeachPlayer("player")
+  {
+    VariableString.Set("currentPlayer", VariablePlayer("player").GetName());
+    VariableString.Concat("skipPlayerString", VariableString("currentPlayer"), "SkipPlayer");
+
+    If(String.NotEquals(VariableString(VariableString("skipPlayerString")), "true"))
+    {
+      If(Int.LessThanOrEqual(VariableInt("timer"), 0))
+      {
+        Player.SetDeaths(VariablePlayer("player"), 0);
+        VariableBool.Set("isReadyToRestart", false);
+      }
+      Else
+      {
+        VariableString.Concat("initializedVariables", VariableString("currentPlayer"), "initializedVariables");
+
+        If(String.Equals(VariableString(VariableString("initializedVariables")), VariableString("nullString")))
+        {
+          VariableString.Concat("numberOfDeathsString", VariableString("currentPlayer"), "NumberOfDeaths");
+
+          If(Int.LessThanOrEqual(VariableInt("timer"), VariableInt("afkTimeout")))
+          {
+            VariableInt.Set(VariableString("numberOfDeathsString"), 0);
+          }
+          Else
+          {
+            VariableInt.Set(VariableString("numberOfDeathsString"), 999999);
+          }
+
+          VariableString.Concat("wasAlive", VariableString("currentPlayer"), "WasAlive");
+          VariableBool.Set(VariableString("wasAlive"), VariablePlayer("player").GetIsAlive());
+
+          VariableString.Concat("previousX", VariableString("currentPlayer"), "PreviousX");
+          VariableInt.Set(VariableString("previousX"), 0);
+
+          VariableString.Concat("previousZ", VariableString("currentPlayer"), "PreviousZ");
+          VariableInt.Set(VariableString("previousZ"), 0);
+
+          VariableString.Concat("afkTime", VariableString("currentPlayer"), "AFKTime");
+          VariableInt.Set(VariableString("afkTime"), 0);
+
+          VariableString.Set(VariableString("initializedVariables"), "true");
+        }
+        Else
+        {
+          VariableString.Concat("wasAlive", VariableString("currentPlayer"), "WasAlive");
+          VariableString.Concat("numberOfDeathsString", VariableString("currentPlayer"), "NumberOfDeaths");
+        }
+
+        If(Bool.Equals(VariablePlayer("player").GetIsAlive(), false))
+        {
+          If(Bool.Equals(VariableBool(VariableString("wasAlive")), true))
+          {
+            If(Int.LessThan(VariableInt("timer"), VariableInt("noRestartAfter")))
+            {
+              VariableInt.Add(VariableString("numberOfDeathsString"), 1);
+            }
+          }
+
+          VariableBool.Set(VariableString("wasAlive"), false);
+        }
+        Else
+        {
+          VariableBool.Set(VariableString("wasAlive"), true);
+        }
+
+        If(Int.LessThan(VariableInt(VariableString("numberOfDeathsString")), VariableInt("numberOfLives")))
+        {
+          VariableString.Concat("previousX", VariableString("currentPlayer"), "PreviousX");
+          VariableString.Concat("previousZ", VariableString("currentPlayer"), "PreviousZ");
+          VariableString.Concat("afkTime", VariableString("currentPlayer"), "AFKTime");
+
+          If(Bool.Equals(VariablePlayer("player").GetIsAlive(), false))
+          {
+            VariableInt.Add(VariableString("afkTime"), 1);
+          }
+          Else
+          {
+            VariableInt.Set("currentX", VariablePlayer("player").GetPositionX().ConvertToInt());
+            VariableInt.Set("currentZ", VariablePlayer("player").GetPositionZ().ConvertToInt());
+
+            If(Int.Equals(VariableInt("currentX"), VariableInt(VariableString("previousX"))))
+            {
+              If(Int.Equals(VariableInt("currentZ"), VariableInt(VariableString("previousZ"))))
+              {
+                VariableInt.Add(VariableString("afkTime"), 1);
+              }
+              Else
+              {
+                VariableInt.Set(VariableString("afkTime"), 0);
+                VariableInt.Set(VariableString("previousZ"), VariableInt("currentZ"));
+              }
+            }
+            Else
+            {
+              VariableInt.Set(VariableString("afkTime"), 0);
+              VariableInt.Set(VariableString("previousX"), VariableInt("currentX"));
+              VariableInt.Set(VariableString("previousZ"), VariableInt("currentZ"));
+            }
+          }
+
+          If(Int.GreaterThanOrEqual(VariableInt(VariableString("afkTime")), VariableInt("afkTimeout")))
+          {
+            VariableInt.Add(VariableString("numberOfDeathsString"), 999999);
+          }
+          Else
+          {
+            VariableBool.Set("isReadyToRestart", false);
+          }
+        }
+
+        Else
+        {
+          If(Bool.Equals(VariablePlayer("player").GetIsAlive(), true))
+          {
+            If(Bool.Equals(VariableBool("teleportLosersAway"), true))
+            {
+              If(Bool.Equals(VariableBool("noCheckpointMode"), false))
+              {
+                Player.MovePlayer(VariablePlayer("player"), 1000000.0, -1000000.0, 1000000.0);
+              }
+              Else
+              {
+                Player.MovePlayer(VariablePlayer("player"), VariableFloat("spawnX"), VariableFloat("spawnY"), VariableFloat("spawnZ"));
+
+                VariableInt.Set(VariableString("numberOfDeathsString"), 0);
+              }
+            }
+          }
+        }
+
+      }
+    }
+
+    If(Bool.Equals(VariableBool("spawnLoaded"), false))
+    {
+      ForeachPlayer("player")
+      {
+        If(Bool.Equals(VariablePlayer("player").GetIsAlive(), true))
+        {
+          VariableFloat.Set("spawnX", VariablePlayer("player").GetPositionX());
+          VariableFloat.Set("spawnY", VariablePlayer("player").GetPositionY());
+          VariableFloat.Set("spawnZ", VariablePlayer("player").GetPositionZ());
+
+          VariableBool.Set("spawnLoaded", true);
+        }
+      }
+    }
+  }
+
+  VariableBool.Set("isOnUpdateBroken", false);
+
+  VariableInt.Add("timer", 1);
+
+  If(Bool.Equals(VariableBool("isRestarting"), true))
+  {
+    VariableInt.Subtract("restartCountdown", 1);
+    If(Int.LessThanOrEqual(VariableInt("restartCountdown"), 0))
+    {
+      Game.Restart(true);
+    }
+  }
+  Else
+  {
+    If(Bool.Equals(VariableBool("isReadyToRestart"), true))
+    {
+      If(Int.LessThan(VariableInt("timer"), VariableInt("noRestartAfter")))
+      {
+        VariableString.Concat("skipPlayerString", VariableString("currentPlayer"), "SkipPlayer");
+        VariableBool.Set("isRestarting", true);
+
+        If(String.Equals(VariableString("restartMessage"), ""))
+        {
+          VariableString.Concat("chatMessage", "<b>Restart<color=#0000>-</color>in<color=#0000>-</color><color=#42dcf4>", VariableInt("restartDelay").ConvertToString(), "</color><color=#0000>-</color>seconds</b>");
+          Game.PrintMessage(VariableString("chatMessage"));
+        }
+        Else
+        {
+          Game.PrintMessage(VariableString("restartMessage"));
+        }
+      }
+    }
+  }
+}
+
+
+
+  ___________________________________________________________________________________________
+
+  ---------------------------------------Command Logic---------------------------------------
+  ___________________________________________________________________________________________
+
+OnChatInput("cmd")
+{
+  If(String.StartsWith(VariableString("cmd"), "/"))
+  {
+    If(String.Equals(VariableString("cmd"), "/help"))
+    {
+      Game.PrintMessage("");
+      Game.PrintMessage("<b><color=#42dcf4>Commands:</color></b>");
+      Game.PrintMessage("<b>/r</b>");
+      Game.PrintMessage("<b>/clear</b>");
+      Game.PrintMessage("<b>/settings</b>");
+      Game.PrintMessage("<b>/report</b>");
+      Game.PrintMessage("<b>/default</b>");
+      Game.PrintMessage("<b>/lives<color=#0000>-</color><color=#42dcf4>(#)</color></b>");
+      Game.PrintMessage("<b>/noRestartAfter<color=#0000>-</color><color=#42dcf4>(s)</color></b>");
+      Game.PrintMessage("<b>/afkTimeout<color=#0000>-</color><color=#42dcf4>(s)</color></b>");
+      Game.PrintMessage("<b>/noCheckpointMode<color=#0000>-</color><color=#42dcf4>(on/off)</color></b>");
+      Game.PrintMessage("<b>/restartDelay<color=#0000>-</color><color=#42dcf4>(s)</color></b>");
+    }
+
+    If(String.Equals(VariableString("cmd"), "/clear"))
+    {
+      VariableInt.Set("i", 0);
+      
+      While(Int.LessThan(VariableInt("i"), 15))
+      {
+        Game.PrintMessage("");
+        VariableInt.Add("i", 1);
+      }
+    }
+
+    If(String.Equals(VariableString("cmd"), "/r"))
+    {
+      Game.PrintMessage("<color=#FFCC00>MasterClient<color=#0000>-</color>has<color=#0000>-</color>restarted<color=#0000>-</color>the<color=#0000>-</color>game!</color>");
+      Game.Restart(true);
+    }
+
+    If(String.Equals(VariableString("cmd"), "/settings"))
+    {
+      Game.PrintMessage("");
+      VariableString.Set("chatMessage", "<b><color=#42dcf4>Settings:</color></b>");
+      Game.PrintMessage(VariableString("chatMessage"));
+
+      VariableString.Concat("chatMessage", "<b>Number<color=#0000>-</color>of<color=#0000>-</color>lives<color=#0000>-</color>=<color=#0000>-</color><color=#42dcf4>", VariableInt("numberOfLives").ConvertToString(), "</color></b>");
+      Game.PrintMessage(VariableString("chatMessage"));
+
+      VariableString.Concat("chatMessage", "<b>Don't<color=#0000>-</color>restart<color=#0000>-</color>after<color=#0000>-</color><color=#42dcf4>", VariableInt("noRestartAfter").ConvertToString(), "</color><color=#0000>-</color>seconds</b>");
+
+      Game.PrintMessage(VariableString("chatMessage"));
+
+      VariableString.Concat("chatMessage", "<b>Players<color=#0000>-</color>idle<color=#0000>-</color>for<color=#0000>-</color><color=#42dcf4>", VariableInt("afkTimeout").ConvertToString(), "</color><color=#0000>-</color>seconds<color=#0000>-</color>are<color=#0000>-</color>AFK</b>");
+      Game.PrintMessage(VariableString("chatMessage"));
+
+      If(Bool.Equals(VariableBool("noCheckpointMode"), true))
+      {
+        VariableString.Set("chatMessage", "<b>No<color=#0000>-</color>checkpoint<color=#0000>-</color>mode<color=#0000>-</color>=<color=#0000>-</color><color=#42f442>True</color></b>");
+      }
+      Else
+      {
+        VariableString.Set("chatMessage", "<b>No<color=#0000>-</color>checkpoint<color=#0000>-</color>mode<color=#0000>-</color>=<color=#0000>-</color><color=#f44141>False</color></b>");
+      }
+
+      Game.PrintMessage(VariableString("chatMessage"));
+
+      VariableString.Concat("chatMessage", "<b>Wait<color=#0000>-</color><color=#42dcf4>", VariableInt("restartDelay").ConvertToString(), "</color><color=#0000>-</color>seconds<color=#0000>-</color>before<color=#0000>-</color>restarting</b>");
+      Game.PrintMessage(VariableString("chatMessage"));
+
+      Game.PrintMessage("");
+      Game.PrintMessage("<b>Type<color=#0000>-</color><color=#42dcf4>/help</color><color=#0000>-</color>to<color=#0000>-</color>see<color=#0000>-</color>all<color=#0000>-</color>of<color=#0000>-</color>the<color=#0000>-</color>commands</b>");
+    }
+
+    If(String.Equals(VariableString("cmd"), "/report"))
+    {
+      Game.PrintMessage("");
+      Game.PrintMessage("<b><color=#42dcf4>Report:</color></b>");
+
+      If(Int.LessThanOrEqual(VariableInt("timer"), 0))
+      {
+        If(Int.Equals(VariableInt("numberOfLives"), 1))
+        {
+          VariableString.Concat("chatMessage", "<b>Everyone<color=#0000>-</color>has<color=#0000>-</color><color=#42dcf4>1</color><color=#0000>-</color>life</b>");
+        }
+        Else
+        {
+          VariableString.Concat("chatMessage", "<b>Everyone<color=#0000>-</color>has<color=#0000>-</color><color=#42dcf4>", VariableInt("numberOfLives").ConvertToString(), "</color><color=#0000>-</color>lives</b>");
+        }
+        
+        Game.PrintMessage(VariableString("chatMessage"));
+      }
+      Else
+      {
+        VariableBool.Set("noPlayersActive", true);
+
+        ForeachPlayer("player")
+        {
+          VariableString.Concat("skipPlayerString", VariableString("currentPlayer"), "SkipPlayer");
+
+          If(String.NotEquals(VariableString(VariableString("skipPlayerString")), "true"))
+          {
+            VariableString.Concat("initializedVariables", VariableString("currentPlayer"), "initializedVariables");
+
+            If(String.NotEquals(VariableString(VariableString("initializedVariables")), VariableString("nullString")))
+            {
+              VariableString.Concat("numberOfDeathsString", VariablePlayer("player").GetName(), "NumberOfDeaths");
+              VariableBool.Set("noPlayersActive", false);
+
+              If(Int.LessThan(VariableInt(VariableString("numberOfDeathsString")), VariableInt("numberOfLives")))
+              {
+                VariableInt.Set("livesRemaining", VariableInt("numberOfLives"));
+                VariableInt.Subtract("livesRemaining", VariableInt(VariableString("numberOfDeathsString")))
+
+                If(Int.Equals(VariableInt("livesRemaining"), 1))
+                {
+                  VariableString.Concat("chatMessage", "<b>", VariablePlayer("player").GetName(), "<color=#0000>-</color>has<color=#0000>-</color><color=#42dcf4>1</color><color=#0000>-</color>life<color=#0000>-</color>remaining</b>");
+                }
+                Else
+                {
+                  VariableString.Concat("chatMessage", "<b>", VariablePlayer("player").GetName(), "<color=#0000>-</color>has<color=#0000>-</color><color=#42dcf4>", VariableInt("livesRemaining").ConvertToString(), "</color><color=#0000>-</color>lives<color=#0000>-</color>remaining</b>");
+                }
+
+                Game.PrintMessage(VariableString("chatMessage"));
+              }
+              Else
+              {
+                VariableString.Concat("chatMessage", "<b>", VariablePlayer("player").GetName(), "<color=#0000>-</color>is<color=#0000>-</color>not<color=#0000>-</color>racing</b>");
+                Game.PrintMessage(VariableString("chatMessage"));
+              }
+            }
+          }
+        }
+
+        If(Bool.Equals(VariableBool("noPlayersActive"), true))
+        {
+          Game.PrintMessage("<b>No<color=#0000>-</color>players<color=#0000>-</color>currently<color=#0000>-</color>racing</b>");
+        }
+      }
+    }
+
+    If(String.Equals(VariableString("cmd"), "/default"))
+    {
+      VariableInt.Set("numberOfLives", VariableInt("defaultNumberOfLives"));
+      VariableInt.Set("noRestartAfter", VariableInt("defaultnoRestartAfter"));
+      VariableInt.Set("afkTimeout", VariableInt("defaultAfkTimeout"));
+      VariableBool.Set("noCheckpointMode", VariableBool("defaultNoCheckpointMode"));
+      VariableInt.Set("restartDelay", VariableInt("defaultRestartDelay"));
+      VariableInt.Set("restartCountdown", VariableInt("restartDelay"));
+      VariableBool.Set("printSettingsWhenChanged", VariableBool("defaultPrintSettingsWhenChanged"));
+      VariableBool.Set("teleportLosersAway", VariableBool("defaultTeleportLosersAway"));
+
+      VariableBool.Set("masterClient", true);
+
+      ForeachPlayer("player")
+      {
+        If(Bool.Equals(VariableBool("masterClient"), true))
+        {
+          Player.SetCustomString(VariablePlayer("player"), "");
+          VariableBool.Set("masterClient", false);
+        }
+      }
+
+      Game.PrintMessage("<b>Default<color=#0000>-</color>settings<color=#0000>-</color>restored</b>");
+
+      If(Int.LessThan(VariableInt("noRestartAfter"), VariableInt("timer")))
+      {
+        Game.PrintMessage("<b>Auto<color=#0000>-</color>restart<color=#0000>-</color><color=#f44141>disabled</color></b>");
+      }
+    }
+
+    If(String.Equals(VariableString("cmd"),"/map"))
+    {
+      //get the number of maps that fit the current settings
+      VariableInt.Set("eligibleMapCount", 0);
+      VariableInt.Set("i", 0);
+
+      While (Int.LessThan(VariableInt("i"), VariableInt("mapCount")))
+      {
+        //setup the 'enabled' string
+        VariableString.Set("mapEnabledString", "map");
+        VariableString.Append("mapEnabledString", VariableInt("i").ConvertToString());
+        VariableString.Append("mapEnabledString", "Enabled");
+
+        //if the map is enabled
+        If (Bool.Equals(VariableBool(VariableString("mapEnabledString")), true)) 
+        {
+          //setup the 'difficulty' string
+          VariableString.Set("mapDifficultyString", "map");
+          VariableString.Append("mapDifficultyString", VariableInt("i").ConvertToString());
+          VariableString.Append("mapDifficultyString", "Difficulty");
+
+          //if the map difficulty is within the lower bounds of the difficulty setting
+          If (Int.GreaterThan(VariableInt(VariableString("mapDifficultyString")), VariableInt("difficultyMin")))
+          {
+            //if the map difficulty is within the upper bounds of the difficulty setting
+            If (Int.LessThan(VariableInt(VariableString("mapDifficultyString")), VariableInt("difficultyMax")))
+            {
+              //increase eligibleMapCount
+              VariableInt.Add("eligibleMapCount", 1);
+            }
+          }
+        }
+
+        VariableInt.Add("i", 1);
+      }
+
+      If (Int.LessThan(VariableInt("eligibleMapCount"), 3))
+      {
+        Game.PrintMessage("Not<color=#0000>-</color>enough<color=#0000>-</color>maps");
+        //stop the code from going any further (break the chat)
+
+        VariablePlayer.Set("break", "break");
+      }
+
+      //get the current number of players
+      VariableInt.Set("playerCount", 0);
+      ForeachPlayer("player")
+      {
+        VariableInt.Add("playerCount", 1);
+      }
+
+      //pick a random number to land on
+      VariableInt.SetRandom("randomPlayerIndex", 0, VariableInt("playerCount"));
+
+      //get the random player
+      VariableInt.Set("playerCount", 0);
+      ForeachPlayer("player")
+      {
+        If (Int.Equals(VariableInt("playerCount"), VariableInt("randomPlayerIndex")))
+        {
+          VariablePlayer.Set("pickedPlayer", VariablePlayer("player"));
+        }
+        VariableInt.Add("playerCount", 1);
+      }
+
+      //fix the player's name by replacing open and close brackets with <color> equivalents
+      VariableString.Set("name", VariablePlayer("pickedPlayer").GetName());
+
+      VariableString.Set("Word", "");
+      VariableString.Set("GuessWord", "/restart");
+      VariableInt.Set("Length", 0);
+      VariableInt.Set("CurrentChar", -1);
+      VariableString.Set("TempChar", "");
+      VariableString.Set("TempName", "");
+
+      VariableInt.Set("CloseCount", 0);
+      VariableString.Set("FinalWord", "");
+      VariableBool.Set("badName", false);
+      VariableInt.Set("expectedCloseBracked", -1);
+
+      VariableString.Set("colorDivergent", "");
+      VariableString.Set("nonColorDivergent", "");
+
+      While(String.NotEquals(VariableString("name"), VariableString("Word")))
+      {
+        While(String.NotStartsWith(VariableString("name"), VariableString("GuessWord")))
+        {
+          VariableInt.Add("CurrentChar", 1);
+          If (Int.NotEquals(VariableInt("CurrentChar"), 94))
+          {
+            VariableString.Set("TempChar", VariableInt("CurrentChar").ConvertToString());
+            VariableString.Set("GuessWord", VariableString("Word"));
+            VariableString.Append("GuessWord", VariableString(VariableString("TempChar")));
+          }
+          Else
+          {
+            //We can't parse this name so just give it the answer
+            VariableString.Set("GuessWord", VariableString("name"));
+            VariableBool.Set("badName", true);
+          }
+        }
+
+        If (Bool.Equals(VariableBool("badName"), false))
+        {
+          //if the char was an open/closed bracket then replace it in the finalWord and increase the close count
+          If (String.Equals(VariableString(VariableString("TempChar")), "["))
+          {
+            //if the previous one was an open bracket then we need to add it in
+            If (String.NotEquals(VariableString("nonColorDivergent"), ""))
+            {
+              VariableString.Append("FinalWord", VariableString("nonColorDivergent"));
+
+              VariableString.Set("colorDivergent", "");
+              VariableString.Set("nonColorDivergent", "");
+            }
+
+            VariableString.Set("colorDivergent", "<color=#");
+            VariableString.Set("nonColorDivergent", "[");
+            VariableInt.Set("expectedCloseBracked", 6);
+          }
+          Else
+          {
+            If (String.Equals(VariableString(VariableString("TempChar")), "]"))
+            {
+              If (Int.Equals(VariableInt("expectedCloseBracked"), 0))
+              {
+                VariableString.Append("FinalWord", VariableString("colorDivergent"));
+                VariableString.Append("FinalWord", ">");
+
+                VariableString.Set("colorDivergent", "");
+                VariableString.Set("nonColorDivergent", "");
+
+                VariableInt.Set("expectedCloseBracked", -1);
+                VariableInt.Add("CloseCount", 1);
+              }
+              Else
+              {
+                VariableString.Append("nonColorDivergent", VariableString(VariableString("TempChar")));
+                VariableString.Append("FinalWord", VariableString("nonColorDivergent"));
+
+                VariableString.Set("colorDivergent", "");
+                VariableString.Set("nonColorDivergent", "");
+
+                VariableInt.Set("expectedCloseBracked", -1);
+
+                //VariableBool.Set("badName", true);
+                //VariableString.Set("FinalWord", VariableString("name"));
+                //VariableString.Set("Word", VariableString("name"));
+                //VariableInt.Set("CloseCount", 0);
+              }
+
+            }
+            Else
+            {
+              If (Int.GreaterThan(VariableInt("expectedCloseBracked"), 0))
+              {
+                VariableString.Append("colorDivergent", VariableString(VariableString("TempChar")));
+                VariableString.Append("nonColorDivergent", VariableString(VariableString("TempChar")));
+              }
+              Else
+              {
+                VariableString.Append("FinalWord", VariableString(VariableString("TempChar")));
+              }
+              VariableInt.Subtract("expectedCloseBracked", 1);
+            }
+          }
+        }
+        Else
+        {
+          VariableInt.Set("CloseCount", 0);
+          VariableString.Set("FinalWord", VariableString("name"));
+        }
+
+
+        VariableInt.Set("CurrentChar", 32);
+        VariableString.Set("Word", VariableString("GuessWord"));
+        VariableString.Set("GuessWord", "/restart");
+        VariableInt.Add("Length", 1);
+      }
+
+
+      If (Bool.Equals(VariableBool("badName"), false))
+      {
+        If (String.NotEquals(VariableString("nonColorDivergent"), ""))
+        {
+          VariableString.Append("FinalWord", VariableString("nonColorDivergent"));
+        }
+      }
+
+
+      //add the </color>s to the final word
+      While(Int.GreaterThan(VariableInt("CloseCount"), 0))
+      {
+        VariableString.Append("FinalWord", "</color>");
+        VariableInt.Subtract("CloseCount", 1);
+      }
+
+      VariableString.Concat("pickerMessageName", "<b>", VariableString("pickAMap"), VariableString("FinalWord"), "</b>");
+
+      //set all the picked maps to null
+      VariableString.Set("pickedMap1", VariableString("null"));
+      VariableString.Set("pickedMap2", VariableString("null"));
+      VariableString.Set("pickedMap3", VariableString("null"));
+
+      //get the first random map
+      While (String.Equals(VariableString("pickedMap1"), VariableString("null")))
+      {
+        //get a random map
+        VariableInt.SetRandom("randomMapIndex", 0, VariableInt("mapCount"));
+
+        //set up the 'mapXEnabled' string    
+        VariableString.Set("mapEnabledString", "map");
+        VariableString.Append("mapEnabledString", VariableInt("randomMapIndex").ConvertToString());
+        VariableString.Append("mapEnabledString", "Enabled");
+
+        //check if this map is enabled
+        If (Bool.Equals(VariableBool(VariableString("mapEnabledString")), true))
+        {
+          //set up the 'mapXDifficulty' string    
+          VariableString.Set("mapDifficultyString", "map");
+          VariableString.Append("mapDifficultyString", VariableInt("randomMapIndex").ConvertToString());
+          VariableString.Append("mapDifficultyString", "Difficulty");
+
+          //if the map difficulty is within the lower bounds of the difficulty setting
+          If (Int.GreaterThan(VariableInt(VariableString("mapDifficultyString")), VariableInt("difficultyMin")))
+          {
+            //if the map difficulty is within the upper bounds of the difficulty setting
+            If (Int.LessThan(VariableInt(VariableString("mapDifficultyString")), VariableInt("difficultyMax")))
+            {
+              //we have a map
+
+              //set up the 'mapX' string    
+              VariableString.Set("mapString", "map");
+              VariableString.Append("mapString", VariableInt("randomMapIndex").ConvertToString());
+
+              //set the pickedMap1 to the map
+              VariableString.Set("pickedMap1", VariableString(VariableString("mapString")));
+
+            }
+          }
+        }
+      }
+
+
+      //get the second random map (no duplicates)
+      While (String.Equals(VariableString("pickedMap2"), VariableString("null")))
+      {
+        //get a random map
+        VariableInt.SetRandom("randomMapIndex", 0, VariableInt("mapCount"));
+
+        //set up the 'mapXEnabled' string    
+        VariableString.Set("mapEnabledString", "map");
+        VariableString.Append("mapEnabledString", VariableInt("randomMapIndex").ConvertToString());
+        VariableString.Append("mapEnabledString", "Enabled");
+
+        //check if this map is enabled
+        If (Bool.Equals(VariableBool(VariableString("mapEnabledString")), true))
+        {
+          //set up the 'mapXDifficulty' string    
+          VariableString.Set("mapDifficultyString", "map");
+          VariableString.Append("mapDifficultyString", VariableInt("randomMapIndex").ConvertToString());
+          VariableString.Append("mapDifficultyString", "Difficulty");
+
+          //if the map difficulty is within the lower bounds of the difficulty setting
+          If (Int.GreaterThan(VariableInt(VariableString("mapDifficultyString")), VariableInt("difficultyMin")))
+          {
+            //if the map difficulty is within the upper bounds of the difficulty setting
+            If (Int.LessThan(VariableInt(VariableString("mapDifficultyString")), VariableInt("difficultyMax")))
+            {
+              //we have a map
+
+              //set up the 'mapX' string    
+              VariableString.Set("mapString", "map");
+              VariableString.Append("mapString", VariableInt("randomMapIndex").ConvertToString());
+
+
+              //make sure this map is not the same as any of the previous maps
+              If (String.NotEquals(VariableString(VariableString("mapString")), VariableString("pickedMap1")))
+              {
+                //set the pickedMap2 to the map
+                VariableString.Set("pickedMap2", VariableString(VariableString("mapString")));
+              }
+            }
+          }
+        }
+      }
+
+
+      //get the third random map (no duplicates)
+      While (String.Equals(VariableString("pickedMap3"), VariableString("null")))
+      {
+        //get a random map
+        VariableInt.SetRandom("randomMapIndex", 0, VariableInt("mapCount"));
+
+        //set up the 'mapXEnabled' string    
+        VariableString.Set("mapEnabledString", "map");
+        VariableString.Append("mapEnabledString", VariableInt("randomMapIndex").ConvertToString());
+        VariableString.Append("mapEnabledString", "Enabled");
+
+        //check if this map is enabled
+        If (Bool.Equals(VariableBool(VariableString("mapEnabledString")), true))
+        {
+          //set up the 'mapXDifficulty' string    
+          VariableString.Set("mapDifficultyString", "map");
+          VariableString.Append("mapDifficultyString", VariableInt("randomMapIndex").ConvertToString());
+          VariableString.Append("mapDifficultyString", "Difficulty");
+
+          //if the map difficulty is within the lower bounds of the difficulty setting
+          If (Int.GreaterThan(VariableInt(VariableString("mapDifficultyString")), VariableInt("difficultyMin")))
+          {
+            //if the map difficulty is within the upper bounds of the difficulty setting
+            If (Int.LessThan(VariableInt(VariableString("mapDifficultyString")), VariableInt("difficultyMax")))
+            {
+              //we have a map
+
+              //set up the 'mapX' string    
+              VariableString.Set("mapString", "map");
+              VariableString.Append("mapString", VariableInt("randomMapIndex").ConvertToString());
+
+
+              //make sure this map is not the same as any of the previous maps
+              If (String.NotEquals(VariableString(VariableString("mapString")), VariableString("pickedMap1")))
+              {
+                If (String.NotEquals(VariableString(VariableString("mapString")), VariableString("pickedMap2")))
+                {
+                  //set the pickedMap3 to the map
+                  VariableString.Set("pickedMap3", VariableString(VariableString("mapString")));
+                }
+              }
+            }
+          }
+        }
+      }
+
+      Game.PrintMessage(VariableString("pickerMessageName"));
+      Game.PrintMessage(VariableString("pickedMap1"));
+      Game.PrintMessage(VariableString("pickedMap2"));
+      Game.PrintMessage(VariableString("pickedMap3"));
+    }
+
+    If (String.Equals(VariableString("cmd"),"/repeat"))
+    {
+      Game.PrintMessage(VariableString("pickerMessageName"));
+      Game.PrintMessage(VariableString("pickedMap1"));
+      Game.PrintMessage(VariableString("pickedMap2"));
+      Game.PrintMessage(VariableString("pickedMap3"));
+    }
+
+    If(String.NotStartsWith(VariableString("cmd"), "placeholder"))
+    {
+      VariableString.Set("Command", "/");
+      VariableBool.Set("Loop", true);
+      VariableString.Set("Word", "/");
+      VariableString.Set("GuessWord", "placeholder");
+      VariableInt.Set("CurrentChar", 9);
+      VariableString.Set("TempChar", "");
+
+      While(Bool.Equals(VariableBool("Loop"), true))
+      {
+        While(String.NotStartsWith(VariableString("cmd"), VariableString("GuessWord")))
+        {
+          If(Int.Equals(VariableInt("CurrentChar"), 61))
+          {
+            VariableBool.Set("Loop", false);
+            VariableString.Set("GuessWord", VariableString("cmd"));
+          }
+          Else
+          {
+            VariableString.Set("GuessWord", VariableString("Word"));
+            VariableInt.Add("CurrentChar", 1);
+            VariableString.Set("TempChar", VariableInt("CurrentChar").ConvertToString());
+            VariableString.Append("GuessWord", VariableString(VariableString("TempChar")));
+          }
+        }
+
+        If(Bool.Equals(VariableBool("Loop"), true))
+        {
+          If(Int.GreaterThan(VariableInt("CurrentChar"), 35))
+          {
+            If(Int.LessThan(VariableInt("CurrentChar"), 61))
+            {
+              VariableInt.Subtract("CurrentChar", 26);
+            }
+          }
+
+          VariableString.Set("TempChar", VariableInt("CurrentChar").ConvertToString());
+          VariableString.Append("Command", VariableString(VariableString("TempChar")));
+        }
+
+        VariableInt.Set("CurrentChar", 9);
+        VariableString.Set("Word", VariableString("GuessWord"));
+        VariableString.Set("GuessWord", "placeholder");
+      }
+
+      If(String.NotEquals(VariableString("cmd"), VariableString("Command")))
+      {
+        VariableBool.Set("Loop", true);
+        VariableString.Set("Word", "");
+        VariableString.Set("GuessWord", "placeholder");
+        VariableInt.Set("CurrentChar", -1);
+        VariableString.Set("TempChar", "");
+
+        While(Bool.Equals(VariableBool("Loop"), true))
+        {
+          While(String.NotEndsWith(VariableString("cmd"), VariableString("GuessWord")))
+          {
+            If(Int.Equals(VariableInt("CurrentChar"), 61))
+            {
+              VariableBool.Set("Loop", false);
+              VariableString.Set("Value", VariableString("Word"));
+              VariableString.Set("GuessWord", VariableString("cmd"));
+            }
+            Else
+            {
+              VariableString.Set("GuessWord", VariableString("Word"));
+              VariableInt.Add("CurrentChar", 1);
+              VariableString.Set("TempChar", VariableInt("CurrentChar").ConvertToString());
+              VariableString.Concat("GuessWord", VariableString(VariableString("TempChar")), VariableString("GuessWord"));
+            }
+          }
+
+          VariableInt.Set("CurrentChar", -1);
+          VariableString.Set("Word", VariableString("GuessWord"));
+          VariableString.Set("GuessWord", "placeholder");
+        }
+
+        VariableBool.Set("ToggleSetting", false);
+
+        If(String.Equals(VariableString("Value"), "on"))
+        {
+          VariableBool.Set("ToggleSetting", true);
+        }
+
+        If(String.Equals(VariableString("Value"), "off"))
+        {
+          VariableBool.Set("ToggleSetting", true);
+        }
+
+        If(Bool.Equals(VariableBool("ToggleSetting"), true))
+        {
+          If(String.Equals(VariableString("Command"), "/nocheckpointmode"))
+          {
+            If(String.Equals(VariableString("Value"), "on"))
+            {
+              VariableBool.Set("noCheckpointMode", true);
+              Game.PrintMessage("<b>noCheckpointMode<color=#0000>-</color>is<color=#0000>-</color><color=#42f442>on</color></b>");
+            }
+            Else
+            {
+              VariableBool.Set("noCheckpointMode", false);
+              Game.PrintMessage("<b>noCheckpointMode<color=#0000>-</color>is<color=#0000>-</color><color=#f44141>off</color></b>");
+            }
+          }
+
+          If(String.Equals(VariableString("Command"), "/printsettingswhenchanged"))
+          {
+            If(String.Equals(VariableString("Value"), "on"))
+            {
+              VariableBool.Set("printSettingsWhenChanged", true);
+              Game.PrintMessage("<b>Settings<color=#0000>-</color><color=#42f442>will</color><color=#0000>-</color>be<color=#0000>-</color>printed<color=#0000>-</color>when<color=#0000>-</color>changed</b>");
+            }
+            Else
+            {
+              VariableBool.Set("printSettingsWhenChanged", false);
+              Game.PrintMessage("<b>Settings<color=#0000>-</color><color=#f44141>will<color=#0000>-</color>not</color><color=#0000>-</color>be<color=#0000>-</color>printed<color=#0000>-</color>when<color=#0000>-</color>changed</b>");
+            }
+          }
+
+          If(String.Equals(VariableString("Command"), "/teleportlosersaway"))
+          {
+            If(String.Equals(VariableString("Value"), "on"))
+            {
+              VariableBool.Set("teleportLosersAway", true);
+              Game.PrintMessage("<b>Losers<color=#0000>-</color><color=#42f442>will</color><color=#0000>-</color>be<color=#0000>-</color>teleported<color=#0000>-</color>away</b>");
+            }
+            Else
+            {
+              VariableBool.Set("teleportLosersAway", false);
+              Game.PrintMessage("<b>Losers<color=#0000>-</color><color=#f44141>will<color=#0000>-</color>not</color><color=#0000>-</color>be<color=#0000>-</color>teleported<color=#0000>-</color>away</b>");
+            }
+          }
+        }
+        Else
+        {
+          VariableBool.Set("isNumber", false);
+          VariableInt.Set("Value", VariableString("Value").ConvertToInt());
+
+          If(String.Equals(VariableString("Value"), "0"))
+          {
+            VariableBool.Set("isNumber", true);
+          }
+
+          If(Int.NotEquals(VariableInt("Value"), 0))
+          {
+            VariableBool.Set("isNumber", true);
+          }
+
+          If(Bool.Equals(VariableBool("isNumber"), true))
+          {
+            If(String.Equals(VariableString("Command"), "/lives"))
+            {
+              VariableInt.Set("numberOfLives", VariableInt("Value"));
+
+              VariableString.Concat("Message", "<b>Number<color=#0000>-</color>of<color=#0000>-</color>lives<color=#0000>-</color>set<color=#0000>-</color>to<color=#0000>-</color><color=#42dcf4>", VariableInt("Value").ConvertToString(), "</color></b>");
+              Game.PrintMessage(VariableString("Message"));
+            }
+
+            If(String.Equals(VariableString("Command"), "/norestartafter"))
+            {
+              VariableInt.Set("noRestartAfter", VariableInt("Value"));
+
+              VariableString.Concat("Message", "<b>The<color=#0000>-</color>game<color=#0000>-</color>will<color=#0000>-</color>not<color=#0000>-</color>restart<color=#0000>-</color>after<color=#0000>-</color><color=#42dcf4>", VariableInt("Value").ConvertToString(), "</color><color=#0000>-</color>seconds</b>");
+              Game.PrintMessage(VariableString("Message"));
+
+              If(Int.LessThan(VariableInt("noRestartAfter"), VariableInt("timer")))
+              {
+                Game.PrintMessage("<b>Auto<color=#0000>-</color>restart<color=#0000>-</color><color=#f44141>disabled</color></b>");
+              }
+            }
+
+            If(String.Equals(VariableString("Command"), "/afktimeout"))
+            {
+              VariableInt.Set("afkTimeout", VariableInt("Value"));
+
+              VariableString.Concat("Message", "<b>afkTimeout<color=#0000>-</color>set<color=#0000>-</color>to<color=#0000>-</color><color=#42dcf4>", VariableInt("Value").ConvertToString(), "</color><color=#0000>-</color>seconds</b>");
+              Game.PrintMessage(VariableString("Message"));
+            }
+
+            If(String.Equals(VariableString("Command"), "/restartdelay"))
+            {
+              VariableInt.Set("restartDelay", VariableInt("Value"));
+              VariableInt.Set("restartCountdown", VariableInt("Value"));
+
+              VariableString.Concat("Message", "<b>Restart<color=#0000>-</color>delay<color=#0000>-</color>set<color=#0000>-</color>to<color=#0000>-</color><color=#42dcf4>", VariableInt("Value").ConvertToString(), "</color><color=#0000>-</color>seconds</b>");
+              Game.PrintMessage(VariableString("Message"));
+            }
+
+            If(String.Equals(VariableString("Command"), "/min"))
+            {
+              VariableInt.Set("difficultyMin", VariableInt("Value"));
+              //subtract one for reasons
+              VariableInt.Subtract("difficultyMin", 1);
+
+              VariableString.Concat("Message", "<b>Minimum<color=#0000>-</color>map<color=#0000>-</color>difficulty<color=#0000>-</color>set<color=#0000>-</color>to<color=#0000>-</color><color=#42dcf4>", VariableInt("Value").ConvertToString(), "</color></b>");
+              Game.PrintMessage(VariableString("Message"));
+            }
+
+            If(String.Equals(VariableString("Command"), "/max"))
+            {
+              VariableInt.Set("difficultyMax", VariableInt("Value"));
+              //add one for reasons
+              VariableInt.Add("difficultyMax", 1);
+
+              VariableString.Concat("Message", "<b>Maximum<color=#0000>-</color>map<color=#0000>-</color>difficulty<color=#0000>-</color>set<color=#0000>-</color>to<color=#0000>-</color><color=#42dcf4>", VariableInt("Value").ConvertToString(), "</color></b>");
+              Game.PrintMessage(VariableString("Message"));
+            }
+          }
+        }
+      }
+    }
+
+
+
+  ___________________________________________________________________________________________
+
+  ---------------------------------------Save Settings---------------------------------------
+  ___________________________________________________________________________________________
+
+    VariableString.Concat("settings", VariableInt("numberOfLives").ConvertToString(), "-", VariableInt("noRestartAfter").ConvertToString(), "-", VariableInt("afkTimeout").ConvertToString(), "-", VariableBool("noCheckpointMode").ConvertToString(), "-", VariableInt("restartDelay").ConvertToString(), "-", VariableBool("printSettingsWhenChanged").ConvertToString(), "-", VariableBool("teleportLosersAway").ConvertToString());
+    VariableBool.Set("masterClient", true);
+
+    ForeachPlayer("player")
+    {
+      If(Bool.Equals(VariableBool("masterClient"), true))
+      {
+        Player.SetCustomString(VariablePlayer("player"), VariableString("settings"));
+        VariableBool.Set("masterClient", false);
+      }
+    }
+  }
+}

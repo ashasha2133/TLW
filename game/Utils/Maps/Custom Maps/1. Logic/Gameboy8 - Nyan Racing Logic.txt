@@ -1,0 +1,11 @@
+OnTitanDie(“Titan”,"Player")
+{
+Game.PrintMessage("<color=#ffacac><b>Nyan_Cat:</b></color>");
+Game.PrintMessage("<b><color="#ff0000">Y</color><color="#ff1500">o</color><color="#ff2a00">u</color><color="#ff4000">_</color><color="#ff5500">H</color><color="#ff6a00">a</color><color="#ff7f00">v</color><color="#ff9400">e</color><color="#ffaa00">_</color><color="#ffbf00">R</color><color="#ffd400">e</color><color="#ffea00">a</color><color="#ffff00">c</color><color="#dbff00">h</color><color="#b6ff00">e</color><color="#92ff00">d</color><color="#6dff00">_</color><color="#49ff00">L</color><color="#24ff00">e</color><color="#00ff00">v</color><color="#00ef24">e</color><color="#00df48">l</color><color="#00cf6c">_</color><color="#00bf90">2</color></b>");
+Game.PrintMessage("<b><color="#00afb4">~</color><color="#009fd8">G</color><color="#1391df">o</color><color="#2682e5">o</color><color="#3a74ec">d</color><color="#4d65f2">_</color><color="#6057f9">L</color><color="#7348ff">u</color><color="#8a4dff">c</color><color="#a152ff">k</color><color="#b856ff">_</color><color="#ce5bff">x</color><color="#e560ff">3</color><color="#fc65ff">~</color></b>");
+VariableFloat.Set("posX",1.0);
+VariableFloat.Set("posY",3825.0);
+VariableFloat.Set("posZ",1.0);
+Player.MovePlayer(VariablePlayer("Player"), VariableFloat("posX"), VariableFloat("posY"), VariableFloat("posZ"))
+Titan.SpawnTitanAt(0, 1.0, 10, 1, RegionRandomX("Titan"),RegionRandomY("Titan"),RegionRandomZ("Titan"));
+}

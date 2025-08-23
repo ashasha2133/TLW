@@ -1,0 +1,74 @@
+OnRoundStart()
+{
+     VariableInt.Set("afkTimeout", 2);
+     VariablePlayer.Set("player", VariablePlayer("player"));
+     VariableBool.Set("playerAFK", true);
+}
+
+OnUpdate()
+{
+     If(Bool.Equals(VariableBool("playerAFK"), true))
+     {
+          ForeachPlayer("player")
+          {
+               VariableString.Set("currentPlayer", VariablePlayer("player").GetName());
+
+               VariableString.Concat("isLoaded", "loaded", VariableString("currentPlayer"));
+               
+               If (String.Equals(VariableString(VariableString("isLoaded")), VariableString("null")))
+               {
+                    VariableString.Concat("previousX", VariableString("currentPlayer"), "PreviousX");
+                    VariableInt.Set(VariableString("previousX"), 0);
+                    
+                    VariableString.Concat("previousZ", VariableString("currentPlayer"), "PreviousZ");
+                    VariableInt.Set(VariableString("previousZ"), 0);
+                    
+                    VariableString.Concat("afkTime", VariableString("currentPlayer"), "AFKTime");
+                    VariableInt.Set(VariableString("afkTime"), 0);
+
+                    VariableString.Set(VariableString("isLoaded"), "true");
+               }
+               
+               VariableString.Concat("previousX", VariableString("currentPlayer"), "PreviousX");
+               VariableString.Concat("previousZ", VariableString("currentPlayer"), "PreviousZ");
+               VariableString.Concat("afkTime", VariableString("currentPlayer"), "AFKTime");
+               
+               If (Bool.Equals(VariablePlayer("player").GetIsAlive(), false))
+               {
+                    VariableInt.Add(VariableString("afkTime"), 1);
+               }
+               Else
+               {
+                    VariableInt.Set("currentX", VariablePlayer("player").GetPositionX().ConvertToInt());
+                    VariableInt.Set("currentZ", VariablePlayer("player").GetPositionZ().ConvertToInt());     
+                    
+                    If (Int.Equals(VariableInt("currentX"), VariableInt(VariableString("previousX"))))
+                    {
+                         If (Int.Equals(VariableInt("currentZ"), VariableInt(VariableString("previousZ"))))
+                         {
+                              VariableInt.Add(VariableString("afkTime"), 1);
+                         }
+                         Else
+                         {
+                              VariableInt.Set(VariableString("afkTime"), 0);
+                        }
+                    }
+                    Else
+                    {
+                         VariableInt.Set(VariableString("afkTime"), 0);
+                    }
+                    
+                    VariableInt.Set(VariableString("previousX"), VariableInt("currentX"));
+                    VariableInt.Set(VariableString("previousZ"), VariableInt("currentZ"));
+               }
+               
+               If(Int.GreaterThan(VariableInt(VariableString("afkTime")), VariableInt("afkTimeout")))
+               {
+                    If (Bool.Equals(VariablePlayer("player").GetIsAlive(), true))
+                    {
+                         Player.KillPlayer(VariablePlayer("player"),"[00FF00]Server[FF0000]kill[FFFFFF]AFK");
+                    }       
+               }
+          }
+     }
+}

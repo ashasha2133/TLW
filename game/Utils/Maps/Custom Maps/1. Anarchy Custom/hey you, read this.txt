@@ -1,0 +1,4 @@
+this stuff is for the anarchy mod and other mods with anarchy's maps support only, hosted on a server with anarchy (custom)
+allows usage of moving objects, parenting objects and whatnot, so generally
+more fancier stuff, you can find anarchy mod in the #invite-link section of optix
+or use this link - https://discord.gg/EJ32W7V4Ng

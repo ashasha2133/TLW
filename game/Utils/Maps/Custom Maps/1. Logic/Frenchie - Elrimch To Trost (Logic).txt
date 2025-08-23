@@ -1,0 +1,949 @@
+
+OnFirstLoad()
+{
+Game.PrintMessage("<size=15><color=#000000>Welcome to: Elrimch to trost</color></size>");
+Game.PrintMessage("<size=15><color=#000000>The¨Wall¨Rose¨Expeditions</color></size>");
+Game.PrintMessage("<size=12>Custom¨Logic¨by¨<color=#ffacac>Erwin#5565</color></size>");
+}
+
+
+OnRoundStart()
+{
+  VariableString.Set("0", "<b><color=#00FF00>[Commander]</color>: Expedition¨Starts¨In¨10¨Secs</b>");
+  VariableString.Set("1", "<b>  10</b>");
+  VariableString.Set("2", "<b>  9</b>");
+  VariableString.Set("3", "<b>  8</b>");
+  VariableString.Set("4", "<b>  7</b>");
+  VariableString.Set("5", "<b>  6</b>");
+  VariableString.Set("6", "<b>  5</b>");
+  VariableString.Set("7", "<b>  4</b>");
+  VariableString.Set("8", "<b>  3</b>");
+  VariableString.Set("9", "<b>  2</b>");
+  VariableString.Set("10", "<b>  1</b>");
+  VariableString.Set("11", "<b><color=#00FF00>[Commander]</color>: All¨Soldiers!¨Advance!!!</b>");
+}
+
+
+OnUpdate()
+{
+  If(Bool.Equals(VariableBool("CountDown"), true))
+  {
+    VariableString.Set("Temp", VariableInt("Count").ConvertToString());
+    Game.PrintMessage(VariableString(VariableString("Temp")));
+    VariableInt.Add("Count", 1);
+    
+    If(VariableInt.Equals(VariableInt("Count"), 12))
+    {
+      VariableBool.Set("CountDown", false);
+    }
+  }
+}
+
+
+OnChatInput("MC")
+{
+
+  If(String.Equals(VariableString("MC"), "/expstart"))
+  {
+    VariableBool.Set("CountDown", true);
+    VariableInt.Set("Count", 0);
+  }
+
+If(String.Contains(VariableString("MC"),"/revv"))
+ {
+Game.PrintMessage("<color=#000000><b>Commands to Revive All Players:</b></color>");
+
+Game.PrintMessage("<color=#ffff00> /revst - in Stohess</color>");
+Game.PrintMessage("<color=#ffff00> /revkr - in Karanes</color>");
+Game.PrintMessage("<color=#ffff00> /revsh - in Shiganshina</color>");
+Game.PrintMessage("<color=#ffff00> /revcv - in Canyon Village</color>");
+Game.PrintMessage("<color=#ffff00> /revsv - in Snowy Village</color>");
+Game.PrintMessage("<color=#ffff00> /revft - in Forest of the Giant Trees</color>");
+
+Game.PrintMessage("<color=#ffff00> /revtr - in Trost</color>");
+Game.PrintMessage("<color=#ffff00> /revkv - in Krolva</color>");
+Game.PrintMessage("<color=#ffff00> /revmm - in Mining Mountain</color>");
+Game.PrintMessage("<color=#ffff00> /revwft - in West Forest Titan</color>");
+Game.PrintMessage("<color=#ffff00> /revlv - in Lake Village</color>");
+Game.PrintMessage("<color=#ffff00> /revdv - in Dauper Village</color>");
+Game.PrintMessage("<color=#ffff00> /revrv - in Ragako Village</color>");
+Game.PrintMessage("<color=#ffff00> /revur - in Utgard Ruins</color>");
+Game.PrintMessage("<color=#ffff00> /revbv - in Bloody Valley</color>");
+ }
+
+If(String.Contains(VariableString("MC"),"/teleport"))
+ {
+Game.PrintMessage("<color=#000000><b>Commands to Teleport All Players:</b></color>");
+
+Game.PrintMessage("<color=#ffff00> /tpst - in Stohess</color>");
+Game.PrintMessage("<color=#ffff00> /tpkr - in Karanes</color>");
+Game.PrintMessage("<color=#ffff00> /tpsh - in Shiganshina</color>");
+Game.PrintMessage("<color=#ffff00> /tpcv - in Canyon Village</color>");
+Game.PrintMessage("<color=#ffff00> /tpsv - in Snowy Village</color>");
+Game.PrintMessage("<color=#ffff00> /tpft - in Forest of the Giant Trees</color>");
+
+Game.PrintMessage("<color=#ffff00> /tptr - in Trost</color>");
+Game.PrintMessage("<color=#ffff00> /tpkv - in Krolva</color>");
+Game.PrintMessage("<color=#ffff00> /tpmm - in Mining Mountain</color>");
+Game.PrintMessage("<color=#ffff00> /tpwft - in West Forest Titan</color>");
+Game.PrintMessage("<color=#ffff00> /tplv - in Lake Village</color>");
+Game.PrintMessage("<color=#ffff00> /tpdv - in Dauper Village</color>");
+Game.PrintMessage("<color=#ffff00> /tprv - in Ragako Village</color>");
+Game.PrintMessage("<color=#ffff00> /tpur - in Utgard Ruins</color>");
+Game.PrintMessage("<color=#ffff00> /tpbv - in Bloody Valley</color>");
+ }
+
+If(String.Contains(VariableString("MC"),"/stt"))
+ {
+Game.PrintMessage("<color=#000000><b>Commands to Spawn Titans:</b></color>");
+
+
+Game.PrintMessage("<color=#ffff00> /alltitan - everywhere</color>");
+Game.PrintMessage("<color=#ffff00> /titanforest - in Forest of the Giant Trees</color>");
+Game.PrintMessage("<color=#ffff00> /beast - Starts Beast Round</color>");
+Game.PrintMessage("<color=#ffff00> /ct - Starts Canyon Titan Round</color>");
+Game.PrintMessage("<color=#ffff00> /titanwest - Starts West Forest Titan Round</color>");
+Game.PrintMessage("<color=#ffff00> /utgard - Starts Utgard Round</color>");
+ }
+
+
+
+If(String.Contains(VariableString("MC"),"/gg"))
+ {
+Game.PrintMessage("<b><color=#00FF00>[Commander]</color>:<i>Good¨Job¨Soldiers!</i></b>");
+ }
+
+If(String.Contains(VariableString("MC"),"/ye"))
+ {
+Game.PrintMessage("<color=#ff0000> All¨Soldiers!¨Eren¨'has¨'been¨'injured¨'and¨must¨'immediately¨'withdraw!</color>");
+ }
+
+If(String.Contains(VariableString("MC"),"/sal"))
+ {
+Game.PrintMessage("<color=#ff0000> All¨Soldiers!¨Salcos¨'has¨'been¨'injured¨'and¨'must¨'immediately¨'withdraw!</color>");
+ }
+
+If(String.Contains(VariableString("MC"),"/erw"))
+ {
+Game.PrintMessage("<color=#ff0000> All¨Soldiers!¨Erwin¨'has¨'been¨'injured¨'and¨'must¨'immediately¨'withdraw!</color>");
+ }
+
+If(String.Contains(VariableString("MC"),"/zip"))
+ {
+Game.PrintMessage("<color=#ff0000> All¨Soldiers!¨Dok¨'has¨'been¨'injured¨'and¨must¨'immediately¨'withdraw!</color>");
+ }
+
+If(String.Contains(VariableString("MC"),"/gf"))
+ {
+Game.PrintMessage("<b><color=#00FF00>[Commander]</color>:<i>**All¨Soldiers!¨Fire <color=#00FF00>Green¨Flare!</color>**</i></b>");
+ }
+
+If(String.Contains(VariableString("MC"),"/rf"))
+ {
+Game.PrintMessage("<b><color=#00FF00>[Commander]</color>:<i>**Titan¨Spotted!¨Fire <color=#FF0000>Red¨Flare!</color>**</i></b>");
+Game.PrintMessage("<b><i>**Wait¨the¨orders!**</i></b>");
+ }
+
+If(String.Contains(VariableString("MC"),"/bf"))
+ {
+Game.PrintMessage("<b><color=#00FF00>[Commander]</color>:<i>**Abnormal¨Spotted!¨Fire <color=#000000>Black¨Flare!</color>**</i></b>");
+Game.PrintMessage("<b><i>**Avoid it!**</i></b>");
+ }
+
+
+If(String.Contains(VariableString("MC"),"/crim"))
+ {
+Game.PrintMessage("<b><color=#00FF00>[Commander]</color>:<i>All¨Soldiers!</i></b>");
+Game.PrintMessage("<b><i>     Avoid¨The¨Titan</i></b>");
+Game.PrintMessage("<b><i><color=#DC143C>     CRIMSOM¨CRUSADERS¨engage!</color></i></b>");
+ }
+
+If(String.Contains(VariableString("MC"),"/ra"))
+ {
+Game.PrintMessage("<b><color=#00FF00>[Commander]</color>:<i>All¨Soldiers!</i></b>");
+Game.PrintMessage("<b><i>     Avoid¨The¨Titan</i></b>");
+Game.PrintMessage("<b><i><color=#8B0000>     RACHE'S¨SQUAD¨engage!</color></i></b>");
+ }
+
+
+If(String.Contains(VariableString("MC"),"/gi"))
+ {
+Game.PrintMessage("<b><color=#00FF00>[Commander]</color>:<i>**All¨Soldiers!!!**</i></b>");
+Game.PrintMessage("<b><i>     **Give¨your¨Heart¨to¨Humanity**</i></b>");
+Game.PrintMessage("<b><i><color=#FF0000>     **ENGAGE!!!**</color></i></b>");
+ }
+
+If(String.Contains(VariableString("MC"),"/won"))
+ {
+Game.PrintMessage("<b><color=#00FF00>[Commander]</color>:<i>All¨Soldiers!¨¨SALUTE!</i></b>");
+Game.PrintMessage("<b><i><color=#FFFF00>     For¨We¨Have¨Successfully</color></i></b>");
+Game.PrintMessage("<b><i><color=#FFFF00><size=15>     Protect¨the¨Wall¨Rose!!!</size></color></i></b>");
+ }
+
+
+If(String.Contains(VariableString("MC"),"/shb"))
+ {
+Game.PrintMessage("<b><color=#00FF00>[Commander]</color>:<i>**The¨Shadow¨Spears¨assists¨<color=#0000FF>Team¨Blue!</color>**</i></b>");
+ }
+
+
+If(String.Contains(VariableString("MC"),"/shy"))
+ {
+Game.PrintMessage("<b><color=#00FF00>[Commander]</color>:<i>**The¨Shadow¨Spears¨assists¨<color=#FFFF00>Team¨Yellow!</color>**</i></b>");
+ }
+
+
+  If(String.Equals(VariableString("MC"), "/tpel"))
+  {
+    Game.PrintMessage("<b><i><color=#00FF00>**Elrimch*District**</color></i></b>");
+    VariablePlayer.Set("player", VariablePlayer("null"));
+    VariableBool.Set("done", false);
+
+    ForeachPlayer("player")
+    {
+      If(Bool.Equals(VariableBool("done"), false))
+      {
+        Player.MovePlayer(VariablePlayer("player"), -68.17716,363.506,-7958.243);
+        VariableBool.Set("done", false);
+      }
+    }
+  }
+
+  If(String.Equals(VariableString("MC"), "/tput"))
+  {
+    Game.PrintMessage("<b><i><color=#00FF00>**Utgard*Ruins**</color></i></b>");
+    VariablePlayer.Set("player", VariablePlayer("null"));
+    VariableBool.Set("done", false);
+
+    ForeachPlayer("player")
+    {
+      If(Bool.Equals(VariableBool("done"), false))
+      {
+        Player.MovePlayer(VariablePlayer("player"), -3274.218,238.8988,-17934.26);
+        VariableBool.Set("done", false);
+      }
+    }
+  }
+
+  If(String.Equals(VariableString("MC"), "/tptr"))
+  {
+    Game.PrintMessage("<b><i><color=#00FF00>**Trost*District**</color></i></b>");
+    VariablePlayer.Set("player", VariablePlayer("null"));
+    VariableBool.Set("done", false);
+
+    ForeachPlayer("player")
+    {
+      If(Bool.Equals(VariableBool("done"), false))
+      {
+        Player.MovePlayer(VariablePlayer("player"), 908.1501,275.3832,-18848.37);
+        VariableBool.Set("done", false);
+      }
+    }
+  }
+
+  If(String.Equals(VariableString("MC"), "/revut"))
+  {
+    Game.PrintMessage("<b><i><color=#00FF00>**Reinforcement¨has¨Arrived¨at¨Utgard¨Ruins**</color></i></b>");
+    VariablePlayer.Set("player", VariablePlayer("null"));
+    VariableBool.Set("done", false);
+
+    ForeachPlayer("player")
+    {
+      If(Bool.Equals(VariableBool("done"), false))
+      {
+        Player.SpawnPlayerAt(VariablePlayer("player"), -3274.218,238.8988,-17934.26);
+        VariableBool.Set("done", false);
+      }
+    }
+  }
+
+  If(String.Equals(VariableString("MC"), "/revhq"))
+  {
+    Game.PrintMessage("<b><i><color=#00FF00>**Reinforcement¨has¨Arrived¨at¨the¨HQ**</color></i></b>");
+    VariablePlayer.Set("player", VariablePlayer("null"));
+    VariableBool.Set("done", false);
+
+    ForeachPlayer("player")
+    {
+      If(Bool.Equals(VariableBool("done"), false))
+      {
+        Player.SpawnPlayerAt(VariablePlayer("player"), 185.3,314.4225,-11560.26);
+        VariableBool.Set("done", false);
+      }
+    }
+  }
+
+  If(String.Equals(VariableString("MC"), "/revtr"))
+  {
+    Game.PrintMessage("<b><i><color=#00FF00>**Reinforcement¨has¨Arrived¨at¨Trost¨District**</color></i></b>");
+    VariablePlayer.Set("player", VariablePlayer("null"));
+    VariableBool.Set("done", false);
+
+    ForeachPlayer("player")
+    {
+      If(Bool.Equals(VariableBool("done"), false))
+      {
+        Player.SpawnPlayerAt(VariablePlayer("player"), 908.1501,275.3832,-18848.37);
+        VariableBool.Set("done", false);
+      }
+    }
+  }
+
+
+  If(String.Equals(VariableString("MC"), "/tpca"))
+  {
+    Game.PrintMessage("<b><i><color=#00FF00>**Castle**</color></i></b>");
+    VariablePlayer.Set("player", VariablePlayer("null"));
+    VariableBool.Set("done", false);
+
+    ForeachPlayer("player")
+    {
+      If(Bool.Equals(VariableBool("done"), false))
+      {
+        Player.MovePlayer(VariablePlayer("player"), 4217.745,237.6088,-15410.93);
+        VariableBool.Set("done", false);
+      }
+    }
+  }
+
+  If(String.Equals(VariableString("MC"), "/revca"))
+  {
+    Game.PrintMessage("<b><i><color=#00FF00>**Reinforcement¨has¨Arrived¨at¨Castle**</color></i></b>");
+    VariablePlayer.Set("player", VariablePlayer("null"));
+    VariableBool.Set("done", false);
+
+    ForeachPlayer("player")
+    {
+      If(Bool.Equals(VariableBool("done"), false))
+      {
+        Player.SpawnPlayerAt(VariablePlayer("player"), 4217.745,237.6088,-15410.93);
+        VariableBool.Set("done", false);
+      }
+    }
+  }
+
+  
+
+  If(String.Equals(VariableString("MC"), "/tptrr"))
+  {
+    Game.PrintMessage("<b><i><color=#00FF00>**Trost District**</color></i></b>");
+    VariablePlayer.Set("player", VariablePlayer("null"));
+    VariableBool.Set("done", false);
+
+    ForeachPlayer("player")
+    {
+      If(Bool.Equals(VariableBool("done"), false))
+      {
+        Player.MovePlayer(VariablePlayer("player"), 0.0, 100.0, -11500.0);
+        VariableBool.Set("done", false);
+      }
+    }
+  }
+
+
+  If(String.Equals(VariableString("MC"), "/tpda"))
+  {
+    Game.PrintMessage("<b><i><color=#00FF00>**Dauper*Village**</color></i></b>");
+    VariablePlayer.Set("player", VariablePlayer("null"));
+    VariableBool.Set("done", false);
+
+    ForeachPlayer("player")
+    {
+      If(Bool.Equals(VariableBool("done"), false))
+      {
+        Player.MovePlayer(VariablePlayer("player"), -4095.505,245.0957,-9791.937);
+        VariableBool.Set("done", false);
+      }
+    }
+  }
+
+  If(String.Equals(VariableString("MC"), "/tpra"))
+  {
+    Game.PrintMessage("<b><i><color=#00FF00>**Ragako*Village**</color></i></b>");
+    VariablePlayer.Set("player", VariablePlayer("null"));
+    VariableBool.Set("done", false);
+
+    ForeachPlayer("player")
+    {
+      If(Bool.Equals(VariableBool("done"), false))
+      {
+        Player.MovePlayer(VariablePlayer("player"), -4498.011,260.75,-14566.37);
+        VariableBool.Set("done", false);
+      }
+    }
+  }
+
+
+  If(String.Equals(VariableString("MC"), "/revdv"))
+  {
+    Game.PrintMessage("<b><i><color=#00FF00>**Reinforcement¨has¨Arrived¨at¨Dauper¨Village**</color></i></b>");
+    VariablePlayer.Set("player", VariablePlayer("null"));
+    VariableBool.Set("done", false);
+
+    ForeachPlayer("player")
+    {
+      If(Bool.Equals(VariableBool("done"), false))
+      {
+        Player.SpawnPlayerAt(VariablePlayer("player"), -4095.505,245.0957,-9791.937);
+        VariableBool.Set("done", false);
+      }
+    }
+  }
+
+  If(String.Equals(VariableString("MC"), "/revrv"))
+  {
+    Game.PrintMessage("<b><i><color=#00FF00>**Reinforcement¨has¨Arrived¨at¨Ragako¨Village**</color></i></b>");
+    VariablePlayer.Set("player", VariablePlayer("null"));
+    VariableBool.Set("done", false);
+
+    ForeachPlayer("player")
+    {
+      If(Bool.Equals(VariableBool("done"), false))
+      {
+        Player.SpawnPlayerAt(VariablePlayer("player"), -4498.011,260.75,-14566.37);
+        VariableBool.Set("done", false);
+      }
+    }
+  }
+
+
+
+
+If(String.Contains(VariableString("MC"),"/titanforest"))
+ {
+Titan.SpawnTitanAt(0, 4.0, 500, 5, RegionRandomX("FOREST_OF_THE_GIANTS"),RegionRandomY("FOREST_OF_THE_GIANTS"),RegionRandomZ("FOREST_OF_THE_GIANTS"));
+Titan.SpawnTitanAt(1, 3.0, 500, 3, RegionRandomX("FOREST_OF_THE_GIANTS"),RegionRandomY("FOREST_OF_THE_GIANTS"),RegionRandomZ("FOREST_OF_THE_GIANTS"));
+Titan.SpawnTitanAt(1, 2.50, 500, 3, RegionRandomX("FOREST_OF_THE_GIANTS"),RegionRandomY("FOREST_OF_THE_GIANTS"),RegionRandomZ("FOREST_OF_THE_GIANTS"));
+Titan.SpawnTitanAt(2, 3.50, 500, 2, RegionRandomX("FOREST_OF_THE_GIANTS"),RegionRandomY("FOREST_OF_THE_GIANTS"),RegionRandomZ("FOREST_OF_THE_GIANTS"));
+Titan.SpawnTitanAt(3, 1.50, 500, 1, RegionRandomX("FOREST_OF_THE_GIANTS"),RegionRandomY("FOREST_OF_THE_GIANTS"),RegionRandomZ("FOREST_OF_THE_GIANTS"));
+Titan.SpawnTitanAt(4, 1.50, 500, 1, RegionRandomX("FOREST_OF_THE_GIANTS"),RegionRandomY("FOREST_OF_THE_GIANTS"),RegionRandomZ("FOREST_OF_THE_GIANTS"));
+ }
+
+If(String.Contains(VariableString("MC"),"/ce"))
+ {
+Titan.SpawnTitanAt(1, 4.0, 1000, 1, RegionRandomX("T_A"), RegionRandomY("T_A"), RegionRandomZ("T_A"));
+Titan.SpawnTitanAt(1, 4.0, 1000, 1, RegionRandomX("T_B"), RegionRandomY("T_B"), RegionRandomZ("T_B"));
+Titan.SpawnTitanAt(1, 4.0, 1000, 1, RegionRandomX("T_C"), RegionRandomY("T_C"), RegionRandomZ("T_C"));
+ }
+
+If(String.Contains(VariableString("MC"),"/es"))
+ {
+Titan.SpawnTitanAt(0, 4.0, 1000, 1, RegionRandomX("T_D"), RegionRandomY("T_D"), RegionRandomZ("T_D"));
+Titan.SpawnTitanAt(1, 4.0, 1000, 1, RegionRandomX("T_E"), RegionRandomY("T_E"), RegionRandomZ("T_E"));
+Titan.SpawnTitanAt(0, 4.0, 1000, 1, RegionRandomX("T_F"), RegionRandomY("T_F"), RegionRandomZ("T_F"));
+Titan.SpawnTitanAt(1, 4.0, 1000, 1, RegionRandomX("T_G"), RegionRandomY("T_G"), RegionRandomZ("T_G"));
+Titan.SpawnTitanAt(0, 4.0, 1000, 1, RegionRandomX("T_H"), RegionRandomY("T_H"), RegionRandomZ("T_H"));
+Titan.SpawnTitanAt(0, 4.0, 1000, 1, RegionRandomX("T_I"), RegionRandomY("T_I"), RegionRandomZ("T_I"));
+Titan.SpawnTitanAt(0, 4.0, 1000, 1, RegionRandomX("T_J"), RegionRandomY("T_J"), RegionRandomZ("T_J"));
+Game.PrintMessage("<color=#FF0000><b><i>Titans¨approach¨by¨the¨East!!!</i></b></color>");
+ }
+
+If(String.Contains(VariableString("MC"),"/COL"))
+ {
+Titan.SpawnTitanAt(0, 21.0, 60000, 1, RegionRandomX("COL"), RegionRandomY("COL"), RegionRandomZ("COL"));
+Game.PrintMessage("<color=#FF0000><b><i>The¨colossal¨Titan¨Appeared!!!</i></b></color>");
+ }
+
+If(String.Contains(VariableString("MC"),"/bea"))
+ {
+Titan.SpawnTitanAt(4, 5.0, 10000, 1, RegionRandomX("BEA"), RegionRandomY("BEA"), RegionRandomZ("BEA"));
+Game.PrintMessage("<color=#000000><b><i>Beast¨Titan¨Appeared!!!</i></b></color>");
+ }
+
+
+If(String.Contains(VariableString("MC"),"/arm"))
+ {
+Titan.SpawnTitanAt(4, 3.6, 30000, 1, RegionRandomX("ARM"), RegionRandomY("ARM"), RegionRandomZ("ARM"));
+Game.PrintMessage("<color=#000000><b><i>Armoured¨Titan¨Appeared!!!</i></b></color>");
+ }
+
+If(String.Contains(VariableString("MC"),"/talking"))
+ {
+Titan.SpawnTitanAt(4, 2.6, 90000, 1, RegionRandomX("TITAN"), RegionRandomY("TITAN"), RegionRandomZ("TITAN"));
+Game.PrintMessage("<color=#000000><b><i>Titan¨Spotted!!!</i></b></color>");
+ }
+
+If(String.Contains(VariableString("MC"),"/titanwest"))
+ {
+Titan.SpawnTitanAt(0, 4.0, 500, 5, RegionRandomX("West_forest_titan"),RegionRandomY("West_forest_titan"),RegionRandomZ("West_forest_titan"));
+Titan.SpawnTitanAt(1, 3.0, 500, 3, RegionRandomX("West_forest_titan"),RegionRandomY("West_forest_titan"),RegionRandomZ("West_forest_titan"));
+Titan.SpawnTitanAt(1, 2.50, 500, 3, RegionRandomX("West_forest_titan"),RegionRandomY("West_forest_titan"),RegionRandomZ("West_forest_titan"));
+Titan.SpawnTitanAt(2, 3.50, 500, 2, RegionRandomX("West_forest_titan"),RegionRandomY("West_forest_titan"),RegionRandomZ("West_forest_titan"));
+Titan.SpawnTitanAt(3, 1.50, 500, 1, RegionRandomX("West_forest_titan"),RegionRandomY("West_forest_titan"),RegionRandomZ("West_forest_titan"));
+Titan.SpawnTitanAt(4, 1.50, 500, 1, RegionRandomX("West_forest_titan"),RegionRandomY("West_forest_titan"),RegionRandomZ("West_forest_titan"));
+ }
+
+If(String.Contains(VariableString("MC"),"/utgard"))
+ {
+Titan.SpawnTitanAt(0, 4.0, 500, 1, RegionRandomX("Utgard_Ruin"),RegionRandomY("Utgard_Ruin"),RegionRandomZ("Utgard_Ruin"));
+Titan.SpawnTitanAt(1, 4.0, 500, 2, RegionRandomX("Utgard_Ruin"),RegionRandomY("Utgard_Ruin"),RegionRandomZ("Utgard_Ruin"));
+Titan.SpawnTitanAt(2, 3.0, 500, 2, RegionRandomX("Utgard_Ruin"),RegionRandomY("Utgard_Ruin"),RegionRandomZ("Utgard_Ruin"));
+Titan.SpawnTitanAt(0, 2.50, 500, 2, RegionRandomX("Utgard_Ruin"),RegionRandomY("Utgard_Ruin"),RegionRandomZ("Utgard_Ruin"));
+ }
+
+
+If(String.Contains(VariableString("MC"),"/alltitan"))
+ {
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan22"),RegionRandomY("titan22"),RegionRandomZ("titan22"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan22"),RegionRandomY("titan22"),RegionRandomZ("titan22"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan23"),RegionRandomY("titan23"),RegionRandomZ("titan23"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan23"),RegionRandomY("titan23"),RegionRandomZ("titan23"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan24"),RegionRandomY("titan24"),RegionRandomZ("titan24"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan24"),RegionRandomY("titan24"),RegionRandomZ("titan24"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan25"),RegionRandomY("titan25"),RegionRandomZ("titan25"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan25"),RegionRandomY("titan25"),RegionRandomZ("titan25"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan26"),RegionRandomY("titan26"),RegionRandomZ("titan26"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan26"),RegionRandomY("titan26"),RegionRandomZ("titan26"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan27"),RegionRandomY("titan27"),RegionRandomZ("titan27"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan27"),RegionRandomY("titan27"),RegionRandomZ("titan27"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan28"),RegionRandomY("titan28"),RegionRandomZ("titan28"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan28"),RegionRandomY("titan28"),RegionRandomZ("titan28"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan29"),RegionRandomY("titan29"),RegionRandomZ("titan29"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan29"),RegionRandomY("titan29"),RegionRandomZ("titan29"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan30"),RegionRandomY("titan30"),RegionRandomZ("titan30"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan30"),RegionRandomY("titan30"),RegionRandomZ("titan30"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan31"),RegionRandomY("titan31"),RegionRandomZ("titan31"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan31"),RegionRandomY("titan31"),RegionRandomZ("titan31"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan32"),RegionRandomY("titan32"),RegionRandomZ("titan32"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan32"),RegionRandomY("titan32"),RegionRandomZ("titan32"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan33"),RegionRandomY("titan33"),RegionRandomZ("titan33"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan33"),RegionRandomY("titan33"),RegionRandomZ("titan33"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan34"),RegionRandomY("titan34"),RegionRandomZ("titan34"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan34"),RegionRandomY("titan34"),RegionRandomZ("titan34"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan35"),RegionRandomY("titan35"),RegionRandomZ("titan35"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan35"),RegionRandomY("titan35"),RegionRandomZ("titan35"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan36"),RegionRandomY("titan36"),RegionRandomZ("titan36"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan36"),RegionRandomY("titan36"),RegionRandomZ("titan36"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan37"),RegionRandomY("titan37"),RegionRandomZ("titan37"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan37"),RegionRandomY("titan37"),RegionRandomZ("titan37"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan38"),RegionRandomY("titan38"),RegionRandomZ("titan38"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan38"),RegionRandomY("titan38"),RegionRandomZ("titan38"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan39"),RegionRandomY("titan39"),RegionRandomZ("titan39"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan39"),RegionRandomY("titan39"),RegionRandomZ("titan39"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan40"),RegionRandomY("titan40"),RegionRandomZ("titan40"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan40"),RegionRandomY("titan40"),RegionRandomZ("titan40"));
+
+Titan.SpawnTitanAt(0, 3.0, 100, 1, RegionRandomX("titan41"),RegionRandomY("titan41"),RegionRandomZ("titan41"));
+Titan.SpawnTitanAt(0, 2.5, 100, 2, RegionRandomX("titan41"),RegionRandomY("titan41"),RegionRandomZ("titan41"));
+ }
+
+
+}
+
+
+
+OnPlayerEnterRegion["SCOUT_R_B"]("myPlayer")
+{
+Game.PrintMessage("<b><color=#00FF00>[Commander]</color>:<i> All Soldiers!</i></b>");
+Game.PrintMessage("<b><i>Scout Shiganshina District!</i></b>");
+Game.PrintMessage("<b><i><color=#FF0000>Find Reiner and Berthold!</color></i></b>");
+Game.PrintMessage("<b><i>Fire <color=#FF0000>Red Flare! </color>if you find anything suspicious</i></b>");
+}
+
+OnPlayerEnterRegion["COLOSSAL"]("myPlayer")
+{
+Game.PrintMessage("<b><i>**<color=#FF0000>Found Berthold!</color> Fire <color=#000000>Black Flare!</color>**</i></b>");
+Game.PrintMessage("<b><i><color=#FF0000>**Berthold Transformed Into Colossal Titan!**</color></i></b>");
+Titan.SpawnTitanAt(0, 18.0, 20000, 1, RegionRandomX("COLOSSAL"),RegionRandomY("COLOSSAL"),RegionRandomZ("COLOSSAL"));
+}
+
+OnPlayerEnterRegion["ARMORED"]("myPlayer")
+{
+Game.PrintMessage("<b><i>**<color=#FF0000>Found Reiner!</color> Fire <color=#000000>Black Flare!</color>**</i></b>");
+Game.PrintMessage("<b><i><color=#FF0000>**Reiner Transformed Into Armored Titan!**</color></i></b>");
+Titan.SpawnTitanAt(4, 4.0, 10000, 1, RegionRandomX("ARMORED"),RegionRandomY("ARMORED"),RegionRandomZ("ARMORED"));
+}
+
+OnPlayerEnterRegion["titan1"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan1"),RegionRandomY("titan1"),RegionRandomZ("titan1"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan1"),RegionRandomY("titan1"),RegionRandomZ("titan1"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan1"),RegionRandomY("titan1"),RegionRandomZ("titan1"));
+}
+
+OnPlayerEnterRegion["titan2"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan2"),RegionRandomY("titan2"),RegionRandomZ("titan2"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan2"),RegionRandomY("titan2"),RegionRandomZ("titan2"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan2"),RegionRandomY("titan2"),RegionRandomZ("titan2"));
+}
+
+OnPlayerEnterRegion["titan3"]("myPlayer")
+{
+Titan.SpawnTitanAt(3, 3.0, 100, 1, RegionRandomX("titan3"),RegionRandomY("titan3"),RegionRandomZ("titan3"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan3"),RegionRandomY("titan3"),RegionRandomZ("titan3"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan3"),RegionRandomY("titan3"),RegionRandomZ("titan3"));
+}
+
+OnPlayerEnterRegion["titan4"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan4"),RegionRandomY("titan4"),RegionRandomZ("titan4"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan4"),RegionRandomY("titan4"),RegionRandomZ("titan4"));
+Titan.SpawnTitanAt(4, 5.0, 100, 1, RegionRandomX("titan4"),RegionRandomY("titan4"),RegionRandomZ("titan4"));
+}
+
+OnPlayerEnterRegion["titan5"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan5"),RegionRandomY("titan5"),RegionRandomZ("titan5"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan5"),RegionRandomY("titan5"),RegionRandomZ("titan5"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan5"),RegionRandomY("titan5"),RegionRandomZ("titan5"));
+}
+
+OnPlayerEnterRegion["titan6"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan6"),RegionRandomY("titan6"),RegionRandomZ("titan6"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan6"),RegionRandomY("titan6"),RegionRandomZ("titan6"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan6"),RegionRandomY("titan6"),RegionRandomZ("titan6"));
+}
+
+OnPlayerEnterRegion["titan7"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan7"),RegionRandomY("titan7"),RegionRandomZ("titan7"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan7"),RegionRandomY("titan7"),RegionRandomZ("titan7"));
+Titan.SpawnTitanAt(4, 5.0, 100, 1, RegionRandomX("titan7"),RegionRandomY("titan7"),RegionRandomZ("titan7"));
+
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan8"),RegionRandomY("titan8"),RegionRandomZ("titan8"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan8"),RegionRandomY("titan8"),RegionRandomZ("titan8"));
+Titan.SpawnTitanAt(4, 5.0, 100, 1, RegionRandomX("titan8"),RegionRandomY("titan8"),RegionRandomZ("titan8"));
+}
+
+OnPlayerEnterRegion["titan8"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan7"),RegionRandomY("titan7"),RegionRandomZ("titan7"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan7"),RegionRandomY("titan7"),RegionRandomZ("titan7"));
+Titan.SpawnTitanAt(4, 5.0, 100, 1, RegionRandomX("titan7"),RegionRandomY("titan7"),RegionRandomZ("titan7"));
+
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan8"),RegionRandomY("titan8"),RegionRandomZ("titan8"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan8"),RegionRandomY("titan8"),RegionRandomZ("titan8"));
+Titan.SpawnTitanAt(4, 5.0, 100, 1, RegionRandomX("titan8"),RegionRandomY("titan8"),RegionRandomZ("titan8"));
+}
+
+OnPlayerEnterRegion["titan9"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan10"),RegionRandomY("titan10"),RegionRandomZ("titan10"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan10"),RegionRandomY("titan10"),RegionRandomZ("titan10"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan10"),RegionRandomY("titan10"),RegionRandomZ("titan10"));
+
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan9"),RegionRandomY("titan9"),RegionRandomZ("titan9"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan9"),RegionRandomY("titan9"),RegionRandomZ("titan9"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan9"),RegionRandomY("titan9"),RegionRandomZ("titan9"));
+}
+
+OnPlayerEnterRegion["titan10"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan10"),RegionRandomY("titan10"),RegionRandomZ("titan10"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan10"),RegionRandomY("titan10"),RegionRandomZ("titan10"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan10"),RegionRandomY("titan10"),RegionRandomZ("titan10"));
+
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan9"),RegionRandomY("titan9"),RegionRandomZ("titan9"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan9"),RegionRandomY("titan9"),RegionRandomZ("titan9"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan9"),RegionRandomY("titan9"),RegionRandomZ("titan9"));
+}
+
+OnPlayerEnterRegion["titan11"]("myPlayer")
+{
+Titan.SpawnTitanAt(3, 2.0, 100, 1, RegionRandomX("titan12"),RegionRandomY("titan12"),RegionRandomZ("titan12"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan12"),RegionRandomY("titan12"),RegionRandomZ("titan12"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan12"),RegionRandomY("titan12"),RegionRandomZ("titan12"));
+
+Titan.SpawnTitanAt(3, 2.0, 100, 1, RegionRandomX("titan11"),RegionRandomY("titan11"),RegionRandomZ("titan11"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan11"),RegionRandomY("titan11"),RegionRandomZ("titan11"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan11"),RegionRandomY("titan11"),RegionRandomZ("titan11"));
+}
+
+OnPlayerEnterRegion["titan12"]("myPlayer")
+{
+Titan.SpawnTitanAt(3, 2.0, 100, 1, RegionRandomX("titan12"),RegionRandomY("titan12"),RegionRandomZ("titan12"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan12"),RegionRandomY("titan12"),RegionRandomZ("titan12"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan12"),RegionRandomY("titan12"),RegionRandomZ("titan12"));
+
+Titan.SpawnTitanAt(3, 2.0, 100, 1, RegionRandomX("titan11"),RegionRandomY("titan11"),RegionRandomZ("titan11"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan11"),RegionRandomY("titan11"),RegionRandomZ("titan11"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan11"),RegionRandomY("titan11"),RegionRandomZ("titan11"));
+}
+
+OnPlayerEnterRegion["titan13"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan13"),RegionRandomY("titan13"),RegionRandomZ("titan13"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan13"),RegionRandomY("titan13"),RegionRandomZ("titan13"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan13"),RegionRandomY("titan13"),RegionRandomZ("titan13"));
+}
+
+OnPlayerEnterRegion["titan14"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan14"),RegionRandomY("titan14"),RegionRandomZ("titan14"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan14"),RegionRandomY("titan14"),RegionRandomZ("titan14"));
+Titan.SpawnTitanAt(4, 5.0, 100, 1, RegionRandomX("titan14"),RegionRandomY("titan14"),RegionRandomZ("titan14"));
+}
+
+OnPlayerEnterRegion["titan15"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan15"),RegionRandomY("titan15"),RegionRandomZ("titan15"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan15"),RegionRandomY("titan15"),RegionRandomZ("titan15"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan15"),RegionRandomY("titan15"),RegionRandomZ("titan15"));
+}
+
+OnPlayerEnterRegion["titan16"]("myPlayer")
+{
+Titan.SpawnTitanAt(3, 2.0, 100, 1, RegionRandomX("titan16"),RegionRandomY("titan16"),RegionRandomZ("titan16"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan16"),RegionRandomY("titan16"),RegionRandomZ("titan16"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan16"),RegionRandomY("titan16"),RegionRandomZ("titan16"));
+}
+
+
+OnPlayerEnterRegion["titan17"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan17"),RegionRandomY("titan17"),RegionRandomZ("titan17"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan17"),RegionRandomY("titan17"),RegionRandomZ("titan17"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan17"),RegionRandomY("titan17"),RegionRandomZ("titan17"));
+}
+
+OnPlayerEnterRegion["titan18"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan18"),RegionRandomY("titan18"),RegionRandomZ("titan18"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan18"),RegionRandomY("titan18"),RegionRandomZ("titan18"));
+Titan.SpawnTitanAt(4, 5.0, 100, 1, RegionRandomX("titan18"),RegionRandomY("titan18"),RegionRandomZ("titan18"));
+}
+
+OnPlayerEnterRegion["titan19"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan19"),RegionRandomY("titan19"),RegionRandomZ("titan19"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan19"),RegionRandomY("titan19"),RegionRandomZ("titan19"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan19"),RegionRandomY("titan19"),RegionRandomZ("titan19"));
+}
+
+OnPlayerEnterRegion["titan20"]("myPlayer")
+{
+Titan.SpawnTitanAt(3, 2.0, 100, 1, RegionRandomX("titan20"),RegionRandomY("titan20"),RegionRandomZ("titan20"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan20"),RegionRandomY("titan20"),RegionRandomZ("titan20"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan20"),RegionRandomY("titan20"),RegionRandomZ("titan20"));
+}
+
+OnPlayerEnterRegion["titan21"]("myPlayer")
+{
+Titan.SpawnTitanAt(3, 3.0, 100, 1, RegionRandomX("titan21"),RegionRandomY("titan21"),RegionRandomZ("titan21"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan21"),RegionRandomY("titan21"),RegionRandomZ("titan21"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan21"),RegionRandomY("titan21"),RegionRandomZ("titan21"));
+}
+
+
+OnPlayerEnterRegion["canyon_jumpers_trigger1"]("myPlayer")
+{
+Titan.SpawnTitanAt(2, 3.0, 100, 5, RegionRandomX("canyon_jumpers"),RegionRandomY("canyon_jumpers"),RegionRandomZ("canyon_jumpers"));
+Titan.SpawnTitanAt(2, 4.00, 100, 5, RegionRandomX("canyon_jumpers"),RegionRandomY("canyon_jumpers"),RegionRandomZ("canyon_jumpers"));
+Titan.SpawnTitanAt(2, 4.50, 100, 5, RegionRandomX("canyon_jumpers"),RegionRandomY("canyon_jumpers"),RegionRandomZ("canyon_jumpers"));
+}
+
+OnPlayerEnterRegion["canyon_jumpers_trigger2"]("myPlayer")
+{
+Titan.SpawnTitanAt(2, 3.0, 100, 5, RegionRandomX("canyon_jumpers"),RegionRandomY("canyon_jumpers"),RegionRandomZ("canyon_jumpers"));
+Titan.SpawnTitanAt(2, 4.00, 100, 5, RegionRandomX("canyon_jumpers"),RegionRandomY("canyon_jumpers"),RegionRandomZ("canyon_jumpers"));
+Titan.SpawnTitanAt(2, 4.50, 100, 5, RegionRandomX("canyon_jumpers"),RegionRandomY("canyon_jumpers"),RegionRandomZ("canyon_jumpers"));
+}
+
+
+OnPlayerEnterRegion["Snow_cave_trigger"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 3.0, 100, 3, RegionRandomX("Snow_cave"),RegionRandomY("Snow_cave"),RegionRandomZ("Snow_cave"));
+Titan.SpawnTitanAt(2, 3.50, 100, 3, RegionRandomX("Snow_cave"),RegionRandomY("Snow_cave"),RegionRandomZ("Snow_cave"));
+Titan.SpawnTitanAt(2, 2.50, 100, 3, RegionRandomX("Snow_cave"),RegionRandomY("Snow_cave"),RegionRandomZ("Snow_cave"));
+}
+
+
+OnPlayerEnterRegion["titan22"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan22"),RegionRandomY("titan22"),RegionRandomZ("titan22"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan22"),RegionRandomY("titan22"),RegionRandomZ("titan22"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan22"),RegionRandomY("titan22"),RegionRandomZ("titan22"));
+}
+
+OnPlayerEnterRegion["titan23"]("myPlayer")
+{
+Titan.SpawnTitanAt(3, 3.0, 100, 1, RegionRandomX("titan23"),RegionRandomY("titan23"),RegionRandomZ("titan23"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan23"),RegionRandomY("titan23"),RegionRandomZ("titan23"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan23"),RegionRandomY("titan23"),RegionRandomZ("titan23"));
+}
+
+OnPlayerEnterRegion["titan24"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan24"),RegionRandomY("titan24"),RegionRandomZ("titan24"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan24"),RegionRandomY("titan24"),RegionRandomZ("titan24"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan24"),RegionRandomY("titan24"),RegionRandomZ("titan24"));
+}
+
+OnPlayerEnterRegion["titan25"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan25"),RegionRandomY("titan25"),RegionRandomZ("titan25"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan25"),RegionRandomY("titan25"),RegionRandomZ("titan25"));
+Titan.SpawnTitanAt(4, 5.0, 100, 1, RegionRandomX("titan25"),RegionRandomY("titan25"),RegionRandomZ("titan25"));
+}
+
+OnPlayerEnterRegion["titan26"]("myPlayer")
+{
+Titan.SpawnTitanAt(3, 2.0, 100, 1, RegionRandomX("titan26"),RegionRandomY("titan26"),RegionRandomZ("titan26"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan26"),RegionRandomY("titan26"),RegionRandomZ("titan26"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan26"),RegionRandomY("titan26"),RegionRandomZ("titan26"));
+}
+
+OnPlayerEnterRegion["titan27"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan27"),RegionRandomY("titan27"),RegionRandomZ("titan27"));
+Titan.SpawnTitanAt(4, 4.50, 100, 1, RegionRandomX("titan27"),RegionRandomY("titan27"),RegionRandomZ("titan27"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan27"),RegionRandomY("titan27"),RegionRandomZ("titan27"));
+}
+
+OnPlayerEnterRegion["titan28"]("myPlayer")
+{
+Titan.SpawnTitanAt(3, 2.50, 100, 1, RegionRandomX("titan28"),RegionRandomY("titan28"),RegionRandomZ("titan28"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan28"),RegionRandomY("titan28"),RegionRandomZ("titan28"));
+Titan.SpawnTitanAt(2, 5.0, 100, 1, RegionRandomX("titan28"),RegionRandomY("titan28"),RegionRandomZ("titan28"));
+}
+
+OnPlayerEnterRegion["titan29"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan29"),RegionRandomY("titan29"),RegionRandomZ("titan29"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan29"),RegionRandomY("titan29"),RegionRandomZ("titan29"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan29"),RegionRandomY("titan29"),RegionRandomZ("titan29"));
+}
+
+OnPlayerEnterRegion["titan30"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan30"),RegionRandomY("titan30"),RegionRandomZ("titan30"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan30"),RegionRandomY("titan30"),RegionRandomZ("titan30"));
+Titan.SpawnTitanAt(4, 5.0, 100, 1, RegionRandomX("titan30"),RegionRandomY("titan30"),RegionRandomZ("titan30"));
+}
+
+OnPlayerEnterRegion["titan31"]("myPlayer")
+{
+Titan.SpawnTitanAt(3, 2.0, 100, 1, RegionRandomX("titan31"),RegionRandomY("titan31"),RegionRandomZ("titan31"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan31"),RegionRandomY("titan31"),RegionRandomZ("titan31"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan31"),RegionRandomY("titan31"),RegionRandomZ("titan31"));
+}
+
+OnPlayerEnterRegion["titan32"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan32"),RegionRandomY("titan32"),RegionRandomZ("titan32"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan32"),RegionRandomY("titan32"),RegionRandomZ("titan32"));
+Titan.SpawnTitanAt(4, 4.0, 100, 1, RegionRandomX("titan32"),RegionRandomY("titan32"),RegionRandomZ("titan32"));
+}
+
+OnPlayerEnterRegion["titan33"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 2, RegionRandomX("titan33"),RegionRandomY("titan33"),RegionRandomZ("titan33"));
+Titan.SpawnTitanAt(1, 4.50, 100, 2, RegionRandomX("titan33"),RegionRandomY("titan33"),RegionRandomZ("titan33"));
+Titan.SpawnTitanAt(1, 5.0, 100, 2, RegionRandomX("titan33"),RegionRandomY("titan33"),RegionRandomZ("titan33"));
+}
+
+OnPlayerEnterRegion["titan34"]("myPlayer")
+{
+Titan.SpawnTitanAt(3, 2.0, 100, 1, RegionRandomX("titan34"),RegionRandomY("titan34"),RegionRandomZ("titan34"));
+Titan.SpawnTitanAt(1, 4.50, 100, 3, RegionRandomX("titan34"),RegionRandomY("titan34"),RegionRandomZ("titan34"));
+Titan.SpawnTitanAt(1, 5.0, 100, 2, RegionRandomX("titan34"),RegionRandomY("titan34"),RegionRandomZ("titan34"));
+}
+
+OnPlayerEnterRegion["titan35"]("myPlayer")
+{
+Titan.SpawnTitanAt(3, 3.0, 100, 1, RegionRandomX("titan35"),RegionRandomY("titan35"),RegionRandomZ("titan35"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan35"),RegionRandomY("titan35"),RegionRandomZ("titan35"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan35"),RegionRandomY("titan35"),RegionRandomZ("titan35"));
+}
+
+OnPlayerEnterRegion["titan36"]("myPlayer")
+{
+Titan.SpawnTitanAt(4, 4.0, 100, 2, RegionRandomX("titan36"),RegionRandomY("titan36"),RegionRandomZ("titan36"));
+Titan.SpawnTitanAt(1, 4.50, 100, 4, RegionRandomX("titan36"),RegionRandomY("titan36"),RegionRandomZ("titan36"));
+Titan.SpawnTitanAt(3, 2.0, 100, 2, RegionRandomX("titan36"),RegionRandomY("titan36"),RegionRandomZ("titan36"));
+}
+
+OnPlayerEnterRegion["titan37"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan37"),RegionRandomY("titan37"),RegionRandomZ("titan37"));
+Titan.SpawnTitanAt(1, 4.50, 100, 2, RegionRandomX("titan37"),RegionRandomY("titan37"),RegionRandomZ("titan37"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan37"),RegionRandomY("titan37"),RegionRandomZ("titan37"));
+}
+
+OnPlayerEnterRegion["titan38"]("myPlayer")
+{
+Titan.SpawnTitanAt(4, 4.0, 100, 1, RegionRandomX("titan38"),RegionRandomY("titan38"),RegionRandomZ("titan38"));
+Titan.SpawnTitanAt(1, 4.50, 100, 1, RegionRandomX("titan38"),RegionRandomY("titan38"),RegionRandomZ("titan38"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan38"),RegionRandomY("titan38"),RegionRandomZ("titan38"));
+}
+
+OnPlayerEnterRegion["titan39"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan39"),RegionRandomY("titan39"),RegionRandomZ("titan39"));
+Titan.SpawnTitanAt(1, 4.50, 100, 2, RegionRandomX("titan39"),RegionRandomY("titan39"),RegionRandomZ("titan39"));
+Titan.SpawnTitanAt(2, 5.0, 100, 2, RegionRandomX("titan39"),RegionRandomY("titan39"),RegionRandomZ("titan39"));
+}
+
+OnPlayerEnterRegion["titan40"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 4.0, 100, 1, RegionRandomX("titan40"),RegionRandomY("titan40"),RegionRandomZ("titan40"));
+Titan.SpawnTitanAt(4, 4.50, 100, 2, RegionRandomX("titan40"),RegionRandomY("titan40"),RegionRandomZ("titan40"));
+Titan.SpawnTitanAt(1, 5.0, 100, 1, RegionRandomX("titan40"),RegionRandomY("titan40"),RegionRandomZ("titan40"));
+}
+
+OnPlayerEnterRegion["titan41"]("myPlayer")
+{
+Titan.SpawnTitanAt(3, 3.0, 100, 2, RegionRandomX("titan41"),RegionRandomY("titan41"),RegionRandomZ("titan41"));
+Titan.SpawnTitanAt(1, 4.50, 100, 2, RegionRandomX("titan41"),RegionRandomY("titan41"),RegionRandomZ("titan41"));
+Titan.SpawnTitanAt(1, 5.0, 100, 2, RegionRandomX("titan41"),RegionRandomY("titan41"),RegionRandomZ("titan41"));
+}
+
+
+OnPlayerEnterRegion["Bloody_valley_trigger"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 1.0, 100, 2, RegionRandomX("Bloody_valley1"),RegionRandomY("Bloody_valley1"),RegionRandomZ("Bloody_valley1"));
+Titan.SpawnTitanAt(2, 1.0, 100, 2, RegionRandomX("Bloody_valley2"),RegionRandomY("Bloody_valley2"),RegionRandomZ("Bloody_valley2"));
+Titan.SpawnTitanAt(1, 1.0, 100, 3, RegionRandomX("Bloody_valley3"),RegionRandomY("Bloody_valley3"),RegionRandomZ("Bloody_valley3"));
+Titan.SpawnTitanAt(4, 1.0, 100, 2, RegionRandomX("Bloody_valley4"),RegionRandomY("Bloody_valley4"),RegionRandomZ("Bloody_valley4"));
+}
+
+OnPlayerEnterRegion["Lake_village_trigger"]("myPlayer")
+{
+Titan.SpawnTitanAt(1, 1.0, 100, 2, RegionRandomX("Lake_village1"),RegionRandomY("Lake_village1"),RegionRandomZ("Lake_village1"));
+Titan.SpawnTitanAt(2, 1.0, 100, 2, RegionRandomX("Lake_village2"),RegionRandomY("Lake_village2"),RegionRandomZ("Lake_village2"));
+Titan.SpawnTitanAt(1, 1.0, 100, 3, RegionRandomX("Lake_village3"),RegionRandomY("Lake_village3"),RegionRandomZ("Lake_village3"));
+Titan.SpawnTitanAt(4, 1.0, 100, 2, RegionRandomX("Lake_village4"),RegionRandomY("Lake_village4"),RegionRandomZ("Lake_village4"));
+}
+
+OnPlayerEnterRegion["Dauper_Round_Trigger"]("myPlayer")
+{
+Game.PrintMessage("<b><color=#00FF00>[Commander]</color>:<i>Free the Villagers From Titans!</i></b>");
+
+Titan.SpawnTitanAt(1, 1.00, 100, 1, RegionRandomX("Dauper_1"),RegionRandomY("Dauper_1"),RegionRandomZ("Dauper_1"));
+Titan.SpawnTitanAt(2, 1.00, 100, 1, RegionRandomX("Dauper_2"),RegionRandomY("Dauper_2"),RegionRandomZ("Dauper_2"));
+Titan.SpawnTitanAt(2, 1.00, 100, 1, RegionRandomX("Dauper_3"),RegionRandomY("Dauper_3"),RegionRandomZ("Dauper_3"));
+Titan.SpawnTitanAt(1, 1.00, 100, 1, RegionRandomX("Dauper_3"),RegionRandomY("Dauper_3"),RegionRandomZ("Dauper_3"));
+Titan.SpawnTitanAt(2, 1.00, 100, 1, RegionRandomX("Dauper_4"),RegionRandomY("Dauper_4"),RegionRandomZ("Dauper_4"));
+Titan.SpawnTitanAt(1, 1.00, 100, 1, RegionRandomX("Dauper_5"),RegionRandomY("Dauper_5"),RegionRandomZ("Dauper_5"));
+Titan.SpawnTitanAt(3, 1.00, 100, 1, RegionRandomX("Dauper_6"),RegionRandomY("Dauper_6"),RegionRandomZ("Dauper_6"));
+
+Titan.SpawnTitanAt(4, 1.00, 500, 1, RegionRandomX("Dauper_7"),RegionRandomY("Dauper_7"),RegionRandomZ("Dauper_7"))
+}
+
+OnPlayerEnterRegion["Ragako_round_trigger"]("myPlayer")
+{
+Game.PrintMessage("<b><color=#00FF00>[Commander]</color>:<i>Free the Villagers From Titans!</i></b>");
+
+Titan.SpawnTitanAt(1, 4.0, 500, 4, RegionRandomX("Ragako_village"),RegionRandomY("Ragako_village"),RegionRandomZ("Ragako_village"));
+Titan.SpawnTitanAt(4, 4.50, 500, 2, RegionRandomX("Ragako_village"),RegionRandomY("Ragako_village"),RegionRandomZ("Ragako_village"));
+}

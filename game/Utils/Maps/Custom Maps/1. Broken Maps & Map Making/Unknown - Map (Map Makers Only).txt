@@ -1,0 +1,6 @@
+map,disablebounds;
+misc,region,Clock1,10,10,10,0,110,100,0,0,0,1;
+
+misc,region,Clock2,10,10,10,0,100,100,0,0,0,1;
+
+custom,cuboid,grass,2000,10,2000,0,1,1,1,1.0,1.0,0,-32.05215,0,0,0,0,0;

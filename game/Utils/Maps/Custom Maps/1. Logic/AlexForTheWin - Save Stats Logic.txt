@@ -1,0 +1,173 @@
+OnRoundStart()
+{
+  VariablePlayer.Set("player", VariablePlayer("null"));
+  
+  ForeachPlayer("player")
+  {
+    VariableString.Set("data", VariablePlayer("player").GetCustomString());
+    
+    If(String.NotEquals(VariableString("data"), VariableString("null")))
+    {
+      
+    }
+  }
+}
+
+OnChatInput("input")
+{
+  If(String.Equals(VariableString("input"), "SAVE"))
+  {
+    VariableString.Set("PlayerLog", "");
+    
+    ForeachPlayer("player")
+    {
+      VariableString.Set("Name", VariablePlayer("player").GetName());
+
+      If(String.NotContains(VariableString("PlayerLog"), VariableString("Name")))
+      {
+        VariableString.Concat("PlayerLog", VariableString("PlayerLog"), "，", VariableString("Name"), "，", VariablePlayer("player").GetKills().ConvertToString(), "，", VariablePlayer("player").GetDeaths().ConvertToString(), "，", VariablePlayer("player").GetMaxDmg().ConvertToString(), "，", VariablePlayer("player").GetTotalDmg().ConvertToString());
+      }
+    }
+    
+    ForeachPlayer("player")
+    {
+      VariableString.Concat("Stats", VariablePlayer("player").GetKills().ConvertToString(), "，", VariablePlayer("player").GetDeaths().ConvertToString(), "，", VariablePlayer("player").GetMaxDmg().ConvertToString(), "，", VariablePlayer("player").GetTotalDmg().ConvertToString(), VariableString("PlayerLog"));
+      
+      Player.SetCustomString(VariablePlayer("player"), VariableString("Stats"));
+      Game.PrintMessage(VariableString("Stats"));
+    }
+  }
+  
+  If(String.Equals(VariableString("input"), "LOAD"))
+  {
+    VariableString.Set("LoadedPlayers", "");
+
+    ForeachPlayer("player")
+    {
+      VariableString.Set("data", VariablePlayer("player").GetCustomString());
+      
+      If(String.NotEquals(VariableString("data"), VariableString("null")))
+      {
+        VariableString.Set("Word", "");
+        VariableString.Set("GuessWord", "/restart");
+        VariableInt.Set("CurrentChar", -1);
+        VariableInt.Set("VariableCount", 0);
+        
+        VariableString.Set("0", "");
+        VariableString.Set("1", "");
+        VariableString.Set("2", "");
+        VariableString.Set("3", "");
+
+        While(Int.NotEquals(VariableInt("VariableCount"), 4))
+        {
+          While(String.NotStartsWith(VariableString("data"), VariableString("GuessWord")))
+          {
+            VariableInt.Add("CurrentChar", 1);
+            VariableString.Set("GuessWord", VariableString("Word"));
+            
+            If(Int.LessThan(VariableInt("CurrentChar"), 11))
+            {
+              VariableString.Append("GuessWord", VariableInt("CurrentChar").ConvertToString());
+            }
+            Else
+            {
+              If(Int.Equals(VariableInt("CurrentChar"), 11))
+              {
+                VariableString.Append("GuessWord", "，");
+              }
+            }
+          }
+          
+          If(Int.LessThan(VariableInt("CurrentChar"), 11))
+          {
+            VariableString.Append(VariableInt("VariableCount").ConvertToString(), VariableInt("CurrentChar").ConvertToString());
+          } 
+          Else
+          {
+            VariableInt.Add("VariableCount", 1);
+          }
+          
+          VariableInt.Set("CurrentChar", -1);
+          VariableString.Set("Word", VariableString("GuessWord"));
+          VariableString.Set("GuessWord", "/restart");
+        }
+        
+        Player.SetKills(VariablePlayer("player"), VariableString("0").ConvertToString());
+        Player.SetDeaths(VariablePlayer("player"), VariableString("1").ConvertToString());
+        Player.SetMaxDmg(VariablePlayer("player"), VariableString("2").ConvertToString());
+        Player.SetTotalDmg(VariablePlayer("player"), VariableString("3").ConvertToString());
+
+        VariableString.Concat("LoadedPlayers", "，", VariablePlayer("player").GetName(), "，");
+      }
+      Else
+      {
+        VariableString.Concat("Name", "，", VariablePlayer("player").GetName(), "，");
+
+        ForeachPlayer("player")
+        {
+          If(String.NotEquals(VariablePlayer("player").GetCustomString(), VariableString("null")))
+          {
+            VariableString.Set("data", VariablePlayer("player").GetCustomString());
+          }
+        }
+
+        If(String.Contains(VariableString("data"), VariableString("Name")))
+        {
+          If(String.NotContains(VariableString("LoadedPlayers"), VariableString("Name")))
+          {        
+            VariableString.Set("Word", VariableString("Name"));
+            VariableString.Set("GuessWord", "/restart");
+            VariableInt.Set("CurrentChar", -1);
+            VariableInt.Set("VariableCount", 0);
+            
+            VariableString.Set("0", "");
+            VariableString.Set("1", "");
+            VariableString.Set("2", "");
+            VariableString.Set("3", "");
+
+            While(Int.NotEquals(VariableInt("VariableCount"), 4))
+            {
+              While(String.NotContains(VariableString("data"), VariableString("GuessWord")))
+              {
+                VariableInt.Add("CurrentChar", 1);
+                VariableString.Set("GuessWord", VariableString("Word"));
+                
+                If(Int.LessThan(VariableInt("CurrentChar"), 11))
+                {
+                  VariableString.Append("GuessWord", VariableInt("CurrentChar").ConvertToString());
+                }
+                Else
+                {
+                  If(Int.Equals(VariableInt("CurrentChar"), 11))
+                  {
+                    VariableString.Append("GuessWord", "，");
+                  }
+                }
+              }
+              
+              If(Int.LessThan(VariableInt("CurrentChar"), 11))
+              {
+                VariableString.Append(VariableInt("VariableCount").ConvertToString(), VariableInt("CurrentChar").ConvertToString());
+              } 
+              Else
+              {
+                VariableInt.Add("VariableCount", 1);
+              }
+              
+              VariableInt.Set("CurrentChar", -1);
+              VariableString.Set("Word", VariableString("GuessWord"));
+              VariableString.Set("GuessWord", "/restart");
+            }
+            
+            Player.SetKills(VariablePlayer("player"), VariableString("0").ConvertToString());
+            Player.SetDeaths(VariablePlayer("player"), VariableString("1").ConvertToString());
+            Player.SetMaxDmg(VariablePlayer("player"), VariableString("2").ConvertToString());
+            Player.SetTotalDmg(VariablePlayer("player"), VariableString("3").ConvertToString());
+
+            VariableString.Append("LoadedPlayers", VariableString("Name"));
+          }
+        }
+      }
+    }
+  }
+}

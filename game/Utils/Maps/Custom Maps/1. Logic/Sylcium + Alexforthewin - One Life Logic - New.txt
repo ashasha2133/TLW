@@ -1,0 +1,388 @@
+OnRoundStart()
+{
+  VariableInt.Set("numberOfLives", 1);
+  VariableBool.Set("teleportLosersAway", true);
+  VariableInt.Set("doNotAutoRestartAfterXSeconds", 999999);
+  VariableInt.Set("afkTimeout", 15);
+
+  VariableString.Set("restartMessage", "Restart<color=#000000><size=1>____</size></color>in<color=#000000><size=1>____</size></color>5<color=#000000><size=1>____</size></color>seconds");
+  VariableInt.Set("restartDelay", 5);
+  VariableBool.Set("printSettingsWhenChanged", true);
+
+  \\\\\\\\\\\\\\\\\\\\\\\\\Setting and Custom Command Info Down Here/////////////////////////
+  --------------------------------------------------------------------------------------------
+  ------------------------------------------Settings------------------------------------------
+  --------------------------------------------------------------------------------------------
+  numberOfLives--------Self explanatory.
+  teleportLosersAway--------If true, teleports players far away when they lose. If false, players can continue to play until everone loses.
+  doNotAutoRestartAfterXSeconds--------Turns off auto restart after the set number of seconds.
+  afkTimeout--------How many seconds before someone is considered afk.
+
+  restartMessage--------Self explanatory. Use either use underscores or <color=#000000><size=1>____</size></color> for spaces.
+  restartDelay--------Self explanatory. Will always take atleast 1 second.
+  printSettingsWhenChanged--------Prints the settings to chat when they change (next restart).
+  --------------------------------------------------------------------------------------------
+  ------------------------------------------Commands------------------------------------------
+  --------------------------------------------------------------------------------------------
+  /r--------Restarts the game.
+  /clear--------Clears the chat.
+  /settings--------Prints the current settings.
+  /report--------Prints the number of lives and names of the people who are still racing.
+  --------------------------------------------------------------------------------------------
+  --------------------------------------------------------------------------------------------
+  --------------------------------------------------------------------------------------------
+  Known issues
+    Losers won't be teleported away after doNotAutoRestartAfterXSeconds
+
+  ToDo
+    fix people being able to rejoin after doNotAutoRestartAfterXSeconds
+
+
+  VariableBool.Set("isRestarting", false);
+  VariablePlayer.Set("player", VariablePlayer("player"));
+  VariableBool.Set("isOnUpdateBroken", false);
+  VariableInt.Set("timer", -19);
+
+  If (String.Equals(VariableString("firstLoad"), "true"))
+  {
+    If (Bool.Equals(VariableBool("printSettingsWhenChanged"), true))
+    {
+      VariableString.Set("chatMessage", "Number<color=#000000><size=1>____</size></color>of<color=#000000><size=1>____</size></color>lives<color=#000000><size=1>____</size></color>=<color=#000000><size=1>____</size></color>");
+      VariableString.Append("chatMessage", VariableInt("numberOfLives").ConvertToString());
+
+      Game.PrintMessage(VariableString("chatMessage"));
+
+      VariableString.Set("chatMessage", "Teleport<color=#000000><size=1>____</size></color>losers<color=#000000><size=1>____</size></color>away<color=#000000><size=1>____</size></color>=<color=#000000><size=1>____</size></color>");
+      VariableString.Append("chatMessage", VariableBool("teleportLosersAway").ConvertToString());
+
+      Game.PrintMessage(VariableString("chatMessage"));
+
+      VariableString.Set("chatMessage", "Auto<color=#000000><size=1>____</size></color>restart<color=#000000><size=1>____</size></color>disabled<color=#000000><size=1>____</size></color>after<color=#000000><size=1>____</size></color>");
+      VariableString.Append("chatMessage", VariableInt("doNotAutoRestartAfterXSeconds").ConvertToString());
+      VariableString.Append("chatMessage", "<color=#000000><size=1>____</size></color>seconds");
+
+      Game.PrintMessage(VariableString("chatMessage"));
+
+      VariableString.Set("chatMessage", "AFK<color=#000000><size=1>____</size></color>timeout<color=#000000><size=1>____</size></color>after<color=#000000><size=1>____</size></color>");
+      VariableString.Append("chatMessage", VariableInt("afkTimeout").ConvertToString());
+      VariableString.Append("chatMessage", "<color=#000000><size=1>____</size></color>seconds");
+
+      Game.PrintMessage(VariableString("chatMessage"));
+    }
+  }
+
+}
+
+OnFirstLoad()
+{
+  VariableString.Set("firstLoad", "true");
+}
+
+
+
+OnChatInput("cmd")
+{
+  If (String.Equals(VariableString("cmd"),"/clear"))
+  {
+    Game.PrintMessage("space<size=1>111111</size>space")
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+    Game.PrintMessage("");
+  }
+
+  If (String.Equals(VariableString("cmd"),"/r"))
+  {
+    Game.Restart(true);
+  }
+
+  If (String.Equals(VariableString("cmd"),"/settings"))
+  {
+    VariableString.Set("chatMessage", "Number<color=#000000><size=1>____</size></color>of<color=#000000><size=1>____</size></color>lives<color=#000000><size=1>____</size></color>=<color=#000000><size=1>____</size></color>");
+    VariableString.Append("chatMessage", VariableInt("numberOfLives").ConvertToString());
+
+    Game.PrintMessage(VariableString("chatMessage"));
+
+    VariableString.Set("chatMessage", "Teleport<color=#000000><size=1>____</size></color>losers<color=#000000><size=1>____</size></color>away<color=#000000><size=1>____</size></color>=<color=#000000><size=1>____</size></color>");
+    VariableString.Append("chatMessage", VariableBool("teleportLosersAway").ConvertToString());
+
+    Game.PrintMessage(VariableString("chatMessage"));
+
+    VariableString.Set("chatMessage", "Auto<color=#000000><size=1>____</size></color>restart<color=#000000><size=1>____</size></color>disabled<color=#000000><size=1>____</size></color>after<color=#000000><size=1>____</size></color>");
+    VariableString.Append("chatMessage", VariableInt("doNotAutoRestartAfterXSeconds").ConvertToString());
+    VariableString.Append("chatMessage", "<color=#000000><size=1>____</size></color>seconds");
+
+    Game.PrintMessage(VariableString("chatMessage"));
+
+    VariableString.Set("chatMessage", "AFK<color=#000000><size=1>____</size></color>timeout<color=#000000><size=1>____</size></color>after<color=#000000><size=1>____</size></color>");
+    VariableString.Append("chatMessage", VariableInt("afkTimeout").ConvertToString());
+    VariableString.Append("chatMessage", "<color=#000000><size=1>____</size></color>seconds");
+
+    Game.PrintMessage(VariableString("chatMessage"));
+  }
+
+
+  If (String.Equals(VariableString("cmd"),"/report"))
+  {
+    ForeachPlayer("player")
+    {
+      VariableString.Set("skipPlayerString", VariableString("currentPlayer"));
+      VariableString.Append("skipPlayerString", "SkipPlayer");
+
+      If (String.Equals(VariableString(VariableString("skipPlayerString")), "true"))
+      {
+
+      }
+      Else
+      {
+        VariableString.Set("initializedVariables", VariableString("currentPlayer"));
+        VariableString.Append("initializedVariables", "initializedVariables");
+
+        If (String.Equals(VariableString(VariableString("initializedVariables")), VariableString("nullString")))
+        {
+
+        }
+        Else
+        {
+          VariableString.Set("numberOfDeathsString", VariablePlayer("player").GetName());
+          VariableString.Append("numberOfDeathsString", "NumberOfDeaths");
+
+          If (Int.LessThan(VariableInt(VariableString("numberOfDeathsString")), VariableInt("numberOfLives")))
+          {
+            VariableInt.Set("livesRemaining", VariableInt("numberOfLives"));
+            VariableInt.Subtract("livesRemaining", VariableInt(VariableString("numberOfDeathsString")))
+            VariableString.Set("chatMessage", VariableInt("livesRemaining").ConvertToString());
+            If (Int.Equals(VariableInt("livesRemaining"), 1))
+            {
+              VariableString.Append("chatMessage", "<color=#000000><size=1>____</size></color>life<color=#000000><size=1>____</size></color>remaining:<color=#000000><size=1>____</size></color>");
+            }
+            Else
+            {
+              VariableString.Append("chatMessage", "<color=#000000><size=1>____</size></color>lives<color=#000000><size=1>____</size></color>remaining:<color=#000000><size=1>____</size></color>");
+            }
+            VariableString.Append("chatMessage", VariablePlayer("player").GetName());
+
+            Game.PrintMessage(VariableString("chatMessage"));
+            
+          }
+        }
+      }
+    }
+  }
+}
+
+OnUpdate()
+{
+  //check for a break;
+  If (Bool.Equals(VariableBool("isOnUpdateBroken"), true))
+  {
+    //it was broken by the last current player
+    Game.PrintMessage("Is_Someone_Not_Using_RC_Mod?");
+
+    VariableString.Set("skipPlayerString", VariableString("currentPlayer"));
+    VariableString.Append("skipPlayerString", "SkipPlayer");
+    VariableString.Set(VariableString("skipPlayerString"), "true");
+  }
+  VariableBool.Set("isOnUpdateBroken", true);
+
+  VariableBool.Set("isReadyToRestart", true);
+
+
+
+  ForeachPlayer("player")
+  {
+    VariableString.Set("currentPlayer", VariablePlayer("player").GetName());
+
+    VariableString.Set("skipPlayerString", VariableString("currentPlayer"));
+    VariableString.Append("skipPlayerString", "SkipPlayer");
+
+    If (String.Equals(VariableString(VariableString("skipPlayerString")), "true"))
+    {
+      //Game.PrintMessage(VariableString("skipPlayerString"));
+    }
+    Else
+    {
+
+      If (Int.LessThanOrEqual(VariableInt("timer"), 0))
+      {
+        Player.SetDeaths(VariablePlayer("player"), 0);
+        VariableBool.Set("isReadyToRestart", false);
+      }
+      Else
+      {
+        VariableString.Set("initializedVariables", VariableString("currentPlayer"));
+        VariableString.Append("initializedVariables", "initializedVariables");
+
+        If (String.Equals(VariableString(VariableString("initializedVariables")), VariableString("nullString")))
+        {
+          VariableString.Set("numberOfDeathsString", VariableString("currentPlayer"));
+          VariableString.Append("numberOfDeathsString", "NumberOfDeaths");
+          If (Int.LessThanOrEqual(VariableInt("timer"), VariableInt("afkTimeout")))
+          {
+            VariableInt.Set(VariableString("numberOfDeathsString"), 0);
+          }
+          Else
+          {
+            VariableInt.Set(VariableString("numberOfDeathsString"), 999999);
+          }
+          VariableString.Set("wasAlive", VariableString("currentPlayer"));
+          VariableString.Append("wasAlive", "WasAlive");
+          VariableBool.Set(VariableString("wasAlive"), VariablePlayer("player").GetIsAlive());
+
+
+          VariableString.Set("previousX", VariableString("currentPlayer"));
+          VariableString.Append("previousX", "PreviousX");
+          VariableInt.Set(VariableString("previousX"), 0);
+
+          VariableString.Set("previousZ", VariableString("currentPlayer"));
+          VariableString.Append("previousZ", "PreviousZ");
+          VariableInt.Set(VariableString("previousZ"), 0);
+
+          VariableString.Set("afkTime", VariableString("currentPlayer"));
+          VariableString.Append("afkTime", "AFKTime");
+          VariableInt.Set(VariableString("afkTime"), 0);
+
+          VariableString.Set(VariableString("initializedVariables"), "true");
+
+        }
+        Else
+        {
+          VariableString.Set("wasAlive", VariableString("currentPlayer"));
+          VariableString.Append("wasAlive", "WasAlive");
+
+          VariableString.Set("numberOfDeathsString", VariableString("currentPlayer"));
+          VariableString.Append("numberOfDeathsString", "NumberOfDeaths");
+
+
+        }
+
+        If (Bool.Equals(VariablePlayer("player").GetIsAlive(), false))
+        {
+
+
+          If (Bool.Equals(VariableBool(VariableString("wasAlive")), true))
+          {
+            VariableInt.Add(VariableString("numberOfDeathsString"), 1);
+          }
+
+
+          VariableBool.Set(VariableString("wasAlive"), false);
+
+        }
+        Else
+        {
+          VariableBool.Set(VariableString("wasAlive"), true);
+        }
+
+
+        //if they are not a loser yet
+        If (Int.LessThan(VariableInt(VariableString("numberOfDeathsString")), VariableInt("numberOfLives")))
+        {
+          //check for afk
+
+          VariableString.Set("previousX", VariableString("currentPlayer"));
+          VariableString.Append("previousX", "PreviousX");
+          VariableString.Set("previousZ", VariableString("currentPlayer"));
+          VariableString.Append("previousZ", "PreviousZ");
+          VariableString.Set("afkTime", VariableString("currentPlayer"));
+          VariableString.Append("afkTime", "AFKTime");
+
+          If (Bool.Equals(VariablePlayer("player").GetIsAlive(), false))
+          {
+            VariableInt.Add(VariableString("afkTime"), 1);
+          }
+          Else
+          {
+            VariableInt.Set("currentX", VariablePlayer("player").GetPositionX().ConvertToInt());
+            VariableInt.Set("currentZ", VariablePlayer("player").GetPositionZ().ConvertToInt());
+
+
+
+            If (Int.Equals(VariableInt("currentX"), VariableInt(VariableString("previousX"))))
+            {
+              If (Int.Equals(VariableInt("currentZ"), VariableInt(VariableString("previousZ"))))
+              {
+                VariableInt.Add(VariableString("afkTime"), 1);
+              }
+              Else
+              {
+                VariableInt.Set(VariableString("afkTime"), 0);
+                //Game.PrintMessage(VariableInt(VariableString("previousZ")).ConvertToString());
+                VariableInt.Set(VariableString("previousZ"), VariableInt("currentZ"));
+              }
+            }
+            Else
+            {
+              VariableInt.Set(VariableString("afkTime"), 0);
+              //Game.PrintMessage(VariableInt(VariableString("previousX")).ConvertToString());
+              VariableInt.Set(VariableString("previousX"), VariableInt("currentX"));
+              VariableInt.Set(VariableString("previousZ"), VariableInt("currentZ"));
+            }
+          }
+
+          If (Int.GreaterThanOrEqual(VariableInt(VariableString("afkTime")), VariableInt("afkTimeout")))
+          {
+            VariableInt.Add(VariableString("numberOfDeathsString"), 999999);
+          }
+          Else
+          {
+            //Game.PrintMessage(VariableInt(VariableString("afkTime")).ConvertToString());
+            VariableBool.Set("isReadyToRestart", false);
+          }
+
+        }
+        Else
+        {
+          If (Bool.Equals(VariablePlayer("player").GetIsAlive(), true))
+          {
+            If (Bool.Equals(VariableBool("teleportLosersAway"), true))
+            {
+              If (Int.LessThan(VariableInt("timer"), VariableInt("doNotAutoRestartAfterXSeconds")))
+              {
+                Player.MovePlayer(VariablePlayer("player"), 1000000.0, -1000000.0, 1000000.0);
+              }
+            }
+          }
+        }
+
+      }
+
+    }
+
+  }
+
+  VariableBool.Set("isOnUpdateBroken", false);
+
+  VariableInt.Add("timer", 1);
+
+  If (Bool.Equals(VariableBool("isRestarting"), true))
+  {
+    VariableInt.Subtract("restartDelay", 1);
+    If (Int.LessThanOrEqual(VariableInt("restartDelay"), 0))
+    {
+      Game.Restart(true);
+    }
+  }
+  Else
+  {
+    If (Bool.Equals(VariableBool("isReadyToRestart"), true))
+    {
+      If (Int.LessThan(VariableInt("timer"), VariableInt("doNotAutoRestartAfterXSeconds")))
+      {
+        Game.PrintMessage(VariableString("restartMessage"));
+        VariableBool.Set("isRestarting", true);
+      }
+    }
+  }
+}

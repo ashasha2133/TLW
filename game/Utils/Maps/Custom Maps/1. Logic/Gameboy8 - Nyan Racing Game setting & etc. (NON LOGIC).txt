@@ -1,0 +1,53 @@
+________________Custom Map________________
+
+Map Setting:
+
+	Racing
+
+
+Custom Texture: (skybox)
+
+	NYAN GALAXY Skybox
+
+GROUND SKIN:
+Transparent
+
+FRONT:
+http://i.imgur.com/9Ti8wiZ.jpg
+
+BACK:
+http://i.imgur.com/BumsBFX.jpg
+
+LEFT:
+http://i.imgur.com/OpZ57aF.jpg
+
+RIGHT:
+http://i.imgur.com/ltvN4bZ.jpg
+
+UP:
+http://i.imgur.com/xr1M0Dl.jpg
+
+DOWN:
+http://i.imgur.com/RNq3HyZ.jpg
+
+
+________________Game Setting________________
+
+Titan Size Mode:  1
+
+
+MOTD:
+
+<b>
+<color="#3798e5">_</color><color="#3b98e2">_</color><color="#3f98df">_</color><color="#4398db">_</color><color="#4798d8">_</color><color="#4a97d5">_</color><color="#4e97d2">_</color><color="#5297ce">_</color><color="#5697cb">_</color><color="#5894cc">_</color><color="#5991cd">_</color><color="#5b8ece">_</color><color="#5c8bcf">_</color><color="#5e88d0">_</color><color="#5f85d1">_</color><color="#6182d2">_</color><color="#627fd2">_</color><color="#647cd2">_</color><color="#6579d2">_</color><color="#6676d2">_</color><color="#6773d2">_</color><color="#6970d2">_</color><color="#6a6dd2">_</color><color="#6b6ad2">_</color><color="#6b67d2">_</color><color="#6b64d2">_</color><color="#6a60d1">_</color><color="#6a5dd1">_</color><color="#6a5ad1">_</color><color="#6a57d1">_</color><color="#6953d0">_</color><color="#6950d0">_</color><color="#6b4ecf">_</color><color="#6d4bce">_</color><color="#6f49cd">_</color>
+
+<color="#3798e5">“</color><color="#3f98df">W</color><color="#4798d8">e</color><color="#4e97d2">l</color><color="#5697cb">c</color><color="#5992cd">o</color><color="#5c8dcf">m</color><color="#5e87d0">e</color><color="#6182d2"> </color><color="#647cd2">t</color><color="#6676d2">o</color><color="#6970d2"> </color><color="#6b6ad2">N</color><color="#6b64d2">y</color><color="#6a5dd1">a</color><color="#6a57d1">n</color><color="#6950d0"> </color><color="#6e4ace">G</color><color="#7245cb">a</color><color="#773fc9">l</color><color="#8144ce">a</color><color="#8b49d3">x</color><color="#944dd8">y</color><color="#9e52dd">:</color><color="#aa57de"> </color><color="#b65bdf">R</color><color="#c260e0">a</color><color="#ce64e1">c</color><color="#c266d5">i</color><color="#b667c9">n</color><color="#a969bc">g</color><color="#9d6ab0"> </color><color="#946fa3">m</color><color="#8c7396">a</color><color="#837888">p</color><color="#7a7c7b">”</color>
+<color="#7146cc">_</color><color="#7344cb">_</color><color="#7541ca">_</color><color="#773fc9">_</color><color="#7c41cc">_</color><color="#8144ce">_</color><color="#8646d1">_</color><color="#8b49d3">_</color><color="#8f4bd6">_</color><color="#944dd8">_</color><color="#9950db">_</color><color="#9e52dd">_</color><color="#a454de">_</color><color="#aa57de">_</color><color="#b059df">_</color><color="#b65bdf">_</color><color="#bc5de0">_</color><color="#c260e0">_</color><color="#c862e1">_</color><color="#ce64e1">_</color><color="#c765da">_</color><color="#c066d3">_</color><color="#b967cc">_</color><color="#b267c5">_</color><color="#ab68be">_</color><color="#a469b7">_</color><color="#9d6ab0">_</color><color="#996ca9">_</color><color="#946fa3">_</color><color="#90719c">_</color><color="#8c7396">_</color><color="#87758f">_</color><color="#837888">_</color><color="#7e7a82">_</color><color="#7a7c7b">_</color>
+</b>
+<b><color=#c17979>Rules:</color></b>
+<color="#ff0000">*</color><color="#ff0400">D</color><color="#ff0800">o</color><color="#ff0c00"> </color><color="#ff1000">N</color><color="#ff1400">o</color><color="#ff1900">t</color><color="#ff1d00"> </color><color="#ff2100">C</color><color="#ff2500">h</color><color="#ff2900">e</color><color="#ff2d00">a</color><color="#ff3100">t</color><color="#ff3500"> </color><color="#ff3900">i</color><color="#ff3d00">n</color><color="#ff4200"> </color><color="#ff4600">a</color><color="#ff4a00">n</color><color="#ff4e00">y</color><color="#ff5200"> </color><color="#ff5600">w</color><color="#ff5a00">a</color><color="#ff5e00">y</color><color="#ff6200">.</color>
+<color="#ff6600">*</color><color="#ff6b00">D</color><color="#ff6f00">o</color><color="#ff7300"> </color><color="#ff7700">n</color><color="#ff7b00">o</color><color="#ff7f00">t</color><color="#ff8300"> </color><color="#ff8700">F</color><color="#ff8b00">a</color><color="#ff8f00">l</color><color="#ff9300">l</color><color="#ff9700"> </color><color="#ff9b00">O</color><color="#ff9f00">f</color><color="#ffa300">f</color><color="#ffa700"> </color><color="#ffab00">t</color><color="#ffaf00">h</color><color="#ffb300">e</color><color="#ffb700"> </color><color="#ffbb00">R</color><color="#ffbf00">A</color><color="#ffc300">I</color><color="#ffc700">N</color><color="#ffcb00">B</color><color="#ffcf00">O</color><color="#ffd300">W</color><color="#ffd700"> </color><color="#ffdb00">T</color><color="#ffdf00">r</color><color="#ffe300">a</color><color="#ffe700">c</color><color="#ffeb00">k</color><color="#ffef00">s</color><color="#fff300">.</color>
+<color="#fff700">*</color><color="#fffb00">D</color><color="#ffff00">o</color><color="#f7ff00"> </color><color="#efff00">N</color><color="#e6ff00">o</color><color="#deff00">t</color><color="#d6ff00"> </color><color="#ceff00">u</color><color="#c5ff00">s</color><color="#bdff00">e</color><color="#b5ff00"> </color><color="#adff00">A</color><color="#a5ff00">b</color><color="#9cff00">u</color><color="#94ff00">s</color><color="#8cff00">i</color><color="#84ff00">v</color><color="#7bff00">e</color><color="#73ff00"> </color><color="#6bff00">t</color><color="#63ff00">h</color><color="#5aff00">i</color><color="#52ff00">n</color><color="#4aff00">g</color><color="#42ff00">s</color><color="#3aff00"> </color><color="#31ff00">o</color><color="#29ff00">n</color><color="#21ff00"> </color><color="#19ff00">O</color><color="#10ff00">t</color><color="#08ff00">h</color><color="#00ff00">e</color><color="#00fc08">r</color><color="#00fa10">s</color><color="#00f719"> </color><color="#00f521">(</color><color="#00f229">e</color><color="#00f031">.</color><color="#00ed3a">g</color><color="#00eb42">.</color><color="#00e84a"> </color><color="#00e652">K</color><color="#00e35a">i</color><color="#00e063">l</color><color="#00de6b">l</color><color="#00db73"> </color><color="#00d97b">C</color><color="#00d684">o</color><color="#00d48c">m</color><color="#00d194">m</color><color="#00cf9c">a</color><color="#00cca5">n</color><color="#00c9ad">d</color><color="#00c7b5">)</color><color="#00c4bd">.</color>
+<color="#00c2c5">*</color><color="#00bfce">B</color><color="#00bdd6">e</color><color="#00bade"> </color><color="#00b8e6">N</color><color="#00b5ef">i</color><color="#00b3f7">c</color><color="#00b0ff">e</color><color="#05acfe"> </color><color="#09a8fd">a</color><color="#0ea5fb">n</color><color="#13a1fa">d</color><color="#179df9"> </color><color="#1c99f8">R</color><color="#2195f7">e</color><color="#2692f6">s</color><color="#2a8ef4">p</color><color="#2f8af3">e</color><color="#3486f2">c</color><color="#3882f1">t</color><color="#3d7ef0"> </color><color="#427bee">O</color><color="#4677ed">t</color><color="#4b73ec">h</color><color="#506feb">e</color><color="#546bea">r</color><color="#5968e8">s</color><color="#5e64e7"> </color><color="#6260e6">L</color><color="#675ce5">i</color><color="#6c58e4">k</color><color="#7155e3">e</color><color="#7551e1"> </color><color="#7a4de0">h</color><color="#7f49df">o</color><color="#8345de">w</color><color="#8841dd"> </color><color="#8d3edb">y</color><color="#913ada">o</color><color="#9636d9">u</color><color="#9938da"> </color><color="#9c3bdb">w</color><color="#9f3ddd">a</color><color="#a23fde">n</color><color="#a541df">t</color><color="#a844e0"> </color><color="#ab46e2">t</color><color="#ad48e3">o</color><color="#b04ae4"> </color><color="#b34de5">b</color><color="#b64fe6">e</color><color="#b951e8"> </color><color="#bc53e9">r</color><color="#bf56ea">e</color><color="#c258eb">s</color><color="#c55aed">p</color><color="#c85cee">e</color><color="#cb5fef">c</color><color="#ce61f0">t</color><color="#d163f2">e</color><color="#d465f3">d</color><color="#d768f4"> </color><color="#da6af5">y</color><color="#dc6cf6">o</color><color="#df6ef8">u</color><color="#e271f9">r</color><color="#e573fa">s</color><color="#e875fb">e</color><color="#eb77fd">l</color><color="#ee7afe">f</color><color="#f17cff">.</color>
+
+<color=#ffacac><b>**Have a Nice and Wonderful day **</b></color>

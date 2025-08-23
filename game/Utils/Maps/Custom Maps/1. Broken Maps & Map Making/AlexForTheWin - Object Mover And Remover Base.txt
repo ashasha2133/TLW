@@ -1,0 +1,20 @@
+//Box 1;
+spawnpoint,playerC,200,56,0,0,0,0,1;
+custom,cuboid,default,20,1,20,0,1,1,1,1,1,200,50,0,0,0,0,1;
+custom,cuboid,default,20,1,20,0,1,1,1,1,1,200,260,0,0,0,0,1;
+custom,cuboid,default,1,20,20,0,1,1,1,1,1,295,155,0,0,0,0,1;
+custom,cuboid,default,1,20,20,0,1,1,1,1,1,105,155,0,0,0,0,1;
+custom,cuboid,default,20,20,1,0,1,1,1,1,1,200,155,95,0,0,0,1;
+custom,cuboid,default,20,20,1,0,1,1,1,1,1,200,155,-95,0,0,0,1;
+
+
+//Box 1;
+spawnpoint,playerC,-200,56,0,0,0,0,1;
+custom,cuboid,default,20,1,20,0,1,1,1,1,1,-200,50,0,0,0,0,1;
+custom,cuboid,default,20,1,20,0,1,1,1,1,1,-200,260,0,0,0,0,1;
+custom,cuboid,default,1,20,20,0,1,1,1,1,1,-105,155,0,0,0,0,1;
+custom,cuboid,default,1,20,20,0,1,1,1,1,1,-295,155,0,0,0,0,1;
+custom,cuboid,default,20,20,1,0,1,1,1,1,1,-200,155,95,0,0,0,1;
+custom,cuboid,default,20,20,1,0,1,1,1,1,1,-200,155,-95,0,0,0,1;
+//Obstacles;
+racing,killCuboid,1,1,1,-200,65,35,0,0,0,1;

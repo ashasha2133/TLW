@@ -1,0 +1,19 @@
+OnUpdate()
+{
+   VariablePlayer.Set("player", VariablePlayer("Null"));
+   ForeachPlayer("player")
+   {
+      If(Float.LessThan(VariablePlayer("player").GetPositionX(), 0.0))
+      {
+         VariableFloat.Set("XPos", VariablePlayer("player").GetPositionX());
+         VariableFloat.Add("XPos", 400.0);
+         Player.MovePlayer(VariablePlayer("player"), VariableFloat("XPos"), VariablePlayer("player").GetPositionY(), VariablePlayer("player").GetPositionZ());
+      }
+      Else
+      {
+         VariableFloat.Set("XPos", VariablePlayer("player").GetPositionX());
+         VariableFloat.Subtract("XPos", 400.0);
+         Player.MovePlayer(VariablePlayer("player"), VariableFloat("XPos"), VariablePlayer("player").GetPositionY(), VariablePlayer("player").GetPositionZ());
+      }
+   }
+}

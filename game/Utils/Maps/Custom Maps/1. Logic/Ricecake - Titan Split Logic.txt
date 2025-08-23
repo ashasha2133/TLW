@@ -1,0 +1,20 @@
+// Have these settings implemented before the logic;
+// /mode size 3.2 3.2;
+// /mode wave 0;
+// /mode titan 1;
+
+OnTitanDie("myTitan","myPlayer")
+{
+VariableFloat.Set("mySize",VariableTitan("myTitan").GetSize());
+If (Float.GreaterThan(VariableFloat("mySize"),2.5))
+{
+VariableFloat.Divide("mySize",1.1);
+VariableFloat.Set("posX",VariableTitan("myTitan").GetPositionX());
+VariableFloat.Set("posY",VariableTitan("myTitan").GetPositionY());
+VariableFloat.Set("posZ",VariableTitan("myTitan").GetPositionZ());
+VariableFloat.Add("posX",5.0);
+Titan.SpawnTitanAt(0, VariableFloat("mySize"), 1, 1, VariableFloat("posX"), VariableFloat("posY"), VariableFloat("posZ"));
+VariableFloat.Subtract("posX",10.0);
+Titan.SpawnTitanAt(0, VariableFloat("mySize"), 1, 1, VariableFloat("posX"), VariableFloat("posY"), VariableFloat("posZ"));
+}
+}

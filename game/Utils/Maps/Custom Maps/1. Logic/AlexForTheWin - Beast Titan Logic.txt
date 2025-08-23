@@ -1,0 +1,224 @@
+OnRoundStart()
+{
+  //Variables for the titan beast
+  
+  //How fast the tiny titan is thrown (In units per second)
+  VariableFloat.Set("ProjectileSpeed", 10.0);
+  
+  //How the thown titan falls. This number is usually positive, but it can be 0 for no gravity or negative for gravity upwards
+  VariableFloat.Set("Gravity", 10.0);
+  
+  //There are two paths that the tiny titan can take to reach reach the target. The first is low and quick, where the second is high and long (If the angle isn't 45 degrees)
+  //When this variable is true, the projectile will take the shorter path, and if its false the titan will take the longer path
+  VariableBool.Set("ShortestPath", true);
+  
+  //How far away a player has to be from the titan for it to throw a projectile
+  VariableFloat.Set("MinimumDistance", 100.0);
+  
+  //How large the projectiles are (When they are bigger, they are harder to dodge)
+  VariableFloat.Set("ProjectileSize", 0.1);
+  
+  //How quickly the beast titan can throw projectiles (in seconds)
+  VariableInt.Set("ProjectileCooldown", 10);
+  
+  //How long the beast titan has to stand still before he can throw a projectile (to signal that he will throw a projectile)
+  VariableInt.Set("ThrowingTime", 1);
+  
+  //How long the projectile will keep flying until it is no longer managed (in case any projectiles get out of the map and fly forever. And again, this is in seconds)
+  VariableIntt.Set("ProjectileDuration", 20);
+  
+  //Decides if the titan will aim for where the player is currently standing, or where the player will be by the time the projectile reaches them
+  VariableBool.Set("PredictPlayerPosition", true);
+  
+  VariableBool.Set("BeastTitanInitialized", false);
+  
+  //Spawn clock titans
+  Titan.SpawnTitanAt(0, 0.1, 0, 1, 0.0, 105.0, 100.0);
+  Titan.SpawnTitanAt(0, 0.1, 0, 1, 0.0, 95.0, 100.0);
+  
+  //Spawn beast titan
+  Titan.SpawnTitan(0, 4.00001, 0, 1);
+}
+
+OnTitanEnterRegion["Clock1"]("ClockTitan")
+{
+  //Tick
+  Titan.MoveTitan(VariableTitan("ClockTitan"), 0.0, 95.0, 100.0);
+}
+
+OnTitanEnterRegion["Clock2"]("ClockTitan")
+{
+  //Tock
+  Titan.MoveTitan(VariableTitan("ClockTitan"), 0.0, 105.0, 100.0);
+  
+  //If the beast titan isn't initialized yet, initialize it
+  If(Bool.Equals(VariableBool("BeastTitanInitialized"), false))
+  {
+    ForeachTitan("Titan")
+    {
+      //Determine if the titan is a beast titan
+      VariableFloat.Set("Size", VariableTitan("Titan").GetSize());
+      
+      VariableFloat.Multiply("Size", 100000.0);
+      VariableFloat.Modulo("Size", 1000.0);
+      VariableInt.Set("Type", VariableFloat("Size").ConvertToInt());
+      
+      //If the ten thousandth place of the titan's size is 1, then initialize the variables
+      If(VariableInt.Equals(VariableInt("Type"), 1))
+      {
+        VariableTitan.Set("BeastTitan", VariableTitan("Titan"));
+        VariableBool.Set("BeastTitanInitialized", true);
+        VariableBool.Set("Throwing", false);
+        VariableInt.Set("PlayerNumber", -1);
+        VariableString.Set("PlayerPrefix", "ProjectileTarget");
+      }
+    }
+  }
+  //If the beast titan is already initialized, run its custom logic
+  Else
+  { 
+    //First, check if any new players joined or any players left. Then update their positions and find the closest one to the beast titan that is still out of its minimum distancce
+    
+    //Create a dummy player for use in the loop
+    VariablePlayer.Set("player", VariablePlayer("null"));
+    
+    //Cycle through all of the players and initialize any that haven't been yet
+    ForeachPlayer("player")
+    {
+      //Counter for iterating through all of the player variables
+      VariableInt.Set("Count", 0);
+      
+      //Boolean to tell if the player was initialized or not
+      VariableBool.Set("PlayerInitialized", false);
+      
+      //Controller for the loop. This can be toggled by the count reaching the player number or the variable for the current player being found
+      VariableBool.Set("loop", true);
+      
+      //Cycle through all of the initialized players until stopped
+      While(Bool.Equals(VariableBool("loop"), true))
+      {
+        //Create the name of the variable to access
+        VariableString.Concat("VariableName", VariableString("PlayerPrefix"), VariableInt("Count").ConvertToString());
+
+        //If the variable matches the current player, exit the loop
+        If(Player.Equals(VariablePlayer(VariableString("VariableName")), VariablePlayer("player")))
+        {
+          VariableBool.Set("PlayerInitialized", true);
+          VariableBool.Set("loop", false);
+        }
+        Else
+        {
+          //If none of the variables matched the player, then initialize the player and exit the loop
+          If(Int.GreaterThan(VariableInt("Count"), VariableInt("PlayerNumber")))
+          {
+            //Initialize the player's variables
+            VariablePlayer.Set(VariableString("VariableName"), VariablePlayer("player"));
+            
+            VariableString.Set("Temp", VariableString("PlayerPrefix"), VariableInt("Count").ConvertToString(), "OldX");
+            VariableFloat.Set(VariableString("Temp"), VariablePlayer("player").GetPositionX());
+            VariableString.Set("Temp", VariableString("PlayerPrefix"), VariableInt("Count").ConvertToString(), "NewX");
+            VariableFloat.Set(VariableString("Temp"), VariablePlayer("player").GetPositionX());
+            
+            VariableString.Set("Temp", VariableString("PlayerPrefix"), VariableInt("Count").ConvertToString(), "OldY");
+            VariableFloat.Set(VariableString("Temp"), VariablePlayer("player").GetPositionY());
+            VariableString.Set("Temp", VariableString("PlayerPrefix"), VariableInt("Count").ConvertToString(), "NewY");
+            VariableFloat.Set(VariableString("Temp"), VariablePlayer("player").GetPositionY());
+            
+            VariableString.Set("Temp", VariableString("PlayerPrefix"), VariableInt("Count").ConvertToString(), "OldZ");
+            VariableFloat.Set(VariableString("Temp"), VariablePlayer("player").GetPositionY());
+            VariableString.Set("Temp", VariableString("PlayerPrefix"), VariableInt("Count").ConvertToString(), "NewZ");
+            VariableFloat.Set(VariableString("Temp"), VariablePlayer("player").GetPositionZ());
+            
+            //Increment the player number
+            VariableInt.Add("PlayerNumber", 1);
+            
+            //Exit the loop
+            VariableBool.Set("loop", false);
+          }
+          
+          //Increase the counter
+          VariableInt.Add("Count", 1);
+        }
+      }
+      
+      VariablePlayer.Set("Target", VariablePlayer("player"));
+    }
+
+    //Then, check if any players left, remove those variables, and find the closest player to the beast titan (that is outside of the minimum range)
+
+    //Set up a counter and adjust the player number for use in LessThan. Cycle through the variables
+    VariableInt.Set("End", VariableInt("PlayerNumber"));
+    VariableInt.Add("End", 1);
+    VariableInt.Set("Count", 0);
+    
+    While(Int.LessThan(VariableInt("Count"), VariableInt("End")))
+    {
+      VariableString.Concat("VariableName", "ProjectileTarget", VariableInt("Count").ConvertToString());
+
+      VariableBool.Set("");
+
+      VariableInt.Add("Count", 1);
+    }
+    
+    //If there is a player in bounds, than create a projectile to launch at the player
+    If(Player.NotEquals(VariablePlayer("Target"), VariablePlayer("null")))
+    {
+      //Before doing any calculations, find all of the variables
+      VariableFloat.Set("TitanX", VariableTitan("BeastTitan").GetPositionX());
+      VariableFloat.Set("TitanY", VariableTitan("BeastTitan").GetPositionY());
+      
+      VariableFloat.Set("TargetX", VariablePlayer("Target").GetPositionX());
+      VariableFloat.Set("TargetY", VariablePlayer("Target").GetPositionY());
+      
+      VariableFloat.Set("X", VariableFloat("TargetX"));
+      VariableFloat.Subtract("X", VariableFloat("TitanX"));
+      
+      VariableFloat.Set("Y", VariableFloat("TargetY"));
+      VariableFloat.Subtract("Y", VariableFloat("TitanY"));
+      
+      
+      //Use the formula: angle = arctan((V^2 +/- sqrt(V^4 - g(gx^2 + 2yv^2)))/gx)
+      //to fing the angle that the projectile needs to be launched at to hit the target 
+      
+      //First, find the expression under the radical (if this expression is less than zero, then the target it out of range)
+      
+      VariableFloat.Set("V^2", VariableFloat("ProjectileSpeed"));
+      VariableFloat.Multiply("V^2", VariableFloat("ProjectileSpeed"));
+      
+      VariableFloat.Set("V^4", VariableFloat("V^2"));
+      VariableFloat.Multiply("V^4", VariableFloat("V^2"));
+    }
+  }
+}
+
+OnTitanDie("Titan", "Player")
+{
+    //Determine if the titan is a beast titan
+    VariableFloat.Set("Size", VariableTitan("Titan").GetSize());
+    
+    VariableFloat.Multiply("Size", 100000.0);
+    VariableFloat.Modulo("Size", 1000.0);
+    VariableInt.Set("Type", VariableFloat("Size").ConvertToInt());
+    
+    //If the titan that died was the beast titan, uninitialize it
+    If(VariableInt.Equals(VariableInt("Type"), 1))
+    {
+      VariableBool.Set("BeastTitanInitialized", false);
+    }
+}
+
+OnChatInput("input")
+{
+  //Print Player List
+
+  VariableInt.Set("End", VariableInt("PlayerNumber"));
+  VariableInt.Add("End", 1);
+  VariableInt.Set("Count", 0);
+  
+  While(Int.LessThan(VariableInt("Count"), VariableInt("End")))
+  {
+    VariableString.Concat("VariableName", "ProjectileTarget", VariableInt("Count").ConvertToString());
+    Game.PrintMessage(VariableString("VariableName"));
+    VariableInt.Add("Count", 1);
+  }
+}
