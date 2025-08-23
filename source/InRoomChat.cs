@@ -778,7 +778,7 @@ public class InRoomChat : Photon.MonoBehaviour
                         string response = AI.AskAI(term);
                         if (response != "")
                         {
-                            Chat(": " + response);
+                            Chat(" " + response, "<color=#000000>Slave</color>");
                         }
                     }).Start();
                 }

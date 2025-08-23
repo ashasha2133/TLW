@@ -27,7 +27,7 @@ Platform assembly: C:\Users\ashasha\Desktop\my-Aottg-TLW\game\tlw_Data\Managed\B
 Loading C:\Users\ashasha\Desktop\my-Aottg-TLW\game\tlw_Data\Managed\Boo.Lang.dll into Unity Child Domain
 Platform assembly: C:\Users\ashasha\Desktop\my-Aottg-TLW\game\tlw_Data\Managed\UnityScript.Lang.dll (this message is harmless)
 Loading C:\Users\ashasha\Desktop\my-Aottg-TLW\game\tlw_Data\Managed\UnityScript.Lang.dll into Unity Child Domain
-- Completed reload, in  0.051 seconds
+- Completed reload, in  0.322 seconds
 desktop: 1920x1080 75Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
@@ -84,3 +84,26 @@ Fallback handler could not load library C:/Users/ashasha/Desktop/my-Aottg-TLW/ga
 Fallback handler could not load library C:/Users/ashasha/Desktop/my-Aottg-TLW/game/tlw_Data/Mono/libPhotonEncryptorPlugin
 Fallback handler could not load library C:/Users/ashasha/Desktop/my-Aottg-TLW/game/tlw_Data/Mono/.\libPhotonEncryptorPlugin
 Fallback handler could not load library C:/Users/ashasha/Desktop/my-Aottg-TLW/game/tlw_Data/Mono/libPhotonEncryptorPlugin
+UnloadTime: 4.065600 ms
+Unloading 5 Unused Serialized files (Serialized files now loaded: 2 / Dirty serialized files: 0)
+
+Unloading 138 unused Assets to reduce memory usage. Loaded Objects now: 4894.
+Total: 8.712000 ms (FindLiveObjects: 0.349200 ms CreateObjectMapping: 0.081600 ms MarkObjects: 1.598700 ms  DeleteObjects: 2.481300 ms)
+
+The referenced script on this Behaviour is missing!
+ 
+(Filename:  Line: 1788)
+
+The referenced script on this Behaviour is missing!
+ 
+(Filename:  Line: 1788)
+
+The referenced script on this Behaviour is missing!
+ 
+(Filename:  Line: 1788)
+
+Unloading 1 Unused Serialized files (Serialized files now loaded: 2 / Dirty serialized files: 0)
+
+Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 7121.
+Total: 5.617100 ms (FindLiveObjects: 0.491900 ms CreateObjectMapping: 0.100800 ms MarkObjects: 2.472600 ms  DeleteObjects: 0.955900 ms)
+
