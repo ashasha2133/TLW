@@ -1749,6 +1749,11 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 		string text = string.Empty;
 		string text2 = DateTime.Now.ToString("h:mm:ss") + "\n";
 		text2 += "Time : " + ((int)timeTotalServer).ToString() + "\n";
+        int hours = (int)timeTotalServer / 3600;
+        int minutes = ((int)timeTotalServer % 3600) / 60;
+        int secs = (int)timeTotalServer % 60;
+        string formatted = $"{hours}:{minutes:D2}:{secs:D2}";
+        text2 += "Time : " + formatted + "\n";
         string empty = string.Empty;
 		_ = string.Empty;
 		if (!(timeElapse > 1f))
