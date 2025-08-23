@@ -771,11 +771,12 @@ public class InRoomChat : Photon.MonoBehaviour
             if (args[1] == "slave" || args[1] == "slave,")
             {
                 string term = string.Join(" ", args.Skip(2).ToArray());
+				Write(term.Replace(" ", "") == "" ? args[0].Replace("-", "") : term);
                 try
                 {
                     new Thread(() =>
                     {
-                        string response = AI.AskAI(term);
+                        string response = AI.AskAI(term.Replace(" ", "") == "" ? args[0].Replace("-", "") : term);
                         if (response != "")
                         {
                             Chat(" " + response, "<color=#000000>Slave</color>");
