@@ -1,4 +1,4 @@
-using CustomAudio;
+//using CustomAudio;
 using UnityEngine;
 
 public class InstantiateTracker
@@ -369,10 +369,10 @@ public class InstantiateTracker
 		case "fx/flarebullet1":
 		case "fx/flarebullet2":
 		case "fx/flarebullet3":
-			if (GameSettings.Flare > 0)
-			{
-				CustomAudioManager.Play(CustomAudioManager.AudioFile.Flare);
-			}
+			//if (GameSettings.Flare > 0)
+			//{
+			//	CustomAudioManager.Play(CustomAudioManager.AudioFile.Flare);
+			//}
 			return Instantiated(photonPlayer, GameResource.flare);
 		case "fx/shotgun":
 		case "fx/shotgun 1":

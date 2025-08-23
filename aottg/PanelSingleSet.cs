@@ -83,12 +83,12 @@ public class PanelSingleSet : MonoBehaviour
 
 	private Vector2 characters = Vector2.zero;
 
-	private AudioSource room_slide;
+	//private AudioSource room_slide;
 
 	private void Start()
 	{
-		room_slide = Camera.main.gameObject.AddComponent<AudioSource>();
-		room_slide.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("room_slide");
+		//room_slide = Camera.main.gameObject.AddComponent<AudioSource>();
+		//room_slide.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("room_slide");
 		MapSelected = 0;
 		dayLightSelected = 0;
 		LoadCamera();

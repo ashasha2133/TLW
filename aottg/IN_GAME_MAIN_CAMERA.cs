@@ -15,7 +15,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 
 	public RotationAxes axes;
 
-	public AudioSource bgmusic;
+	//public AudioSource bgmusic;
 
 	public static float cameraDistance = 0.6f;
 

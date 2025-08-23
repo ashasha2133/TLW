@@ -54,7 +54,7 @@ public class PanelMultiSet : MonoBehaviour
 
 	private bool[] numbers = new bool[15];
 
-	private AudioSource room_slide;
+	//private AudioSource room_slide;
 
 	private static string[] difficultyList = new string[3] { "normal", "hard", "abnormal" };
 
@@ -98,9 +98,9 @@ public class PanelMultiSet : MonoBehaviour
 
 	private void Start()
 	{
-		room_slide = Camera.main.gameObject.AddComponent<AudioSource>();
-		room_slide.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("room_slide");
-		room_slide.volume = FengGameManagerMKII.InterfaceVolume;
+		//room_slide = Camera.main.gameObject.AddComponent<AudioSource>();
+		//room_slide.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("room_slide");
+		//room_slide.volume = FengGameManagerMKII.InterfaceVolume;
 		base.transform.Find("InputServerName").gameObject.SetActive(value: false);
 		base.transform.Find("InputMaxPlayer").gameObject.SetActive(value: false);
 		base.transform.Find("InputMaxTime").gameObject.SetActive(value: false);

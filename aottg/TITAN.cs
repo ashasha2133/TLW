@@ -47,7 +47,7 @@ public class TITAN : MONO
 
 	public float attackWait = 1f;
 
-	public AudioSource baseAudioSource;
+	//public AudioSource baseAudioSource;
 
 	public List<Collider> baseColliders;
 

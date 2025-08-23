@@ -70,7 +70,7 @@ public class UIPopupList : MonoBehaviour
 
 	public float textScale = 1f;
 
-	private AudioSource Clicking;
+	//private AudioSource Clicking;
 
 	private bool handleEvents
 	{
@@ -138,9 +138,9 @@ public class UIPopupList : MonoBehaviour
 
 	private void Start()
 	{
-		Clicking = Camera.main.gameObject.AddComponent<AudioSource>();
-		Clicking.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("click");
-		Clicking.volume = FengGameManagerMKII.InterfaceVolume;
+		//Clicking = Camera.main.gameObject.AddComponent<AudioSource>();
+		//Clicking.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("click");
+		//Clicking.volume = FengGameManagerMKII.InterfaceVolume;
 		if (!(textLabel != null))
 		{
 			return;

@@ -2,7 +2,7 @@ using Anarchy.Custom.Interfaces;
 using Anarchy.Custom.Level;
 using BRM;
 using CLEARSKIES;
-using CustomAudio;
+//using CustomAudio;
 using Events;
 using ExitGames.Client.Photon;
 using MapCeilingNS;
@@ -655,7 +655,11 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 
 	private void Awake()
 	{
-		isBackground = true;
+        foreach (var src in GameObject.FindObjectsOfType<AudioSource>())
+        {
+            src.mute = true;
+        }
+        isBackground = true;
 		(PView = base.photonView).isBackground = true;
 		instance = this;
 		base.gameObject.AddComponent<CustomAnarchyLevel>().GameManager = this;
@@ -872,10 +876,14 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			name = sender == "" ? info.sender.isLocal || info.sender.isMasterClient ? "" : content.StripColor().Split(' ')[0].Replace(":", "") : sender.StripColor();
 			
 			//if(!(content.StartsWith("<color=#A8FF24>Wave : ") && content.EndsWith("</color>")) && !(content.StartsWith("<color=#FFCC00>") && (content.EndsWith(" wins!</color>") || content.EndsWith(" wins.</color>"))))
+			AudioListener.volume = 1;
 			if(name != "")
 			{
-				AudioListener.volume = 1;
-                StartCoroutine(WaitAndPlayNotification());
+                var source = Camera.main.gameObject.AddComponent<AudioSource>();
+				source.mute = false;
+                source.volume = 1f; // independent from AudioListener
+                source.PlayOneShot(ToClick, 1);
+                Destroy(source, ToClick.length);
             }
 
             if (sender != string.Empty)
@@ -9583,7 +9591,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 
 	public void OnGUI()
 	{
-		if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.STOP && Application.loadedLevelName != "characterCreation")
+        if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.STOP && Application.loadedLevelName != "characterCreation")
 		{
 			if (GameObject.Find("ButtonCREDITS") != null && GameObject.Find("ButtonCREDITS").transform.parent.gameObject != null && NGUITools.GetActive(GameObject.Find("ButtonCREDITS").transform.parent.gameObject))
 			{
@@ -10318,7 +10326,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 		{
 			InvokeRepeating("UpdatePingProperty", 0f, 3f);
 		}
-	}
+    }
 
 	private void UpdatePingProperty()
 	{
@@ -12206,7 +12214,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 				PhotonNetwork.LoadLevel(LevelInfo.getInfo(level).mapName);
 			}
 		}
-	}
+    }
 
 	private void resetGameSettings()
 	{
@@ -14388,15 +14396,16 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 		{
 			BombSpecialKey = (KeyCode)PlayerPrefs.GetInt("BombSpecialKey");
 		}
-		BotPersonallyContacted = (AudioClip)someBundle.Load("Contacted");
-		BotQuoted = (AudioClip)someBundle.Load("Quoted");
-		BotNoConnection = (AudioClip)someBundle.Load("NoConnection");
-		BotTimeFinish = (AudioClip)someBundle.Load("TimeFinish");
-		BotWarning = (AudioClip)someBundle.Load("Warning");
+		//BotPersonallyContacted = (AudioClip)someBundle.Load("Contacted");
+		//BotQuoted = (AudioClip)someBundle.Load("Quoted");
+		//BotNoConnection = (AudioClip)someBundle.Load("NoConnection");
+		//BotTimeFinish = (AudioClip)someBundle.Load("TimeFinish");
+		//BotWarning = (AudioClip)someBundle.Load("Warning");
 		ToClick = (AudioClip)someBundle.Load("click");
 		EventManager.CreateEvent("load_custom_audio");
-		EventManager.SubscribeEvent("load_custom_audio", CustomAudioManager.LoadAllSoundsForRelease);
+		//EventManager.SubscribeEvent("load_custom_audio", CustomAudioManager.LoadAllSoundsForRelease);
 		EventManager.CreateEvent("bomb_kill");
+
 	}
 
 	private IEnumerator timeAntispam()

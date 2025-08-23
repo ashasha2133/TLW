@@ -73,9 +73,9 @@ public abstract class MONO : Photon.MonoBehaviour
 
 	public Transform snd_eren_foot;
 
-	public AudioSource snd_titan_footAudio;
+	//public AudioSource snd_titan_footAudio;
 
-	public AudioSource snd_eren_footAudio;
+	//public AudioSource snd_eren_footAudio;
 
 	public Transform ap_front_ground;
 
@@ -121,17 +121,17 @@ public abstract class MONO : Photon.MonoBehaviour
 			text = "Amarture/Core/Controller_Body/";
 			AABB = baseT.Find("AABB");
 			Core = baseT.Find("Amarture/Core");
-			if (species == SPECIES.TitanEren)
-			{
-				if ((bool)(snd_eren_foot = baseT.Find("snd_eren_foot")))
-				{
-					snd_eren_footAudio = snd_eren_foot.GetComponent<AudioSource>();
-				}
-			}
-			else if ((bool)(snd_titan_foot = baseT.Find("snd_titan_foot")))
-			{
-				snd_titan_footAudio = snd_titan_foot.GetComponent<AudioSource>();
-			}
+			//if (species == SPECIES.TitanEren)
+			//{
+			//	if ((bool)(snd_eren_foot = baseT.Find("snd_eren_foot")))
+			//	{
+			//		//snd_eren_footAudio = snd_eren_foot.GetComponent<AudioSource>();
+			//	}
+			//}
+			//else if ((bool)(snd_titan_foot = baseT.Find("snd_titan_foot")))
+			//{
+			//	//snd_titan_footAudio = snd_titan_foot.GetComponent<AudioSource>();
+			//}
 			Controller_Body = baseT.Find("Amarture/Core/Controller_Body");
 		}
 		head = baseT.Find(text + "hip/spine/chest/neck/head");

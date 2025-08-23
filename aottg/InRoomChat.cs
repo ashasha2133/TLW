@@ -88,7 +88,7 @@ public class InRoomChat : Photon.MonoBehaviour
 
 	private static Dictionary<string, string> CommandList;
 
-	private AudioSource Typing;
+	//private AudioSource Typing;
 
 	public static string GetCompiledMessages
 	{
@@ -551,9 +551,9 @@ public class InRoomChat : Photon.MonoBehaviour
 		timeOfFade.Start();
 		setPosition();
 		key = inputLine;
-		Typing = Camera.main.gameObject.AddComponent<AudioSource>();
-		Typing.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("type");
-		Typing.volume = FengGameManagerMKII.InterfaceVolume;
+		//Typing = Camera.main.gameObject.AddComponent<AudioSource>();
+		//Typing.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("type");
+		//Typing.volume = FengGameManagerMKII.InterfaceVolume;
 		chatname = (((int)FengGameManagerMKII.settings[359] == 0) ? FengGameManagerMKII.Chatname : FengGameManagerMKII.Chatname2);
 		chatcolor = (((int)FengGameManagerMKII.settings[359] == 0) ? FengGameManagerMKII.Chatcolor : FengGameManagerMKII.Chatcolor2);
 		prefix = (((int)FengGameManagerMKII.settings[359] == 0) ? FengGameManagerMKII.Prefix : FengGameManagerMKII.Prefix2);
@@ -583,10 +583,10 @@ public class InRoomChat : Photon.MonoBehaviour
 		{
 			timeOfFade.Reset();
 			timeOfFade.Start();
-			if (!Typing.isPlaying && GameSettings.Typing > 0)
-			{
-				Typing.Play();
-			}
+			//if (!Typing.isPlaying && GameSettings.Typing > 0)
+			//{
+			//	Typing.Play();
+			//}
 			key = inputLine;
 		}
 		if (GameSettings.CMDHelper <= 0)

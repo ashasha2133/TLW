@@ -22,11 +22,11 @@ public class MyButtons : MonoBehaviour
 
 	public static GUIStyle _buttonstyles;
 
-	private AudioSource menu_open;
+	//private AudioSource menu_open;
 
-	private AudioSource menu_close;
+	//private AudioSource menu_close;
 
-	private AudioSource lpanel_enlarge;
+	//private AudioSource lpanel_enlarge;
 
 	private static GUIStyle LPanelOpenButton;
 
@@ -129,15 +129,15 @@ public class MyButtons : MonoBehaviour
 		_lightpink = Texture(byte.MaxValue, 182, 193, 140);
 		_buttonsIncWidth = 0f;
 		_leftPanelIncWidth = 0f;
-		menu_open = Camera.main.gameObject.AddComponent<AudioSource>();
-		menu_open.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("menu_open");
-		menu_open.volume = FengGameManagerMKII.InterfaceVolume;
-		menu_close = Camera.main.gameObject.AddComponent<AudioSource>();
-		menu_close.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("menu_close");
-		menu_close.volume = FengGameManagerMKII.InterfaceVolume;
-		lpanel_enlarge = Camera.main.gameObject.AddComponent<AudioSource>();
-		lpanel_enlarge.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("LPanel_enlarge");
-		lpanel_enlarge.volume = FengGameManagerMKII.InterfaceVolume;
+		//menu_open = Camera.main.gameObject.AddComponent<AudioSource>();
+		//menu_open.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("menu_open");
+		//menu_open.volume = FengGameManagerMKII.InterfaceVolume;
+		//menu_close = Camera.main.gameObject.AddComponent<AudioSource>();
+		//menu_close.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("menu_close");
+		//menu_close.volume = FengGameManagerMKII.InterfaceVolume;
+		//lpanel_enlarge = Camera.main.gameObject.AddComponent<AudioSource>();
+		//lpanel_enlarge.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("LPanel_enlarge");
+		//lpanel_enlarge.volume = FengGameManagerMKII.InterfaceVolume;
 		LPanel = (Texture2D)FengGameManagerMKII.someBundle.Load("LPanel");
 		LPanelH = (Texture2D)FengGameManagerMKII.someBundle.Load("LPanel_hover");
 		LPanelPoff = (Texture2D)FengGameManagerMKII.someBundle.Load("Profile off");
@@ -200,10 +200,10 @@ public class MyButtons : MonoBehaviour
 	private IEnumerator HideTextures(int number)
 	{
 		close = true;
-		if (!menu_close.isPlaying)
-		{
-			//menu_close.Play();
-		}
+		//if (!menu_close.isPlaying)
+		//{
+		//	//menu_close.Play();
+		//}
 		yield return new WaitForSeconds(0.8f);
 		isVisible = false;
 		Object.Destroy(_lightpink);
@@ -534,10 +534,10 @@ public class MyButtons : MonoBehaviour
 		GUI.DrawTexture(new Rect(rect.x + 179f, rect.y, 2f, 117f), _red);
 		if (GUI.Button(new Rect(10f + _leftPanelIncWidth, rect.y + 120f, 20f, 20f), "", LPanelOpenButton))
 		{
-			if (!lpanel_enlarge.isPlaying)
-			{
-				//lpanel_enlarge.Play();
-			}
+			//if (!lpanel_enlarge.isPlaying)
+			//{
+			//	//lpanel_enlarge.Play();
+			//}
 			EnlargePanel = !EnlargePanel;
 		}
 		GUI.DrawTexture(new Rect(rect.x + 179f, rect.y + 143f, 2f, rect.height - 185f), _red);
@@ -735,10 +735,10 @@ public class MyButtons : MonoBehaviour
 		}
 		if (_buttonsIncWidth < 200f && !close)
 		{
-			if (menu_open != null && !menu_open.isPlaying)
-			{
-				//menu_open.Play();
-			}
+			//if (menu_open != null && !menu_open.isPlaying)
+			//{
+			//	//menu_open.Play();
+			//}
 			_buttonsIncWidth += (200f + _buttonsIncWidth * 0.75f) * Time.deltaTime;
 		}
 		if (_buttonsIncWidth > 0f && close)

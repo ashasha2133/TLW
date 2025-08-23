@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BTN_Enter_PWD : MonoBehaviour
 {
-	private AudioSource room_slide;
+	//private AudioSource room_slide;
 
 	private Texture2D textureBackgroundBlack;
 
@@ -21,9 +21,9 @@ public class BTN_Enter_PWD : MonoBehaviour
 
 	private void Start()
 	{
-		room_slide = Camera.main.gameObject.AddComponent<AudioSource>();
-		room_slide.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("room_slide");
-		room_slide.volume = FengGameManagerMKII.InterfaceVolume;
+		//room_slide = Camera.main.gameObject.AddComponent<AudioSource>();
+		//room_slide.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("room_slide");
+		//room_slide.volume = FengGameManagerMKII.InterfaceVolume;
 		if (textureBackgroundBlack == null)
 		{
 			textureBackgroundBlack = new Texture2D(1, 1, TextureFormat.ARGB32, mipmap: false);
@@ -36,10 +36,10 @@ public class BTN_Enter_PWD : MonoBehaviour
 	private IEnumerator Giffy()
 	{
 		numbers[0] = true;
-		if (!room_slide.isPlaying)
-		{
-			//room_slide.Play();
-		}
+		//if (!room_slide.isPlaying)
+		//{
+		//	//room_slide.Play();
+		//}
 		yield return new WaitForSeconds(0.1f);
 		numbers[1] = true;
 		yield return new WaitForSeconds(0.1f);

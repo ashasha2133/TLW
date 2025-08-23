@@ -10,7 +10,7 @@ public class TriggerColliderWeapon : MonoBehaviour
 
 	public ArrayList currentHitsII = new ArrayList();
 
-	public AudioSource meatDie;
+	//public AudioSource meatDie;
 
 	public int myTeam = 1;
 

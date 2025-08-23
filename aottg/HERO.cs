@@ -6,7 +6,7 @@ using System.Linq;
 using Anarchy.Custom.Interfaces;
 using Anarchy.Custom.Level;
 using BRM;
-using CustomAudio;
+//using CustomAudio;
 using Events;
 using ExitGames.Client.Photon;
 using UnityEngine;
@@ -45,9 +45,9 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	private bool attackReleased;
 
-	public AudioSource audio_ally;
+	//public AudioSource audio_ally;
 
-	public AudioSource audio_hitwall;
+	//public AudioSource audio_hitwall;
 
 	private GameObject badGuy;
 
@@ -201,7 +201,7 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	public float maxVelocityChange = 10f;
 
-	public AudioSource meatDie;
+	//public AudioSource meatDie;
 
 	public Bomb myBomb;
 
@@ -241,7 +241,7 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	private bool rightGunHasBullet = true;
 
-	public AudioSource rope;
+	//public AudioSource rope;
 
 	private float rTapTime = -1f;
 
@@ -259,9 +259,9 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	public string skillIDHUD;
 
-	public AudioSource slash;
+	//public AudioSource slash;
 
-	public AudioSource slashHit;
+	//public AudioSource slashHit;
 
 	private ParticleSystem smoke_3dmg;
 
@@ -2224,10 +2224,10 @@ public class HERO : MONO, IAnarchyScriptHero
 						}
 						if (num != 0f || num2 != 0f)
 						{
-							if (basePV.isMine && GameSettings.Walk > 0 && !CustomAudioManager.Walk.isPlaying && baseA.IsPlaying("run"))
-							{
-								//CustomAudioManager.Play(CustomAudioManager.AudioFile.Walk);
-							}
+							//if (basePV.isMine && GameSettings.Walk > 0 && !CustomAudioManager.Walk.isPlaying && baseA.IsPlaying("run"))
+							//{
+							//	//CustomAudioManager.Play(CustomAudioManager.AudioFile.Walk);
+							//}
 							if (!baseA.IsPlaying("run") && !baseA.IsPlaying("jump") && !baseA.IsPlaying("run_sasha") && (!baseA.IsPlaying("horse_geton") || baseA["horse_geton"].normalizedTime >= 0.5f))
 							{
 								if (buffTime > 0f && currentBuff == BUFF.SpeedUp)
@@ -2442,10 +2442,10 @@ public class HERO : MONO, IAnarchyScriptHero
 					}
 					else if (baseA.IsPlaying("wallrun"))
 					{
-						if (basePV.isMine && GameSettings.Walk > 0 && !CustomAudioManager.Walk.isPlaying)
-						{
-							//CustomAudioManager.Play(CustomAudioManager.AudioFile.Walk);
-						}
+						//if (basePV.isMine && GameSettings.Walk > 0 && !CustomAudioManager.Walk.isPlaying)
+						//{
+						//	//CustomAudioManager.Play(CustomAudioManager.AudioFile.Walk);
+						//}
 						baseR.AddForce(Vector3.up * speed - baseR.velocity, ForceMode.VelocityChange);
 						wallRunTime += Time.deltaTime;
 						if (wallRunTime > 1f || (num2 == 0f && num == 0f))
@@ -5619,10 +5619,10 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	private void throwBlades()
 	{
-		if (!CustomAudioManager.BladesReload.isPlaying && GameSettings.BladesBroken > 0)
-		{
-			//CustomAudioManager.Play(CustomAudioManager.AudioFile.BladesBroken);
-		}
+		//if (!CustomAudioManager.BladesReload.isPlaying && GameSettings.BladesBroken > 0)
+		//{
+		//	//CustomAudioManager.Play(CustomAudioManager.AudioFile.BladesBroken);
+		//}
 		Transform transform = setup.part_blade_l.transform;
 		Transform transform2 = setup.part_blade_r.transform;
 		GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("Character_parts/character_blade_l"), transform.position, transform.rotation);
@@ -6836,17 +6836,17 @@ public class HERO : MONO, IAnarchyScriptHero
 			calcSkillCD();
 			showSkillCD();
 		}
-        if (GameSettings.Slide > 0)
-		{
-			if (state == HERO_STATE.Slide && !CustomAudioManager.AudioIsPlaying(CustomAudioManager.AudioFile.Slide))
-			{
-				//CustomAudioManager.Play(CustomAudioManager.AudioFile.Slide);
-			}
-			if (state != HERO_STATE.Slide && CustomAudioManager.AudioIsPlaying(CustomAudioManager.AudioFile.Slide))
-			{
-				CustomAudioManager.Stop(CustomAudioManager.AudioFile.Slide);
-			}
-		}
+  //      if (GameSettings.Slide > 0)
+		//{
+		//	if (state == HERO_STATE.Slide && !CustomAudioManager.AudioIsPlaying(CustomAudioManager.AudioFile.Slide))
+		//	{
+		//		//CustomAudioManager.Play(CustomAudioManager.AudioFile.Slide);
+		//	}
+		//	if (state != HERO_STATE.Slide && CustomAudioManager.AudioIsPlaying(CustomAudioManager.AudioFile.Slide))
+		//	{
+		//		CustomAudioManager.Stop(CustomAudioManager.AudioFile.Slide);
+		//	}
+		//}
 		if (GameSettings.bombMode > 0 && Input.GetKeyDown(FengGameManagerMKII.BombSpecialKey))
 		{
 			if ((int)FengGameManagerMKII.settings[291] == 1)
