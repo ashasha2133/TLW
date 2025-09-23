@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Contexts;
 using System.Text.RegularExpressions;
 using System.Threading;
 using UnityEngine;
@@ -2040,7 +2041,9 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 				}
 			}
 			coreadd();
-			if (InsideSpecmode && GameObject.FindGameObjectsWithTag("Player").Length != 0 && IN_GAME_MAIN_CAMERA.main_objectR != null)
+			string content2;
+
+            if (InsideSpecmode && GameObject.FindGameObjectsWithTag("Player").Length != 0 && IN_GAME_MAIN_CAMERA.main_objectR != null)
 			{
 				currentSpeed = IN_GAME_MAIN_CAMERA.main_objectR.velocity.magnitude.RoundTo(0);
 				string content = (((int)settings[189] == 1) ? (currentSpeed + " u/s \n") : ((currentSpeed / 100f).ToString("0.00") + "K \n"));
@@ -2048,54 +2051,57 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			}
 			if (Camera.main != null && IN_GAME_MAIN_CAMERA.gamemode != GAMEMODE.RACING && IN_GAME_MAIN_CAMERA.mainCamera.gameOver && (int)settings[245] == 0)
 			{
-				if (GameObject.FindGameObjectsWithTag("Player").Length != 0 && IN_GAME_MAIN_CAMERA.main_objectR != null)
+				if (GameObject.FindGameObjectsWithTag("Player").Length >= 0 && IN_GAME_MAIN_CAMERA.main_objectR != null)
 				{
 					currentSpeed = IN_GAME_MAIN_CAMERA.main_objectR.velocity.magnitude.RoundTo(0);
-					string content2 = (((int)settings[189] == 1) ? (currentSpeed + " u/s \n") : ((currentSpeed / 100f).ToString("0.00") + "K \n"));
+					content2 = (((int)settings[189] == 1) ? (currentSpeed + " u/s \n") : ((currentSpeed / 100f).ToString("0.00") + "K \n"));
 					ShowHUDInfoCenter(content2);
 				}
-				if ((LevelInfo.getInfo(level).respawnMode == RespawnMode.DEATHMATCH || GameSettings.endlessMode > 0 || ((GameSettings.bombMode == 1 || GameSettings.pvpMode > 0) && GameSettings.pointMode > 0)) && !justSuicide)
+				else
 				{
-					ShowHUDInfoCenter("");
-					myRespawnTime += Time.deltaTime;
-					int num = 5;
-					if (RCextensions.returnIntFromObject(PhotonNetwork.player.customProperties["isTitan"]) == 2)
+                    ShowHUDInfoCenter("0.00");
+                }
+				if ((LevelInfo.getInfo(level).respawnMode == RespawnMode.DEATHMATCH || GameSettings.endlessMode > 0 || ((GameSettings.bombMode == 1 || GameSettings.pvpMode > 0) && GameSettings.pointMode > 0)) && !justSuicide)
 					{
-						num = 10;
-					}
-					if (GameSettings.endlessMode > 0)
-					{
-						num = GameSettings.endlessMode;
-					}
-					ShowHUDInfoCenterADD("Respawn in " + (num - (int)myRespawnTime) + "s.");
-					if (myRespawnTime > (float)num)
-					{
-						myRespawnTime = 0f;
-						IN_GAME_MAIN_CAMERA.mainCamera.gameOver = false;
+						myRespawnTime += Time.deltaTime;
+						int num = 5;
 						if (RCextensions.returnIntFromObject(PhotonNetwork.player.customProperties["isTitan"]) == 2)
 						{
-							SpawnNonAITitan2(myLastHero);
+							num = 10;
 						}
-						else
+						if (GameSettings.endlessMode > 0)
 						{
-                            needChooseSide = false;
-                            justSuicide = false;
-                            StartCoroutine(WaitAndRespawn1(0.1f, myLastRespawnTag));
+							num = GameSettings.endlessMode;
 						}
-						IN_GAME_MAIN_CAMERA.mainCamera.gameOver = false;
-						ShowHUDInfoCenter(string.Empty);
+						ShowHUDInfoCenterADD("Respawn in " + (num - (int)myRespawnTime) + "s.");
+						if (myRespawnTime > (float)num)
+						{
+							myRespawnTime = 0f;
+							IN_GAME_MAIN_CAMERA.mainCamera.gameOver = false;
+							if (RCextensions.returnIntFromObject(PhotonNetwork.player.customProperties["isTitan"]) == 2)
+							{
+								SpawnNonAITitan2(myLastHero);
+							}
+							else
+							{
+								needChooseSide = false;
+								justSuicide = false;
+								StartCoroutine(WaitAndRespawn1(0.1f, myLastRespawnTag));
+							}
+							IN_GAME_MAIN_CAMERA.mainCamera.gameOver = false;
+							ShowHUDInfoCenter(string.Empty);
+						}
 					}
-				}
 			}
 			if (isLosing && IN_GAME_MAIN_CAMERA.gamemode != GAMEMODE.RACING)
 			{
 				if (IN_GAME_MAIN_CAMERA.gamemode == GAMEMODE.SURVIVE_MODE)
 				{
-					ShowHUDInfoCenter("Survive " + wave + " Waves!\nGame Restart in " + (int)gameEndCD + "s\n\n");
+					ShowHUDInfoCenterADD("Survive " + wave + " Waves!\nGame Restart in " + (int)gameEndCD + "s\n\n");
                 }
 				else
 				{
-					ShowHUDInfoCenter("Humanity Fail!\nAgain!\nGame Restart in " + (int)gameEndCD + "s\n\n");
+					ShowHUDInfoCenterADD("Humanity Fail!\nAgain!\nGame Restart in " + (int)gameEndCD + "s\n\n");
                 }
 				if (gameEndCD <= 0f)
 				{
@@ -2115,21 +2121,21 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			{
 				if (IN_GAME_MAIN_CAMERA.gamemode == GAMEMODE.RACING)
 				{
-					ShowHUDInfoCenter(localRacingResult + "\n\nGame Restart in " + (int)gameEndCD + "s");
+					ShowHUDInfoCenterADD(localRacingResult + "\n\nGame Restart in " + (int)gameEndCD + "s");
 				}
 				else if (IN_GAME_MAIN_CAMERA.gamemode == GAMEMODE.SURVIVE_MODE)
 				{
-					ShowHUDInfoCenter("Survive All Waves!\nGame Restart in " + (int)gameEndCD + "s\n\n");
+					ShowHUDInfoCenterADD("Survive All Waves!\nGame Restart in " + (int)gameEndCD + "s\n\n");
                 }
 				else if (IN_GAME_MAIN_CAMERA.gamemode == GAMEMODE.PVP_AHSS)
 				{
 					if (GameSettings.pvpMode == 0 && GameSettings.bombMode == 0)
 					{
-						ShowHUDInfoCenter("Team " + teamWinner + " Win!\nGame Restart in " + (int)gameEndCD + "s\n\n");
+						ShowHUDInfoCenterADD("Team " + teamWinner + " Win!\nGame Restart in " + (int)gameEndCD + "s\n\n");
 					}
 					else
 					{
-						ShowHUDInfoCenter(string.Concat(new object[3]
+						ShowHUDInfoCenterADD(string.Concat(new object[3]
 						{
 							"Round Ended!\nGame Restart in ",
 							(int)gameEndCD,
@@ -2139,7 +2145,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 				}
 				else
 				{
-					ShowHUDInfoCenter("Humanity Win!\nGame Restart in " + (int)gameEndCD + "s\n\n");
+					ShowHUDInfoCenterADD("Humanity Win!\nGame Restart in " + (int)gameEndCD + "s\n\n");
 				}
 				if (gameEndCD <= 0f)
 				{
@@ -2154,7 +2160,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 				{
 					gameEndCD -= Time.deltaTime;
 				}
-			}
+            }
 			if (IN_GAME_MAIN_CAMERA.gamemode == GAMEMODE.RACING)
 			{
 				if (roundTime > Convert.ToSingle(race_timer))
@@ -13334,7 +13340,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 		GameObject gameObject = CacheGameObject.Find("LabelInfoCenter");
 		if (gameObject != null)
 		{
-			gameObject.GetComponent<UILabel>().text += content;
+			gameObject.GetComponent<UILabel>().text += "\n" + content;
 		}
 	}
 
