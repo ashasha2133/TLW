@@ -1042,6 +1042,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 			Screen.lockCursor = false;
 			return;
 		}
+		//InRoomChat.Write(gameOver.ToString());
 		if (gametype != 0 && gameOver)
 		{
 			if (FengCustomInputs.Inputs.isInputDown[InputCode.attack1])

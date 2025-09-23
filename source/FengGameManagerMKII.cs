@@ -4606,7 +4606,8 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			StartCoroutine(customlevelE(playersRPC));
 			StartCoroutine(customlevelcache());
 		}
-	}
+        IN_GAME_MAIN_CAMERA.mainCamera.gameOver = true;
+    }
 
 	private IEnumerator loadskinE(string n, string url, string url2, string[] skybox)
 	{
@@ -5027,7 +5028,8 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 		{
 			unloadAssets();
 		}
-	}
+        IN_GAME_MAIN_CAMERA.mainCamera.gameOver = true;
+    }
 
 	[RPC]
 	private void loadskinRPC(string n, string url, string url2, string[] skybox, PhotonMessageInfo info)
@@ -12397,7 +12399,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 
 	public void restartRC()
 	{
-		intVariables.Clear();
+        intVariables.Clear();
 		boolVariables.Clear();
 		stringVariables.Clear();
 		floatVariables.Clear();
@@ -13198,7 +13200,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			GameSettings.DrunkTitans = 0;
 			InRoomChat.Write("<color=#FFCC00>Drunk Titans disabled.</color>");
 		}
-	}
+    }
 
 	[RPC]
 	private void setMasterRC(PhotonMessageInfo info)
@@ -14600,10 +14602,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			{
 				item3.update();
 			}
-			if (IN_GAME_MAIN_CAMERA.isReady)
-			{
-				IN_GAME_MAIN_CAMERA.mainCamera.update();
-			}
+			IN_GAME_MAIN_CAMERA.mainCamera.update();
 		}
 		if (inputRC.isInputExtras(InputCodeRC.leave) && !FengCustomInputs.Inputs.menuOn && !FengCustomInputs.Inputs.isInputDown[InputCode.pause])
 		{
