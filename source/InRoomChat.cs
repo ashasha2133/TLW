@@ -843,29 +843,43 @@ public class InRoomChat : Photon.MonoBehaviour
     [BotCommand("kd")]
     private void Kd(string[] args)
     {
-		if (args.Length > 1)
-		{
-			int id;
+        if (args.Length > 1)
+        {
+            int id;
 
-			if (int.TryParse(args[1], out id)) { }
-			else if (int.TryParse(args[args.Length - 1], out id)) { }
-			else return;
 
-			if (NetworkingPeer.mActors.TryGetValue(id, out PhotonPlayer player)) { }
-			else return;
+            if (int.TryParse(args[1], out id)) { }
+            else
+            {
+                string name = string.Join(" ", args.Skip(1).Take(args.Length - 2).ToArray());
 
-			int kd;
-			player.customProperties.TryGetValue("kills", out var value);
-            kd = (int)value;
-			player.customProperties.TryGetValue("deaths", out value);
-			if ((int)value == 0)
-				value = 1;
+                foreach (KeyValuePair<int, PhotonPlayer> value in NetworkingPeer.mActors)
+                {
+                    if (RCextensions.StripHex(value.Value.uiname).ToLower() == name.ToLower())
+                    {
+                        id = value.Key;
+                        break;
+                    }
+                }
+                if (id == 0 ? int.TryParse(args[args.Length - 1], out id) : true) { }
+                else return;
+            }
 
-			kd = kd / (int)value;
+            if (NetworkingPeer.mActors.TryGetValue(id, out PhotonPlayer player)) { }
+            else return;
 
-			Chat(": " + RCextensions.hexColor(player.uiname) + "'s KD: " + kd.ToString());
-			return;
-		}
+            float kd;
+            player.customProperties.TryGetValue("kills", out var n);
+            kd = (int)n;
+			player.customProperties.TryGetValue("deaths", out n);
+			if ((int)n == 0)
+				n = 1;
+
+			kd = kd / (int)n;
+
+            Chat(": " + RCextensions.hexColor(player.uiname) + "'s KD: " + kd.ToString("0.##"));
+            return;
+        }
     }
 
     [BotCommand("shrug")]
