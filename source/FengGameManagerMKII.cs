@@ -158,7 +158,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 
 	private float gameEndCD;
 
-	private float gameEndTotalCDtime = 3f;
+	private float gameEndTotalCDtime = 9f;
 
 	public static bool gameStart = false;
 
