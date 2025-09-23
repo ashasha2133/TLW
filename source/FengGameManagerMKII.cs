@@ -4125,8 +4125,9 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 	}
 
 	private void loadskin()
-	{
-		CreateBarrier();
+    {
+        IN_GAME_MAIN_CAMERA.mainCamera.gameOver = true;
+        CreateBarrier();
 		if (PhotonNetwork.isMasterClient)
 		{
 			if (GameSettings.bombMode > 0 && !IsInvoking("SuicideBarrier"))
@@ -4606,7 +4607,6 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			StartCoroutine(customlevelE(playersRPC));
 			StartCoroutine(customlevelcache());
 		}
-        IN_GAME_MAIN_CAMERA.mainCamera.gameOver = true;
     }
 
 	private IEnumerator loadskinE(string n, string url, string url2, string[] skybox)
@@ -5028,7 +5028,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 		{
 			unloadAssets();
 		}
-        IN_GAME_MAIN_CAMERA.mainCamera.gameOver = true;
+        //IN_GAME_MAIN_CAMERA.mainCamera.gameOver = true;
     }
 
 	[RPC]
