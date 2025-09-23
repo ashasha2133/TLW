@@ -418,5 +418,5 @@ FodyWeavers.xsd
 *.msp
 
 
-*/Chats/*
+game/Chats/*.txt
 **/output_log.txt
