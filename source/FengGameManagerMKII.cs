@@ -2041,7 +2041,6 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 				}
 			}
 			coreadd();
-			string content2;
 
             if (InsideSpecmode && GameObject.FindGameObjectsWithTag("Player").Length != 0 && IN_GAME_MAIN_CAMERA.main_objectR != null)
 			{
@@ -2054,7 +2053,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 				if (GameObject.FindGameObjectsWithTag("Player").Length >= 0 && IN_GAME_MAIN_CAMERA.main_objectR != null)
 				{
 					currentSpeed = IN_GAME_MAIN_CAMERA.main_objectR.velocity.magnitude.RoundTo(0);
-					content2 = (((int)settings[189] == 1) ? (currentSpeed + " u/s \n") : ((currentSpeed / 100f).ToString("0.00") + "K \n"));
+                    string content2 = (((int)settings[189] == 1) ? (currentSpeed + " u/s \n") : ((currentSpeed / 100f).ToString("0.00") + "K \n"));
 					ShowHUDInfoCenter(content2);
 				}
 				else
@@ -2093,30 +2092,34 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 						}
 					}
 			}
+			else if (!IN_GAME_MAIN_CAMERA.mainCamera.gameOver)
+            {
+                ShowHUDInfoCenter("");
+            }
 			if (isLosing && IN_GAME_MAIN_CAMERA.gamemode != GAMEMODE.RACING)
-			{
-				if (IN_GAME_MAIN_CAMERA.gamemode == GAMEMODE.SURVIVE_MODE)
 				{
-					ShowHUDInfoCenterADD("Survive " + wave + " Waves!\nGame Restart in " + (int)gameEndCD + "s\n\n");
-                }
-				else
-				{
-					ShowHUDInfoCenterADD("Humanity Fail!\nAgain!\nGame Restart in " + (int)gameEndCD + "s\n\n");
-                }
-				if (gameEndCD <= 0f)
-				{
-					gameEndCD = 0f;
-					if (PhotonNetwork.isMasterClient)
+					if (IN_GAME_MAIN_CAMERA.gamemode == GAMEMODE.SURVIVE_MODE)
 					{
-						restartRC();
+						ShowHUDInfoCenterADD("Survive " + wave + " Waves!\nGame Restart in " + (int)gameEndCD + "s\n\n");
 					}
-					ShowHUDInfoCenter(string.Empty);
+					else
+					{
+						ShowHUDInfoCenterADD("Humanity Fail!\nAgain!\nGame Restart in " + (int)gameEndCD + "s\n\n");
+					}
+					if (gameEndCD <= 0f)
+					{
+						gameEndCD = 0f;
+						if (PhotonNetwork.isMasterClient)
+						{
+							restartRC();
+						}
+						ShowHUDInfoCenter(string.Empty);
+					}
+					else
+					{
+						gameEndCD -= Time.deltaTime;
+					}
 				}
-				else
-				{
-					gameEndCD -= Time.deltaTime;
-				}
-			}
 			if (isWinning)
 			{
 				if (IN_GAME_MAIN_CAMERA.gamemode == GAMEMODE.RACING)
