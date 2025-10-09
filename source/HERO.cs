@@ -6321,13 +6321,13 @@ public class HERO : MONO, IAnarchyScriptHero
 				case HERO_STATE.Attack:
 					if (usingAhss)
 					{
-                        foreach (var src in GameObject.FindObjectsOfType<AudioSource>())
-                        {
-                            if (src.name != "NotificationSound")
-                            {
-                                src.mute = true;
-                            }
-                        }
+                        //foreach (var src in GameObject.FindObjectsOfType<AudioSource>())
+                        //{
+                        //    if (src.name != "NotificationSound")
+                        //    {
+                        //        src.mute = true;
+                        //    }
+                        //}
                     }
                     if (!usingAhss)
 					{
