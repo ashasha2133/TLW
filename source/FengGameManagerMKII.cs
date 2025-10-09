@@ -14521,6 +14521,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 
 	private void AutorejoinPorts()
 	{
+		/**
 		if (!PhotonNetwork.offlineMode && !PhotonNetwork.connected && shallRejoin[0] is bool && (bool)shallRejoin[0])
 		{
 			if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.Udp)
@@ -14554,8 +14555,8 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 				PhotonNetwork.Disconnect();
 				shallRejoin[0] = false;
 			}
-		}
-		if (timeofAutorejoin.IsRunning && !PhotonNetwork.inRoom && timeofAutorejoin.ElapsedMilliseconds >= 5000)
+		} **/
+		if ((timeofAutorejoin.IsRunning && !PhotonNetwork.inRoom && timeofAutorejoin.ElapsedMilliseconds >= 1000))
 		{
 			timeofAutorejoin.Stop();
 			timeofAutorejoin.Reset();
@@ -14644,7 +14645,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			accum += Time.timeScale / Time.deltaTime;
 			frames++;
 		}
-        //AutorejoinPorts();
+        AutorejoinPorts();
     }
 
 	private IEnumerator FPS()
