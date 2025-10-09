@@ -14556,7 +14556,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 				shallRejoin[0] = false;
 			}
 		} **/
-		if ((timeofAutorejoin.IsRunning && !PhotonNetwork.inRoom && timeofAutorejoin.ElapsedMilliseconds >= 1000))
+		if ((timeofAutorejoin.IsRunning && !PhotonNetwork.inRoom && timeofAutorejoin.ElapsedMilliseconds >= 0))
 		{
 			timeofAutorejoin.Stop();
 			timeofAutorejoin.Reset();
