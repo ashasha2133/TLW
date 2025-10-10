@@ -11,7 +11,7 @@ internal class CharacterSelection : MonoBehaviour
 
 	private static int CharSelected;
 
-	private string[] charactersList = new string[11]
+	private static string[] charactersList = new string[11]
 	{
 		"Set 1", "Set 2", "Set 3", "LEVI", "MIKASA", "PETRA", "SASHA", "ARMIN", "MARCO", "JEAN",
 		"EREN"
@@ -23,9 +23,9 @@ internal class CharacterSelection : MonoBehaviour
 		"Eren"
 	};
 
-	public static int CostumeSelected;
+	private static int CostumeSelected;
 
-	private string[] costumeList = new string[3] { "Cos1", "Cos2", "Cos3" };
+	private static string[] costumeList = new string[3] { "Cos1", "Cos2", "Cos3" };
 
 	public static int CameraSelected;
 
@@ -371,7 +371,7 @@ internal class CharacterSelection : MonoBehaviour
 		PlayerPrefs.SetString("cameraType", cameraList[CameraSelected]);
 	}
 
-	public bool isPlayerAllDead2()
+	public static bool isPlayerAllDead2()
 	{
 		int num = 0;
 		int num2 = 0;
@@ -390,7 +390,7 @@ internal class CharacterSelection : MonoBehaviour
 		return num == num2;
 	}
 
-	private void ChoosePlayer(string selection)
+	public static void ChoosePlayer(string selection)
 	{
 		NGUITools.SetActive(CacheGameObject.Find("UI_IN_GAME").GetComponent<UIReferArray>().panels[0], state: true);
 		FengGameManagerMKII.instance.needChooseSide = false;

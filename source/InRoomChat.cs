@@ -714,6 +714,18 @@ public class InRoomChat : Photon.MonoBehaviour
 		}
     }
 
+    [MyCommand("clone")]
+    private void Clone(string[] args)
+    {
+        if (PlayerPrefs.HasKey("characterUsed"))
+		{
+			for (int i = 0; i < ((args.Length > 1 && int.TryParse(args[1], out var n)) ? n : 1) ; i++)
+			{
+				CharacterSelection.ChoosePlayer(PlayerPrefs.GetString("characterUsed"));
+            }
+		}
+    }
+
     [BotCommand("ud")]
     private void Ud(string[] args)
 	{
