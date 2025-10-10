@@ -455,7 +455,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 
 	private static LevelInfo current;
 
-	public  static UIReferArray uirefer;
+	public UIReferArray uirefer;
 
 	public static PhotonView PView;
 
@@ -10906,7 +10906,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 				{
 					hashtable.Add("eren", GameSettings.banEren);
 				}
-				if (GameSettings.moreTitans > 0)
+				if (GameSettings.moreTitans >= 0)
 				{
 					hashtable.Add("titanc", GameSettings.moreTitans);
 				}
@@ -13012,12 +13012,12 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			if (GameSettings.moreTitans != (int)hash["titanc"])
 			{
 				GameSettings.moreTitans = (int)hash["titanc"];
-				InRoomChat.Write("<color=#FFCC00>" + Convert.ToString(GameSettings.moreTitans) + " titans will spawn each round.</color>");
+				InRoomChat.Write("<color=#FFCC00>" + Convert.ToString(GameSettings.moreTitans) + " titans will spawn at start.</color>");
 			}
 		}
-		else if (GameSettings.moreTitans != 0)
+		else if (GameSettings.moreTitans != 3)
 		{
-			GameSettings.moreTitans = 0;
+			GameSettings.moreTitans = 3;
 			InRoomChat.Write("<color=#FFCC00>Default titans will spawn each round.</color>");
 		}
 		if (hash.ContainsKey("damage"))
@@ -13079,7 +13079,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			{
 				GameSettings.waveModeOn = (int)hash["waveModeOn"];
 				GameSettings.waveModeNum = (int)hash["waveModeNum"];
-				InRoomChat.Write("<color=#FFCC00>Custom wave mode (" + GameSettings.waveModeNum + ") enabled.</color>");
+                InRoomChat.Write("<color=#FFCC00>" + GameSettings.waveModeNum + " titans will spawn each round.</color>");
 			}
 		}
 		else if (GameSettings.waveModeOn != 0 || GameSettings.waveModeNum != 0)
@@ -14037,7 +14037,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 				num = 0;
 			}
 		}
-		if (GameSettings.moreTitans > 0 || (GameSettings.moreTitans == 0 && level.StartsWith("Custom") && GameSettings.gameType >= 2))
+		if (GameSettings.moreTitans >= 0 || (GameSettings.moreTitans == 0 && level.StartsWith("Custom") && GameSettings.gameType >= 2))
 		{
 			num = GameSettings.moreTitans;
 		}
