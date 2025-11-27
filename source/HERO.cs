@@ -1444,8 +1444,9 @@ public class HERO : MONO, IAnarchyScriptHero
 				{
 					reloadAnimation = "AHSS_gun_reload_both_air";
 				}
-				leftGunHasBullet = (rightGunHasBullet = false);
-			}
+                if (!InRoomChat.god) leftGunHasBullet = (rightGunHasBullet = false);
+                else leftGunHasBullet = (rightGunHasBullet = true);
+            }
 			crossFade(reloadAnimation, 0.05f);
 		}
 		else
@@ -6532,20 +6533,24 @@ public class HERO : MONO, IAnarchyScriptHero
 						if (attackAnimation == "AHSS_shoot_both" || attackAnimation == "AHSS_shoot_both_air")
 						{
 							flag4 = true;
-							leftGunHasBullet = false;
-							rightGunHasBullet = false;
-							baseR.AddForce(-baseT.forward * 1000f, ForceMode.Acceleration);
+                            if (!InRoomChat.god) leftGunHasBullet = false;
+                            else leftGunHasBullet = true;
+                            if (!InRoomChat.god) rightGunHasBullet = false;
+                            else rightGunHasBullet = true;
+                            baseR.AddForce(-baseT.forward * 1000f, ForceMode.Acceleration);
 						}
 						else
 						{
 							if (attackAnimation == "AHSS_shoot_l" || attackAnimation == "AHSS_shoot_l_air")
 							{
-								leftGunHasBullet = false;
-							}
+                                if (!InRoomChat.god) leftGunHasBullet = false;
+                                else leftGunHasBullet = true;
+                            }
 							else
 							{
-								rightGunHasBullet = false;
-							}
+                                if (!InRoomChat.god) rightGunHasBullet = false;
+                                else rightGunHasBullet = true;
+                            }
 							baseR.AddForce(-baseT.forward * 600f, ForceMode.Acceleration);
 						}
 						baseR.AddForce(Vector3.up * 200f, ForceMode.Acceleration);
@@ -7111,17 +7116,20 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	private void useGas(float amount)
 	{
-		if (amount == 0f)
+		if (!InRoomChat.god)
 		{
-			amount = useGasSpeed;
-		}
-		amount *= GasUsageModifier;
-		if (currentGas > 0f && GameSettings.bombMode <= 0 && !InRoomChat.god)
-		{
-			currentGas -= amount;
-			if (currentGas < 0f)
+			if (amount == 0f)
 			{
-				currentGas = 0f;
+				amount = useGasSpeed;
+			}
+			amount *= GasUsageModifier;
+			if (currentGas > 0f && GameSettings.bombMode <= 0)
+			{
+				currentGas -= amount;
+				if (currentGas < 0f)
+				{
+					currentGas = 0f;
+				}
 			}
 		}
 	}
