@@ -4434,6 +4434,7 @@ public class HERO : MONO, IAnarchyScriptHero
 			if (InRoomChat.god)
 			{
 				FengGameManagerMKII.instance.needChooseSide = true;
+				FengGameManagerMKII.instance.justSuicide = false;
 			}
         }
 		hasDied = true;
