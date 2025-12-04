@@ -3429,40 +3429,42 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 
 	public static void ThrowJusticeDefensive(PhotonPlayer Putin, string Reason)
 	{
-		if (Putin == null)
-		{
-			return;
-		}
-		string text = ((Putin.customProperties["name"] == null) ? "「Unknown」" : ("「" + Putin.customProperties["name"].ToString().StripColor().StripHex() + "」"));
-		string text2 = RCextensions.returnStringFromObject(Putin.customProperties["name"]);
-		if (text.Length >= 200 || text.ToString().StripColor().Length >= 20)
-		{
-			text = "「big name」";
-		}
-		if (!ignoreList.Contains(Putin.ID) && !Putin.isLocal)
-		{
-			if (PhotonNetwork.isMasterClient)
-			{
-				instance.kickPlayerRC(Putin, ban: true, "");
-			}
-			ignoreList.Add(Putin.ID);
-			if (!instance.DCPeopleList.Contains(text2))
-			{
-				instance.DCPeopleList.Add(text2);
-			}
-			if (!banHash.ContainsKey(Putin.ID) && !banHash.ContainsValue(text2))
-			{
-				banHash.Add(Putin.ID, text2);
-			}
-			instance.RecompilePlayerList(0.1f);
-			FleurConsole.instance.Log("<color=red><b>[" + (PhotonNetwork.isMasterClient ? "Ban" : "Ignore") + "]</b></color> " + text + " <color=#" + alternativefinalhex() + ">{" + Putin.ID + "}</color> <color=#" + finalhex() + ">Reason:</color> " + Reason, FleurConsole.DebugType.ANTI);
-			if (GameSettings.BotWarning > 0)
-			{
-				//AudioSource.PlayClipAtPoint(BotWarning, Camera.main.transform.position, AssistantVolume);
-			}
-			File.AppendAllText(Environment.CurrentDirectory + "\\Antis Log.txt", "[" + DateTime.Now.ToLongDateString() + " | " + DateTime.Now.ToLongTimeString() + "] " + (PhotonNetwork.isMasterClient ? "Ban " : "Ignore ") + ((Putin.uiname.StripHex().Length > 100) ? "big name" : Putin.uiname.StripHex()) + " {" + Putin.ID + "} " + Reason + Environment.NewLine + "------------------------------------------------------------------------------------------------------------------------" + Environment.NewLine);
-		}
-	}
+        //if (Putin == null)
+        //{
+        //	return;
+        //}
+        //string text = ((Putin.customProperties["name"] == null) ? "「Unknown」" : ("「" + Putin.customProperties["name"].ToString().StripColor().StripHex() + "」"));
+        //string text2 = RCextensions.returnStringFromObject(Putin.customProperties["name"]);
+        //if (text.Length >= 200 || text.ToString().StripColor().Length >= 20)
+        //{
+        //	text = "「big name」";
+        //}
+        //if (!ignoreList.Contains(Putin.ID) && !Putin.isLocal)
+        //{
+        //	if (PhotonNetwork.isMasterClient)
+        //	{
+        //		instance.kickPlayerRC(Putin, ban: true, "");
+        //	}
+        //	ignoreList.Add(Putin.ID);
+        //	if (!instance.DCPeopleList.Contains(text2))
+        //	{
+        //		instance.DCPeopleList.Add(text2);
+        //	}
+        //	if (!banHash.ContainsKey(Putin.ID) && !banHash.ContainsValue(text2))
+        //	{
+        //		banHash.Add(Putin.ID, text2);
+        //	}
+        //	instance.RecompilePlayerList(0.1f);
+        //	FleurConsole.instance.Log("<color=red><b>[" + (PhotonNetwork.isMasterClient ? "Ban" : "Ignore") + "]</b></color> " + text + " <color=#" + alternativefinalhex() + ">{" + Putin.ID + "}</color> <color=#" + finalhex() + ">Reason:</color> " + Reason, FleurConsole.DebugType.ANTI);
+        //	if (GameSettings.BotWarning > 0)
+        //	{
+        //		//AudioSource.PlayClipAtPoint(BotWarning, Camera.main.transform.position, AssistantVolume);
+        //	}
+        //	File.AppendAllText(Environment.CurrentDirectory + "\\Antis Log.txt", "[" + DateTime.Now.ToLongDateString() + " | " + DateTime.Now.ToLongTimeString() + "] " + (PhotonNetwork.isMasterClient ? "Ban " : "Ignore ") + ((Putin.uiname.StripHex().Length > 100) ? "big name" : Putin.uiname.StripHex()) + " {" + Putin.ID + "} " + Reason + Environment.NewLine + "------------------------------------------------------------------------------------------------------------------------" + Environment.NewLine);
+        //}
+        string text = ((Putin.customProperties["name"] == null) ? "「Unknown」" : ("「" + Putin.customProperties["name"].ToString().StripColor().StripHex() + "」"));
+        FleurConsole.instance.Log("<color=red><b>[" + (PhotonNetwork.isMasterClient ? "Ban" : "Ignore") + "]</b></color> " + text + " <color=#" + alternativefinalhex() + ">{" + Putin.ID + "}</color> <color=#" + finalhex() + ">Reason:</color> " + Reason, FleurConsole.DebugType.ANTI);
+    }
 
 	[RPC]
 	private void labelRPC(int setting, PhotonMessageInfo info)
