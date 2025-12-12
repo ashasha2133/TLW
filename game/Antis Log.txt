@@ -1,4 +1,0 @@
-[Tuesday, February 25, 2025 | 9:50:15 PM] Ignore [LS]Aliya {1} invalid TLW Detection: (System.Byte)4=(System.Object[])System.Object[], (System.Byte)3=(System.String)The_Last_Winter, (System.Byte)2=(System.Int32)-880635, (System.Byte)0=(System.Int32)1687
-------------------------------------------------------------------------------------------------------------------------
-[Thursday, June 19, 2025 | 7:48:52 PM] Ignore ashasha {1} quad material
-------------------------------------------------------------------------------------------------------------------------
