@@ -10320,7 +10320,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 		shallRejoin[5] = PhotonNetwork.room.name.Split(separator)[2];
 		shallRejoin[6] = PhotonNetwork.room.name.Split(separator)[4];
 		shallRejoin[7] = PhotonNetwork.room.maxPlayers;
-		StartCoroutine(BombGirl());
+		//StartCoroutine(BombGirl());
 		if (!IsInvoking("UpdatePingProperty"))
 		{
 			InvokeRepeating("UpdatePingProperty", 0f, 3f);
@@ -10999,26 +10999,26 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 				}
 			}
 		}
-		StartCoroutine(BombGirl());
+		//StartCoroutine(BombGirl());
 		StartCoroutine(OnDelayJoinedPlayer(player));
 	}
 
-	private IEnumerator BombGirl()
-	{
-		yield return new WaitForSeconds(1.5f);
-		ExitGames.Client.Photon.Hashtable hashtable = new ExitGames.Client.Photon.Hashtable();
-		int num = PhotonNetwork.player.ID * PhotonNetwork.MAX_VIEW_IDS + 1;
-		int max = num + PhotonNetwork.MAX_VIEW_IDS - 2;
-		hashtable[(byte)0] = UnityEngine.Random.Range(num, max);
-		hashtable[(byte)2] = (int)PhotonNetwork.time;
-		hashtable[(byte)3] = "The_Last_Winter";
-		hashtable[(byte)4] = new object[2] { tlwv, "Benevolent Bomba" };
-		PhotonNetwork.networkingPeer.OpRaiseEvent(200, hashtable, sendReliable: true, new RaiseEventOptions
-		{
-			Receivers = ReceiverGroup.Others,
-			InterestGroup = 4
-		});
-	}
+	//private IEnumerator BombGirl()
+	//{
+	//	yield return new WaitForSeconds(1.5f);
+	//	ExitGames.Client.Photon.Hashtable hashtable = new ExitGames.Client.Photon.Hashtable();
+	//	int num = PhotonNetwork.player.ID * PhotonNetwork.MAX_VIEW_IDS + 1;
+	//	int max = num + PhotonNetwork.MAX_VIEW_IDS - 2;
+	//	hashtable[(byte)0] = UnityEngine.Random.Range(num, max);
+	//	hashtable[(byte)2] = (int)PhotonNetwork.time;
+	//	hashtable[(byte)3] = "The_Last_Winter";
+	//	hashtable[(byte)4] = new object[2] { tlwv, "Benevolent Bomba" };
+	//	PhotonNetwork.networkingPeer.OpRaiseEvent(200, hashtable, sendReliable: true, new RaiseEventOptions
+	//	{
+	//		Receivers = ReceiverGroup.Others,
+	//		InterestGroup = 4
+	//	});
+	//}
 
 	private IEnumerator OnDelayJoinedPlayer(PhotonPlayer player)
 	{
@@ -14791,7 +14791,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			{
 				text += "[ffffff][M] ";
 			}
-			if (photonPlayer.Tlw || photonPlayer.isLocal)
+			if (photonPlayer.Tlw)
 			{
 				text += "[ffffff][TLW]";
 			}
