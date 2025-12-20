@@ -17,6 +17,7 @@ using System.Linq;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Runtime.Remoting.Contexts;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using UnityEngine;
@@ -838,6 +839,73 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
         InRoomChat.Chat("<color=#FFFFFF> Automated Message: " + msg.Replace("{name}", name) + "</color>", RCextensions.hexColor(PhotonNetwork.player.uiname));
     }
 
+
+	private static string lastCheckedDate;
+	private string lastChatDateLine()
+	{
+        string filePath = Environment.CurrentDirectory + "\\Chats\\.Chats.txt";
+        string line = null;
+
+        using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+        {
+            long pos = fs.Length - 1;
+            StringBuilder sb = new StringBuilder();
+
+            while (pos >= 0)
+            {
+                fs.Seek(pos, SeekOrigin.Begin);
+                int c = fs.ReadByte();
+                pos--;
+
+                if (c == '\n' || c == '\r')
+                {
+                    if (sb.Length > 0)
+                    {
+                        string currentLine = ReverseString(sb.ToString());
+                        sb.Length = 0;
+
+                        // Check if the line starts with "-"
+                        if (currentLine.StartsWith("-"))
+                        {
+                            line = currentLine;
+                            break;
+                        }
+                    }
+
+                    // Handle \r\n by skipping the other char
+                    if (c == '\n' && pos >= 0)
+                    {
+                        fs.Seek(pos, SeekOrigin.Begin);
+                        int prev = fs.ReadByte();
+                        if (prev == '\r') pos--;
+                    }
+                }
+                else
+                {
+                    sb.Append((char)c);
+                }
+            }
+
+            // Check the first line if we reached the beginning
+            if (line == null && sb.Length > 0)
+            {
+                string currentLine = ReverseString(sb.ToString());
+                if (currentLine.StartsWith("-"))
+                    line = currentLine;
+            }
+        }
+
+		if (line != null)
+			return line;
+		return null;
+    }
+    static string ReverseString(string s)
+    {
+        char[] arr = s.ToCharArray();
+        Array.Reverse(arr);
+        return new string(arr);
+    }
+
     [RPC]
 	private void Chat(string content, string sender, PhotonMessageInfo info)
 	{
@@ -888,7 +956,18 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			}
 			InRoomChat.Write(content);
 
-            File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt", "\n " + content.StripColor() + Environment.NewLine);
+            File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt", "\n " + content.StripColor().StripHex() + Environment.NewLine);
+            if (lastCheckedDate == null)
+			{
+				lastCheckedDate = lastChatDateLine();
+				lastCheckedDate = lastCheckedDate.Substring(60, lastCheckedDate.Length - 2 * 60);
+			}
+			if (lastCheckedDate != DateTime.Now.ToString("yyyy-MM-dd"))
+			{
+                File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\.Chats.txt", "\n\n----------------------------------------------------------- " + DateTime.Now.ToString("yyyy-MM-dd") + " -----------------------------------------------------------\n\n");
+				lastCheckedDate = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\.Chats.txt", "\n " + content.StripColor().StripHex() + Environment.NewLine);
 
             if (content.Contains("-"))
 			{
@@ -956,7 +1035,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			{
 				content = sender + ":" + content;
 			}
-			content = "<color=#FFC000>FROM [" + Convert.ToString(info.sender.ID) + "]</color> " + content;
+            content = DateTime.Now.ToString("h:mm:ss") + "<color=#FFC000>FROM [" + Convert.ToString(info.sender.ID) + "]</color> " + content;
 			if (!ignoreList.Contains(info.sender.ID) && (content.Length > 4000 || content.StripColor().StripHex().Length > 1000) && !info.sender.isLocal)
 			{
 				if (!ignoreList.Contains(info.sender.ID) && (content.Length > 4000 || content.StripColor().StripHex().Length > 1000))
@@ -975,8 +1054,22 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 				//AudioSource.PlayClipAtPoint(BotPersonallyContacted, Camera.main.transform.position, AssistantVolume);
 			}
 			InRoomChat.Write(content);
-		}
-		if (!InRoomChat.ChatInstanse.IsVisible)
+
+            File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt", "\n " + content.StripColor().StripHex() + Environment.NewLine);
+            if (lastCheckedDate == null)
+            {
+                lastCheckedDate = lastChatDateLine();
+                lastCheckedDate = lastCheckedDate.Substring(60, lastCheckedDate.Length - 2 * 60);
+            }
+            if (lastCheckedDate != DateTime.Now.ToString("yyyy-MM-dd"))
+            {
+                File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\.Chats.txt", "\n\n----------------------------------------------------------- " + DateTime.Now.ToString("yyyy-MM-dd") + " -----------------------------------------------------------\n\n");
+                lastCheckedDate = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+            File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\.Chats.txt", "\n " + content.StripColor().StripHex() + Environment.NewLine);
+
+        }
+        if (!InRoomChat.ChatInstanse.IsVisible)
 		{
 			InRoomChat.ChatInstanse.IsVisible = true;
 		}
