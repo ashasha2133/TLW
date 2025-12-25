@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.IO;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text.RegularExpressions;
@@ -269,15 +270,9 @@ public class InRoomChat : Photon.MonoBehaviour
 
 	public static int Write(string newLine)
 	{
-		if (messages.Count == 150)
+		if (messages.Count > 150)
 		{
-			FleurConsole.instance.Log("<color=red>Old messages will be cleared in 5 messages</color>", FleurConsole.DebugType.LOG);
-		}
-		if (messages.Count > 155)
-		{
-			int num = 5;
-			int count = messages.Count - num;
-			messages.RemoveRange(0, count);
+			messages.RemoveAt(messages.Count - 1);
 		}
 		MessageHistoryUpdatecache = true;
 		messages.Add(newLine.FilterSizeTag());
@@ -1438,7 +1433,23 @@ public class InRoomChat : Photon.MonoBehaviour
 	[MyCommand("pm")]
 	private void PlayerPrivateMessage(string[] args)
 	{
-		if (NetworkingPeer.mActors.TryGetValue(Convert.ToInt32(args[1]), out var value))
+        int id;
+
+
+        if (int.TryParse(args[1], out id)) { }
+        else
+        {
+            foreach (KeyValuePair<int, PhotonPlayer> val in NetworkingPeer.mActors)
+            {
+                if (RCextensions.StripHex(val.Value.uiname).ToLower() == args[1].ToLower())
+                {
+                    id = val.Key;
+                    break;
+                }
+            }
+        }
+
+        if (NetworkingPeer.mActors.TryGetValue(id, out var value))
 		{
 			string text = RCextensions.returnStringFromObject(PhotonNetwork.player.customProperties["name"]).hexColor();
 			if (text == string.Empty)
@@ -1472,13 +1483,30 @@ public class InRoomChat : Photon.MonoBehaviour
 					}
 				}
 			}
-			string text3 = string.Join(" ", args, 2, args.Length - 2);
+			string text3 = " <color=#FFFFFF>" + string.Join(" ", args, 2, args.Length - 2) + "</color>";
 			if ((int)FengGameManagerMKII.settings[324] == 0)
 			{
 				FengGameManagerMKII.instance.photonView.RPC("ChatPM", value, text, text3);
-				Write("<color=#FFC000>TO [" + value.ID + "]</color> " + text2 + ":" + text3);
-			}
-			else
+                var source = Camera.main.gameObject.AddComponent<AudioSource>();
+                source.name = "NotificationSound"; // give it a name for filtering
+                source.PlayOneShot(FengGameManagerMKII.ToClick, 1);
+                Destroy(source, FengGameManagerMKII.ToClick.length);
+                string content = DateTime.Now.ToString("h:mm:ss") + " <color=#FFC000>[" + value.ID + "] TO</color> " + text2 + ":" + text3;
+                Write(content);
+                File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt", "\n " + content.StripColor().StripHex() + Environment.NewLine);
+                if (FengGameManagerMKII.lastCheckedDate == null && File.Exists(Environment.CurrentDirectory + "\\Chats\\.Chats.txt"))
+                {
+                    FengGameManagerMKII.lastCheckedDate = FengGameManagerMKII.lastChatDateLine();
+                    FengGameManagerMKII.lastCheckedDate = FengGameManagerMKII.lastCheckedDate == null ? "1970-01-01" : FengGameManagerMKII.lastCheckedDate.Substring(60, FengGameManagerMKII.lastCheckedDate.Length - 2 * 60);
+                }
+                if (FengGameManagerMKII.lastCheckedDate != null && FengGameManagerMKII.lastCheckedDate != DateTime.Now.ToString("yyyy-MM-dd"))
+                {
+                    File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\.Chats.txt", "\n\n----------------------------------------------------------- " + DateTime.Now.ToString("yyyy-MM-dd") + " -----------------------------------------------------------\n\n");
+                    FengGameManagerMKII.lastCheckedDate = DateTime.Now.ToString("yyyy-MM-dd");
+                }
+                File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\.Chats.txt", "\n " + content.StripColor().StripHex() + Environment.NewLine);
+            }
+            else
 			{
 				TranslateOutgoingMessages(text3, PM: true, value.ID, text2);
 			}

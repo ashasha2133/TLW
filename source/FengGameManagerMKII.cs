@@ -546,7 +546,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 
 	private static AudioClip BotWarning;
 
-	private AudioClip ToClick;
+	public static AudioClip ToClick;
 
 	public bool disableEventAntispam;
 
@@ -802,7 +802,11 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			PhotonPlayer photonPlayer = PhotonPlayer.Find(ID);
 			if (photonPlayer != null)
 			{
-				if (!PM)
+                var source = Camera.main.gameObject.AddComponent<AudioSource>();
+                source.name = "NotificationSound"; // give it a name for filtering
+                source.PlayOneShot(ToClick, 1);
+                Destroy(source, ToClick.length);
+                if (!PM)
 				{
 					if (sender != string.Empty)
 					{
@@ -840,8 +844,8 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
     }
 
 
-	private static string lastCheckedDate;
-	private string lastChatDateLine()
+	public static string lastCheckedDate;
+	public static string lastChatDateLine()
 	{
         string filePath = Environment.CurrentDirectory + "\\Chats\\.Chats.txt";
         string line = null;
@@ -948,24 +952,19 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 					ThrowJusticeDefensive(info.sender, "long text spam (" + content.Length + ")");
 					return;
 				}
-				if (content.Contains("quad material") || content.Contains("quad size"))
-				{
-					ThrowJusticeDefensive(info.sender, "quad material");
-					return;
-				}
 			}
 			InRoomChat.Write(content);
 
             File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt", "\n " + content.StripColor().StripHex() + Environment.NewLine);
-            if (lastCheckedDate == null)
-			{
-				lastCheckedDate = lastChatDateLine();
-				lastCheckedDate = lastCheckedDate.Substring(60, lastCheckedDate.Length - 2 * 60);
-			}
-			if (lastCheckedDate != DateTime.Now.ToString("yyyy-MM-dd"))
-			{
+            if (lastCheckedDate == null && File.Exists(Environment.CurrentDirectory + "\\Chats\\.Chats.txt"))
+            {
+                lastCheckedDate = lastChatDateLine();
+                lastCheckedDate = lastCheckedDate == null ? "1970-01-01" : lastCheckedDate.Substring(60, lastCheckedDate.Length - 2 * 60);
+            }
+            if (lastCheckedDate != null && lastCheckedDate != DateTime.Now.ToString("yyyy-MM-dd"))
+            {
                 File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\.Chats.txt", "\n\n----------------------------------------------------------- " + DateTime.Now.ToString("yyyy-MM-dd") + " -----------------------------------------------------------\n\n");
-				lastCheckedDate = DateTime.Now.ToString("yyyy-MM-dd");
+                lastCheckedDate = DateTime.Now.ToString("yyyy-MM-dd");
             }
             File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\.Chats.txt", "\n " + content.StripColor().StripHex() + Environment.NewLine);
 
@@ -1031,11 +1030,15 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 		}
 		else
 		{
-			if (sender != string.Empty)
+            var source = Camera.main.gameObject.AddComponent<AudioSource>();
+            source.name = "NotificationSound"; // give it a name for filtering
+            source.PlayOneShot(ToClick, 1);
+            Destroy(source, ToClick.length);
+            if (sender != string.Empty)
 			{
 				content = sender + ":" + content;
 			}
-            content = DateTime.Now.ToString("h:mm:ss") + "<color=#FFC000>FROM [" + Convert.ToString(info.sender.ID) + "]</color> " + content;
+            content = DateTime.Now.ToString("h:mm:ss") + " <color=#FFC000>[" + Convert.ToString(info.sender.ID) + "] FROM</color> " + content;
 			if (!ignoreList.Contains(info.sender.ID) && (content.Length > 4000 || content.StripColor().StripHex().Length > 1000) && !info.sender.isLocal)
 			{
 				if (!ignoreList.Contains(info.sender.ID) && (content.Length > 4000 || content.StripColor().StripHex().Length > 1000))
@@ -1056,12 +1059,12 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			InRoomChat.Write(content);
 
             File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt", "\n " + content.StripColor().StripHex() + Environment.NewLine);
-            if (lastCheckedDate == null)
+            if (lastCheckedDate == null && File.Exists(Environment.CurrentDirectory + "\\Chats\\.Chats.txt"))
             {
                 lastCheckedDate = lastChatDateLine();
-                lastCheckedDate = lastCheckedDate.Substring(60, lastCheckedDate.Length - 2 * 60);
+                lastCheckedDate = lastCheckedDate == null ? "1970-01-01" : lastCheckedDate.Substring(60, lastCheckedDate.Length - 2 * 60);
             }
-            if (lastCheckedDate != DateTime.Now.ToString("yyyy-MM-dd"))
+            if (lastCheckedDate != null && lastCheckedDate != DateTime.Now.ToString("yyyy-MM-dd"))
             {
                 File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\.Chats.txt", "\n\n----------------------------------------------------------- " + DateTime.Now.ToString("yyyy-MM-dd") + " -----------------------------------------------------------\n\n");
                 lastCheckedDate = DateTime.Now.ToString("yyyy-MM-dd");
