@@ -272,7 +272,7 @@ public class InRoomChat : Photon.MonoBehaviour
 	{
 		if (messages.Count > 150)
 		{
-			messages.RemoveAt(messages.Count - 1);
+			messages.RemoveAt(0);
 		}
 		MessageHistoryUpdatecache = true;
 		messages.Add(newLine.FilterSizeTag());
