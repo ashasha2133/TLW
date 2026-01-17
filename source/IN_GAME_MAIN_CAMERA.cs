@@ -459,7 +459,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 			break;
 		case CAMERA_TYPE.TPS:
 		{
-			if (!FengCustomInputs.Inputs.menuOn && !FengGameManagerMKII.justSuicide)
+			if (!FengCustomInputs.Inputs.menuOn || !FengGameManagerMKII.justSuicide)
 			{
 				Screen.lockCursor = true;
 			}
