@@ -838,10 +838,6 @@ public class InRoomChat : Photon.MonoBehaviour
 				avg = avg / (int)n;
 
 				Chat(": " + RCextensions.hexColor(player.uiname) + "'s Average DMG: " + avg.ToString());
-				if ((int)player.customProperties["team"] == 2)
-                {
-                    Chat("(In Blade Numbers: " + ((int)(avg / 0.6)).ToString() + ")");
-                }
 				return;
 			}
 		}
