@@ -278,7 +278,7 @@ internal class CharacterSelection : MonoBehaviour
 				FengGameManagerMKII.costumeSet = CostumeSelected + 1;
 			SelectCamera();
 			ChoosePlayer(charactersList[CharSelected]);
-		}
+        }
 		GUILayout.Space(40f);
 		if (GUILayout.Button("<color=red><b>Titan</b></color>", GUILayout.Width(200f), GUILayout.Height(60f)))
 		{
@@ -375,9 +375,9 @@ internal class CharacterSelection : MonoBehaviour
 			}
 			string id = "RANDOM";
 			NGUITools.SetActive(CacheGameObject.Find("UI_IN_GAME").GetComponent<UIReferArray>().panels[0], state: true);
-			if ((!PhotonNetwork.isMasterClient && FengGameManagerMKII.instance.roundTime > 60f) || FengGameManagerMKII.instance.justSuicide)
+			if ((!PhotonNetwork.isMasterClient && FengGameManagerMKII.instance.roundTime > 60f) || FengGameManagerMKII.justSuicide)
 			{
-				FengGameManagerMKII.instance.justSuicide = false;
+				FengGameManagerMKII.justSuicide = false;
 				FengGameManagerMKII.instance.NOTSpawnNonAITitan(id);
 			}
 			else

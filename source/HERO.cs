@@ -1771,7 +1771,7 @@ public class HERO : MONO, IAnarchyScriptHero
 			if (InRoomChat.god)
 			{
 				FengGameManagerMKII.instance.needChooseSide = true;
-				FengGameManagerMKII.instance.justSuicide = false;
+				FengGameManagerMKII.justSuicide = false;
 			}
             falseAttack();
 			hasDied = true;
@@ -1816,7 +1816,7 @@ public class HERO : MONO, IAnarchyScriptHero
 			if (InRoomChat.god)
 			{
 				FengGameManagerMKII.instance.needChooseSide = true;
-				FengGameManagerMKII.instance.justSuicide = false;
+				FengGameManagerMKII.justSuicide = false;
 			}
             falseAttack();
 			hasDied = true;
@@ -4086,7 +4086,7 @@ public class HERO : MONO, IAnarchyScriptHero
 			if (InRoomChat.god)
 			{
 				FengGameManagerMKII.instance.needChooseSide = true;
-				FengGameManagerMKII.instance.justSuicide = false;
+				FengGameManagerMKII.justSuicide = false;
 			}
 			if (invincible > 0f || (PhotonNetwork.player.customProperties["dead"] != null && RCextensions.returnBoolFromObject(PhotonNetwork.player.customProperties["dead"])))
 			{
@@ -4271,7 +4271,7 @@ public class HERO : MONO, IAnarchyScriptHero
 			if (InRoomChat.god)
 			{
 				FengGameManagerMKII.instance.needChooseSide = true;
-				FengGameManagerMKII.instance.justSuicide = false;
+				FengGameManagerMKII.justSuicide = false;
 			}
         }
         falseAttack();
@@ -4333,7 +4333,7 @@ public class HERO : MONO, IAnarchyScriptHero
 			if (InRoomChat.god)
 			{
 				FengGameManagerMKII.instance.needChooseSide = true;
-				FengGameManagerMKII.instance.justSuicide = false;
+				FengGameManagerMKII.justSuicide = false;
 			}
             if (invincible > 0f || (GameSettings.bombMode == 0 && PhotonNetwork.player.customProperties["dead"] != null && RCextensions.returnBoolFromObject(PhotonNetwork.player.customProperties["dead"])))
 			{
@@ -4434,7 +4434,7 @@ public class HERO : MONO, IAnarchyScriptHero
 			if (InRoomChat.god)
 			{
 				FengGameManagerMKII.instance.needChooseSide = true;
-				FengGameManagerMKII.instance.justSuicide = false;
+				FengGameManagerMKII.justSuicide = false;
 			}
         }
 		hasDied = true;
@@ -5608,7 +5608,7 @@ public class HERO : MONO, IAnarchyScriptHero
 		{
 			netDieLocal(baseR.velocity * 50f, isBite: false, -1, string.Empty);
 			FengGameManagerMKII.instance.needChooseSide = true;
-			FengGameManagerMKII.instance.justSuicide = true;
+			FengGameManagerMKII.justSuicide = true;
 			if (GameSettings.bombMode > 0)
 			{
 				ExitGames.Client.Photon.Hashtable hashtable = new ExitGames.Client.Photon.Hashtable();
@@ -5688,10 +5688,6 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	public void update()
 	{
-        if (FengCustomInputs.Inputs.isInputDown[InputCode.restart])
-        {
-            suicide2();
-        }
         if (useGun && !grounded)
 		{
 			usingAhss = true;
@@ -5722,7 +5718,11 @@ public class HERO : MONO, IAnarchyScriptHero
 		{
 			return;
 		}
-		if (myCannonRegion != null)
+        if (FengCustomInputs.Inputs.isInputDown[InputCode.restart])
+        {
+            suicide2();
+        }
+        if (myCannonRegion != null)
 		{
 			FengGameManagerMKII.instance.ShowHUDInfoCenter("Press 'Cannon Mount' key to use Cannon.");
 			if (FengGameManagerMKII.inputRC.isInputCannonDown(InputCodeRC.cannonMount))

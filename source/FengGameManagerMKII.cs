@@ -204,7 +204,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 
 	private bool isWinning;
 
-	public bool justSuicide;
+	public static bool justSuicide;
 
 	private ArrayList kicklist;
 
@@ -2104,7 +2104,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 				{
 					if (CharacterSelection.characterSelectionIsVisible)
 					{
-						Screen.lockCursor = true;
+                        Screen.lockCursor = true;
 						Screen.showCursor = true;
 						NGUITools.SetActive(uirefer.panels[0], state: true);
 						NGUITools.SetActive(uirefer.panels[1], state: false);

@@ -459,7 +459,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 			break;
 		case CAMERA_TYPE.TPS:
 		{
-			if (!FengCustomInputs.Inputs.menuOn)
+			if (!FengCustomInputs.Inputs.menuOn && !FengGameManagerMKII.justSuicide)
 			{
 				Screen.lockCursor = true;
 			}
@@ -1058,9 +1058,9 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 			}
 			if (FengCustomInputs.Inputs.isInputDown[InputCode.flare1])
 			{
-				List<GameObject> list = new List<GameObject>(FengGameManagerMKII.allheroes.Where((GameObject h) => h != null));
+                List<GameObject> list = new List<GameObject>(FengGameManagerMKII.allheroes.Where((GameObject h) => h != null));
 				currentPeekPlayerIndex++;
-				if (currentPeekPlayerIndex >= list.Count)
+                if (currentPeekPlayerIndex >= list.Count)
 				{
 					currentPeekPlayerIndex = 0;
 				}
@@ -1070,7 +1070,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 					setSpectorMode(val: false);
 					lockAngle = false;
 				}
-			}
+            }
 			if (FengCustomInputs.Inputs.isInputDown[InputCode.flare2])
 			{
 				List<GameObject> list = new List<GameObject>(FengGameManagerMKII.allheroes.Where((GameObject h) => h != null));

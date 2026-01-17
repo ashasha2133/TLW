@@ -3042,7 +3042,7 @@ public class TITAN : MONO
 			FengGameManagerMKII.instance.sendKillInfo(t1: false, string.Empty, t2: true, (string)PhotonNetwork.player.customProperties["name"], 0);
 		}
 		FengGameManagerMKII.instance.needChooseSide = true;
-		FengGameManagerMKII.instance.justSuicide = true;
+		FengGameManagerMKII.justSuicide = true;
 	}
 
 	public void testVisual(bool setCollider)
