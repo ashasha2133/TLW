@@ -1296,6 +1296,13 @@ public class InRoomChat : Photon.MonoBehaviour
 		Write("");
 	}
 
+	[MyCommand("clearl")]
+	[MyCommand("clearlog")]
+	private void logClear(string[] args)
+	{
+		FleurConsole.messages.Clear();
+	}
+
 	[MyCommand("ignorelist")]
 	private void IgnoreList(string[] args)
 	{

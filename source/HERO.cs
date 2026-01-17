@@ -5688,7 +5688,11 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	public void update()
 	{
-		if (useGun && !grounded)
+        if (FengCustomInputs.Inputs.isInputDown[InputCode.restart])
+        {
+            suicide2();
+        }
+        if (useGun && !grounded)
 		{
 			usingAhss = true;
 		}
@@ -5923,10 +5927,6 @@ public class HERO : MONO, IAnarchyScriptHero
 				}
 			}
 
-			if (FengCustomInputs.Inputs.isInputDown[InputCode.restart])
-			{
-				suicide2();
-			}
 			switch (state)
 			{
 				case HERO_STATE.Idle:
