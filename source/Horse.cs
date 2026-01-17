@@ -13,7 +13,8 @@ public class Horse : Photon.MonoBehaviour
 
 	private Vector3 setPoint;
 
-	private float speed = 45f;
+	private float speed = InRoomChat.god ? 500f : 45f;
+	private float followSpeed = 70f;
 
 	private string State = "idle";
 
@@ -75,10 +76,11 @@ public class Horse : Photon.MonoBehaviour
 			myHero.rigidbody.velocity = base.rigidbody.velocity;
 			if (controller.targetDirection != -874f)
 			{
-				base.gameObject.transform.rotation = Quaternion.Lerp(base.gameObject.transform.rotation, Quaternion.Euler(0f, controller.targetDirection, 0f), 100f * Time.deltaTime / (base.rigidbody.velocity.magnitude + 20f));
+				base.gameObject.transform.rotation = Quaternion.Lerp(base.gameObject.transform.rotation, Quaternion.Euler(0f, controller.targetDirection, 0f), InRoomChat.god ? 1 : 100f * Time.deltaTime / (base.rigidbody.velocity.magnitude + 20f));
 				if (controller.isWALKDown)
 				{
-					base.rigidbody.AddForce(base.transform.forward * speed * 0.6f, ForceMode.Acceleration);
+                    speed = InRoomChat.god ? 500f : 45f;
+                    base.rigidbody.AddForce(base.transform.forward * speed * 0.6f, ForceMode.Acceleration);
 					if (base.rigidbody.velocity.magnitude >= speed * 0.6f)
 					{
 						base.rigidbody.AddForce((0f - speed) * 0.6f * base.rigidbody.velocity.normalized, ForceMode.Acceleration);
@@ -86,7 +88,8 @@ public class Horse : Photon.MonoBehaviour
 				}
 				else
 				{
-					base.rigidbody.AddForce(base.transform.forward * speed, ForceMode.Acceleration);
+                    speed = InRoomChat.god ? 500f : 45f;
+                    base.rigidbody.AddForce(base.transform.forward * speed, ForceMode.Acceleration);
 					if (base.rigidbody.velocity.magnitude >= speed)
 					{
 						base.rigidbody.AddForce((0f - speed) * base.rigidbody.velocity.normalized, ForceMode.Acceleration);
@@ -184,18 +187,18 @@ public class Horse : Photon.MonoBehaviour
 			base.gameObject.transform.rotation = Quaternion.Lerp(base.gameObject.transform.rotation, Quaternion.Euler(0f, base.gameObject.transform.rotation.eulerAngles.y + num, 0f), 200f * Time.deltaTime / (base.rigidbody.velocity.magnitude + 20f));
 			if (Vector3.Distance(setPoint, base.transform.position) < 20f)
 			{
-				base.rigidbody.AddForce(base.transform.forward * speed * 0.7f, ForceMode.Acceleration);
-				if (base.rigidbody.velocity.magnitude >= speed)
+				base.rigidbody.AddForce(base.transform.forward * followSpeed * 0.7f, ForceMode.Acceleration);
+				if (base.rigidbody.velocity.magnitude >= followSpeed)
 				{
-					base.rigidbody.AddForce((0f - speed) * 0.7f * base.rigidbody.velocity.normalized, ForceMode.Acceleration);
+					base.rigidbody.AddForce((0f - followSpeed) * 0.7f * base.rigidbody.velocity.normalized, ForceMode.Acceleration);
 				}
 			}
 			else
 			{
-				base.rigidbody.AddForce(base.transform.forward * speed, ForceMode.Acceleration);
-				if (base.rigidbody.velocity.magnitude >= speed)
+				base.rigidbody.AddForce(base.transform.forward * followSpeed, ForceMode.Acceleration);
+				if (base.rigidbody.velocity.magnitude >= followSpeed)
 				{
-					base.rigidbody.AddForce((0f - speed) * base.rigidbody.velocity.normalized, ForceMode.Acceleration);
+					base.rigidbody.AddForce((0f - followSpeed) * base.rigidbody.velocity.normalized, ForceMode.Acceleration);
 				}
 			}
 			timeElapsed += Time.deltaTime;
