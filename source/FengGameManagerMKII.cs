@@ -6777,7 +6777,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			{
 				settings[133] = 2;
 			}
-			settings[134] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 0f, 230f, 20f), (string)settings[134]);
+            settings[134] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 0f, 230f, 20f), (string)settings[134]);
 			settings[135] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 1f, 230f, 20f), (string)settings[135]);
 			settings[136] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 2f, 230f, 20f), (string)settings[136]);
 			settings[137] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 3f, 230f, 20f), (string)settings[137]);

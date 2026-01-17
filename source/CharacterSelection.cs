@@ -235,8 +235,47 @@ internal class CharacterSelection : MonoBehaviour
 		GUILayout.BeginArea(new Rect(25f, (GameSettings.bombMode > 0) ? 450 : 310, 450f, 70f));
 		GUILayout.BeginHorizontal();
 		if (GUILayout.Button("<color=red><b>Human</b></color>", GUILayout.Width(200f), GUILayout.Height(60f)))
-		{
-			FengGameManagerMKII.costumeSet = CostumeSelected + 1;
+        {
+            int num = 610, num2 = 290, num3 = 25;
+            if (CharSelected == 0)
+			{
+                FengGameManagerMKII.settings[133] = 1;
+                FengGameManagerMKII.settings[134] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 0f, 230f, 20f), (string)FengGameManagerMKII.settings[134]);
+                FengGameManagerMKII.settings[135] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 1f, 230f, 20f), (string)FengGameManagerMKII.settings[135]);
+                FengGameManagerMKII.settings[136] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 2f, 230f, 20f), (string)FengGameManagerMKII.settings[136]);
+                FengGameManagerMKII.settings[137] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 3f, 230f, 20f), (string)FengGameManagerMKII.settings[137]);
+                FengGameManagerMKII.settings[138] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 4f, 230f, 20f), (string)FengGameManagerMKII.settings[138]);
+                FengGameManagerMKII.settings[139] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 5f, 230f, 20f), (string)FengGameManagerMKII.settings[139]);
+                FengGameManagerMKII.settings[145] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 6f, 230f, 20f), (string)FengGameManagerMKII.settings[145]);
+                FengGameManagerMKII.settings[140] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 7f, 230f, 20f), (string)FengGameManagerMKII.settings[140]);
+                FengGameManagerMKII.settings[141] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 8f, 230f, 20f), (string)FengGameManagerMKII.settings[141]);
+                FengGameManagerMKII.settings[142] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 9f, 230f, 20f), (string)FengGameManagerMKII.settings[142]);
+                FengGameManagerMKII.settings[143] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 10f, 230f, 20f), (string)FengGameManagerMKII.settings[143]);
+                FengGameManagerMKII.settings[144] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 11f, 230f, 20f), (string)FengGameManagerMKII.settings[144]);
+                FengGameManagerMKII.settings[146] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 12f, 230f, 20f), (string)FengGameManagerMKII.settings[146]);
+                FengGameManagerMKII.settings[318] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 13f, 230f, 20f), (string)FengGameManagerMKII.settings[318]);
+                FengGameManagerMKII.settings[319] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 14f, 230f, 20f), (string)FengGameManagerMKII.settings[319]);
+            }
+			else if (CharSelected == 3)
+			{
+                FengGameManagerMKII.settings[133] = 0;
+                FengGameManagerMKII.settings[3] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 0f, 230f, 20f), (string)FengGameManagerMKII.settings[3]);
+                FengGameManagerMKII.settings[4] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 1f, 230f, 20f), (string)FengGameManagerMKII.settings[4]);
+                FengGameManagerMKII.settings[5] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 2f, 230f, 20f), (string)FengGameManagerMKII.settings[5]);
+                FengGameManagerMKII.settings[6] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 3f, 230f, 20f), (string)FengGameManagerMKII.settings[6]);
+                FengGameManagerMKII.settings[7] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 4f, 230f, 20f), (string)FengGameManagerMKII.settings[7]);
+                FengGameManagerMKII.settings[8] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 5f, 230f, 20f), (string)FengGameManagerMKII.settings[8]);
+                FengGameManagerMKII.settings[14] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 6f, 230f, 20f), (string)FengGameManagerMKII.settings[14]);
+                FengGameManagerMKII.settings[9] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 7f, 230f, 20f), (string)FengGameManagerMKII.settings[9]);
+                FengGameManagerMKII.settings[10] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 8f, 230f, 20f), (string)FengGameManagerMKII.settings[10]);
+                FengGameManagerMKII.settings[11] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 9f, 230f, 20f), (string)FengGameManagerMKII.settings[11]);
+                FengGameManagerMKII.settings[12] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 10f, 230f, 20f), (string)FengGameManagerMKII.settings[12]);
+                FengGameManagerMKII.settings[13] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 11f, 230f, 20f), (string)FengGameManagerMKII.settings[13]);
+                FengGameManagerMKII.settings[94] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 12f, 230f, 20f), (string)FengGameManagerMKII.settings[94]);
+                FengGameManagerMKII.settings[316] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 13f, 230f, 20f), (string)FengGameManagerMKII.settings[316]);
+                FengGameManagerMKII.settings[317] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 14f, 230f, 20f), (string)FengGameManagerMKII.settings[317]);
+            }
+				FengGameManagerMKII.costumeSet = CostumeSelected + 1;
 			SelectCamera();
 			ChoosePlayer(charactersList[CharSelected]);
 		}
