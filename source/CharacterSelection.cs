@@ -236,6 +236,7 @@ internal class CharacterSelection : MonoBehaviour
 		GUILayout.BeginHorizontal();
 		if (GUILayout.Button("<color=red><b>Human</b></color>", GUILayout.Width(200f), GUILayout.Height(60f)))
         {
+			FengGameManagerMKII.justSuicide = false;
             int num = 610, num2 = 290, num3 = 25;
             if (CharSelected == 0)
 			{
@@ -275,7 +276,7 @@ internal class CharacterSelection : MonoBehaviour
                 FengGameManagerMKII.settings[316] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 13f, 230f, 20f), (string)FengGameManagerMKII.settings[316]);
                 FengGameManagerMKII.settings[317] = GUI.TextField(new Rect(num + 415f, num2 + 112f + num3 * 14f, 230f, 20f), (string)FengGameManagerMKII.settings[317]);
             }
-				FengGameManagerMKII.costumeSet = CostumeSelected + 1;
+			FengGameManagerMKII.costumeSet = CostumeSelected + 1;
 			SelectCamera();
 			ChoosePlayer(charactersList[CharSelected]);
         }
