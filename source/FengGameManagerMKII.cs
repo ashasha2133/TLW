@@ -973,7 +973,8 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
                 string botTxt = Regex.Replace(content, "<color=#.*?>", "");
                 botTxt = Regex.Replace(botTxt, "</color>", "");
 				botTxt = botTxt.Replace(":", ": ");
-				if (botTxt.Contains("-avg") || botTxt.Contains("-average") || botTxt.Contains("-kd"))
+				if (botTxt.Contains("-avg") || botTxt.Contains("-average") ||
+					botTxt.Contains("-kd") || botTxt.Contains("-rev") || botTxt.Contains("-revive"))
 					botTxt += " " + info.sender.ID.ToString();
                 InRoomChat.BotCommandInvoke(botTxt);
             }

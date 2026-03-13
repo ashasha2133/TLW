@@ -715,21 +715,19 @@ public class InRoomChat : Photon.MonoBehaviour
         Chat(": " + (UnityEngine.Random.Range(0, 2) == 1 ? "Heads" : "Tails"));
     }
 
- //   [BotCommand("rev")]
-	//[BotCommand("revive")]
-	//private void SelfRev(string[] args)
-	//{
-	//	int num = Convert.ToInt32(args[1]);
-	//	if (NetworkingPeer.mActors.TryGetValue(num, out var value))
-	//	{
-	//		Write($"<color=#FFCC00>Player {num} has been revived.</color>");
-	//		if (value.customProperties["dead"] != null && RCextensions.returnBoolFromObject(value.customProperties["dead"]) && RCextensions.returnIntFromObject(value.customProperties["isTitan"]) != 2)
-	//		{
-	//			FengGameManagerMKII.instance.photonView.RPC("Chat", value, "<color=#FFCC00>You have been revived by the master client.</color>", string.Empty);
-	//			FengGameManagerMKII.instance.photonView.RPC("respawnHeroInNewRound", value);
-	//		}
-	//	}
-	//}
+    [BotCommand("rev")]
+	[BotCommand("revive")]
+	private void SelfRev(string[] args)
+	{
+		int.TryParse(args[args.Length - 1], out int num);
+		if (NetworkingPeer.mActors.TryGetValue(num, out var value))
+		{
+			if (value.customProperties["dead"] != null && RCextensions.returnBoolFromObject(value.customProperties["dead"]) && RCextensions.returnIntFromObject(value.customProperties["isTitan"]) != 2)
+			{
+				FengGameManagerMKII.instance.photonView.RPC("respawnHeroInNewRound", value);
+			}
+		}
+	}
 
 	[MyCommand("clone")]
     private void Clone(string[] args)
