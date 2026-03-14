@@ -1095,27 +1095,27 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 				return;
 			}
 		}
-		if (FengCustomInputs.Inputs.isInputDown[InputCode.pause])
-		{
-			if (isPausing)
-			{
-				if (main_object != null && mainT != null)
-				{
-					Vector3 position = mainT.position;
-					position = MainObjectPosition;
-					position += Vector3.up * heightMulti;
-					mainT.position = Vector3.Lerp(mainT.position, position - mainT.forward * 5f, Time.deltaTime * 1f);
-				}
-				return;
-			}
-			isPausing = !isPausing;
-			if (gametype == GAMETYPE.SINGLE)
-			{
-				Time.timeScale = 0f;
-			}
-			FengCustomInputs.Inputs.menuOn = (Screen.showCursor = true);
-			Screen.lockCursor = false;
-		}
+		//if (FengCustomInputs.Inputs.isInputDown[InputCode.pause])
+		//{
+		//	if (isPausing)
+		//	{
+		//		if (main_object != null && mainT != null)
+		//		{
+		//			Vector3 position = mainT.position;
+		//			position = MainObjectPosition;
+		//			position += Vector3.up * heightMulti;
+		//			mainT.position = Vector3.Lerp(mainT.position, position - mainT.forward * 5f, Time.deltaTime * 1f);
+		//		}
+		//		return;
+		//	}
+		//	isPausing = !isPausing;
+		//	if (gametype == GAMETYPE.SINGLE)
+		//	{
+		//		Time.timeScale = 0f;
+		//	}
+		//	FengCustomInputs.Inputs.menuOn = (Screen.showCursor = true);
+		//	Screen.lockCursor = false;
+		//}
 		if (needSetHUD)
 		{
 			needSetHUD = false;

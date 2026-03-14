@@ -645,7 +645,7 @@ public class FengCustomInputs : MonoBehaviour
 
 	private void Update()
 	{
-		if (!menuOn)
+		if (!menuOn || true)
 		{
 			inputSetBools();
 		}

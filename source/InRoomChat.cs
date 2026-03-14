@@ -1218,15 +1218,8 @@ public class InRoomChat : Photon.MonoBehaviour
 	[MyCommand("menu")]
 	private void MenuOn(string[] args)
 	{
-		if (!FengCustomInputs.Inputs.menuOn)
-		{
-			FengCustomInputs.Inputs.menuOn = true;
-		}
-		else if (FengCustomInputs.Inputs.menuOn)
-		{
-			FengCustomInputs.Inputs.menuOn = false;
-		}
-	}
+		FengCustomInputs.Inputs.menuOn = !FengCustomInputs.Inputs.menuOn;
+    }
 
 	[MyCommand("aso")]
 	private void ASORules(string[] args)
