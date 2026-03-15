@@ -1658,6 +1658,14 @@ public class InRoomChat : Photon.MonoBehaviour
 			Write("<color=#FFCC00>error: not master client</color>");
 		}
 	}
+	
+	[MyCommand("kill")]
+	private void Kill(string[] args)
+	{
+		int.TryParse(args[1], out int id);
+		HERO hero = HERO.FindMyHero(id);
+		hero.photonView.RPC("netDie2", PhotonTargets.All, -1, "Fuck You");
+    }
 
     [MyCommand("stay")]
     private void Stay(string[] args)
