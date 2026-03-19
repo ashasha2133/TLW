@@ -1,0 +1,280 @@
+OnRoundStart()
+{
+  VariablePlayer.Set("player", VariablePlayer("player"));
+
+  VariableFloat.Set("tpX", 12055.0);
+  VariableFloat.Set("tpY", 5.0);
+  VariableFloat.Set("tpZ", 13043.0);
+
+  VariableBool.Set("teleport", false);
+}
+
+OnChatInput("input")
+{
+
+  If(String.Equals(VariableString("input"), "/1"))
+  {
+    VariableFloat.Set("tpX", 12055.0);
+    VariableFloat.Set("tpY", 5.0);
+    VariableFloat.Set("tpZ", 13043.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/2"))
+  {
+    VariableFloat.Set("tpX", 70.0);
+    VariableFloat.Set("tpY", 0.0);
+    VariableFloat.Set("tpZ", -70.0);
+    VariableBool.Set("teleport", true);
+  }
+  
+  If(String.Equals(VariableString("input"), "/3"))
+  {
+    VariableFloat.Set("tpX", -4000.0);
+    VariableFloat.Set("tpY", 10011.0);
+    VariableFloat.Set("tpZ", -5410.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/4"))
+  {
+    VariableFloat.Set("tpX", 2000.0);
+    VariableFloat.Set("tpY", -2399.5);
+    VariableFloat.Set("tpZ", 1445.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/5"))
+  {
+    VariableFloat.Set("tpX", 10025.0);
+    VariableFloat.Set("tpY", -9740.0);
+    VariableFloat.Set("tpZ", 9900.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/6"))
+  {
+    VariableFloat.Set("tpX", -5428.0);
+    VariableFloat.Set("tpY", -3990.0);
+    VariableFloat.Set("tpZ", -5420.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/7"))
+  {
+    VariableFloat.Set("tpX", -1500.0);
+    VariableFloat.Set("tpY", 4540.0);
+    VariableFloat.Set("tpZ", -2550.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/8"))
+  {
+    VariableFloat.Set("tpX", 0.0);
+    VariableFloat.Set("tpY", -1985.000000);
+    VariableFloat.Set("tpZ", 0.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/9"))
+  {
+    VariableFloat.Set("tpX", 1450.0);
+    VariableFloat.Set("tpY", 117.0);
+    VariableFloat.Set("tpZ", 10550.0);
+    VariableBool.Set("teleport", true);
+  }
+  
+  If(String.Equals(VariableString("input"), "/10"))
+  {
+    VariableFloat.Set("tpX", 1000.0);
+    VariableFloat.Set("tpY", -10000.0);
+    VariableFloat.Set("tpZ", 0.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/11"))
+  {
+    VariableFloat.Set("tpX", -1000.0);
+    VariableFloat.Set("tpY", -10000.0);
+    VariableFloat.Set("tpZ", 0.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/12"))
+  {
+    VariableFloat.Set("tpX", -610.0);
+    VariableFloat.Set("tpY", -21090.0);
+    VariableFloat.Set("tpZ", -1380.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/13"))
+  {
+    VariableFloat.Set("tpX", -73.000000);
+    VariableFloat.Set("tpY", -21500.000000);
+    VariableFloat.Set("tpZ", -21131.000000);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/14"))
+  {
+    VariableFloat.Set("tpX", -11185.0);
+    VariableFloat.Set("tpY", 106.0);
+    VariableFloat.Set("tpZ", -90.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/15"))
+  {
+    VariableFloat.Set("tpX", -17700.0);
+    VariableFloat.Set("tpY", -18800.0);
+    VariableFloat.Set("tpZ", -31200.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/16"))
+  {
+    VariableFloat.Set("tpX", -18616.0);
+    VariableFloat.Set("tpY", 56.0);
+    VariableFloat.Set("tpZ", 2685.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/17"))
+  {
+    VariableFloat.Set("tpX", -10000.0);
+    VariableFloat.Set("tpY", 3030.5);
+    VariableFloat.Set("tpZ", -4387.5);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/18"))
+  {
+    VariableFloat.Set("tpX", -40000.0);
+    VariableFloat.Set("tpY", -5000.0);
+    VariableFloat.Set("tpZ", 0.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/19"))
+  {
+    VariableFloat.Set("tpX", -30000.0);
+    VariableFloat.Set("tpY", -5000.0);
+    VariableFloat.Set("tpZ", 0.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/20"))
+  {
+    VariableFloat.Set("tpX", -20000.0);
+    VariableFloat.Set("tpY", -5000.0);
+    VariableFloat.Set("tpZ", 0.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/21"))
+  {
+    VariableFloat.Set("tpX", -10005.0);
+    VariableFloat.Set("tpY", -4949.0);
+    VariableFloat.Set("tpZ", -610.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/22"))
+  {
+    VariableFloat.Set("tpX", -17.5);
+    VariableFloat.Set("tpY", -6998.0);
+    VariableFloat.Set("tpZ", -92.5);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/23"))
+  {
+    VariableFloat.Set("tpX", 10000.0);
+    VariableFloat.Set("tpY", -5930.0);
+    VariableFloat.Set("tpZ", -10.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/24"))
+  {
+    VariableFloat.Set("tpX", 20000.0);
+    VariableFloat.Set("tpY", -5930.0);
+    VariableFloat.Set("tpZ", -10.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/25"))
+  {
+    VariableFloat.Set("tpX", 30000.0);
+    VariableFloat.Set("tpY", -6000.0);
+    VariableFloat.Set("tpZ", -0.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/26"))
+  {
+    VariableFloat.Set("tpX", 40000.0);
+    VariableFloat.Set("tpY", -6000.0);
+    VariableFloat.Set("tpZ", -0.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/27"))
+  {
+    VariableFloat.Set("tpX", 50000.0);
+    VariableFloat.Set("tpY", -6000.0);
+    VariableFloat.Set("tpZ", -0.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/28"))
+  {
+    VariableFloat.Set("tpX", -850.0);
+    VariableFloat.Set("tpY", -5695.0);
+    VariableFloat.Set("tpZ", 49100.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/29"))
+  {
+    VariableFloat.Set("tpX", 70022.0);
+    VariableFloat.Set("tpY", -3311.0);
+    VariableFloat.Set("tpZ", -20097.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/30"))
+  {
+    VariableFloat.Set("tpX", 1119.0);
+    VariableFloat.Set("tpY", -5925.0);
+    VariableFloat.Set("tpZ", 41310.0);riva 
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/31"))
+  {
+    VariableFloat.Set("tpX", -2176.0);
+    VariableFloat.Set("tpY", -6900.0);
+    VariableFloat.Set("tpZ", 30444.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(String.Equals(VariableString("input"), "/32"))
+  {
+    VariableFloat.Set("tpX", -1.0);
+    VariableFloat.Set("tpY", -6998.5);
+    VariableFloat.Set("tpZ", 20210.0);
+    VariableBool.Set("teleport", true);
+  }
+
+  If(Bool.Equals(VariableBool("teleport"), true))
+  {
+  ForeachPlayer("player")
+    {
+      Player.MovePlayer(VariablePlayer("player"), VariableFloat("tpX"), VariableFloat("tpY"), VariableFloat("tpZ"));
+    }
+  }
+
+  VariableBool.Set("teleport", false);
+}

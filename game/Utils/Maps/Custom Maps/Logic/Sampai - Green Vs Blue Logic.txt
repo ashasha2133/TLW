@@ -1,0 +1,419 @@
+//https://www.aotskins.com/viewtopic.php?f=86&t=11887&sid=23608ecae0fc56b6d826d84c28d256f7;
+OnFirstLoad()
+{
+ Game.PrintMessage("Logic Loaded");
+ Game.PrintMessage("Logic by Sampai (Sysyfus#5343)");
+ Game.PrintMessage("/commonvd 900");
+ Game.PrintMessage("/fogmodee 1 20 5");
+ VariableInt.Set("greenteampoints", 0);
+ VariableInt.Set("blueteampoints", 0);
+ VariableBool.Set("gameover", true);
+ VariableBool.Set("greenwin", false);
+ VariableBool.Set("bluewin", false);
+ VariableBool.Set("victorymessagesent", false);
+ VariableInt.Set("timer", 0);
+ VariableInt.Set("numtitans", 0);
+ VariableBool.Set("splitmode", true);
+ VariableBool.Set("bosson", true);
+ VariableBool.Set("bossalive", false);
+ VariableBool.Set("healthmode", true);
+}
+
+OnRoundStart()
+{
+ VariableInt.Set("greenteampoints", 0);
+ VariableInt.Set("blueteampoints", 0);
+ VariableBool.Set("gameover", true);
+ VariableBool.Set("greenwin", false);
+ VariableBool.Set("bluewin", false);
+ VariableBool.Set("victorymessagesent", false);
+ VariableInt.Set("timer", 0);
+ VariableInt.Set("numtitans", 0);
+ VariableBool.Set("splitmode", true);
+ VariableBool.Set("bosson", true);
+ VariableBool.Set("bossalive", false);
+ VariableBool.Set("healthmode", true);
+
+}
+
+OnUpdate()
+{
+ VariableInt.Set("numtitans", 0);
+ ForeachTitan("titan")
+ {
+  VariableInt.Add("numtitans", 1);
+  If(Float.GreaterThan(VariableTitan("titan").GetSize(), 4.99))
+  {
+   VariableBool.Set("bossalive", true);
+  }
+ }
+
+ If(Bool.Equals(VariableBool("gameover"), false))
+ {
+  VariableInt.Add("timer", 1);
+  VariableInt.Set("timermod", VariableInt("timer"));
+  VariableInt.Modulo("timermod", 10);
+  If(Int.Equals(VariableInt("timermod"), 0))
+  {
+   If(Int.LessThan(VariableInt("numtitans"), 9))
+   {
+    VariableFloat.SetRandom("titsize", 1.6, 4.0);
+    VariableInt.SetRandom("tittypepercent", 0, 101);
+    VariableInt.Set("tittype", 4);
+    If(Int.LessThan(VariableInt("tittypepercent"), 95));
+    {
+     VariableInt.Set("tittype", 0);
+    }
+    If(Int.LessThan(VariableInt("tittypepercent"), 45));
+    {
+     VariableInt.Set("tittype", 2);
+    }
+    If(Int.LessThan(VariableInt("tittypepercent"), 30));
+    {
+     VariableInt.Set("tittype", 1);
+    }
+    VariableFloat.Set("tithealth", 0.0);
+    If(Bool.Equals(VariableBool("healthmode"), true))
+    {
+     VariableFloat.Set("tithealth", VariableFloat("titsize"));
+     VariableFloat.Multiply("tithealth", 212.5);
+     VariableFloat.Add("tithealth", 150.0);
+    }
+    VariableFloat.SetRandom("titxposspawn", -1480.0, -520.0);
+    VariableFloat.SetRandom("titzposspawn", -480.0, 480.0);
+    Titan.SpawnTitanAt(VariableInt("tittype"), VariableFloat("titsize"), VariableFloat("tithealth").ConvertToInt(), 1, VariableFloat("titxposspawn"), 175.0, VariableFloat("titzposspawn"));
+    VariableFloat.Multiply("titxposspawn", -1.0);
+    VariableFloat.Multiply("titzposspawn", -1.0);
+    Titan.SpawnTitanAt(VariableInt("tittype"), VariableFloat("titsize"), VariableFloat("tithealth").ConvertToInt(), 1, VariableFloat("titxposspawn"), 175.0, VariableFloat("titzposspawn"));
+   }
+  }
+
+  VariableInt.Set("timermod", VariableInt("timer"));
+  VariableInt.Modulo("timermod", 600);
+  If(Int.Equals(VariableInt("timermod"), 0))
+  {
+   If(Bool.Equals(VariableBool("bosson"), true))
+   {
+    If(Bool.Equals(VariableBool("bossalive"), false))
+    {
+     VariableFloat.SetRandom("titsize", 5.0, 7.5);
+     VariableInt.SetRandom("tittypepercent", 0, 101);
+     VariableInt.Set("tittype", 4);
+     If(Int.LessThan(VariableInt("tittypepercent"), 50));
+     {
+      VariableInt.Set("tittype", 2);
+     }
+     If(Int.LessThan(VariableInt("tittypepercent"), 35));
+     {
+      VariableInt.Set("tittype", 1);
+     }
+     If(Int.LessThan(VariableInt("tittypepercent"), 5));
+     {
+      VariableInt.Set("tittype", 0);
+      VariableFloat.SetRandom("titsize", 7.5, 10.0);
+     }
+     VariableFloat.Set("tithealth", VariableFloat("titsize"));
+     VariableFloat.Multiply("tithealth", 2000.0);
+     VariableFloat.SetRandom("titxposspawn", -1480.0, -520.0);
+     VariableFloat.SetRandom("titzposspawn", -480.0, 480.0);
+     Titan.SpawnTitanAt(VariableInt("tittype"), VariableFloat("titsize"), VariableFloat("tithealth").ConvertToInt(), 1, VariableFloat("titxposspawn"), 175.0, VariableFloat("titzposspawn"));
+     VariableFloat.Multiply("titxposspawn", -1.0);
+     VariableFloat.Multiply("titzposspawn", -1.0);
+     Titan.SpawnTitanAt(VariableInt("tittype"), VariableFloat("titsize"), VariableFloat("tithealth").ConvertToInt(), 1, VariableFloat("titxposspawn"), 175.0, VariableFloat("titzposspawn"));
+    }
+   }
+  }
+  VariableInt.Set("timermod", VariableInt("timer"));
+  VariableInt.Modulo("timermod", 30);
+  If(Int.Equals(VariableInt("timermod"), 0))
+  {
+   VariableString.Set("score", "T:");
+   VariableString.Append("score", VariableInt("timer").ConvertToString());
+   VariableString.Append("score", "  B:");
+   VariableString.Append("score", VariableInt("blueteampoints").ConvertToString());
+   VariableString.Append("score", "  G:");
+   VariableString.Append("score", VariableInt("greenteampoints").ConvertToString());
+   Game.PrintMessage(VariableString("score"));
+  }
+ }
+
+ If(Bool.Equals(VariableBool("gameover"), true))
+ {
+  If(Bool.Equals(VariableBool("victorymessagesent"), false))
+  {
+   If(Bool.Equals(VariableBool("greenwin"), true))
+   {
+    VariableString.Set("time", "Time: ");
+    VariableString.Append("time", VariableInt("timer").ConvertToString());
+    VariableString.Set("greenpoints", "Green Team: ");
+    VariableString.Append("greenpoints", VariableInt("greenteampoints").ConvertToString());
+    VariableString.Set("bluepoints", "Blue Team: ");
+    VariableString.Append("bluepoints", VariableInt("blueteampoints").ConvertToString());
+    Game.PrintMessage("<size=20>Green Team has won!</size>");
+    Game.PrintMessage(VariableString("time"));
+    Game.PrintMessage(VariableString("greenpoints"));
+    Game.PrintMessage(VariableString("bluepoints"));
+    VariableBool.Set("victorymessagesent", true);
+   }
+   If(Bool.Equals(VariableBool("bluewin"), true))
+   {
+    VariableString.Set("time", "Time: ");
+    VariableString.Append("time", VariableInt("timer").ConvertToString());
+    VariableString.Set("greenpoints", "Green Team: ");
+    VariableString.Append("greenpoints", VariableInt("greenteampoints").ConvertToString());
+    VariableString.Set("bluepoints", "Blue Team: ");
+    VariableString.Append("bluepoints", VariableInt("blueteampoints").ConvertToString());
+    Game.PrintMessage("<size=20>Blue Team has won!</size>");
+    Game.PrintMessage(VariableString("time"));
+    Game.PrintMessage(VariableString("bluepoints"));
+    Game.PrintMessage(VariableString("greenpoints"));
+    VariableBool.Set("victorymessagesent", true);
+   }
+  }
+ }
+}
+
+OnChatInput("input")
+{
+ If(String.Equals(VariableString("input"), "/gamereset"))
+ {
+  VariableInt.Set("greenteampoints", 0);
+  VariableInt.Set("blueteampoints", 0);
+  VariableBool.Set("gameover", true);
+  VariableBool.Set("greenwin", false);
+  VariableBool.Set("bluewin", false);
+  VariableBool.Set("victorymessagesent", false);
+  VariableInt.Set("timer", 0);
+  Game.PrintMessage("<size=20>Game<size=1>_____</size>Reset!</size>");
+ }
+
+ If(String.Equals(VariableString("input"), "/gamestart"))
+ {
+  VariableBool.Set("gameover", false);
+  Game.PrintMessage("<size=20>Start!</size>");
+ }
+ 
+ If(String.Equals(VariableString("input"), "/gamepause"))
+ {
+  VariableBool.Set("gameover", true);
+  Game.PrintMessage("<size=20>Game<size=1>_____</size>Paused!</size>");
+ }
+
+ If(String.Equals(VariableString("input"), "/gamescore"))
+ {
+  VariableString.Set("score", "T:");
+  VariableString.Append("score", VariableInt("timer").ConvertToString());
+  VariableString.Append("score", "  B:");
+  VariableString.Append("score", VariableInt("blueteampoints").ConvertToString());
+  VariableString.Append("score", "  G:");
+  VariableString.Append("score", VariableInt("greenteampoints").ConvertToString());
+  Game.PrintMessage(VariableString("score"));
+ }
+
+ If(String.Equals(VariableString("input"), "/splitmode"))
+ {
+  If(Bool.Equals(VariableBool("splitmode"), false));
+  {
+   VariableBool.Set("splitmodecheck", true);
+  }
+  If(Bool.Equals(VariableBool("splitmode"), true));
+  {
+   VariableBool.Set("splitmodecheck", false);
+  }
+  If(Bool.Equals(VariableBool("splitmodecheck"), false));
+  {
+   VariableBool.Set("splitmode", false);
+   Game.PrintMessage("<size=20>Titan<size=1>_____</size>Split<size=1>_____</size>Mode<size=1>_____</size>Off!</size>");
+  }
+  If(Bool.Equals(VariableBool("splitmodecheck"), true));
+  {
+   VariableBool.Set("splitmode", true);
+   Game.PrintMessage("<size=20>Titan<size=1>_____</size>Split<size=1>_____</size>Mode<size=1>_____</size>On!</size>");
+  }
+ }
+
+ If(String.Equals(VariableString("input"), "/healthmode"))
+ {
+  If(Bool.Equals(VariableBool("healthmode"), false));
+  {
+   VariableBool.Set("healthmodecheck", true);
+  }
+  If(Bool.Equals(VariableBool("healthmode"), true));
+  {
+   VariableBool.Set("healthmodecheck", false);
+  }
+  If(Bool.Equals(VariableBool("healthmodecheck"), false));
+  {
+   VariableBool.Set("healthmode", false);
+   Game.PrintMessage("<size=20>Titan<size=1>_____</size>Health<size=1>_____</size>Mode<size=1>_____</size>Off!</size>");
+  }
+  If(Bool.Equals(VariableBool("healthmodecheck"), true));
+  {
+   VariableBool.Set("healthmode", true);
+   Game.PrintMessage("<size=20>Titan<size=1>_____</size>Health<size=1>_____</size>Mode<size=1>_____</size>On!</size>");
+  }
+ }
+
+ If(String.Equals(VariableString("input"), "/gamerules"))
+ {
+  Game.PrintMessage("<size=20>Game Rules:</size>");
+  Game.PrintMessage("There<size=1>___</size>are<size=1>___</size>two<size=1>___</size>teams:<size=1>___</size>Green<size=1>___</size>and<size=1>___</size>Blue");
+  Game.PrintMessage("Each<size=1>___</size>team<size=1>___</size>is<size=1>___</size>to<size=1>___</size>remain<size=1>___</size>in<size=1>___</size>their<size=1>___</size>own<size=1>___</size>arena");
+  Game.PrintMessage("Killing<size=1>___</size>a<size=1>___</size>titan<size=1>___</size>scores<size=1>___</size>a<size=1>___</size>team<size=1>___</size>1<size=1>___</size>point");
+  Game.PrintMessage(" and<size=1>___</size>transfers<size=1>___</size>that<size=1>___</size>titan<size=1>___</size>to<size=1>___</size>the<size=1>___</size>enemy<size=1>___</size>arena");
+  Game.PrintMessage("Killing<size=1>___</size>a<size=1>___</size>boss<size=1>___</size>titan<size=1>___</size>scores<size=1>___</size>points<size=1>___</size>based<size=1>___</size>on<size=1>___</size>size");
+  Game.PrintMessage(" and<size=1>___</size>spawns<size=1>___</size>2<size=1>___</size>titans<size=1>___</size>of<size=1>___</size>half<size=1>___</size>size<size=1>___</size>in<size=1>___</size>the<size=1>___</size>enemy<size=1>___</size>arena");
+  If(Bool.Equals(VariableBool("splitmode"), true))
+  {
+   Game.PrintMessage("Titan<size=1>___</size>Split<size=1>___</size>Mode<size=1>___</size>is<size=1>___</size>ON");
+  }
+  If(Bool.Equals(VariableBool("healthmode"), true))
+  {
+   Game.PrintMessage("Titan<size=1>___</size>Health<size=1>___</size>Mode<size=1>___</size>is<size=1>___</size>ON");
+  }
+  Game.PrintMessage("The<size=1>___</size>first<size=1>___</size>team<size=1>___</size>to<size=1>___</size>reach<size=1>___</size>50<size=1>___</size>points<size=1>___</size>wins!");
+ }
+}
+
+OnTitanDie("myTitan", "myPlayer")
+{
+ If(Float.GreaterThan(VariableTitan("myTitan").GetSize(), 4.99))
+ {
+  VariableBool.Set("bossalive", false);
+ }
+ If(Bool.Equals(VariableBool("gameover"), false))
+ {
+  VariableFloat.Set("titxpos", VariableTitan("myTitan").GetPositionX());
+  VariableFloat.Set("titsize", VariableTitan("myTitan").GetSize());
+  If(Float.LessThan(VariableFloat("titxpos"), 0.0))
+  {
+   If(Float.LessThan(VariableFloat("titsize"), 4.00001))
+   {
+    VariableInt.Add("greenteampoints", 1);
+    Game.PrintMessage("Green Team has scored a point!");
+   }
+   If(Float.GreaterThan(VariableFloat("titsize"), 4.0))
+   {
+    VariableInt.Add("greenteampoints", VariableFloat("titsize").ConvertToInt());
+    VariableString.Set("message", "Green Team has scored ");
+    VariableInt.Set("sizepoints", VariableFloat("titsize").ConvertToInt());
+    VariableString.Append("message", VariableInt("sizepoints").ConvertToString());
+    VariableString.Append("message", " points!");
+    Game.PrintMessage(VariableString("message"));
+   }
+   If(Int.GreaterThan(VariableInt("greenteampoints"), 49))
+   {
+    VariableBool.Set("greenwin", true);
+    VariableBool.Set("gameover", true);
+   }
+  }
+  If(Float.GreaterThan(VariableFloat("titxpos"), 0.0))
+  {
+   If(Float.LessThan(VariableFloat("titsize"), 4.00001))
+   {
+    VariableInt.Add("blueteampoints", 1);
+    Game.PrintMessage("Blue Team has scored a point!");
+   }
+   If(Float.GreaterThan(VariableFloat("titsize"), 4.0))
+   {
+    VariableInt.Add("blueteampoints", VariableFloat("titsize").ConvertToInt());
+    VariableString.Set("message", "Blue Team has scored ");
+    VariableInt.Set("sizepoints", VariableFloat("titsize").ConvertToInt());
+    VariableString.Append("message", VariableInt("sizepoints").ConvertToString());
+    VariableString.Append("message", " points!");
+    Game.PrintMessage(VariableString("message"));
+   }
+   If(Int.GreaterThan(VariableInt("blueteampoints"), 49))
+   {
+    VariableBool.Set("bluewin", true);
+    VariableBool.Set("gameover", true);
+   }
+  }
+  VariableFloat.Set("titzpos", VariableTitan("myTitan").GetPositionZ());
+  VariableFloat.Set("titypos", VariableTitan("myTitan").GetPositionY());
+  VariableFloat.Multiply("titxpos", -1.0);
+  VariableFloat.Multiply("titzpos", -1.0);
+  VariableInt.Set("tittype", VariableTitan("myTitan").GetType());
+  VariableFloat.Set("tithealth", 0.0);
+  If(Bool.Equals(VariableBool("healthmode"), true))
+  {
+   VariableFloat.Set("tithealth", VariableFloat("titsize"));
+   VariableFloat.Multiply("tithealth", 212.5);
+   VariableFloat.Add("tithealth", 150.0);
+  }
+  If(Float.GreaterThan(VariableFloat("titsize"), 1.999))
+  {
+   If(Float.LessThan(VariableFloat("titsize"), 4.00001))
+   {
+    If(Int.LessThan(VariableInt("numtitans"), 20))
+    {
+     Titan.SpawnTitanAt(VariableInt("tittype"), VariableFloat("titsize"), VariableFloat("tithealth").ConvertToInt(), 1, VariableFloat("titxpos"), VariableFloat("titypos"), VariableFloat("titzpos"));
+     Game.PrintMessage("Titan transferred!");
+    }
+   }
+   If(Float.GreaterThan(VariableFloat("titsize"), 4.0))
+   {
+    VariableFloat.Multiply("titsize", 0.45);
+    VariableFloat.Set("spawnhealth", 0.0);
+    If(Bool.Equals(VariableBool("healthmode"), true))
+    {
+     VariableFloat.Set("tithealth", VariableFloat("titsize"));
+     VariableFloat.Multiply("tithealth", 212.5);
+     VariableFloat.Add("tithealth", 150.0);
+    }
+    If(Float.GreaterThan(VariableFloat("titsize"), 4.0))
+    {
+     VariableFloat.Set("tithealth", VariableFloat("titsize"));
+     VariableFloat.Multiply("tithealth", 2000.0);
+    }
+    VariableFloat.Add("titzpos", 10.0);
+    Titan.SpawnTitanAt(VariableInt("tittype"), VariableFloat("titsize"), VariableFloat("tithealth").ConvertToInt(), 1, VariableFloat("titxpos"), VariableFloat("titypos"), VariableFloat("titzpos"));
+    VariableFloat.Subtract("titzpos", 20.0);
+    Titan.SpawnTitanAt(VariableInt("tittype"), VariableFloat("titsize"), VariableFloat("tithealth").ConvertToInt(), 1, VariableFloat("titxpos"), VariableFloat("titypos"), VariableFloat("titzpos"));
+    Game.PrintMessage("Two titans transferred!");
+   }
+  }
+ }
+ If(Bool.Equals(VariableBool("splitmode"), true));
+ {
+  VariableFloat.Set("titsize",VariableTitan("myTitan").GetSize());
+  VariableInt.Set("tittype", VariableTitan("myTitan").GetType());
+  If(Float.GreaterThan(VariableFloat("titsize"), 1.589))
+  {
+   If(Int.LessThan(VariableInt("numtitans"), 20))
+   {
+    If(Float.LessThan(VariableFloat("titsize"), 6.34))
+    {
+     VariableFloat.Multiply("titsize", 0.63);
+     VariableFloat.Set("spawnhealth", 0.0);
+     If(Bool.Equals(VariableBool("healthmode"), true))
+     {
+      VariableFloat.Set("tithealth", VariableFloat("titsize"));
+      VariableFloat.Multiply("tithealth", 212.5);
+      VariableFloat.Add("tithealth", 150.0);
+     }
+     VariableFloat.Set("posX",VariableTitan("myTitan").GetPositionX());
+     VariableFloat.Set("posY",VariableTitan("myTitan").GetPositionY());
+     VariableFloat.Set("posZ",VariableTitan("myTitan").GetPositionZ());
+     VariableFloat.Add("posX", 5.0);
+     Titan.SpawnTitanAt(VariableInt("tittype"), VariableFloat("titsize"), VariableFloat("tithealth").ConvertToInt(), 1, VariableFloat("posX"), VariableFloat("posY"), VariableFloat("posZ"));
+     VariableFloat.Subtract("posX", 10.0);
+     Titan.SpawnTitanAt(VariableInt("tittype"), VariableFloat("titsize"), VariableFloat("tithealth").ConvertToInt(), 1, VariableFloat("posX"), VariableFloat("posY"), VariableFloat("posZ"));
+    }
+   }
+   If(Float.GreaterThan(VariableFloat("titsize"), 6.339))
+   {
+    VariableFloat.Multiply("titsize", 0.63);
+    VariableFloat.Set("tithealth", VariableFloat("titsize"));
+    VariableFloat.Multiply("tithealth", 2000.0);
+    VariableFloat.Set("posX",VariableTitan("myTitan").GetPositionX());
+    VariableFloat.Set("posY",VariableTitan("myTitan").GetPositionY());
+    VariableFloat.Set("posZ",VariableTitan("myTitan").GetPositionZ());
+    VariableFloat.Add("posX", 5.0);
+    Titan.SpawnTitanAt(VariableInt("tittype"), VariableFloat("titsize"), VariableFloat("tithealth").ConvertToInt(), 1, VariableFloat("posX"), VariableFloat("posY"), VariableFloat("posZ"));
+    VariableFloat.Subtract("posX", 10.0);
+    Titan.SpawnTitanAt(VariableInt("tittype"), VariableFloat("titsize"), VariableFloat("tithealth").ConvertToInt(), 1, VariableFloat("posX"), VariableFloat("posY"), VariableFloat("posZ"));
+   }
+  }
+ }
+}

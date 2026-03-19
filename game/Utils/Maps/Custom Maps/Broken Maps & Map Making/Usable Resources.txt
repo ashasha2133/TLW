@@ -1,0 +1,309 @@
+Objects:
+-----------------------------------------------------------------------
+
+aot_supply (UnityEngine.GameObject)
+base,aot_supply,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+(Note this may be used to generate the snow effect)
+
+flashlight (UnityEngine.GameObject)
+base,flashlight,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+rock (UnityEngine.GameObject)
+base,rock,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+rockThrow (UnityEngine.GameObject)
+base,FX/rockThrow,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+hook (UnityEngine.GameObject)
+base,hook,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+levelBottom (UnityEngine.GameObject)
+base,levelBottom,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+
+
+Physics Objects:
+-----------------------------------------------------------------------
+
+AOTTG_HERO_body (UnityEngine.GameObject)
+base,Character_parts/AOTTG_HERO_body,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_3dmg (UnityEngine.GameObject)
+base,Character_parts/character_3dmg,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_3dmg_2 (UnityEngine.GameObject)
+base,Character_parts/character_3dmg_2,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+Cube_001 (UnityEngine.GameObject)
+base,Cube_001,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+Cube_002 (UnityEngine.GameObject)
+base,Cube_002,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+titanNapeMeat (UnityEngine.GameObject)
+base,titanNapeMeat,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+
+
+Entities:
+-----------------------------------------------------------------------
+
+COLOSSAL_TITAN (UnityEngine.GameObject)
+base,colossal_titan,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+FEMALE_TITAN (UnityEngine.GameObject)
+base,female_titan,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+TITAN_EREN (UnityEngine.GameObject)
+base,titan_eren,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+TITAN_EREN_trost (UnityEngine.GameObject)
+base,titan_eren_trost,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+TITAN_NEW_1 (UnityEngine.GameObject)
+base,titan_new_1,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+TITAN_NEW_2 (UnityEngine.GameObject)
+base,titan_new_2,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+TITAN_VER3.1 (UnityEngine.GameObject)
+base,titan_ver3.1,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+horse (UnityEngine.GameObject)
+base,horse,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+
+
+Particle Effects:
+-----------------------------------------------------------------------
+
+bloodExplore (UnityEngine.GameObject)
+base,bloodExplore,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+bloodsplatter (UnityEngine.GameObject)
+base,bloodsplatter,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+bulletPrefab (UnityEngine.GameObject)
+base,bulletPrefab,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+bite (UnityEngine.GameObject)
+base,FX/bite,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+boom1 (UnityEngine.GameObject)
+base,FX/boom1,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+boom1_CT_KICK (UnityEngine.GameObject)
+base,FX/boom1_CT_KICK,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+boom2 (UnityEngine.GameObject)
+base,FX/boom2,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+boom2_eren (UnityEngine.GameObject)
+base,FX/boom2_eren,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+boom3 (UnityEngine.GameObject)
+base,FX/boom3,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+boom4 (UnityEngine.GameObject)
+base,FX/boom4,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+boom5 (UnityEngine.GameObject)
+base,FX/boom5,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+boom6 (UnityEngine.GameObject)
+base,FX/boom6,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+boost_smoke (UnityEngine.GameObject)
+base,FX/boost_smoke,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+colossal_steam (UnityEngine.GameObject)
+base,FX/colossal_steam,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+colossal_steam_dmg (UnityEngine.GameObject)
+base,FX/colossal_steam_dmg,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+flareBullet1 (UnityEngine.GameObject)
+base,FX/flareBullet1,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+flareBullet2 (UnityEngine.GameObject)
+base,FX/flareBullet2,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+flareBullet3 (UnityEngine.GameObject)
+base,FX/flareBullet3,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+redCross (UnityEngine.GameObject)
+base,redCross,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+redCross1 (UnityEngine.GameObject)
+base,redCross1,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+justSmoke (UnityEngine.GameObject)
+base,FX/justSmoke,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+FXtitanDie (UnityEngine.GameObject)
+base,FX/FXtitanDie,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+FXtitanDie1 (UnityEngine.GameObject)
+base,FX/FXtitanDie1,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+FXtitanSpawn (UnityEngine.GameObject)
+base,FX/FXtitanSpawn,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+shotGun (UnityEngine.GameObject)
+base,FX/shotGun,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+Thunder (UnityEngine.GameObject)
+base,FX/Thunder,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+ThunderCT (UnityEngine.GameObject)
+base,FX/ThunderCT,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+hitMeat (UnityEngine.GameObject)
+base,hitMeat,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+hitMeat2 (UnityEngine.GameObject)
+base,hitMeat2,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+hitMeatBIG (UnityEngine.GameObject)
+base,hitMeatBIG,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+
+
+Equipment Parts:
+-----------------------------------------------------------------------
+
+character_3dmg (UnityEngine.GameObject)
+base,Character/character_3dmg,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_3dmg_2 (UnityEngine.GameObject)
+base,Character/character_3dmg_2,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_3dmg_gas_l (UnityEngine.GameObject)
+base,Character/character_3dmg_gas_l,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_3dmg_gas_r (UnityEngine.GameObject)
+base,Character/character_3dmg_gas_r,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_blade_l (UnityEngine.GameObject)
+base,Character/character_blade_l,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_blade_r (UnityEngine.GameObject)
+base,Character/character_blade_r,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_body_blade_keeper_f (UnityEngine.GameObject)
+base,Character/character_body_blade_keeper_f,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_body_blade_keeper_m (UnityEngine.GameObject)
+base,Character/character_body_blade_keeper_m,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_cap_casual (UnityEngine.GameObject)
+base,Character/character_cap_casual,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_cap_uniform (UnityEngine.GameObject)
+base,Character/character_cap_uniform,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_gun_l (UnityEngine.GameObject)
+base,Character/character_gun_l,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_gun_r (UnityEngine.GameObject)
+base,Character/character_gun_r,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_gun_mag_l (UnityEngine.GameObject)
+base,Character/character_gun_mag_l,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_gun_mag_r (UnityEngine.GameObject)
+base,Character/character_gun_mag_r,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+
+
+Character Parts:
+-----------------------------------------------------------------------
+
+glass (UnityEngine.GameObject)
+base,Character/glass,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_eye (UnityEngine.GameObject)
+base,Character/character_eye,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+character_face (UnityEngine.GameObject)
+base,Character/character_face,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_annie (UnityEngine.GameObject)
+base,Character/hair_annie,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_armin (UnityEngine.GameObject)
+base,Character/hair_annie,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_boy1 (UnityEngine.GameObject)
+base,Character/hair_boy1,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_boy2 (UnityEngine.GameObject)
+base,Character/hair_boy2,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_boy3 (UnityEngine.GameObject)
+base,Character/hair_boy3,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_boy4 (UnityEngine.GameObject)
+base,Character/hair_boy4,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_eren (UnityEngine.GameObject)
+base,Character/hair_eren,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_girl1 (UnityEngine.GameObject)
+base,Character/hair_girl1,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_girl2 (UnityEngine.GameObject)
+base,Character/hair_girl2,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_girl3 (UnityEngine.GameObject)
+base,Character/hair_girl3,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_girl4 (UnityEngine.GameObject)
+base,Character/hair_girl4,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_girl5 (UnityEngine.GameObject)
+base,Character/hair_girl5,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_hanji (UnityEngine.GameObject)
+base,Character/hair_hanji,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_jean (UnityEngine.GameObject)
+base,Character/hair_jean,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_levi (UnityEngine.GameObject)
+base,Character/hair_levi,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_marco (UnityEngine.GameObject)
+base,Character/hair_marco,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_mikasa (UnityEngine.GameObject)
+base,Character/hair_mikasa,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_mike (UnityEngine.GameObject)
+base,Character/hair_mike,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_petra (UnityEngine.GameObject)
+base,Character/hair_petra,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_rico (UnityEngine.GameObject)
+base,Character/hair_rico,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+hair_sasha (UnityEngine.GameObject)
+base,Character/hair_sasha,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+head_mustache (UnityEngine.GameObject)
+base,Character/head_mustache,default,1,1,1,0,1,1,1,1.0,1.0,-30,220,230,0,1,0,0;
+
+
+
+UI:
+-----------------------------------------------------------------------
+
+BlackFlareHint (UnityEngine.GameObject)
+base,UI/blackFlareHint,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+GreenFlareHint (UnityEngine.GameObject)
+base,UI/greenFlareHint,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;
+
+RedFlareHint (UnityEngine.GameObject)
+base,UI/redFlareHint,default,5,5,5,0,1,0,0,1.0,1.0,-30,220,230,0,1,0,0;

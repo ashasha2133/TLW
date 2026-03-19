@@ -1,0 +1,22 @@
+//https://www.aotskins.com/viewtopic.php?f=86&t=11618&sid=23608ecae0fc56b6d826d84c28d256f7;
+OnRoundStart()
+{
+Game.PrintMessage("<b><size=13><color=#000000>-----------------------------------------------------</color></size></b>")
+Game.PrintMessage("<b><size=13><color=#FF0000>WELCOME+TO+PVP+SERVER</color></size></b>")
+Game.PrintMessage("<b><size=13><color=#00FF00>KILL+TITAN+FOR+TELEPORT+TO+AREA</color></size></b>")
+Game.PrintMessage("<b><size=13><color=#3399FF>MAP+EDITED+BY+CHAKUNG</color></size></b>")
+Game.PrintMessage("<b><size=13><color=#000000>-----------------------------------------------------</color></size></b>")
+}
+OnTitanDie("T","P")
+{
+Player.MovePlayer(VariablePlayer("P"), 0.0, 50.0, 0.0)
+{
+Game.PrintMessage("<b><size=15><color=#000000>Someone'has'entered'the'Arena</color></size></b>")
+Player.MovePlayer(VariablePlayer("myPlayer"),1.0,20.0,1.0);
+}
+}
+OnPlayerEnterRegion[“region1”](“myPlayer”)
+{
+Game.PrintMessage("<b><size=15><color=#FF0000>Master'has'entered'the'Arena</color></size></b>")
+Player.MovePlayer(VariablePlayer("myPlayer"),1.0,20.0,1.0);
+}

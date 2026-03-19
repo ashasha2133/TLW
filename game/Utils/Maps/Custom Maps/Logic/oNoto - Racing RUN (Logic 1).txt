@@ -1,0 +1,65 @@
+OnFirstLoad()
+{
+Game.PrintMessage("<color=#00FFFF>____________________________</color>")
+Game.PrintMessage("<color=#00FFFF>|</color><color=#000000><size=1>_________________________________________________________________________________</size></color><color=#00FF00><b>Info</b></color><color=#000000><size=1>____________________________________________________________________________________</size></color><color=#00FFFF>|</color>")
+Game.PrintMessage("<color=#00FFFF>|</color><color=#000000><size=1>______________________________</size></color><color=#ffff00>Map</color><color=#000000><size=1>____</size></color><color=#FFCCFF>script</color><color=#000000><size=1>____</size></color><color=#FFFFFF>by</color><color=#000000><size=1>____</size>Bla</color><color=#FFFFFF>Zen</color><color=#000000><size=1>___________________________________</size></color><color=#00FFFF>|</color>")
+Game.PrintMessage("<color=#00FFFF>|</color><color=#000000><size=1>__________________________________________</size></color><color=#FF3333>Logic</color><color=#000000><size=1>____</size></color><color=#FFFFFF>by</color><color=#000000><size=1>____</size>Bla</color><color=#FFFFFF>Zen</color><color=#000000><size=1>_____________________________________________________</size></color><color=#00FFFF>|</color>")
+Game.PrintMessage("<color=#00FFFF>|___________________________|</color>")
+}
+OnRoundStart()
+{
+Game.PrintMessage("<color=#00FF00>Command</color>:<size=12>Spawn_Titan</size>");
+{
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t1"),RegionRandomY("t1"),RegionRandomZ("t1"));
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t1"),RegionRandomY("t1"),RegionRandomZ("t1"));
+
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t2"),RegionRandomY("t2"),RegionRandomZ("t2"));
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t2"),RegionRandomY("t2"),RegionRandomZ("t2"));
+
+
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t3"),RegionRandomY("t3"),RegionRandomZ("t3"));
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t3"),RegionRandomY("t3"),RegionRandomZ("t3"));
+
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t4"),RegionRandomY("t4"),RegionRandomZ("t4"));
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t4"),RegionRandomY("t4"),RegionRandomZ("t4"));
+
+
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t5"),RegionRandomY("t5"),RegionRandomZ("t5"));
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t5"),RegionRandomY("t5"),RegionRandomZ("t5"));
+
+
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t6"),RegionRandomY("t6"),RegionRandomZ("t6"));
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t6"),RegionRandomY("t6"),RegionRandomZ("t6"));
+
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t7"),RegionRandomY("t7"),RegionRandomZ("t7"));
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t7"),RegionRandomY("t7"),RegionRandomZ("t7"));
+
+
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t8"),RegionRandomY("t8"),RegionRandomZ("t8"));
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t8"),RegionRandomY("t8"),RegionRandomZ("t8"));
+
+
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t9"),RegionRandomY("t9"),RegionRandomZ("t9"));
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t9"),RegionRandomY("t9"),RegionRandomZ("t9"));
+
+
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t10"),RegionRandomY("t10"),RegionRandomZ("t10"));
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t10"),RegionRandomY("t10"),RegionRandomZ("t10"));
+
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t11"),RegionRandomY("t11"),RegionRandomZ("t11"));
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t11"),RegionRandomY("t11"),RegionRandomZ("t11"));
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t11"),RegionRandomY("t11"),RegionRandomZ("t11"));
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t11"),RegionRandomY("t11"),RegionRandomZ("t11"));
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t11"),RegionRandomY("t11"),RegionRandomZ("t11"));
+Titan.SpawnTitanAt(2, 2.0, 0, 1, RegionRandomX("t11"),RegionRandomY("t11"),RegionRandomZ("t11"));
+}
+}
+//แถมนะอิอิ
+//Throw-in
+OnPlayerDieByPlayer("myPlayer","myPlayer")
+{
+Game.PrintMessage("<size=15><b><color=#00FFFF>Server</color></b></size><color=#ff0000>!!!</color>");
+VariableString.Concat("tempString", VariablePlayer("myPlayer").GetName(),":<color=#ff0000>Kill</color><color=#000000><size=1>____</size></color><color=#000000>Player</color><color=#ff0000>!!!</color>");
+Game.PrintMessage(VariableString("tempString"));
+Game.PrintMessage("<b><color=#00ff00>MC<color=#000000><size=1>____</size></color>want<color=#000000><size=1>____</size></color>to<color=#000000><size=1>____</size></color>ban?</color></b>");
+}

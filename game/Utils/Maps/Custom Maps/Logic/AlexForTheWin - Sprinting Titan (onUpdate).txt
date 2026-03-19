@@ -1,0 +1,166 @@
+OnRoundStart()
+{
+   //Set variable for keeping track of sprinting titans
+   VariableInt.Set("SprintingTitanNumber", 0);
+   //Default sprinting titan speed
+   VariableFloat.Set("DefaultSpeed", 10.0);
+   
+   //Spawn a sprinting titan
+   Titan.SpawnTitan(0, 4.0001, 0, 1);
+   //Give him a buddy
+   Titan.SpawnTitan(0, 7.0001, 0, 1);
+   //The more the merrier
+   Titan.SpawnTitan(0, 4.0001, 0, 1);
+   Titan.SpawnTitan(0, 4.0001, 0, 1);
+   Titan.SpawnTitan(0, 4.0001, 0, 1);
+   Titan.SpawnTitan(0, 4.0001, 0, 1);
+   Titan.SpawnTitan(0, 4.0001, 0, 1);
+   Titan.SpawnTitan(0, 4.0001, 0, 1);
+   Titan.SpawnTitan(0, 4.0001, 0, 1);
+   Titan.SpawnTitan(0, 4.0001, 0, 1);
+   Titan.SpawnTitan(0, 4.0001, 0, 1);
+   Titan.SpawnTitan(0, 4.0001, 0, 1);
+}
+
+OnUpdate()
+{
+   //Increase the speed of the sprinting titans
+   ForeachTitan("Titan")
+   {
+      //Determine if the titan is a sprinting titan
+      VariableFloat.Set("Size", VariableTitan("Titan").GetSize());
+      VariableFloat.Multiply("Size", 10000.0);
+      VariableFloat.Modulo("Size", 10.0);
+      VariableInt.Set("Type", VariableFloat("Size").ConvertToInt());
+      
+      //If the thousandth place of the titan's size is 1, then speed it up
+      If(VariableInt.Equals(VariableInt("Type"), 1))
+      {
+         //Variable to iterate through all of the initialized titans
+         VariableInt.Set("Count", 0);
+         
+         //Temporary variable for the while loop, working around the broken LessThanOrEqual
+         VariableInt.Set("UpperBound", VariableInt("SprintingTitanNumber"));
+         VariableInt.Add("UpperBound", 1);
+         
+         //Check which titan variable corrosponds to the titan
+         While(Int.LessThan(VariableInt("Count"), VariableInt("UpperBound")))
+         {
+            //Set the string for the titan variable
+            VariableString.Set("SprintingTitan", "SprintingTitan");
+            VariableString.Append("SprintingTitan", VariableInt("Count").ConvertToString());
+            
+            //If the titan variable corrosponds to the titan, save the titan number
+            If(Titan.Equals(VariableTitan("Titan"), VariableTitan(VariableString("SprintingTitan"))))
+            {
+               VariableString.Set("TitanNumber", VariableInt("Count").ConvertToString());
+            }
+            
+            //Increase counter
+            VariableInt.Add("Count", 1);
+         }
+         
+         //If the titan is not initialized yet, initialize it
+         If(String.Equals(VariableString("TitanNumber"), VariableString("NULL")))
+         {
+               //Increase max sprinting titan number
+               VariableInt.Add("SprintingTitanNumber", 1);
+               
+               //Set the string for the titan variable
+               VariableString.Set("SprintingTitan", "SprintingTitan");
+               VariableString.Append("SprintingTitan", VariableInt("SprintingTitanNumber").ConvertToString());
+               
+               //Create the root variable representing the sprinting titan
+               VariableTitan.Set(VariableString("SprintingTitan"), VariableTitan("Titan"));
+               
+               //Create the variable names for the positions and initialize them
+               //Old X
+               VariableString.Set("OldX", "OldX");
+               VariableString.Append("OldX", VariableInt("SprintingTitanNumber").ConvertToString());
+               VariableFloat.Set(VariableString("OldX"), VariableTitan("Titan").GetPositionX());
+               //Old Z
+               VariableString.Set("OldZ", "OldZ");
+               VariableString.Append("OldZ", VariableInt("SprintingTitanNumber").ConvertToString());
+               VariableFloat.Set(VariableString("OldZ"), VariableTitan("Titan").GetPositionZ());
+               //New X
+               VariableString.Set("NewX", "NewX");
+               VariableString.Append("NewX", VariableInt("SprintingTitanNumber").ConvertToString());
+               VariableFloat.Set(VariableString("NewX"), VariableTitan("Titan").GetPositionX());
+               //New Z
+               VariableString.Set("NewZ", "NewZ");
+               VariableString.Append("NewZ", VariableInt("SprintingTitanNumber").ConvertToString());
+               VariableFloat.Set(VariableString("NewZ"), VariableTitan("Titan").GetPositionZ());
+               
+               //Set the speed of the titan to the default speed
+               VariableString.Set("Speed", "Speed");
+               VariableString.Append("Speed", VariableInt("SprintingTitanNumber").ConvertToString());
+               VariableFloat.Set(VariableString("Speed"), VariableFloat("DefaultSpeed"));
+         }
+         //If the titan is already initialized, create the strings used to access its varibles
+         Else
+         {
+               //Move the Titan number from a string to an int
+               VariableInt.Set("TitanNumber", VariableString("TitanNumber").ConvertToInt());
+               
+               //Old X
+               VariableString.Set("OldX", "OldX");
+               VariableString.Append("OldX", VariableInt("TitanNumber").ConvertToString());
+               //Old Z
+               VariableString.Set("OldZ", "OldZ");
+               VariableString.Append("OldZ", VariableInt("TitanNumber").ConvertToString());
+               //New X
+               VariableString.Set("NewX", "NewX");
+               VariableString.Append("NewX", VariableInt("TitanNumber").ConvertToString());
+               //New Z
+               VariableString.Set("NewZ", "NewZ");
+               VariableString.Append("NewZ", VariableInt("TitanNumber").ConvertToString());
+               //Speed
+               VariableString.Set("Speed", "Speed");
+               VariableString.Append("Speed", VariableInt("TitanNumber").ConvertToString());
+               
+               //Set the "TitanNumber" variable used to test titans back to null
+               VariableString.Set("TitanNumber", VariableString("NULL"));
+         }
+         
+         //Reassign the variables
+         VariableFloat.Set(VariableString("OldX"), VariableFloat(VariableString("NewX")));
+         VariableFloat.Set(VariableString("OldZ"), VariableFloat(VariableString("NewZ")));
+         VariableFloat.Set(VariableString("NewX"), VariableTitan("Titan").GetPositionX());
+         VariableFloat.Set(VariableString("NewZ"), VariableTitan("Titan").GetPositionZ());
+         
+         //Find the distance that the titan moved, multiply it by the multiplyer, and add it to the current position before teleporting
+         
+         //Set Teleport to the distance the titan moved
+         VariableFloat.Set("TeleportX", VariableFloat(VariableString("NewX")));
+         VariableFloat.Subtract("TeleportX", VariableFloat(VariableString("OldX")));
+         VariableFloat.Set("TeleportZ", VariableFloat(VariableString("NewZ")));
+         VariableFloat.Subtract("TeleportZ", VariableFloat(VariableString("OldZ")));
+         
+         //Temporary variables for fixing the teleport distance
+         VariableFloat.Set("TempX", VariableFloat("TeleportX"));
+         VariableFloat.Set("TempZ", VariableFloat("TeleportZ"));
+         
+         //Multiply it by the speed factor and find the Titan's new position
+         VariableFloat.Multiply("TeleportX", VariableFloat(VariableString("Speed")));
+         VariableFloat.Multiply("TeleportZ", VariableFloat(VariableString("Speed")));
+         
+         //Fix the teleport distance (Distance * multiplyer - distance)
+         VariableFloat.Subtract("TeleportX", VariableFloat("TempX"));
+         VariableFloat.Subtract("TeleportZ", VariableFloat("TempZ"));
+         
+         //Find the new location to teleport the titan to
+         VariableFloat.Add("TeleportX", VariableFloat(VariableString("NewX")));
+         VariableFloat.Add("TeleportZ", VariableFloat(VariableString("NewZ")));
+         
+         //Teleport titan to the new location
+         Titan.MoveTitan(VariableTitan("Titan"), VariableFloat("TeleportX"), VariableTitan("Titan").GetPositionY(), VariableFloat("TeleportZ"));
+         
+         //Set NewX and NewZ to the location the titan was just teleported to
+         VariableFloat.Set(VariableString("NewX"), VariableFloat("TeleportX"));
+         VariableFloat.Set(VariableString("NewZ"), VariableFloat("TeleportZ"));
+      }
+   }
+   
+   //Break Script
+   VariablePlayer.Set("breakScript", "breakScript");
+}

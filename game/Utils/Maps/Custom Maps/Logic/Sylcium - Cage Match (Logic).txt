@@ -1,0 +1,114 @@
+OnChatInput("start")
+{
+If(String.Equals(VariableString("start"),"/start"))
+{
+Game.PrintMessage("Round Has Started!");
+Game.PrintMessage("Tap Fullscreen To See Titans");
+VariableInt.Set("tNum",0);
+VariableInt.Set("CyanScore", 0);
+VariableInt.Set("MagentaScore", 0);
+VariableBool.Set("gameOver", false);
+
+ForeachTitan("t")
+{
+VariableInt.Set("tMod", VariableInt("tNum"));
+VariableInt.Modulo("tMod",2);
+
+
+If(Int.Equals(VariableInt("tMod"),0))
+{
+Titan.MoveTitan(VariableTitan("t"), RegionRandomX("CyanTitans"),RegionRandomY("CyanTitans"),RegionRandomZ("CyanTitans"));
+VariableInt.Add("CyanScore",1);
+}
+If(Int.Equals(VariableInt("tMod"),1))
+{
+Titan.MoveTitan(VariableTitan("t"), RegionRandomX("MagentaTitans"),RegionRandomY("MagentaTitans"),RegionRandomZ("MagentaTitans"));
+VariableInt.Add("MagentaScore",1);
+}
+
+VariableInt.Add("tNum",1);
+}
+
+
+}
+}
+
+
+
+
+
+OnUpdate()
+{
+If(Bool.Equals(VariableBool("gameOver"),true))
+{
+Game.WinGame(false);
+}
+}
+
+
+
+OnTitanDie("t","p")
+{
+VariableInt.Set("tType", VariableTitan("t").GetType());
+VariableFloat.Set("tSize", VariableTitan("t").GetSize());
+VariableFloat.Set("tX", VariableTitan("t").GetPositionX());
+VariableFloat.Set("tY", VariableTitan("t").GetPositionY());
+VariableFloat.Set("tZ", VariableTitan("t").GetPositionZ());
+VariableFloat.Multiply("tX", -1.0);
+Titan.SpawnTitanAt(VariableInt("tType"),VariableFloat("tSize"),0,1,VariableFloat("tX"), VariableFloat("tY"), VariableFloat("tZ"));
+
+
+VariableInt.Set("team",VariablePlayer("p").GetTeam());
+VariableFloat.Set("pX",VariablePlayer("p").GetPositionX());
+
+
+If(Int.Equals(VariableInt("team"),0))
+{
+Player.KillPlayer(VariablePlayer("p"), "JoinATeam");
+}
+If(Int.Equals(VariableInt("team"),1))
+{
+VariableInt.Subtract("CyanScore", 1);
+VariableInt.Add("MagentaScore",1);
+If(Float.LessThan(VariableFloat("pX"),0.0))
+{
+Game.PrintMessage("CyanPlayerOnTheWrongSide");
+VariableInt.Subtract("MagentaScore", 2);
+VariableInt.Add("CyanScore",2);
+VariableFloat.Multiply("pX",-1.0);
+VariableFloat.Set("pY",VariablePlayer("p").GetPositionY());
+VariableFloat.Set("pZ",VariablePlayer("p").GetPositionZ());
+Player.MovePlayer(VariablePlayer("p"), VariableFloat("pX"), VariableFloat("pY"), VariableFloat("pZ"));
+}
+}
+
+If(Int.Equals(VariableInt("team"),2))
+{
+VariableInt.Subtract("MagentaScore", 1);
+VariableInt.Add("CyanScore",1);
+If(Float.GreaterThan(VariableFloat("pX"),0.0))
+{
+Game.PrintMessage("MagentaPlayerOnTheWrongSide");
+VariableInt.Subtract("CyanScore", 2);
+VariableInt.Add("MagentaScore",2);
+VariableFloat.Multiply("pX",-1.0);
+VariableFloat.Set("pY",VariablePlayer("p").GetPositionY());
+VariableFloat.Set("pZ",VariablePlayer("p").GetPositionZ());
+Player.MovePlayer(VariablePlayer("p"), VariableFloat("pX"), VariableFloat("pY"), VariableFloat("pZ"));
+}
+}
+
+If(Int.Equals(VariableInt("CyanScore"),0))
+{
+Game.PrintMessage("CyanWins!");
+VariableBool.Set("gameOver",true);
+}
+
+If(Int.Equals(VariableInt("MagentaScore"),0))
+{
+Game.PrintMessage("MagentaWins!");
+VariableBool.Set("gameOver",true);
+
+}
+
+}

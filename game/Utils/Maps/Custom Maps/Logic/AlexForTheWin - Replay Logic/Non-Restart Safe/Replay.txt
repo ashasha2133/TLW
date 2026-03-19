@@ -1,0 +1,173 @@
+OnRoundStart()
+{
+  VariableInt.Set("Mode", 0);
+  VariablePlayer.Set("Target", VariablePlayer("Null"));
+  VariableBool.Set("Polling", false);
+  VariableBool.Set("RecordingSaved", false);
+  VariableBool.Set("Initialized", false);
+  VariableTitan.Set("ReplayTitan", VariableTitan("Null"));
+  VariableInt.Set("Count", 0);
+  VariableInt.Set("RecordingSize", 0);
+  Titan.SpawnTitanAt(0, 0.123456789, 0, 1, 0.0, -10000.0, 0.0);
+}
+
+OnChatInput("input")
+{
+  If(Bool.Equals(VariableBool("Polling"), true))
+  {
+    VariablePlayer.Set("player", VariablePlayer("Null"));
+    ForeachPlayer("player")
+    {
+      If(String.Contains(VariablePlayer("player").GetName(), VariableString("input")))
+      {
+        VariablePlayer.Set("Target", VariablePlayer("player"));
+      }
+    }
+    
+    If(Player.Equals(VariablePlayer("Target"), VariablePlayer("Null")))
+    {
+      Game.PrintMessage("There<size=1>_____</size>Is<size=1>_____</size>No<size=1>_____</size>Player<size=1>_____</size>With<size=1>_____</size>That<size=1>_____</size>Name");
+    }
+    Else
+    {
+      VariableString.Set("Message", "Now<size=1>_____</size>Recording:<size=1>_____</size>");
+      VariableString.Append("Message", VariablePlayer("Target").GetName());
+      Game.PrintMessage(VariableString("Message"));
+      VariableBool.Set("Polling", false);
+      VariableInt.Set("Mode", 1);
+    }
+
+    VariablePlayer.Set("breakScript", "breakScript");
+  }
+  Else
+  {
+    If(String.StartsWith(VariableString("input"), "/record"))
+    {
+      If(Int.Equals(VariableInt("Mode"), 2))
+      {
+        Game.PrintMessage("Already<size=1>_____</size>Replaying");
+      }
+      If(Int.Equals(VariableInt("Mode"), 1))
+      {
+        Game.PrintMessage("Already<size=1>_____</size>Recording");
+      }
+      If(Int.Equals(VariableInt("Mode"), 0))
+      {
+        Game.PrintMessage("Enter<size=1>_____</size>The<size=1>_____</size>Name<size=1>_____</size>Of<size=1>_____</size>The<size=1>_____</size>Player<size=1>_____</size>To<size=1>_____</size>Record:");
+        VariableBool.Set("Polling", true);
+      }
+    }
+    
+    If(String.Equals(VariableString("input"), "/play"))
+    {
+      If(Int.Equals(VariableInt("Mode"), 2))
+      {
+        Game.PrintMessage("Already<size=1>_____</size>Replaying");
+      }
+      If(Int.Equals(VariableInt("Mode"), 1))
+      {
+        Game.PrintMessage("Already<size=1>_____</size>Recording");
+      }
+      If(Int.Equals(VariableInt("Mode"), 0))
+      {
+        If(Bool.Equals(VariableBool("RecordingSaved"), false))
+        {
+          Game.PrintMessage("No<size=1>_____</size>Recording<size=1>_____</size>Saved");
+        }
+        Else
+        {
+          Game.PrintMessage("Replaying");
+          VariableInt.Set("Mode", 2);
+        }
+      }
+    }
+    
+    If(String.Equals(VariableString("input"), "/stop"))
+    {
+      If(Int.Equals(VariableInt("Mode"), 0))
+      {
+        Game.PrintMessage("Not<size=1>_____</size>Recording<size=1>_____</size>Or<size=1>_____</size>Replaying");
+      }
+      If(Int.Equals(VariableInt("Mode"), 2))
+      {
+        Game.PrintMessage("Replay<size=1>_____</size>Stopped");
+        Titan.MoveTitan(VariableTitan("ReplayTitan"), 0.0, -10000.0, 0.0);
+        VariableInt.Set("Count", 0);
+        VariableInt.Set("Mode", 0);
+      }
+      If(Int.Equals(VariableInt("Mode"), 1))
+      {
+        Game.PrintMessage("Recording<size=1>_____</size>Saved");
+        VariableBool.Set("RecordingSaved", true);
+        VariableInt.Set("RecordingSize", VariableInt("Count"));
+        VariableInt.Set("Count", 0);
+        VariableInt.Set("Mode", 0);
+        VariablePlayer.Set("Target", VariablePlayer("Null"));
+      }
+    }
+  }
+}
+
+OnUpdate()
+{
+  If(Bool.Equals(VariableBool("Initialized"), false))
+  {
+    ForeachTitan("titan")
+    {
+      If(Float.Equals(VariableTitan("titan").GetSize(), 0.123456789))
+      {
+        VariableTitan.Set("ReplayTitan", VariableTitan("titan"));
+      }
+    }
+    
+    VariableBool.Set("Initialized", true);
+    Game.PrintMessage("Recording<size=1>_____</size>On");
+  }
+  
+  If(Int.Equals(VariableInt("Mode"), 1))
+  {
+    VariableString.Set("Name", "RecordingX");
+    VariableString.Append("Name", VariableInt("Count").ConvertToString());
+    VariableFloat.Set(VariableString("Name"), VariablePlayer("Target").GetPositionX());
+    
+    VariableString.Set("Name", "RecordingY");
+    VariableString.Append("Name", VariableInt("Count").ConvertToString());
+    VariableFloat.Set(VariableString("Name"), VariablePlayer("Target").GetPositionY());
+    
+    VariableString.Set("Name", "RecordingZ");
+    VariableString.Append("Name", VariableInt("Count").ConvertToString());
+    VariableFloat.Set(VariableString("Name"), VariablePlayer("Target").GetPositionZ());
+    
+    VariableInt.Add("Count", 1);
+    VariablePlayer.Set("breakScript", "breakScript");
+  }
+  
+  If(Int.Equals(VariableInt("Mode"), 2))
+  { 
+    VariableString.Set("Name", "RecordingX");
+    VariableString.Append("Name", VariableInt("Count").ConvertToString());
+    VariableFloat.Set("TempX", VariableFloat(VariableString("Name")));
+    
+    VariableString.Set("Name", "RecordingY");
+    VariableString.Append("Name", VariableInt("Count").ConvertToString());
+    VariableFloat.Set("TempY", VariableFloat(VariableString("Name")));
+    
+    VariableString.Set("Name", "RecordingZ");
+    VariableString.Append("Name", VariableInt("Count").ConvertToString());
+    VariableFloat.Set("TempZ", VariableFloat(VariableString("Name")));
+    
+    Titan.MoveTitan(VariableTitan("ReplayTitan"), VariableFloat("TempX"), VariableFloat("TempY"), VariableFloat("TempZ"));
+    
+    VariableInt.Add("Count", 1);
+    
+    If(Int.Equals(VariableInt("Count"), VariableInt("RecordingSize")))
+    {
+      Game.PrintMessage("Replay<size=1>_____</size>Finished");
+      Titan.MoveTitan(VariableTitan("ReplayTitan"), 0.0, -10000.0, 0.0);
+      VariableInt.Set("Count", 0);
+      VariableInt.Set("Mode", 0);
+    }
+    
+    VariablePlayer.Set("breakScript", "breakScript");
+  }
+}

@@ -1,0 +1,57 @@
+____________Custom Map_____________
+
+Game Setting:
+
+	Waves
+
+Custom Textures:
+
+	Yuriane's Tropical Skybox (Private Skybox, she haven't post this on Aotskin yet, she only lend it to me >u<)
+
+Ground Skin:
+Transparent
+
+Front:
+http://imgur.com/PGyGCKH.png
+
+Back:
+http://imgur.com/PXFofQG.png
+
+Left:
+http://imgur.com/Fn8EOUX.png
+
+Right:
+http://imgur.com/QDWkTZN.png
+
+Up:
+http://imgur.com/w8sF2JY.jpg
+
+Down:
+http://imgur.com/a08AoN2.png
+
+
+
+_____________Game Setting_____________
+
+Titan Size Mode:  2
+
+PVP Off (friendly mode On)
+
+Endless Respawn On
+
+MOTD:
+
+<color=#c17979><b>
+________________________________
+
+“Welcome to Adventure Island map”
+________________________________</b></color>
+
+<color=#c17979><b>Gameplay:</b></color> <color=#ffacac>RP, Hangout, PVE and
+misc. minigames like – a Dozen Golden Egg Hunt, 
+Treasure Finding, & Deadly Maze.</color>
+
+<color=#c17979><b>Rules:</b></color><color=#ffacac> Be nice and respect others 
+like how you want to be respected yourself.</color>
+Tips: enlarge minimap (key M), hold it then press K<color=#c17979><b>
+**Have a Nice and Wonderful day **</b></color>

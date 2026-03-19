@@ -1,0 +1,15 @@
+Horse:
+Hair:
+Eyes:
+Glass:
+Face:
+Skin:
+Hoodie:
+Costume:
+Cape:
+Blade1:
+Blade2:
+Gas:
+Trail:
+Thunderspear L:
+Thunderspear R:

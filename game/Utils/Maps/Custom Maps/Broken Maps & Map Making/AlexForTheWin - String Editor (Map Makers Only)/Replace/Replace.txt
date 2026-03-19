@@ -1,0 +1,199 @@
+//This script takes an input string called 'input' and replaces the word 'old' with the word 'new'. It modifies the original string and does not return anything else. If the old word is not found, the string is left untouched. The script will not support single quotations, double quotations, parentheses, commas, periods, or unicode symbols. To fix this, you can prompt the master client for these symbols and set the appropriate characters.
+
+OnRoundStart()
+{
+VariableString.Set("input", "AlexIsNotCool");
+VariableString.Set("Old", "Not");
+VariableString.Set("New", "Very");
+VariableString.Set("Find", VariableString("Old"));
+
+VariableInt.Set("Position", 0);
+If(String.Contains(VariableString("input"), VariableString("Find")))
+{
+VariableString.Set("33", "!");
+VariableString.Set("34", "!");
+VariableString.Set("35", "#");
+VariableString.Set("36", "$");
+VariableString.Set("37", "%");
+VariableString.Set("38", "&");
+VariableString.Set("39", "'");
+VariableString.Set("40", "'");
+VariableString.Set("41", "'");
+VariableString.Set("42", "*");
+VariableString.Set("43", "+");
+VariableString.Set("44", "+");
+VariableString.Set("45", "-");
+VariableString.Set("46", "-");
+VariableString.Set("47", "/");
+VariableString.Set("48", "0");
+VariableString.Set("49", "1");
+VariableString.Set("50", "2");
+VariableString.Set("51", "3");
+VariableString.Set("52", "4");
+VariableString.Set("53", "5");
+VariableString.Set("54", "6");
+VariableString.Set("55", "7");
+VariableString.Set("56", "8");
+VariableString.Set("57", "9");
+VariableString.Set("58", ":");
+VariableString.Set("59", ";");
+VariableString.Set("60", "<");
+VariableString.Set("61", "=");
+VariableString.Set("62", ">");
+VariableString.Set("63", "?");
+VariableString.Set("64", "@");
+VariableString.Set("65", "A");
+VariableString.Set("66", "B");
+VariableString.Set("67", "C");
+VariableString.Set("68", "D");
+VariableString.Set("69", "E");
+VariableString.Set("70", "F");
+VariableString.Set("71", "G");
+VariableString.Set("72", "H");
+VariableString.Set("73", "I");
+VariableString.Set("74", "J");
+VariableString.Set("75", "K");
+VariableString.Set("76", "L");
+VariableString.Set("77", "M");
+VariableString.Set("78", "N");
+VariableString.Set("79", "O");
+VariableString.Set("80", "P");
+VariableString.Set("81", "Q");
+VariableString.Set("82", "R");
+VariableString.Set("83", "S");
+VariableString.Set("84", "T");
+VariableString.Set("85", "U");
+VariableString.Set("86", "V");
+VariableString.Set("87", "W");
+VariableString.Set("88", "X");
+VariableString.Set("89", "Y");
+VariableString.Set("90", "Z");
+VariableString.Set("91", "[");
+VariableString.Set("92", "\");
+VariableString.Set("93", "]");
+VariableString.Set("94", "^");
+VariableString.Set("95", "_");
+VariableString.Set("96", "`");
+VariableString.Set("97", "a");
+VariableString.Set("98", "b");
+VariableString.Set("99", "c");
+VariableString.Set("100", "d");
+VariableString.Set("101", "e");
+VariableString.Set("102", "f");
+VariableString.Set("103", "g");
+VariableString.Set("104", "h");
+VariableString.Set("105", "i");
+VariableString.Set("106", "j");
+VariableString.Set("107", "k");
+VariableString.Set("108", "l");
+VariableString.Set("109", "m");
+VariableString.Set("110", "n");
+VariableString.Set("111", "o");
+VariableString.Set("112", "p");
+VariableString.Set("113", "q");
+VariableString.Set("114", "r");
+VariableString.Set("115", "s");
+VariableString.Set("116", "t");
+VariableString.Set("117", "u");
+VariableString.Set("118", "v");
+VariableString.Set("119", "w");
+VariableString.Set("120", "x");
+VariableString.Set("121", "y");
+VariableString.Set("122", "z");
+VariableString.Set("123", "{");
+VariableString.Set("124", "|");
+VariableString.Set("125", "}");
+VariableString.Set("126", "~");
+
+VariableString.Set("Word", "");
+VariableString.Set("GuessWord", "/restart");
+VariableInt.Set("Length", 0);
+VariableInt.Set("CurrentChar", 32);
+VariableString.Set("TempChar", "");
+VariableString.Set("TempName", "");
+
+While(String.NotEquals(VariableString("input"), VariableString("Word")))
+{
+While(String.NotStartsWith(VariableString("input"), VariableString("GuessWord")))
+{
+VariableString.Set("GuessWord", VariableString("Word"));
+VariableInt.Add("CurrentChar", 1);
+VariableString.Set("TempChar", VariableInt("CurrentChar").ConvertToString());
+VariableString.Append("GuessWord", VariableString(VariableString("TempChar")));
+}
+
+VariableInt.Set("CurrentChar", 32);
+VariableString.Set("Word", VariableString("GuessWord"));
+VariableString.Set("GuessWord", "/restart");
+VariableInt.Add("Length", 1);
+
+VariableString.Set("TempName", "Char");
+VariableString.Append("TempName", VariableInt("Length").ConvertToString());
+VariableString.Set(VariableString("TempName") , VariableString(VariableString("TempChar")));
+}
+
+VariableInt.Set("Iter", 1);
+VariableString.Set("testInput", VariableString("input"));
+VariableInt.Add("Length", 1);
+
+While(String.Contains(VariableString("testInput"), VariableString("Find")))
+{
+VariableInt.Add("Position", 1);
+VariableInt.Set("Iter", VariableInt("Position"));
+VariableString.Set("testInput", "");
+
+While(Int.LessThan(VariableInt("Iter"), VariableInt("Length")))
+{
+VariableString.Set("TempName", "Char");
+VariableString.Append("TempName", VariableInt("Iter").ConvertToString());
+VariableString.Append("testInput", VariableString(VariableString("TempName")));
+VariableInt.Add("Iter", 1);
+}
+}
+
+VariableInt.Subtract("Length", 1);
+VariableInt.Subtract("Position", 1);
+VariableString.Set("findWord", "/restart");
+VariableInt.Set("endPosition", VariableInt("Position"));
+
+While(String.NotEquals(VariableString("findWord"), VariableString("Old")))
+{
+VariableInt.Add("endPosition", 1);
+VariableInt.Set("Iter", VariableInt("Position"));
+VariableString.Set("findWord", "");
+
+While(Int.LessThan(VariableInt("Iter"), VariableInt("endPosition")))
+{
+VariableString.Set("TempName", "Char");
+VariableString.Append("TempName", VariableInt("Iter").ConvertToString());
+VariableString.Append("findWord", VariableString(VariableString("TempName")));
+VariableInt.Add("Iter", 1);
+}
+}
+
+VariableString.Set("input", "");
+VariableInt.Set("Iter", 1);
+
+While(Int.LessThan(VariableInt("Iter"), VariableInt("Position")))
+{
+VariableString.Set("TempName", "Char");
+VariableString.Append("TempName", VariableInt("Iter").ConvertToString());
+VariableString.Append("input", VariableString(VariableString("TempName")));
+VariableInt.Add("Iter", 1);
+}
+
+VariableString.Append("input", VariableString("New"));
+VariableInt.Add("Length", 1);
+
+While(Int.LessThan(VariableInt("endPosition"), VariableInt("Length")))
+{
+VariableString.Set("TempName", "Char");
+VariableString.Append("TempName", VariableInt("endPosition").ConvertToString());
+VariableString.Append("input", VariableString(VariableString("TempName")));
+VariableInt.Add("endPosition", 1);
+}
+VariableInt.Subtract("Length", 1);
+
+Game.PrintMessage(VariableString("input"));
+}
+}

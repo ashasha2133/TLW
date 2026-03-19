@@ -1,0 +1,15 @@
+Horse:transparent
+Hair:transparent
+Eyes:transparent
+Glass:transparent
+Face:transparent
+Skin:transparent
+Hoodie:transparent
+Costume:transparent
+Cape:transparent
+Blade1:transparent
+Blade2:transparent
+Gas:transparent
+Trail:transparent
+Thunderspear L:transparent
+Thunderspear R:transparent

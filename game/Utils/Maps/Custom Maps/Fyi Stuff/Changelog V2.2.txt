@@ -1,0 +1,248 @@
+New!
+- Sylcium's BOMB RACING COLLECTION! See the new folder for additions!
+- Riblei's Huge Alteration Collection! See the new folder Reverse-Mirrored-Tilted-UpsideDown too see! *Pre-existing maps of that category have been moved
+- Egg Hunt Maps
+	- Cowcowtony - Modern City
+	- Eliope - K-rot
+	- Mayaka (12 eggs)
+	- JahKirsein - Trost
+	- Kari - Egg Race
+	- MB12 - Rocky Mountain
+	- Eliope - 7 Egg Map 
+- Golden Lord - Horse Racing Map (Unfinished)
+- Eliope - Makina Red (GreenCP)
+- Riblei + Eliope - Longest Line
+- Hatakai - Omega Flowey
+- Supamika - Cochlea Compacter 4 (Tokyo Ghoul)
+- LEO1337 - Cave
+- LEO1337 - Shiganshina District
+- HimeSama - Hims Map (RP)
+- Farang Guild (Taylor + Utsuro)  - Front Lines (Multi Purpose)
+- StardustPhoenix - Historia's Orphanage
+- Taylor - Farang Castle
+- Prime1334 - Forgotten Village
+- BluesparksLevi - AOT Forest (RP)
+- BluesparksLevi - AOT Underground Fight (RP)
+- Kryiohati - Sky Winter Center (RP, PvP)
+- Kryiohati - The Districts Of The Old Tree
+- Kryiohati - The City In The Sky
+- Kryiohati - Party Island (RP)
+- Kryiohati - Magenta vs Cyan
+- Kryiohati - Magma (Blade PvP)
+- Kryiohati - A Fight For 1 Of The 3 Elements (Blade PvP)
+- Kryiohati - Giant Human Coffeees
+- Kryiohati - Halloween Party (RP, PvP)
+- Kryiohati - Zombies Attack
+- EverEternal - Into the Void (PVE Endless Respawn)
+- ShinKun - Shin's RP Map
+- Nycola20 - Mr. Mec Muffin's RP World
+- WanderFires1 - Shadow Of The Colossus 6th Boss Fight
+- Ninja Mic - Ninja Academy (RP)
+- LunaSky - Luna's Hotspring
+- LunaSky - Winter Ski Lodge
+- JeanfromFinland - Underground Secret (RP)
+- JeanfromFinland - Kawakashi
+- AdrianPlays - Town Of Salem
+- Max - Anime Roleplay World!
+- Cerryl - Cerryl's Roleplay Map
+- KaiPlus - Kai & Lin's Future Apartment (RP)
+- Griffinbound - Trost (RP)
+- Yukimorizuki - Forsaken City
+- MikasaTheSlut - Lapis Aoki's Poop
+- Zoom - Teen Titans Tower
+- ToxicPaste - Castle Utgard 2.0 (Casual)
+- ToxicPaste - Castle Utgard 2.0 (Realistic Survival)
+- Gameboy8 - Castle Map (RP)
+- Gameboy8 - Adventure Island Map (RP)
+	+ Custom Logic
+	+ Game Settings *Found in logic folder
+- AlexForTheWin - Lava Coated Tower (Map Making Only)
+- AlexForTheWin - Lava Coated Tower 2 (Map Making Only)
+- AlexForTheWin - Fish (Map Making Only)
+- AlexForTheWin - Lava Shark (Map Making Only)
+- AlexForTheWin - Shark (Map Making Only)
+- Sylcium + AlexForTheWin - One Life Map Picker
+- AlexForTheWin - Object Mover And Remover Base
+	+ Custom Logic
+- AlexForTheWin + 22 Others - Random Racing Map
+	+ Custom Logic
+- AlexForTheWin - Beast Titan Logic
+	+ Map Addon
+- AlexForTheWin - AFK Test 
+- Unknown - AFK Test
+- AlexForTheWin - Restart On Time Logic
+- AlexForTheWin - Save Stats Logic
+- AlexForTheWin - Titan Clock Logic
+	+ Map Addon
+- AlexForTheWin - Sprinting Titans
+- AlexForTheWin - Sprinting Titans (onUpdate)
+- AlexForTheWin's String Editor (Map Maker's Only)
+- oNoto - Anime Girl Colored
+- oNoto - Anime Girl Uncolored
+- AlexForTheWin - Knuckles
+- AlexForTheWin - Crash Cove Racing Colored
+- Mayoi - Osu! Logo
+- AlexForTheWin - Build A Wall (Physics Object)
+- AlexForTheWin - Object Dimensions (Physics Objects)
+- AlexForTheWin - Racing Test Bad (Physics Objects)
+- RCAsset List
+- Usable Resources List
+- AlexForTheWin - Sphere Shape Test (INFO)
+- Appolina - Object Fixing Values (Map Making Only).xlsx
+- Crash Bandicoot - Feliz Cumpleaños
+- Esli - Curves Race
+- Esli - Tunnel Racing
+- Fate - Optix Map (Unfinished)
+- Aether Ko - The Towers Trail Route 4
+- Zek - First
+- Painting Service - Cone Arena Cache
+- Sylcium - Open World Racing Logic
+- Sylcium - General Logic
+	+ Command List
+- Sylcium - Open World Racing Logic V2
+- Putte - Putte's Map (Unfinished)
+- Kryiohati - Halloween Death Zone
+- Kryiohati - Halloween Zombies Attack
+- MantySkins - Stone Garden
+- Syeo - Birth of Levi 2.0
+- Syeo - Manhattan v0.6
+- Yuriane - Titan Training Dojo Resort
+- Gameboy8 - Clash of Clans
+- Electric Dipole - Icewater Plaza
+- Kryiohati - Fight in Magmatic Zone (No Titans)
+- Kryiohati - Fight in Magmatic Zone (With Titans)
+- Madzik - Cosmic Map
+- Madzik - Training Arena
+- Madzik - Mystic PvP
+- Madzik - Universal
+- Madzik + Hixan - Game of Throne
+- Yuriane - Battle Arena
+- Yuriane - Attack on Pirates
+- Yuriane - Jetski PvP
+- Sylcium - Cage Match
+	+ Custom Logic
+- Syeo - Termina Field (V0.1)
+- Sylcium + Cowcowtony - Cage Match (Forest Version)
+- Yuriane - Rathalos' Cliffside
+- Appolina - Endless Lava Obstacles 2 'Candy Land' (Early Version)
+- Appolina - Red Mirrored Akina (Early Version)
+- Keno - Purp
+- Yuriane - Aincrad
+- Syeo - Syeo's Map
+- Nabsin - Akina 2.0 (Fixed)
+- Eliope + Riblei - Unfinished Map A (Fixed)
+- Aila - Aice
+- Unknown - Unnamed Lava Racing Map
+- SkyRaid - Ice Skate Cube
+- Sampai - Green Vs Blue Map
+	+ Logic
+- XZavier - PvP Ice Skate Map
+- Jaydensofye - First Map
+- Chakung - PVP Galactic Arena (Skate)
+	+ Blade Variant
+	+ Logic
+- Doctortotheman - Warehouse
+- Kamal - PVP Arena Ice Land & Big Tree
+- Kamal - PVP Training Arena
+- Kamal - PVP Sky Arena 1v1
+- Kamal - Big Ball PVP Arena 1v1
+- BluesparksLevi - AOT PVP Map 
+- MyAccountGotDeleted - Blade PVP Map
+- MyAccountGotDeleted - Blade PVP
+- MyAccountGotDeleted - Blade PVP 'Meh'
+- PTHunter - Racing Map 
+- PTHunter - Mass Bomb PVP
+- Hixan - Earth Rumble
+- ChaosNinja - CN's Hometown (Unfinished)
+- ChaosNinja - Leaked Map Texture Map (Yellow Edit)
+- ChaosNinja - Leaked Map Texture Map
+- xXSB101Xx - DBZ Tournament Map
+- ChaosNinja - Futuristic PvP Map (Blue, Red, Cyan)
+- Lelouch - PvP Demon
+- Shinkun - Ice Skate PvP vSK
+- Yuumii - Ice Skate PvP 1
+- ChaosNinja - PvP Warfare Map (Desert)
+- ChaosNinja - PvP Warfare Map (Urban)
+- Shinkun - Shinkun's PvP Map
+- Shinkun - Shin's 1v1 & FFA PvP Map
+- Kamgo11 - PvP Map
+- ArminOopsArlert - Cannons Duel
+- Hixan - Domus Flau PVP
+- TET - Pilule (Bomb)
+- Noobs + Ninnymonger - Spaaaace PvP
+- Cowcowtony + Guest Anon - Bug On The Rose (Hard)
+- Appolina + Guest Anon - Red Mirrored Akina (Reverse)
+- Riblei + Eliope - Makina Dro (Mirrored)
+- Riblei + Eliope - Makina Dro (Mirrored, Rotated)
+- Riblei + Eliope - Makina Source V (Mirrored, Rotated)
+- Riblei + Hongyao - Hong's Racing Akina (Mirrored)
+- Riblei + Hongyao - Hong's Racing Akina (Mirrored, Rotated)
+- Riblei + Mb12 - Lava Madness (Mirrored)
+- Riblei + Mb12 - Lava Madness (Mirrored, Rotated)
+- Riblei + Sylcium - Long Racing Map (Lava, Mirrored)
+- Riblei + Sylcium - Long Racing Map (Lava, Mirrored, Rotated)
+- Sylcium + Riblei - Indigo Racing (Lava, Mirrored, Rotated)
+- Sylcium + Riblei - Indigo Racing (Lava, Mirrored)
+- Riblei - Supposed To Be A Secret Room
+- Riblei + Eliope - TBOTR Fusion (Reversed)
+- Riblei + oNoto - Speed Racing 002 (Reversed)
+- Riblei + Eliope - District Racers
+- Ribeli + Eliope - Makina Ice (Reversed)
+- Riblei + Eliope - Makina Royal (Reversed)
+- Riblei + Eliope - Makina Source (LV1, Reversed)
+- Riblei + Eliope - Makina Source (LV1) + Honor + Royal + Red (Reversed)
+- Riblei + Eliope - Makina Speed (Reversed)
+- Riblei + Eliope - Makina Team (Reversed)
+- Riblei + Eliope - Port Racers 2 (Reversed)
+- Riblei + Eliope - The Blood Of The Racers 1 (Reversed)
+- Riblei + Eliope - The Way Of The Racers (Optimised, Reversed)
+- Riblei + Eliope - The Way Of The Racers (LV2, Reversed)
+- Riblei + Hongyao - Hong's Racing Akina (Reversed)
+- Riblei + Eliope - Makina Ice Extended (+Checkpoint, Reversed)
+- Riblei + Eliope - Makina Red (Lava, Reversed)
+- Riblei + Eliope - Makina Royal (Lava. Reversed)
+- Riblei + Eliope - Vanish (Reversed)
+- Riblei + Eliope - Port racers + The Way of the Racers (Reversed)
+- Riblei + Sylcium - Long Racing Map (Reversed)
+- Riblei + Sylcium - Indigo Racing (Reversed)
+- Riblei + Pixell + Zechten + Sylcium + Eliope - Winter Speed (Edit, Reversed)
+- Eliope - Makina Red (Cyan Version)
+- Riblei + Pixell + Zechten + Sylcium + Eliope - Winter Speed (Edit)
+- Riblei + Eliope - Makina Red Lava (Harder + Retexture)
+- Riblei - 1k Lava
+- Riblei - Forest Paradise (Easy)
+- Riblei - Forest Paradise 
+- Riblei - Gear Fountain
+- Riblei + Hongyao - Hongs Racing Akina (Lava, Drunk)
+- Riblei - Lava Paradise
+- Riblei - Machina's Fountain
+- Makina Royal (Much Harder Version)
+- Riblei + Eliope - Makina Speed + Others (Reverse)
+- Mew + Riblei - Mew's 1k Lava edition (Short)
+- Mew + Riblei - Mew's 1k Lava edition
+- Unknown - Small HnS Fusion
+- Riblei + Eliope - Makina Source LV3 (+Checkpoints)
+- Riblei - Sphere Gear
+- Riblei - Stairs
+- Riblei + Eliope - Riblei's WIP TBOTR IV 
+
+===============================================================
+
+Thanks Riblei, Appolina, Alex4Win, Keno, MaskSlave, Zender, Zill and Golden Lord
+for your contributions / edits
+
+Edits:
+- Some maps Have been relocated to reflect their use 
+- Unknown - Trost Expedition Roleplay Map (Incomplete Rip) has been given credit, (Axelztras + TiagoPinto - Expedition to Shinganshima) However, it is still broken
+- Unknown - Undertale Now has appropriate credit, it was made by Alejandro
+- Doctertotheman - AOTTG now has appropriate credit, it is renamed Cara Pace - AOT Training Camp (RP)
+- Falling Survival Cache Now has appropriate credit, it was made by Painting Service
+- Dragon Cache Now has appropriate credit, it was made by Painting Service
+- Unknown - PvP Complex Cache Now has appropriate credit, it was made by Painting Service
+- Rin Bus To Hell 1 Has been renamed to Bus To Hell 2, Bus to Hell 1 is in My possession, but may be private, needs confirmation that it is public
+- Eliope - Race Unfinished 1 Has been removed and replaced by Riblei's Fixed Racing Edit in the randomiser section
+- RolePlay Folder Has been created to seperate maps made for RP from maps that are meant for artistic reasons, fun such as the survival cache or other marvel
+- Hide And Seek Folder has been created for the catagory
+- Tunnels Mosquito Has Been identified and renamed and replaced to Hide and Seek, PacifiedMosquito - Hide and Seek Tunnel Maze 
+- Unknown - Soccer Court (PvP Blade) Now has Appropriate name and credit, it is now called Chakung - [PVP] Football Stadium FIFA AOTTG 2018
+- BFrogs Wishlist has been significantly updated

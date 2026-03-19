@@ -1,0 +1,53 @@
+//Spawnpoint;
+base,cube_002,0,100,0,0,0,0,0;
+custom,cuboid,default,1,1,1,0,1,1,1,1.0,1.0,0,95,-5,0,0,0,0;
+
+
+
+
+
+//Width Minimum = 0.48;
+base,cube_002,0,100,0,0.707,0,0,-0.707;
+custom,cuboid,default,0.48,1,5,0,1,1,1,1.0,1.0,0,95,0,0,0,0,0;
+
+
+
+
+
+//Width Maximum = 0.95;
+base,cube_002,0,100,0,0.707,0,0,-0.707;
+custom,cuboid,default,0.95,1,5,0,1,1,1,1.0,1.0,0,95,0,0,0,0,0;
+
+
+
+
+
+//Height Minimum = 0.8;
+base,cube_002,0,100,0,0.707,0,0,-0.707;
+custom,cuboid,default,5,1,0.8,0,1,1,1,1.0,1.0,0,95,0,0,0,0,0;
+
+
+
+
+
+//Height Maximum = 1.95;
+base,cube_002,0,100,0,0.707,0,0,-0.707;
+custom,cuboid,default,5,1,1.95,0,1,1,1,1.0,1.0,0,95,0,0,0,0,0;
+
+
+
+
+
+//Length Minimum = 1.25;
+base,cube_002,0,100,0,0.707,0,0,-0.707;
+custom,cuboid,default,2,1,2,0,1,1,1,1.0,1.0,0,95,0,0,0,0,0;
+custom,cuboid,default,1,1.25,1,0,1,1,1,1.0,1.0,-15,106.25,0,0,0,0,0;
+
+
+
+
+
+//Length Maximum = 4.5;
+base,cube_002,0,100,0,0.707,0,0,-0.707;
+custom,cuboid,default,2,1,2,0,1,1,1,1.0,1.0,0,95,0,0,0,0,0;
+custom,cuboid,default,1,4.5,1,0,1,1,1,1.0,1.0,-15,122.5,0,0,0,0,0;

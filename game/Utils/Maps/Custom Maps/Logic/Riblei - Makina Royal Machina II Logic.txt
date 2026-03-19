@@ -1,0 +1,376 @@
+//misc,region,Clock1,4,4,4,0,50,0;
+//misc,region,Clock2,4,4,4,0,45,0;
+//misc,region,Clock3,4,4,4,15,50,0;
+//misc,region,Clock4,4,4,4,15,45,0;
+//misc,region,Clock5,4,4,4,30,50,0;
+//misc,region,Clock6,4,4,4,30,45,0;
+//misc,region,Clock7,4,4,4,45,50,0;
+//misc,region,Clock8,4,4,4,45,45,0;
+
+
+OnRoundStart()
+{ 
+  //Set coordinates of the cube that will trigger when a player is near
+  VariableFloat.Set("TX1", 4000.01);
+  VariableFloat.Set("TY1", 345.0);
+  VariableFloat.Set("TZ1", -445.0);
+  
+  VariableFloat.Set("TX2", -3690.0);
+  VariableFloat.Set("TY2", -270.0);
+  VariableFloat.Set("TZ2", -3550.0);
+
+  VariableFloat.Set("TX3", 4001.5);
+  VariableFloat.Set("TY3", -313.0);
+  VariableFloat.Set("TZ3", -1532.0);
+  
+  VariableFloat.Set("TX4", -3945.0);
+  VariableFloat.Set("TY4", -75.0);
+  VariableFloat.Set("TZ4", -3525.0);
+  
+  //Set size of the cube (size of each side)
+  VariableFloat.Set("Size", 25.0);
+  
+  //Set the boolean judging if the player is in the box or not
+  VariableBool.Set("InBox", false);
+  VariableInt.Set("spawntimer", 1);
+  VariableBool.Set("CountDown", true);
+}
+
+
+OnTitanEnterRegion["Clock1"]("ClockTitan")
+{
+  //Tick
+  Titan.MoveTitan(VariableTitan("ClockTitan"), 0.0, 45.0, 0.0);
+}
+
+OnTitanEnterRegion["Clock2"]("ClockTitan")
+{
+  //Tock
+  Titan.MoveTitan(VariableTitan("ClockTitan"), 0.0, 50.0, 0.0);
+  
+  //Set temporary player object for the loop
+  VariablePlayer.Set("player", VariablePlayer("NULL"))
+  
+  //Check if each player is near the sphere
+  ForeachPlayer("player")
+  {
+    //Store the player's position values to compare
+    VariableFloat.Set("PX1", VariablePlayer("player").GetPositionX());
+    VariableFloat.Set("PY1", VariablePlayer("player").GetPositionY());
+    VariableFloat.Set("PZ1", VariablePlayer("player").GetPositionZ());
+    
+    //Check if the player is inside of the box
+    
+    //Check if the player's X coordinate withinn the box
+    
+    //Set a temporary value to hold the difference between the player and the box positions
+    VariableFloat.Set("Temp", VariableFloat("TX1"));
+    VariableFloat.Subtract("Temp", VariableFloat("PX1"));
+    
+    //Get the absolute value of X
+    If(Float.LessThan(VariableFloat("Temp"), 0.0))
+    {
+      VariableFloat.Multiply("Temp", -1.0)
+    }
+    
+    //Check if the distance between the player and the box is withinn the set size
+    If(Float.LessThanOrEqual(VariableFloat("Temp"), VariableFloat("Size")))
+    {
+       //Repeat the same step for Y coordinate
+       
+       //Set a temporary value to hold the difference between the player and the box positions
+       VariableFloat.Set("Temp", VariableFloat("TY1"));
+       VariableFloat.Subtract("Temp", VariableFloat("PY1"));
+       
+       //Get the absolute value of Y
+       If(Float.LessThan(VariableFloat("Temp"), 0.0))
+       {
+         VariableFloat.Multiply("Temp", -1.0)
+       }
+       
+       //Check if the distance between the player and the box is withinn the set size
+       If(Float.LessThanOrEqual(VariableFloat("Temp"), VariableFloat("Size")))
+       {
+          //Repeat the same step for Z coordinate
+          
+          //Set a temporary value to hold the difference between the player and the box positions
+          VariableFloat.Set("Temp", VariableFloat("TZ1"));
+          VariableFloat.Subtract("Temp", VariableFloat("PZ1"));
+          
+          //Get the absolute value of Y
+          If(Float.LessThan(VariableFloat("Temp"), 0.0))
+          {
+            VariableFloat.Multiply("Temp", -1.0)
+          }
+          
+          //Check if the distance between the player and the box is withinn the set size
+          If(Float.LessThanOrEqual(VariableFloat("Temp"), VariableFloat("Size")))
+          {
+             //At this point, we know the player is in the box. Execute whatever you want
+             
+             Player.MovePlayer(VariablePlayer("player"), -4000.0, -100.0, -2300.0);
+          }
+       }
+    }
+  }
+}
+
+
+
+
+
+OnTitanEnterRegion["Clock3"]("ClockTitan")
+{
+  //Tick
+  Titan.MoveTitan(VariableTitan("ClockTitan"), 15.0, 45.0, 0.0);
+}
+
+OnTitanEnterRegion["Clock4"]("ClockTitan")
+{
+  //Tock
+  Titan.MoveTitan(VariableTitan("ClockTitan"), 15.0, 50.0, 0.0);
+  
+  //Set temporary player object for the loop
+  VariablePlayer.Set("player", VariablePlayer("NULL"))
+  
+  //Check if each player is near the sphere
+  ForeachPlayer("player")
+  {
+    //Store the player's position values to compare
+    VariableFloat.Set("PX2", VariablePlayer("player").GetPositionX());
+    VariableFloat.Set("PY2", VariablePlayer("player").GetPositionY());
+    VariableFloat.Set("PZ2", VariablePlayer("player").GetPositionZ());
+    
+    //Check if the player is inside of the box
+    
+    //Check if the player's X coordinate withinn the box
+    
+    //Set a temporary value to hold the difference between the player and the box positions
+    VariableFloat.Set("Temp", VariableFloat("TX2"));
+    VariableFloat.Subtract("Temp", VariableFloat("PX2"));
+    
+    //Get the absolute value of X
+    If(Float.LessThan(VariableFloat("Temp"), 0.0))
+    {
+      VariableFloat.Multiply("Temp", -1.0)
+    }
+    
+    //Check if the distance between the player and the box is withinn the set size
+    If(Float.LessThanOrEqual(VariableFloat("Temp"), VariableFloat("Size")))
+    {
+       //Repeat the same step for Y coordinate
+       
+       //Set a temporary value to hold the difference between the player and the box positions
+       VariableFloat.Set("Temp", VariableFloat("TY2"));
+       VariableFloat.Subtract("Temp", VariableFloat("PY2"));
+       
+       //Get the absolute value of Y
+       If(Float.LessThan(VariableFloat("Temp"), 0.0))
+       {
+         VariableFloat.Multiply("Temp", -1.0)
+       }
+       
+       //Check if the distance between the player and the box is withinn the set size
+       If(Float.LessThanOrEqual(VariableFloat("Temp"), VariableFloat("Size")))
+       {
+          //Repeat the same step for Z coordinate
+          
+          //Set a temporary value to hold the difference between the player and the box positions
+          VariableFloat.Set("Temp", VariableFloat("TZ2"));
+          VariableFloat.Subtract("Temp", VariableFloat("PZ2"));
+          
+          //Get the absolute value of Y
+          If(Float.LessThan(VariableFloat("Temp"), 0.0))
+          {
+            VariableFloat.Multiply("Temp", -1.0)
+          }
+          
+          //Check if the distance between the player and the box is withinn the set size
+          If(Float.LessThanOrEqual(VariableFloat("Temp"), VariableFloat("Size")))
+          {
+             //At this point, we know the player is in the box. Execute whatever you want
+             
+             Player.MovePlayer(VariablePlayer("player"), 3999.9, 260.0, -5319.5);
+          }
+       }
+    }
+  }
+}
+
+
+
+
+
+OnTitanEnterRegion["Clock5"]("ClockTitan")
+{
+  //Tick
+  Titan.MoveTitan(VariableTitan("ClockTitan"), 30.0, 45.0, 0.0);
+}
+
+OnTitanEnterRegion["Clock6"]("ClockTitan")
+{
+  //Tock
+  Titan.MoveTitan(VariableTitan("ClockTitan"), 30.0, 50.0, 0.0);
+  
+  //Set temporary player object for the loop
+  VariablePlayer.Set("player", VariablePlayer("NULL"))
+  
+  //Check if each player is near the sphere
+  ForeachPlayer("player")
+  {
+    //Store the player's position values to compare
+    VariableFloat.Set("PX3", VariablePlayer("player").GetPositionX());
+    VariableFloat.Set("PY3", VariablePlayer("player").GetPositionY());
+    VariableFloat.Set("PZ3", VariablePlayer("player").GetPositionZ());
+    
+    //Check if the player is inside of the box
+    
+    //Check if the player's X coordinate withinn the box
+    
+    //Set a temporary value to hold the difference between the player and the box positions
+    VariableFloat.Set("Temp", VariableFloat("TX3"));
+    VariableFloat.Subtract("Temp", VariableFloat("PX3"));
+    
+    //Get the absolute value of X
+    If(Float.LessThan(VariableFloat("Temp"), 0.0))
+    {
+      VariableFloat.Multiply("Temp", -1.0)
+    }
+    
+    //Check if the distance between the player and the box is withinn the set size
+    If(Float.LessThanOrEqual(VariableFloat("Temp"), VariableFloat("Size")))
+    {
+       //Repeat the same step for Y coordinate
+       
+       //Set a temporary value to hold the difference between the player and the box positions
+       VariableFloat.Set("Temp", VariableFloat("TY3"));
+       VariableFloat.Subtract("Temp", VariableFloat("PY3"));
+       
+       //Get the absolute value of Y
+       If(Float.LessThan(VariableFloat("Temp"), 0.0))
+       {
+         VariableFloat.Multiply("Temp", -1.0)
+       }
+       
+       //Check if the distance between the player and the box is withinn the set size
+       If(Float.LessThanOrEqual(VariableFloat("Temp"), VariableFloat("Size")))
+       {
+          //Repeat the same step for Z coordinate
+          
+          //Set a temporary value to hold the difference between the player and the box positions
+          VariableFloat.Set("Temp", VariableFloat("TZ3"));
+          VariableFloat.Subtract("Temp", VariableFloat("PZ3"));
+          
+          //Get the absolute value of Y
+          If(Float.LessThan(VariableFloat("Temp"), 0.0))
+          {
+            VariableFloat.Multiply("Temp", -1.0)
+          }
+          
+          //Check if the distance between the player and the box is withinn the set size
+          If(Float.LessThanOrEqual(VariableFloat("Temp"), VariableFloat("Size")))
+          {
+             //At this point, we know the player is in the box. Execute whatever you want
+             
+             Player.MovePlayer(VariablePlayer("player"), -4070.0, -25.0, -4625.0);
+          }
+       }
+    }
+  }
+}
+
+OnTitanEnterRegion["Clock7"]("ClockTitan")
+{
+  //Tick
+  Titan.MoveTitan(VariableTitan("ClockTitan"), 45.0, 45.0, 0.0);
+}
+
+OnTitanEnterRegion["Clock8"]("ClockTitan")
+{
+  //Tock
+  Titan.MoveTitan(VariableTitan("ClockTitan"), 45.0, 50.0, 0.0);
+  
+  //Set temporary player object for the loop
+  VariablePlayer.Set("player", VariablePlayer("NULL"))
+  
+  //Check if each player is near the sphere
+  ForeachPlayer("player")
+  {
+    //Store the player's position values to compare
+    VariableFloat.Set("PX4", VariablePlayer("player").GetPositionX());
+    VariableFloat.Set("PY4", VariablePlayer("player").GetPositionY());
+    VariableFloat.Set("PZ4", VariablePlayer("player").GetPositionZ());
+    
+    //Check if the player is inside of the box
+    
+    //Check if the player's X coordinate withinn the box
+    
+    //Set a temporary value to hold the difference between the player and the box positions
+    VariableFloat.Set("Temp", VariableFloat("TX4"));
+    VariableFloat.Subtract("Temp", VariableFloat("PX4"));
+    
+    //Get the absolute value of X
+    If(Float.LessThan(VariableFloat("Temp"), 0.0))
+    {
+      VariableFloat.Multiply("Temp", -1.0)
+    }
+    
+    //Check if the distance between the player and the box is withinn the set size
+    If(Float.LessThanOrEqual(VariableFloat("Temp"), VariableFloat("Size")))
+    {
+       //Repeat the same step for Y coordinate
+       
+       //Set a temporary value to hold the difference between the player and the box positions
+       VariableFloat.Set("Temp", VariableFloat("TY4"));
+       VariableFloat.Subtract("Temp", VariableFloat("PY4"));
+       
+       //Get the absolute value of Y
+       If(Float.LessThan(VariableFloat("Temp"), 0.0))
+       {
+         VariableFloat.Multiply("Temp", -1.0)
+       }
+       
+       //Check if the distance between the player and the box is withinn the set size
+       If(Float.LessThanOrEqual(VariableFloat("Temp"), VariableFloat("Size")))
+       {
+          //Repeat the same step for Z coordinate
+          
+          //Set a temporary value to hold the difference between the player and the box positions
+          VariableFloat.Set("Temp", VariableFloat("TZ4"));
+          VariableFloat.Subtract("Temp", VariableFloat("PZ4"));
+          
+          //Get the absolute value of Y
+          If(Float.LessThan(VariableFloat("Temp"), 0.0))
+          {
+            VariableFloat.Multiply("Temp", -1.0)
+          }
+          
+          //Check if the distance between the player and the box is withinn the set size
+          If(Float.LessThanOrEqual(VariableFloat("Temp"), VariableFloat("Size")))
+          {
+             //At this point, we know the player is in the box. Execute whatever you want
+             
+             Player.MovePlayer(VariablePlayer("player"), -3115.0, -345.0, 4330.0);
+          }
+       }
+    }
+  }
+}
+
+OnUpdate()
+{
+  If (Bool.Equals(VariableBool("CountDown"), true))
+  {
+    VariableInt.Subtract("spawntimer", 1); 
+    If (Int.LessThanOrEqual(VariableInt("spawntimer"), 0))
+    {
+      Titan.SpawnTitanAt(0, 0.1, 0, 1, 0.0, 50.0, 0.0); 
+      Titan.SpawnTitanAt(0, 0.1, 0, 1, 15.0, 50.0, 0.0);
+      Titan.SpawnTitanAt(0, 0.1, 0, 1, 30.0, 50.0, 0.0);
+      Titan.SpawnTitanAt(0, 0.1, 0, 1, 45.0, 50.0, 0.0);
+      {
+       VariableBool.Set("CountDown", false); 
+      }
+    }
+  }
+}

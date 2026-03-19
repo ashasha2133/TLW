@@ -1,0 +1,39 @@
+OnFirstLoad()
+{
+  VariableInt.Set("maxtime", 10000);
+}
+
+OnRoundStart()
+{
+  VariableInt.Set("count", VariableInt("maxtime"));
+  VariableBool.Set("settime", false);
+}
+
+OnChatInput("input")
+{
+  If(Bool.Equals(VariableBool("settime"), true))
+  {
+    VariableInt.Set("maxtime", VariableString("input").ConvertToString()); 
+    VariableInt.Set("count", VariableInt("maxtime"));
+    VariableBool.Set("settime", false);
+  }
+  Else
+  {
+    If(String.Equals(VariableString("input"), "/settime"))
+    {
+      VariableBool.Set("settime", true);
+    }
+  }
+}
+
+OnUpdate()
+{
+  VariableInt.Subtract("count", 1);
+  //VariableInt.Set("temp", VariableInt("count"));
+  //VariableInt.Modulos("temp", 300);
+
+  If(Int.Equals(VariableInt("count"), 0))
+  {
+    Game.Restart(true);
+  }
+}

@@ -1,0 +1,74 @@
+//Viewing platform;
+spawnpoint,playerC,0,60,-20,0,0,0,0;
+custom,cuboid,transparent0.0,1,0.1,1,1,0,0.4,0,1,1,0,57,-20,0,0,0,0;
+
+
+
+//These three cuboids have movement scripts;
+//The finish rotates to be upsidedown;
+//Both the lava and checkpoint are to the right of the finish line, and aren't set to move at all;
+//They overlap perfectly, and actually look like a single orange block;
+//The only difference is that the lava is parented to the finish.  This does not appear to affect the lava in any way;
+
+racing,endcuboid,0.1,1.1,0.1,0,60.1,0,0,1,0,0,
+umvrs(1,1):
+	0,60,0,  0,60.1,0,
+	0,1,0,0,  1,0,0,0,
+	0.01;
+	
+racing,killcuboid,0.1,1.1,0.1,5,60.1,0,0,1,0,0,
+umvrs(2,1):
+	5,60,0,  5,60,0,
+	0,1,0,0,  0,1,0,0,
+	1.0,parent(1);
+	
+racing,checkpointcuboid,0.1,1.1,0.1,5,60.1,0,0,1,0,0,
+umvrs(3,1):
+	5,60,0,  5,60,0,
+	0,1,0,0,  0,1,0,0,
+	1.0;
+	
+
+
+//Here's where things get interesting;
+//Each of these cubes is placed on the tip of one of the tall cuboids above, and parented to it;
+//Finish to finish, lava to lava, checkpoint to checkpoint;
+//The lava and checkpoint boxes should both stay perfectly still; their parents do so, after all;
+//But the lava does... something extra, inherited from its parent's parent;
+
+racing,endcuboid,0.4,0.4,0.4,0,65,0,0,0,0,0,parent(1);
+racing,killcuboid,0.4,0.4,0.4,5,65,0,0,0,0,0,parent(2);
+racing,checkpointcuboid,0.4,0.4,0.4,5,65,0,0,0,0,0,parent(3);
+
+
+
+
+
+//Now turn around!;
+
+//These blocks appear below you, and are just like their friends, above;
+//Their only difference is that now the lava and checkpoint cuboids move up and down;
+//Surprisingly, the lava block paired to this moving lava pillar...;
+//Copies the movement it made before, but stays in formation with its parent;
+
+racing,endcuboid,0.1,1.1,0.1,0,60.1,-40,0,1,0,0,
+umvrs(4,1):
+	0,60,-40,  0,60.1,-40,
+	0,1,0,0,  1,0,0,0,
+	0.01;
+	
+racing,killcuboid,0.1,1.1,0.1,5,60.1,-40,0,1,0,0,
+umvrs(5,1):
+	5,60,-40,  5,70,-40,
+	0,1,0,0,  0,1,0,0,
+	1.0,parent(4);
+	
+racing,checkpointcuboid,0.1,1.1,0.1,5,60.1,-40,0,1,0,0,
+umvrs(6,1):
+	5,60,-40,  5,70,-40,
+	0,1,0,0,  0,1,0,0,
+	1.0;
+	
+racing,endcuboid,0.4,0.4,0.4,0,65,-40,0,0,0,0,parent(4);
+racing,killcuboid,0.4,0.4,0.4,5,65,-40,0,0,0,0,parent(5);
+racing,checkpointcuboid,0.4,0.4,0.4,5,65,-40,0,0,0,0,parent(6);

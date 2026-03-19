@@ -1,0 +1,756 @@
+//general stuff;
+//anti TP
+//test setToOpposite
+//findout setToOpposite's problem, look for 'And' 'Or' 'Not' i think i saw one of them in there
+//we can spam kill them until they get auto banned for spamming blood effects :DDDDDD
+
+//add this to maps;
+//misc,region,MC,2147483647,2147483647,2147483647,0,0,0,0,0,0,1;
+
+//List of Commands
+/clear                                     Clears the chat
+/r                                         Same an /restart
+/pos                                       Prints the position of playerMC
+/tp (player)                               Teleports playerMC to specified player
+/tpHere (player)                           Teleports specified player to playerMC
+/tpHereAll                                 Teleports everyone to playerMC
+/onUpdate                                  Toggles OnUpdate being broken
+/glue (player)                             'Glues' the specified player to their current location and turns glue on
+/glueToggle                                Turns glue on/off
+/magnet (player)                           Teleports the specified player to playerMC every update turns magnet on
+/magnetToggle                              Turns magnet on/off
+/magnetTo (player)                         Teleports playerMC to the specified player every update and turns magnetTo on
+/magenetToToggle                           Turns magnetTo on/off
+/magnetAll                                 Teleports all players to playerMC every update and toggles magnetAll
+/setCharacters (space) (comma) (period)    Sets the three common special characters in quick succession
+/space (space)                             Sets the space character
+/comma (comma)                             Sets the comma character
+/period (period)                           Sets the period character
+/enter (enter)                             Sets the enter character
+/silentToggle                              Toggles OnChatInput being broken when the chat is primed
+/setGuild (player) (newGuild)              Sets the specified player's guild to the specified guild
+/setGuildAll (newGuild)                    Sets everyone's guild to the specified guild
+/changeGuild (oldGuild) (newGuild)         Changes every's guild who had a portion of the oldGuild to the newGuild
+/refill (player)                           Kills and instantly respawns the specified player
+/refillAll                                 Kills and instantly respawns everyone
+/defaultSettings                           Restores setting to their defaults
+/kill (player)                             Kills the specified player
+/killAll                                   Kills everyone
+
+//Found Commands
+/cloth
+/aso kdr
+/aso racing
+/checklevel
+/isrc
+/ignorelist
+/fov
+/colliders
+
+
+
+//Better Commands
+//General
+/clear
+/r
+/pos
+
+//Teleport
+/tp (x) (y) (z)
+/tpTo (player)
+/tpHere (player)
+/tpHereAll
+
+//Magnet
+/magnetOn
+/magnetOff
+/magnet (player)
+/magnetAll
+/magnetToOn
+/magnetToOff
+/magnetTo (player)
+
+//Glue
+/glueOn
+/glueOff
+/glue (player)
+/glueAll
+
+//Guild Stuff
+/setGuild (player) (newGuild)
+/setGuildAll (newGuild)
+/changeGuild (oldGuild) (newGuild)
+
+//Kill
+/kill (player)
+/killAll
+
+//Refill
+/refill (player)
+/refillAll
+
+//Setting Special Characters
+/setCharacters (space) (comma) (period)
+/space (space)
+/comma (comma)
+/period (period)
+/enter (enter)
+
+//Other
+/onUpdate
+/defaultSettings
+/silentOn
+/silentOff
+
+
+
+
+
+
+OnRoundStart()
+{
+  //portian of MC's Name;
+  VariableString.Set("playerMCName", "AlexForTheWin");
+
+  //find MC and set initial indexes
+  VariablePlayer.Set("player", VariablePlayer("player"));
+  ForeachPlayer("player")
+  {
+    //Game.PrintMessage(VariablePlayer("player").GetName());
+    If (String.Contains(VariablePlayer("player").GetName(), VariableString("playerMCName")))
+    {
+      VariablePlayer.Set("playerMC", VariablePlayer("player"));
+    } 
+  }
+
+  //set some stuff;
+  VariableBool.Set("silentCommands", true);
+  VariableString.Set("SPACE", "<size=1>111111</size>");
+  VariableString.Set("COMMA", "<size=3>A</size>");
+  VariableString.Set("PERIOD", "<size=3>0</size>");
+  VariableString.Set("ENTER", "");
+  VariableBool.Set("isOnUpdateBroken", false);
+  VariableBool.Set("isGlueOn", false);
+  VariableString.Set("glueTarget", "");
+  VariableFloat.Set("glueX", 0.0);
+  VariableFloat.Set("glueY", 0.0);
+  VariableFloat.Set("glueZ", 0.0);
+  VariableBool.Set("isMagnetOn", false);
+  VariableString.Set("magnetTarget", "");
+  VariableBool.Set("isMagnetToOn", false);
+  VariableString.Set("magnetToTarget", "");
+  VariableBool.Set("isMagnetAllOn", false);
+  VariableBool.Set("isAntiTPOn", true);
+
+  //initialize primeable stuff;
+  VariableBool.Set("primedChat", false);
+  VariableBool.Set("primedTp", false);
+  VariableBool.Set("primedTpHere", false);
+  VariableBool.Set("primedGlue", false);
+  VariableBool.Set("primedMagnet", false);
+  VariableBool.Set("primedMagnetTo", false);
+  VariableBool.Set("primedSetCharacters", false);
+  VariableBool.Set("primedSpace", false);
+  VariableBool.Set("primedComma", false);
+  VariableBool.Set("primedPeriod", false);
+  VariableBool.Set("primedEnter", false);
+  VariableBool.Set("primedSetGuild1", false);
+  VariableBool.Set("primedSetGuild2", false);
+  VariableBool.Set("primedSetGuildAll", false);
+  VariableBool.Set("primedChangeGuild1", false);
+  VariableBool.Set("primedChangeGuild2", false);
+  VariableBool.Set("primedRefill", false);
+  VariableBool.Set("primedKill", false);
+}
+
+
+OnChatInput("cmd")
+{
+  If (Bool.Equals(VariableBool("primedChat"), true))
+  {
+    If (Bool.Equals(VariableBool("primedTp"), true))
+    {
+      ForeachPlayer("player")
+      {
+        If (String.Contains(VariablePlayer("player").GetName(), VariableString("cmd")))
+        {
+          Player.MovePlayer(VariablePlayer("playerMC"), VariablePlayer("player").GetPositionX(), VariablePlayer("player").GetPositionY(), VariablePlayer("player").GetPositionZ());
+        }
+      }
+      VariableBool.Set("primedChat", false);
+      VariableBool.Set("primedTP", false);
+    }
+
+    If (Bool.Equals(VariableBool("primedTpHere"), true))
+    {
+      ForeachPlayer("player")
+      {
+        If (String.Contains(VariablePlayer("player").GetName(), VariableString("cmd")))
+        {
+          Player.MovePlayer(VariablePlayer("player"), VariablePlayer("playerMC").GetPositionX(), VariablePlayer("playerMC").GetPositionY(), VariablePlayer("playerMC").GetPositionZ());
+        }
+      }
+      VariableBool.Set("primedChat", false);
+      VariableBool.Set("primedTpHere", false);
+    }
+
+    If (Bool.Equals(VariableBool("primedGlue"), true))
+    {
+      ForeachPlayer("player")
+      {
+        If (String.Contains(VariablePlayer("player").GetName(), VariableString("cmd")))
+        {
+          VariableString.Set("glueTarget", VariablePlayer("player").GetName());
+          VariableFloat.Set("glueX", VariablePlayer("player").GetPositionX());
+          VariableFloat.Set("glueY", VariablePlayer("player").GetPositionY());
+          VariableFloat.Set("glueZ", VariablePlayer("player").GetPositionZ());
+        }
+      }
+      VariableBool.Set("primedChat", false);
+      VariableBool.Set("primedGlue", false);
+    }
+
+    If (Bool.Equals(VariableBool("primedMagnet"), true))
+    {
+      ForeachPlayer("player")
+      {
+        If (String.Contains(VariablePlayer("player").GetName(), VariableString("cmd")))
+        {
+          VariableString.Set("magnetTarget", VariablePlayer("player").GetName());
+        }
+      }
+      VariableBool.Set("primedChat", false);
+      VariableBool.Set("primedMagnet", false);
+    }
+
+    If (Bool.Equals(VariableBool("primedMagnetTo"), true))
+    {
+      ForeachPlayer("player")
+      {
+        If (String.Contains(VariablePlayer("player").GetName(), VariableString("cmd")))
+        {
+          VariableString.Set("magnetToTarget", VariablePlayer("player").GetName());
+        }
+      }
+      VariableBool.Set("primedChat", false);
+      VariableBool.Set("primedMagnetTo", false);
+    }
+
+    If (Bool.Equals(VariableBool("primedPeriod"), true))
+    {
+      VariableString.Set("PERIOD", VariableString("cmd"));
+      VariableBool.Set("primedChat", false);
+      VariableBool.Set("primedPeriod", false);
+      VariableBool.Set("primedSetCharacters", false);
+    }
+
+    If (Bool.Equals(VariableBool("primedComma"), true))
+    {
+      If (Bool.Equals(VariableBool("primedSetCharacters"), true))
+      {
+        VariableString.Set("COMMA", VariableString("cmd"));
+        VariableBool.Set("primedComma", false);
+        VariableBool.Set("primedPeriod", true);
+        Game.PrintMessage("PERIOD");
+      }
+      Else
+      {
+        VariableString.Set("COMMA", VariableString("cmd"));
+        VariableBool.Set("primedChat", false);
+        VariableBool.Set("primedComma", false);
+      }
+    }
+
+    If (Bool.Equals(VariableBool("primedSpace"), true))
+    {
+      If (Bool.Equals(VariableBool("primedSetCharacters"), true))
+      {
+        VariableString.Set("SPACE", VariableString("cmd"));
+        VariableBool.Set("primedSpace", false);
+        VariableBool.Set("primedComma", true);
+        Game.PrintMessage("COMMA");
+      }
+      Else
+      {
+        VariableString.Set("SPACE", VariableString("cmd"));
+        VariableBool.Set("primedChat", false);
+        VariableBool.Set("primedSpace", false);
+      }
+    }
+
+    If (Bool.Equals(VariableBool("primedEnter"), true))
+    {
+      VariableString.Set("ENTER", VariableString("cmd"));
+      VariableBool.Set("primedChat", false);
+      VariableBool.Set("primedEnter", false);
+    }
+
+    If (Bool.Equals(VariableBool("primedSetGuild2"), true))
+    {
+      ForeachPlayer("player")
+      {
+        If (String.Contains(VariablePlayer("player").GetName(), VariableString("setGuildTarget")))
+        {
+          Player.SetGuildName(VariablePlayer("player"), VariableString("cmd"));
+        }
+      }
+      VariableBool.Set("primedChat", false);
+      VariableBool.Set("primedSetGuild2", false);
+    }
+
+    If (Bool.Equals(VariableBool("primedSetGuild1"), true))
+    {
+      VariableString.Set("setGuildTarget", VariableString("cmd"));
+      VariableBool.Set("primedSetGuild1", false);
+      VariableBool.Set("primedSetGuild2", true);
+    }
+
+    If (Bool.Equals(VariableBool("primedSetGuildAll"), true))
+    {
+      ForeachPlayer("player")
+      {
+        Player.SetGuildName(VariablePlayer("player"), VariableString("cmd"));
+      }
+      VariableBool.Set("primedChat", false);
+      VariableBool.Set("primedSetGuildAll", false);
+    }
+
+    If (Bool.Equals(VariableBool("primedChangeGuild2"), true))
+    {
+      ForeachPlayer("player")
+      {
+        If (String.Contains(VariablePlayer("player").GetGuildName(), VariableString("changeGuildTarget")))
+        {
+          Player.SetGuildName(VariablePlayer("player"), VariableString("cmd"));
+        }
+      }
+      VariableBool.Set("primedChat", false);
+      VariableBool.Set("primedChangeGuild2", false);
+    }
+
+    If (Bool.Equals(VariableBool("primedChangeGuild1"), true))
+    {
+      VariableString.Set("changeGuildTarget", VariableString("cmd"));
+      VariableBool.Set("primedChangeGuild1", false);
+      VariableBool.Set("primedChangeGuild2", true);
+    }
+
+    If (Bool.Equals(VariableBool("primedRefill"), true))
+    {
+      ForeachPlayer("player")
+      {
+        If (String.Contains(VariablePlayer("player").GetName(), VariableString("cmd")))
+        {
+          If (Boolean.Equals(VariablePlayer("player").GetIsAlive(), true))
+          {
+            VariableFloat.Set("refillX", VariablePlayer("player").GetPositionX());
+            VariableFloat.Set("refillY", VariablePlayer("player").GetPositionY());
+            VariableFloat.Set("refillZ", VariablePlayer("player").GetPositionZ());
+            Player.KillPlayer(VariablePlayer("player"), "Refilling");
+            Player.SpawnPlayerAt(VariablePlayer("player"), VariableFloat("refillX"), VariableFloat("refillY"), VariableFloat("refillZ"));
+          }
+        }
+      }
+      VariableBool.Set("primedChat", false);
+      VariableBool.Set("primedRefill", false);
+    }
+
+    If (Bool.Equals(VariableBool("primedKill"), true))
+    {
+      ForeachPlayer("player")
+      {
+        If (String.Contains(VariablePlayer("player").GetName(), VariableString("cmd")))
+        {
+          If (Boolean.Equals(VariablePlayer("player").GetIsAlive(), true))
+          {
+            Player.KillPlayer(VariablePlayer("player"), "Death");
+          }
+        }
+      }
+      VariableBool.Set("primedChat", false);
+      VariableBool.Set("primedDeath", false);
+    }
+
+    If (Bool.Equals(VariableBool("silentCommands"), true))
+    {
+      VariablePlayer.Set("break", "break");
+    }
+  }
+  Else
+  {
+    If (String.Equals(VariableString("cmd"),"/clear"))
+    {
+      Game.PrintMessage("space<size=1>111111</size>space")
+      Game.PrintMessage("");
+      Game.PrintMessage("");
+      Game.PrintMessage("");
+      Game.PrintMessage("");
+      Game.PrintMessage("");
+      Game.PrintMessage("");
+      Game.PrintMessage("");
+      Game.PrintMessage("");
+      Game.PrintMessage("");
+      Game.PrintMessage("");
+      Game.PrintMessage("");
+      Game.PrintMessage("");
+      Game.PrintMessage("");
+      Game.PrintMessage("");
+      Game.PrintMessage("");
+    }
+
+    If (String.Equals(VariableString("cmd"),"/r"))
+    {
+      Game.Restart(true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/pos"))
+    {
+      Game.PrintMessage(VariablePlayer("playerMC").GetPositionX().ConvertToString());
+      Game.PrintMessage(VariablePlayer("playerMC").GetPositionY().ConvertToString());
+      Game.PrintMessage(VariablePlayer("playerMC").GetPositionZ().ConvertToString());
+    }
+
+    If (String.Equals(VariableString("cmd"),"/listPlayers"))
+    {
+      ForeachPlayer("player")
+      {
+        Game.PrintMessage(VariablePlayer("player").GetName());
+      }
+    }
+
+    If (String.Equals(VariableString("cmd"),"/listGuilds"))
+    {
+      ForeachPlayer("player")
+      {
+        Game.PrintMessage(VariablePlayer("player").GetGuildName());
+      }
+    }
+
+    If (String.Equals(VariableString("cmd"),"/tp"))
+    {
+      VariableBool.Set("primedChat", true);
+      VariableBool.Set("primedTp", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/tpHere"))
+    {
+      VariableBool.Set("primedChat", true);
+      VariableBool.Set("primedTpHere", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/tpHereAll"))
+    {
+      ForeachPlayer("player")
+      {
+        Player.MovePlayer(VariablePlayer("player"), VariablePlayer("playerMC").GetPositionX(), VariablePlayer("playerMC").GetPositionY(), VariablePlayer("playerMC").GetPositionZ());
+      }
+    }
+
+    If (String.Equals(VariableString("cmd"),"/onUpdate"))
+    {
+      If (Bool.Equals(VariableBool("isOnUpdateBroken"), true))
+      {
+        VariableBool.Set("isOnUpdateBroken", false);
+      }
+      Else
+      {
+        VariableBool.Set("isOnUpdateBroken", true);
+      }
+    }
+
+    If (String.Equals(VariableString("cmd"),"/glue"))
+    {
+      VariableBool.Set("primedChat", true);
+      VariableBool.Set("primedGlue", true);
+      VariableBool.Set("isGlueOn", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/glueToggle"))
+    {
+      If (Bool.Equals(VariableBool("isGlueOn"), true))
+      {
+        VariableBool.Set("isGlueOn", false);
+      }
+      Else
+      {
+        VariableBool.Set("isGlueOn", true);
+      }
+    }
+
+    If (String.Equals(VariableString("cmd"),"/magnet"))
+    {
+      VariableBool.Set("primedChat", true);
+      VariableBool.Set("primedMagnet", true);
+      VariableBool.Set("isMagnetOn", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/magnetToggle"))
+    {
+      If (Bool.Equals(VariableBool("isMagnetOn"), true))
+      {
+        VariableBool.Set("isMagnetOn", false);
+      }
+      Else
+      {
+        VariableBool.Set("isMagnetOn", true);
+      }
+    }
+
+    If (String.Equals(VariableString("cmd"),"/magnetTo"))
+    {
+      VariableBool.Set("primedChat", true);
+      VariableBool.Set("primedMagnetTo", true);
+      VariableBool.Set("isMagnetToOn", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/magnetToToggle"))
+    {
+      If (Bool.Equals(VariableBool("isMagnetToOn"), true))
+      {
+        VariableBool.Set("isMagnetToOn", false);
+      }
+      Else
+      {
+        VariableBool.Set("isMagnetToOn", true);
+      }
+    }
+
+    If (String.Equals(VariableString("cmd"),"/magnetAll"))
+    {
+      If (Bool.Equals(VariableBool("isMagnetAllOn"), true))
+      {
+        VariableBool.Set("isMagnetAllOn", false);
+      }
+      Else
+      {
+        VariableBool.Set("isMagnetAllOn", true);
+      }
+    }
+
+    If (String.Equals(VariableString("cmd"),"/setCharacters"))
+    {
+      Game.PrintMessage("SPACE");
+      VariableBool.Set("primedChat", true);
+      VariableBool.Set("primedSetCharacters", true);
+      VariableBool.Set("primedSpace", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/space"))
+    {
+      VariableBool.Set("primedChat", true);
+      VariableBool.Set("primedSpace", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/comma"))
+    {
+      VariableBool.Set("primedChat", true);
+      VariableBool.Set("primedComma", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/period"))
+    {
+      VariableBool.Set("primedChat", true);
+      VariableBool.Set("primedPeriod", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/enter"))
+    {
+      VariableBool.Set("primedChat", true);
+      VariableBool.Set("primedEnter", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/silentToggle"))
+    {
+      If (Bool.Equals(VariableBool("silentCommands"), true))
+      {
+        VariableBool.Set("silentCommands", false);
+      }
+      Else
+      {
+        VariableBool.Set("silentCommands", true);
+      }
+    }
+
+    If (String.Equals(VariableString("cmd"),"/setGuild"))
+    {
+      VariableBool.Set("primedChat", true);
+      VariableBool.Set("primedSetGuild1", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/setGuildAll"))
+    {
+      VariableBool.Set("primedChat", true);
+      VariableBool.Set("primedSetGuildAll", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/changeGuild"))
+    {
+      VariableBool.Set("primedChat", true);
+      VariableBool.Set("primedChangeGuild1", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/refill"))
+    {
+      VariableBool.Set("primedChat", true);
+      VariableBool.Set("primedRefill", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/refillAll"))
+    {
+      ForeachPlayer("player")
+      {
+
+        If (Boolean.Equals(VariablePlayer("player").GetIsAlive(), true))
+        {
+          VariableFloat.Set("refillX", VariablePlayer("player").GetPositionX());
+          VariableFloat.Set("refillY", VariablePlayer("player").GetPositionY());
+          VariableFloat.Set("refillZ", VariablePlayer("player").GetPositionZ());
+          Player.KillPlayer(VariablePlayer("player"), "Refilling");
+          Player.SpawnPlayerAt(VariablePlayer("player"), VariableFloat("refillX"), VariableFloat("refillY"), VariableFloat("refillZ"));
+        }
+      
+      }
+    }
+
+    If (String.Equals(VariableString("cmd"),"/defaultSettings"))
+    {
+      VariableBool.Set("silentCommands", true);
+      VariableString.Set("SPACE", "<size=1>111111</size>");
+      VariableString.Set("COMMA", "<size=3>A</size>");
+      VariableString.Set("PERIOD", "<size=3>0</size>");
+      VariableString.Set("ENTER", "");
+      VariableBool.Set("isOnUpdateBroken", false);
+      VariableBool.Set("isGlueOn", false);
+      VariableString.Set("glueTarget", "");
+      VariableFloat.Set("glueX", 0.0);
+      VariableFloat.Set("glueY", 0.0);
+      VariableFloat.Set("glueZ", 0.0);
+      VariableBool.Set("isMagnetOn", false);
+      VariableString.Set("magnetTarget", "");
+      VariableBool.Set("isMagnetToOn", false);
+      VariableString.Set("magnetToTarget", "");
+      VariableBool.Set("isMagnetAllOn", false);
+      VariableBool.Set("isAntiTPOn", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/kill"))
+    {
+      VariableBool.Set("primedChat", true);
+      VariableBool.Set("primedKill", true);
+    }
+
+    If (String.Equals(VariableString("cmd"),"/killAll"))
+    {
+      ForeachPlayer("player")
+      {
+        If (Boolean.Equals(VariablePlayer("player").GetIsAlive(), true))
+        {
+          Player.KillPlayer(VariablePlayer("player"), "Death");
+        }
+      }
+    }
+
+
+
+
+
+
+
+
+    If (String.Equals(VariableString("cmd"),"/test"))
+    {
+      ForeachPlayer("player")
+      {
+        Game.PrintMessage(VariablePlayer("player").GetGuildName());
+      }
+    }
+
+    If (String.Equals(VariableString("cmd"),"/killTitans"))
+    {
+      VariableTitan.Set("titan", VariableTitan("titan"));
+      ForeachTitan("titan")
+      {
+        Titan.KillTitan(VariableTitan("titan"), VariablePlayer("playerMC"), 10);
+      }
+    }
+
+
+
+
+  }
+}
+
+OnUpdate()
+{
+  ForeachPlayer("player")
+  {
+    If (Boolean.Equals(VariableBool("isGlueOn"), true))
+    {
+      If (String.Equals(VariablePlayer("player").GetName(), VariableString("glueTarget")))
+      {
+        If (Boolean.Equals(VariablePlayer("player").GetIsAlive(), true))
+        {
+          Player.MovePlayer(VariablePlayer("player"), VariableFloat("glueX"), VariableFloat("glueY"), VariableFloat("glueZ"));
+        }
+        Else
+        {
+          Player.SpawnPlayer(VariablePlayer("player"));
+        }
+      }
+    }
+
+    If (Boolean.Equals(VariableBool("isMagnetOn"), true))
+    {
+      If (String.Equals(VariablePlayer("player").GetName(), VariableString("magnetTarget")))
+      {
+        If (Boolean.Equals(VariablePlayer("player").GetIsAlive(), true))
+        {
+          If (Boolean.Equals(VariablePlayer("playerMC").GetIsAlive(), true))
+          {
+            Player.MovePlayer(VariablePlayer("player"), VariablePlayer("playerMC").GetPositionX(), VariablePlayer("playerMC").GetPositionY(), VariablePlayer("playerMC").GetPositionZ());
+          }
+        }
+      }
+    }
+
+    If (Boolean.Equals(VariableBool("isMagnetToOn"), true))
+    {
+      If (String.Equals(VariablePlayer("player").GetName(), VariableString("magnetToTarget")))
+      {
+        If (Boolean.Equals(VariablePlayer("player").GetIsAlive(), true))
+        {
+          If (Boolean.Equals(VariablePlayer("playerMC").GetIsAlive(), true))
+          {
+            Player.MovePlayer(VariablePlayer("playerMC"), VariablePlayer("player").GetPositionX(), VariablePlayer("player").GetPositionY(), VariablePlayer("player").GetPositionZ());
+          }
+        }
+      }
+    }
+
+    If (Boolean.Equals(VariableBool("isMagnetAllOn"), true))
+    {
+      If (Boolean.Equals(VariablePlayer("player").GetIsAlive(), true))
+      {
+        If (Boolean.Equals(VariablePlayer("playerMC").GetIsAlive(), true))
+        {
+         Player.MovePlayer(VariablePlayer("player"), VariablePlayer("playerMC").GetPositionX(), VariablePlayer("playerMC").GetPositionY(), VariablePlayer("playerMC").GetPositionZ());
+        }
+      }
+    }
+
+    If (Boolean.Equals(VariableBool("isAntiTPOn"), true))
+    {
+
+    }
+
+
+  }
+
+  If (Bool.Equals(VariableBool("isOnUpdateBroken"), true))
+  {
+    If (Bool.Equals(VariablePlayer("playerMC").GetIsAlive(), true))
+    {
+      VariablePlayer.Set("p","pp");
+    }
+  }
+}

@@ -1,0 +1,4026 @@
+// Tired of adjusting settings and restarting your game over and over to make your waves work just right? This set of custom logic just might be perfect for you!
+//
+// The almost 4000 lines of code allow you to adjust 24 different settings on the fly, mid-wave! Want to spawn a couple extra titans next wave? Just change the increment! Want to change the spawn rates? You can choose from five presets! Survived all the waves and want to do a few more? You can do that too! Almost everything related to titans and waves that you can do with RC's settings can be done with this logic, with the bonus of not having to restart for every little change!
+//
+// Get it here! --> https://pastebin.com/1hhdFMn6
+//
+// Important Notes
+// In order for this logic to function effectively, there are a couple things you'll have to do.
+// Make sure the map is set to Custom (Pause-->Custom Map-->Custom. If you use Waves, none of the settings you adjust with this logic will apply.
+// Make sure there are titan and player spawn points where and only where you want them to spawn. If none are present, they will all spawn in the default map. If you're using a custom map with racing checkpoints, then the initial player spawn isn't of particular importance.
+// Without use of the Expedition Mod by Tic or another mod with a similar function that adjusts titans' view distance, titans will NOT seek players from any distance like in normal waves. They will instead sit and wander around without any knowledge of your existence until you get close to them. I highly recommend acquiring and using the Expedition Mod to properly enjoy this logic.
+//
+// Images of Help Menus, as seen in EM with chat box against a blue skybox.
+
+OnFirstLoad()
+{
+ Game.PrintMessage("CustomWaveMode_17Apr2019");
+ Game.PrintMessage("Logic by Sampai");
+ Game.PrintMessage("Toggle Wave Mode: /wavemode");
+ Game.PrintMessage("For more commands: /help");
+ VariableInt.Set("0", 0);
+ VariableInt.Set("1", 0);
+ VariableInt.Set("2", 1);
+ VariableInt.Set("3", 1);
+ VariableInt.Set("4", 25);
+ VariableInt.Set("5", 3);
+ VariableInt.Set("6", 3);
+ VariableInt.Set("7", 1);
+ VariableInt.Set("8", 5);
+ VariableInt.Set("9", 10);
+ VariableInt.Set("10", 0);
+ VariableInt.Set("11", 0);
+ VariableInt.Set("12", 999999);
+ VariableInt.Set("13", 1);
+ VariableInt.Set("14", 10);
+ VariableInt.Set("15", 0);
+ VariableInt.Set("16", 250);
+ VariableInt.Set("17", 1000);
+ VariableInt.Set("18", 5000);
+ VariableInt.Set("19", 10000);
+ VariableBool.Set("0", false);
+ VariableBool.Set("1", false);
+ VariableBool.Set("2", false);
+ VariableBool.Set("3", true);
+ VariableBool.Set("4", false);
+ VariableBool.Set("5", true);
+ VariableBool.Set("6", false);
+ VariableFloat.Set("0", 1.0);
+ VariableFloat.Set("1", 3.0);
+ VariableFloat.Set("2", 3.0);
+ VariableFloat.Set("3", 6.0);
+}
+
+OnRoundStart()
+{
+ VariableInt.Set("0", 0);
+ VariableInt.Set("1", 0);
+ VariableInt.Set("2", 1);
+ VariableInt.Set("3", 1);
+ VariableInt.Set("4", 25);
+ VariableInt.Set("5", 3);
+ VariableInt.Set("6", 3);
+ VariableInt.Set("7", 1);
+ VariableInt.Set("8", 5);
+ VariableInt.Set("9", 10);
+ VariableInt.Set("10", 0);
+ VariableInt.Set("11", 0);
+ VariableInt.Set("12", 999999);
+ VariableInt.Set("13", 1);
+ VariableInt.Set("14", 10);
+ VariableInt.Set("15", 0);
+ VariableInt.Set("16", 250);
+ VariableInt.Set("17", 1000);
+ VariableInt.Set("18", 5000);
+ VariableInt.Set("19", 10000);
+ VariableBool.Set("0", false);
+ VariableBool.Set("1", false);
+ VariableBool.Set("2", false);
+ VariableBool.Set("3", true);
+ VariableBool.Set("4", false);
+ VariableBool.Set("5", true);
+ VariableBool.Set("6", false);
+ VariableFloat.Set("0", 1.0);
+ VariableFloat.Set("1", 3.0);
+ VariableFloat.Set("2", 3.0);
+ VariableFloat.Set("3", 6.0);
+ Game.PrintMessage("Wave Mode: off");
+ Game.PrintMessage("Health Mode: off");
+ Game.PrintMessage("Spawn rates: Normal");
+ Game.PrintMessage("Spawn cap: 25");
+ Game.PrintMessage("Initial titans: 3");
+ Game.PrintMessage("Last Wave: 999999");
+ Game.PrintMessage("Punks every 5 waves: Yes");
+ Game.PrintMessage("Bosses every 10 waves: No");
+}
+
+OnUpdate()
+{
+ VariableInt.Add("11", 1);
+
+ If(Bool.Equals(VariableBool("6"), true))
+ {
+  VariableInt.Set("20", VariableInt("11"));
+  VariableInt.Modulo("20", VariableInt("14"));
+  If(Int.Equals(VariableInt("20"), 0))
+  {
+   VariablePlayer.Set("player", VariablePlayer("null"));
+   ForeachPlayer("player")
+   {
+    Player.SpawnPlayer(VariablePlayer("player"));
+   }
+  }
+ }
+
+ VariableInt.Set("0", 0);
+ ForeachTitan("titan")
+ {
+  VariableInt.Add("0", 1);
+ }
+ If(Bool.Equals(VariableBool("0"), true))
+ {
+  If(Int.Equals(VariableInt("0"), 0))
+  {
+   If(Int.Equals(VariableInt("1"), VariableInt("12")))
+   {
+    VariableBool.Set("0", false);
+    VariableBool.Set("1", true);
+    VariableInt.Set("1", 0);
+    Game.PrintMessage("<size=15>Congratulations!</size>");
+    Game.PrintMessage("<size=15>All<size=1>___</size>waves<size=1>___</size>survived!</size>");
+   }
+   If(Bool.Equals(VariableBool("1"), false))
+   {
+    VariableInt.Add("1", 1);
+    VariableBool.Set("1", true);
+
+    If(Bool.Equals(VariableBool("5"), true))
+    {
+     VariableInt.Set("2", VariableInt("1"));
+     VariableInt.Modulo("2", VariableInt("13"));
+     If(Int.Equals(VariableInt("2"), 0))
+     {
+      VariablePlayer.Set("player", VariablePlayer("null"));
+      ForeachPlayer("player")
+      {
+       Player.SpawnPlayer(VariablePlayer("player"));
+      }
+     }
+    }
+
+    VariableInt.Set("21", 0);
+    If(Bool.Equals(VariableBool("3"), true))
+    {
+     If(Int.Equals(VariableInt("1"), VariableInt("8")))
+     {
+      VariableInt.Set("21", 1);
+     }
+     If(Int.GreaterThan(VariableInt("1"), VariableInt("8")))
+     {
+      VariableInt.Set("2", VariableInt("1"));
+      VariableInt.Modulo("2", VariableInt("8"));
+      If(Int.Equals(VariableInt("2"), 0))
+      {
+       VariableInt.Set("21", 1);
+      }
+     }
+    }
+    If(Bool.Equals(VariableBool("4"), true))
+    {
+     If(Int.Equals(VariableInt("1"), VariableInt("9")))
+     {
+      VariableInt.Set("21", 2);
+     }
+     If(Int.GreaterThan(VariableInt("1"), VariableInt("9")))
+     {
+      VariableInt.Set("2", VariableInt("1"));
+      VariableInt.Modulo("2", VariableInt("9"));
+      If(Int.Equals(VariableInt("2"), 0))
+      {
+       VariableInt.Set("21", 2);
+      }
+     }
+    }
+    If(Int.Equals(VariableInt("21"), 0))
+    {
+     VariableInt.Set("22", VariableInt("6"));
+     VariableInt.Add("22", VariableInt("7"));
+     If(Int.Equals(VariableInt("1"), 1))
+     {
+      VariableInt.Set("22", VariableInt("5"));
+     }
+     If(Int.GreaterThan(VariableInt("22"), VariableInt("4")))
+     {
+      VariableInt.Set("22", VariableInt("4"));
+     }
+     If(Int.LessThan(VariableInt("22"), 1))
+     {
+      VariableBool.Set("0", false);
+      VariableBool.Set("1", true);
+      VariableInt.Subtract("1", 1);
+      Game.PrintMessage("<size=15>No<size=1>___</size>more<size=1>___</size>titans<size=1>___</size>approaching!</size>");
+      VariableString.Set("message", "<size=15>");
+      VariableString.Append("message", VariableInt("1").ConvertToString());
+      VariableString.Append("message", "<size=1>___</size>waves<size=1>___</size>completed!</size>");
+      Game.PrintMessage(VariableString("message"));
+      VariableInt.Set("1", 0);
+     }
+
+     VariableInt.Set("23", VariableInt("17"));
+     VariableInt.Subtract("23", VariableInt("16"));
+     VariableFloat.Set("4", VariableFloat("1"));
+     If(Float.NotEquals(VariableFloat("1"), VariableFloat("0")))
+     {
+      VariableFloat.Subtract("4", VariableFloat("0"));
+     }
+     VariableFloat.Set("5", VariableInt("23").ConvertToFloat());
+     VariableFloat.Divide("5", VariableFloat("4"));
+
+     VariableInt.Set("6", VariableInt("22"));
+     While(Int.GreaterThan(VariableInt("22"), 0))
+     {
+      VariableFloat.SetRandom("6", VariableFloat("0"), VariableFloat("1"));
+      VariableInt.SetRandom("24", 0, 101);
+      VariableInt.Set("25", 1);
+      If(Int.Equals(VariableInt("3"), 0))
+      {
+       VariableInt.Set("25", 3);
+       If(Int.LessThan(VariableInt("24"), 102))
+       {
+        VariableInt.Set("25", 2);
+       }
+       If(Int.LessThan(VariableInt("24"), 90))
+       {
+        VariableInt.Set("25", 1);
+       }
+       If(Int.LessThan(VariableInt("24"), 70))
+       {
+        VariableInt.Set("25", 0);
+       }
+      }
+      If(Int.Equals(VariableInt("3"), 1))
+      {
+       VariableInt.Set("25", 3);
+       If(Int.LessThan(VariableInt("24"), 99))
+       {
+        VariableInt.Set("25", 2);
+       }
+       If(Int.LessThan(VariableInt("24"), 80))
+       {
+        VariableInt.Set("25", 1);
+       }
+       If(Int.LessThan(VariableInt("24"), 50))
+       {
+        VariableInt.Set("25", 0);
+       }
+      }
+      If(Int.Equals(VariableInt("3"), 2))
+      {
+       VariableInt.Set("25", 3);
+       If(Int.LessThan(VariableInt("24"), 97))
+       {
+        VariableInt.Set("25", 2);
+       }
+       If(Int.LessThan(VariableInt("24"), 73))
+       {
+        VariableInt.Set("25", 1);
+       }
+       If(Int.LessThan(VariableInt("24"), 33))
+       {
+        VariableInt.Set("25", 0);
+       }
+      }
+      If(Int.Equals(VariableInt("3"), 3))
+      {
+       VariableInt.Set("25", 3);
+       If(Int.LessThan(VariableInt("24"), 90))
+       {
+        VariableInt.Set("25", 2);
+       }
+       If(Int.LessThan(VariableInt("24"), 60))
+       {
+        VariableInt.Set("25", 1);
+       }
+       If(Int.LessThan(VariableInt("24"), 15))
+       {
+        VariableInt.Set("25", 0);
+       }
+      }
+      If(Int.Equals(VariableInt("3"), 4))
+      {
+       VariableInt.Set("25", 3);
+       If(Int.LessThan(VariableInt("24"), 65))
+       {
+        VariableInt.Set("25", 2);
+       }
+       If(Int.LessThan(VariableInt("24"), 45))
+       {
+        VariableInt.Set("25", 1);
+       }
+       If(Int.LessThan(VariableInt("24"), 36))
+       {
+        VariableInt.Set("25", 4);
+       }
+       If(Int.LessThan(VariableInt("24"), 1))
+       {
+        VariableInt.Set("25", 0);
+       }
+      }
+      If(Int.Equals(VariableInt("3"), 6))
+      {
+       VariableInt.Set("25", 3);
+       If(Int.LessThan(VariableInt("24"), 50))
+       {
+        VariableInt.Set("25", 4);
+       }
+      }
+      VariableFloat.Set("7", 0.0);
+      If(Bool.Equals(VariableBool("2"), true))
+      {
+       If(Int.Equals(VariableInt("15"), 0))
+       {
+        VariableFloat.Set("7", VariableFloat("6"));
+        VariableFloat.Subtract("7", VariableFloat("0"));
+        VariableFloat.Multiply("7", VariableFloat("5"));
+        VariableFloat.Add("7", VariableInt("16").ConvertToFloat());
+       }
+       If(Int.Equals(VariableInt("15"), 1))
+       {
+        VariableFloat.Set("7", VariableInt("17").ConvertToFloat());
+       }
+      }
+      Titan.SpawnTitan(VariableInt("25"), VariableFloat("6"), VariableFloat("7").ConvertToInt(), 1);
+      VariableInt.Subtract("22", 1);
+     }
+    }
+    If(Int.Equals(VariableInt("21"), 1))
+    {
+     VariableInt.Set("22", VariableInt("1"));
+     VariableInt.Divide("22", VariableInt("8"));
+     VariableInt.Add("6", VariableInt("7"));
+     If(Int.GreaterThan(VariableInt("22"), VariableInt("4")))
+     {
+      VariableInt.Set("22", VariableInt("4"));
+     }
+
+     VariableInt.Set("23", VariableInt("17"));
+     VariableInt.Subtract("23", VariableInt("16"));
+     VariableFloat.Set("4", VariableFloat("1"));
+     If(Float.NotEquals(VariableFloat("1"), VariableFloat("0")))
+     {
+      VariableFloat.Subtract("4", VariableFloat("0"));
+     }
+     VariableFloat.Set("5", VariableInt("23").ConvertToFloat());
+     VariableFloat.Divide("5", VariableFloat("4"));
+
+     While(Int.GreaterThan(VariableInt("22"), 0))
+     {
+      VariableFloat.SetRandom("6", VariableFloat("0"), VariableFloat("1"));
+      VariableFloat.Set("7", 0.0);
+      VariableInt.Set("25", 4);
+      If(Int.Equals(VariableInt("3"), 4))
+      {
+       VariableInt.SetRandom("24", 0, 101);
+       If(Int.LessThan(VariableInt("24"), 50))
+       {
+        VariableInt.Set("25", 3);
+       }
+       VariableFloat.SetRandom("6", 0.5, 4.0);
+      }
+      If(Int.Equals(VariableInt("3"), 6))
+      {
+       VariableInt.SetRandom("24", 0, 101);
+       If(Int.LessThan(VariableInt("24"), 50))
+       {
+        VariableInt.Set("25", 3);
+       }
+      }
+      If(Bool.Equals(VariableBool("2"), true))
+      {
+       If(Int.Equals(VariableInt("15"), 0))
+       {
+        VariableFloat.Set("7", VariableFloat("6"));
+        VariableFloat.Subtract("7", VariableFloat("0"));
+        VariableFloat.Multiply("7", VariableFloat("5"));
+        VariableFloat.Add("7", VariableInt("16").ConvertToFloat());
+       }
+       If(Int.Equals(VariableInt("15"), 1))
+       {
+        VariableFloat.Set("7", VariableInt("17").ConvertToFloat());
+       }
+      }
+      Titan.SpawnTitan(VariableInt("25"), VariableFloat("6"), VariableFloat("7").ConvertToInt(), 1);
+      VariableInt.Subtract("22", 1);
+     }
+    }
+    If(Int.Equals(VariableInt("21"), 2))
+    {
+     VariableInt.Add("6", VariableInt("7"));
+     VariableInt.Set("22", VariableInt("1"));
+     VariableInt.Divide("22", VariableInt("9"));
+     If(Int.GreaterThan(VariableInt("22"), VariableInt("4")))
+     {
+      VariableInt.Set("22", VariableInt("4"));
+     }
+
+     VariableInt.Set("23", VariableInt("19"));
+     VariableInt.Subtract("23", VariableInt("18"));
+     VariableFloat.Set("4", VariableFloat("3"));
+     If(Float.NotEquals(VariableFloat("3"), VariableFloat("2")))
+     {
+      VariableFloat.Subtract("4", VariableFloat("2"));
+     }
+     VariableFloat.Set("5", VariableInt("23").ConvertToFloat());
+     VariableFloat.Divide("5", VariableFloat("4"));
+
+     While(Int.GreaterThan(VariableInt("22"), 0))
+     {
+      VariableFloat.SetRandom("6", VariableFloat("2"), VariableFloat("3"));
+      VariableInt.SetRandom("24", 0, 101);
+      VariableInt.Set("25", 4);
+      If(Int.Equals(VariableInt("3"), 0))
+      {
+       If(Int.LessThan(VariableInt("24"), -1))
+       {
+        VariableInt.Set("25", 3);
+       }
+       If(Int.LessThan(VariableInt("24"), 70))
+       {
+        VariableInt.Set("25", 2);
+       }
+       If(Int.LessThan(VariableInt("24"), 56))
+       {
+        VariableInt.Set("25", 1);
+       }
+       If(Int.LessThan(VariableInt("24"), 16))
+       {
+        VariableInt.Set("25", 0);
+       }
+      }
+      If(Int.Equals(VariableInt("3"), 1))
+      {
+       If(Int.LessThan(VariableInt("24"), 65))
+       {
+        VariableInt.Set("25", 3);
+       }
+       If(Int.LessThan(VariableInt("24"), 60))
+       {
+        VariableInt.Set("25", 2);
+       }
+       If(Int.LessThan(VariableInt("24"), 47))
+       {
+        VariableInt.Set("25", 1);
+       }
+       If(Int.LessThan(VariableInt("24"), 17))
+       {
+        VariableInt.Set("25", 0);
+       }
+      }
+      If(Int.Equals(VariableInt("3"), 2))
+      {
+       If(Int.LessThan(VariableInt("24"), 60))
+       {
+        VariableInt.Set("25", 3);
+       }
+       If(Int.LessThan(VariableInt("24"), 50))
+       {
+        VariableInt.Set("25", 2);
+       }
+       If(Int.LessThan(VariableInt("24"), 38))
+       {
+        VariableInt.Set("25", 1);
+       }
+       If(Int.LessThan(VariableInt("24"), 18))
+       {
+        VariableInt.Set("25", 0);
+       }
+      }
+      If(Int.Equals(VariableInt("3"), 3))
+      {
+       If(Int.LessThan(VariableInt("24"), 55))
+       {
+        VariableInt.Set("25", 3);
+       }
+       If(Int.LessThan(VariableInt("24"), 35))
+       {
+        VariableInt.Set("25", 2);
+       }
+       If(Int.LessThan(VariableInt("24"), 24))
+       {
+        VariableInt.Set("25", 1);
+       }
+       If(Int.LessThan(VariableInt("24"), 19))
+       {
+        VariableInt.Set("25", 0);
+       }
+      }
+      If(Int.Equals(VariableInt("3"), 4))
+      {
+       If(Int.LessThan(VariableInt("24"), 50))
+       {
+        VariableInt.Set("25", 3);
+       }
+       If(Int.LessThan(VariableInt("24"), -1))
+       {
+        VariableInt.Set("25", 2);
+       }
+       If(Int.LessThan(VariableInt("24"), -1))
+       {
+        VariableInt.Set("25", 1);
+       }
+       If(Int.LessThan(VariableInt("24"), 20))
+       {
+        VariableInt.Set("25", 0);
+       }
+      }
+      If(Int.Equals(VariableInt("3"), 6))
+      {
+       If(Int.LessThan(VariableInt("24"), 62))
+       {
+        VariableInt.Set("25", 3);
+       }
+       If(Int.LessThan(VariableInt("24"), 25))
+       {
+        VariableInt.Set("25", 0);
+       }
+      }
+      If(Int.Equals(VariableInt("15"), 0))
+      {
+       VariableFloat.Set("7", VariableFloat("6"));
+       VariableFloat.Subtract("7", VariableFloat("2"));
+       VariableFloat.Multiply("7", VariableFloat("5"));
+       VariableFloat.Add("7", VariableInt("18").ConvertToFloat());
+      }
+      If(Int.Equals(VariableInt("15"), 1))
+      {
+       VariableFloat.Set("7", VariableInt("19").ConvertToFloat());
+      }
+      Titan.SpawnTitan(VariableInt("25"), VariableFloat("6"), VariableFloat("7").ConvertToInt(), 1);
+      VariableInt.Subtract("22", 1);
+     }
+    }
+   }
+   If(Bool.Equals(VariableBool("1"), true))
+   {
+    VariableBool.Set("1", false);
+    If(Int.GreaterThan(VariableInt("1"), 0))
+    {
+     If(Int.LessThan(VariableInt("1"), VariableInt("12")))
+     {
+      VariableString.Set("message", "Wave:<size=1>___</size>");
+      VariableString.Append("message", VariableInt("1").ConvertToString());
+      Game.PrintMessage(VariableString("message"));
+     }
+     If(Int.Equals(VariableInt("1"), VariableInt("12")))
+     {
+      VariableString.Set("message", "Wave:<size=1>___</size>");
+      VariableString.Append("message", VariableInt("1").ConvertToString());
+      Game.PrintMessage(VariableString("message"));
+     }
+    }
+   }
+  }
+ }
+}
+
+OnChatInput("input")
+{
+ If(String.Equals(VariableString("input"), "/wavemode"))
+ {
+  If(Bool.Equals(VariableBool("0"), false));
+  {
+   VariableBool.Set("7", true);
+  }
+  If(Bool.Equals(VariableBool("0"), true));
+  {
+   VariableBool.Set("7", false);
+  }
+  If(Bool.Equals(VariableBool("7"), false));
+  {
+   VariableBool.Set("0", false);
+   Game.PrintMessage("<size=20>Wave<size=1>_____</size>Mode<size=1>_____</size>Off!</size>");
+  }
+  If(Bool.Equals(VariableBool("7"), true));
+  {
+   VariableBool.Set("0", true);
+   Game.PrintMessage("<size=20>Wave<size=1>_____</size>Mode<size=1>_____</size>On!</size>");
+  }
+ }
+
+ If(String.Equals(VariableString("input"),"/getwave"))
+ {
+  VariableString.Set("message", "Current wave: ");
+  VariableString.Append("message", VariableInt("1").ConvertToString());
+  Game.PrintMessage(VariableString("message"));
+ }
+
+ If(String.Equals(VariableString("input"), "/resetwaves"))
+ {
+  VariableInt.Set("1", 0);
+  Game.PrintMessage("Waves<size=1>_____</size>Reset!");
+ }
+
+ If(String.StartsWith(VariableString("input"), "/punkwaves"))
+ {
+
+ If(String.Equals(VariableString("input"), "/punkwaves"))
+ {
+  If(Bool.Equals(VariableBool("3"), false));
+  {
+   VariableBool.Set("7", true);
+  }
+  If(Bool.Equals(VariableBool("3"), true));
+  {
+   VariableBool.Set("7", false);
+  }
+  If(Bool.Equals(VariableBool("7"), false));
+  {
+   VariableBool.Set("3", false);
+   Game.PrintMessage("Punks<size=1>___</size>every<size=1>___</size>few<size=1>___</size>waves:<size=1>___</size>No");
+  }
+  If(Bool.Equals(VariableBool("7"), true));
+  {
+   VariableBool.Set("3", true);
+   Game.PrintMessage("Punks<size=1>___</size>every<size=1>___</size>few<size=1>___</size>waves:<size=1>___</size>Yes");
+  }
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves1"))
+ {
+  VariableInt.Set("8", 1);
+  Game.PrintMessage("Punk only waves every wave!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves2"))
+ {
+  VariableInt.Set("8", 2);
+  Game.PrintMessage("Punk only waves every 2 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves3"))
+ {
+  VariableInt.Set("8", 3);
+  Game.PrintMessage("Punk only waves every 3 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves4"))
+ {
+  VariableInt.Set("8", 4);
+  Game.PrintMessage("Punk only waves every 4 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves5"))
+ {
+  VariableInt.Set("8", 5);
+  Game.PrintMessage("Punk only waves every 5 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves6"))
+ {
+  VariableInt.Set("8", 6);
+  Game.PrintMessage("Punk only waves every 6 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves7"))
+ {
+  VariableInt.Set("8", 7);
+  Game.PrintMessage("Punk only waves every 7 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves8"))
+ {
+  VariableInt.Set("8", 8);
+  Game.PrintMessage("Punk only waves every 8 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves9"))
+ {
+  VariableInt.Set("8", 9);
+  Game.PrintMessage("Punk only waves every 9 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves10"))
+ {
+  VariableInt.Set("8", 10);
+  Game.PrintMessage("Punk only waves every 10 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves11"))
+ {
+  VariableInt.Set("8", 11);
+  Game.PrintMessage("Punk only waves every 11 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves12"))
+ {
+  VariableInt.Set("8", 12);
+  Game.PrintMessage("Punk only waves every 12 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves13"))
+ {
+  VariableInt.Set("8", 13);
+  Game.PrintMessage("Punk only waves every 13 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves14"))
+ {
+  VariableInt.Set("8", 14);
+  Game.PrintMessage("Punk only waves every 14 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves15"))
+ {
+  VariableInt.Set("8", 15);
+  Game.PrintMessage("Punk only waves every 15 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves16"))
+ {
+  VariableInt.Set("8", 16);
+  Game.PrintMessage("Punk only waves every 16 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves17"))
+ {
+  VariableInt.Set("8", 17);
+  Game.PrintMessage("Punk only waves every 17 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves18"))
+ {
+  VariableInt.Set("8", 18);
+  Game.PrintMessage("Punk only waves every 18 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves19"))
+ {
+  VariableInt.Set("8", 19);
+  Game.PrintMessage("Punk only waves every 19 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves20"))
+ {
+  VariableInt.Set("8", 20);
+  Game.PrintMessage("Punk only waves every 20 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves21"))
+ {
+  VariableInt.Set("8", 21);
+  Game.PrintMessage("Punk only waves every 21 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves22"))
+ {
+  VariableInt.Set("8", 22);
+  Game.PrintMessage("Punk only waves every 22 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves23"))
+ {
+  VariableInt.Set("8", 23);
+  Game.PrintMessage("Punk only waves every 23 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves24"))
+ {
+  VariableInt.Set("8", 24);
+  Game.PrintMessage("Punk only waves every 24 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/punkwaves25"))
+ {
+  VariableInt.Set("8", 25);
+  Game.PrintMessage("Punk only waves every 25 waves!");
+ }
+
+ }
+
+ If(String.StartsWith(VariableString("input"), "/bosswaves"))
+ {
+
+ If(String.Equals(VariableString("input"), "/bosswaves"))
+ {
+  If(Bool.Equals(VariableBool("4"), false));
+  {
+   VariableBool.Set("7", true);
+  }
+  If(Bool.Equals(VariableBool("4"), true));
+  {
+   VariableBool.Set("7", false);
+  }
+  If(Bool.Equals(VariableBool("7"), false));
+  {
+   VariableBool.Set("4", false);
+   Game.PrintMessage("Bosses<size=1>___</size>every<size=1>___</size>few<size=1>___</size>waves:<size=1>___</size>No");
+  }
+  If(Bool.Equals(VariableBool("7"), true));
+  {
+   VariableBool.Set("4", true);
+   Game.PrintMessage("Bosses<size=1>___</size>every<size=1>___</size>few<size=1>___</size>waves:<size=1>___</size>Yes");
+  }
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves1"))
+ {
+  VariableInt.Set("9", 1);
+  Game.PrintMessage("Boss only waves every wave!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves2"))
+ {
+  VariableInt.Set("9", 2);
+  Game.PrintMessage("Boss waves every 2 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves3"))
+ {
+  VariableInt.Set("9", 3);
+  Game.PrintMessage("Boss waves every 3 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves4"))
+ {
+  VariableInt.Set("9", 4);
+  Game.PrintMessage("Boss waves every 4 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves5"))
+ {
+  VariableInt.Set("9", 5);
+  Game.PrintMessage("Boss waves every 5 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves6"))
+ {
+  VariableInt.Set("9", 6);
+  Game.PrintMessage("Boss waves every 6 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves7"))
+ {
+  VariableInt.Set("9", 7);
+  Game.PrintMessage("Boss waves every 7 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves8"))
+ {
+  VariableInt.Set("9", 8);
+  Game.PrintMessage("Boss waves every 8 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves9"))
+ {
+  VariableInt.Set("9", 9);
+  Game.PrintMessage("Boss waves every 9 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves10"))
+ {
+  VariableInt.Set("9", 10);
+  Game.PrintMessage("Boss waves every 10 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves11"))
+ {
+  VariableInt.Set("9", 11);
+  Game.PrintMessage("Boss waves every 11 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves12"))
+ {
+  VariableInt.Set("9", 12);
+  Game.PrintMessage("Boss waves every 12 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves13"))
+ {
+  VariableInt.Set("9", 13);
+  Game.PrintMessage("Boss waves every 13 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves14"))
+ {
+  VariableInt.Set("9", 14);
+  Game.PrintMessage("Boss waves every 14 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves15"))
+ {
+  VariableInt.Set("9", 15);
+  Game.PrintMessage("Boss waves every 15 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves16"))
+ {
+  VariableInt.Set("9", 16);
+  Game.PrintMessage("Boss waves every 16 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves17"))
+ {
+  VariableInt.Set("9", 17);
+  Game.PrintMessage("Boss waves every 17 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves18"))
+ {
+  VariableInt.Set("9", 18);
+  Game.PrintMessage("Boss waves every 18 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves19"))
+ {
+  VariableInt.Set("9", 19);
+  Game.PrintMessage("Boss waves every 19 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves20"))
+ {
+  VariableInt.Set("9", 20);
+  Game.PrintMessage("Boss waves every 20 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves21"))
+ {
+  VariableInt.Set("9", 21);
+  Game.PrintMessage("Boss waves every 21 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves22"))
+ {
+  VariableInt.Set("9", 22);
+  Game.PrintMessage("Boss waves every 22 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves23"))
+ {
+  VariableInt.Set("9", 23);
+  Game.PrintMessage("Boss waves every 23 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves24"))
+ {
+  VariableInt.Set("9", 24);
+  Game.PrintMessage("Boss waves every 24 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/bosswaves25"))
+ {
+  VariableInt.Set("9", 25);
+  Game.PrintMessage("Boss waves every 25 waves!");
+ }
+
+ }
+
+ If(String.StartsWith(VariableString("input"), "/spawn"))
+ {
+
+ If(String.Equals(VariableString("input"), "/spawnratee"))
+ {
+  VariableInt.Set("3", 0);
+  Game.PrintMessage("Spawn rate set to Easy!");
+ }
+ If(String.Equals(VariableString("input"), "/spawnraten"))
+ {
+  VariableInt.Set("3", 1);
+  Game.PrintMessage("Spawn rate set to Normal!");
+ }
+ If(String.Equals(VariableString("input"), "/spawnrateh"))
+ {
+  VariableInt.Set("3", 2);
+  Game.PrintMessage("Spawn rate set to Hard!");
+ }
+ If(String.Equals(VariableString("input"), "/spawnrates"))
+ {
+  VariableInt.Set("3", 3);
+  Game.PrintMessage("Spawn rate set to Super!");
+ }
+ If(String.Equals(VariableString("input"), "/spawnratex"))
+ {
+  VariableInt.Set("3", 4);
+  Game.PrintMessage("Spawn rate set to Extreme!");
+ }
+ If(String.Equals(VariableString("input"), "/spawnratehell"))
+ {
+  VariableInt.Set("3", 6);
+  Game.PrintMessage("Spawn rate set to Hell!");
+ }
+
+ If(String.Equals(VariableString("input"), "/spawncap1"))
+ {
+  VariableInt.Set("4", 1);
+  Game.PrintMessage("Spawn cap set to 1!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap2"))
+ {
+  VariableInt.Set("4", 2);
+  Game.PrintMessage("Spawn cap set to 2!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap3"))
+ {
+  VariableInt.Set("4", 3);
+  Game.PrintMessage("Spawn cap set to 3!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap4"))
+ {
+  VariableInt.Set("4", 4);
+  Game.PrintMessage("Spawn cap set to 4!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap5"))
+ {
+  VariableInt.Set("4", 5);
+  Game.PrintMessage("Spawn cap set to 5!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap6"))
+ {
+  VariableInt.Set("4", 6);
+  Game.PrintMessage("Spawn cap set to 6!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap9"))
+ {
+  VariableInt.Set("4", 9);
+  Game.PrintMessage("Spawn cap set to 9!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap12"))
+ {
+  VariableInt.Set("4", 12);
+  Game.PrintMessage("Spawn cap set to 12!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap15"))
+ {
+  VariableInt.Set("4", 15);
+  Game.PrintMessage("Spawn cap set to 15!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap18"))
+ {
+  VariableInt.Set("4", 18);
+  Game.PrintMessage("Spawn cap set to 18!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap20"))
+ {
+  VariableInt.Set("4", 20);
+  Game.PrintMessage("Spawn cap set to 20!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap21"))
+ {
+  VariableInt.Set("4", 21);
+  Game.PrintMessage("Spawn cap set to 21!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap24"))
+ {
+  VariableInt.Set("4", 24);
+  Game.PrintMessage("Spawn cap set to 24!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap25"))
+ {
+  VariableInt.Set("4", 25);
+  Game.PrintMessage("Spawn cap set to 25!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap27"))
+ {
+  VariableInt.Set("4", 27);
+  Game.PrintMessage("Spawn cap set to 27!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap30"))
+ {
+  VariableInt.Set("4", 30);
+  Game.PrintMessage("Spawn cap set to 30!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap33"))
+ {
+  VariableInt.Set("4", 33);
+  Game.PrintMessage("Spawn cap set to 33!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap35"))
+ {
+  VariableInt.Set("4", 35);
+  Game.PrintMessage("Spawn cap set to 35!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap36"))
+ {
+  VariableInt.Set("4", 36);
+  Game.PrintMessage("Spawn cap set to 36!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap39"))
+ {
+  VariableInt.Set("4", 39);
+  Game.PrintMessage("Spawn cap set to 39!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap40"))
+ {
+  VariableInt.Set("4", 40);
+  Game.PrintMessage("Spawn cap set to 40!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap42"))
+ {
+  VariableInt.Set("4", 42);
+  Game.PrintMessage("Spawn cap set to 42!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap45"))
+ {
+  VariableInt.Set("4", 45);
+  Game.PrintMessage("Spawn cap set to 45!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap48"))
+ {
+  VariableInt.Set("4", 48);
+  Game.PrintMessage("Spawn cap set to 48!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap50"))
+ {
+  VariableInt.Set("4", 50);
+  Game.PrintMessage("Spawn cap set to 50!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap60"))
+ {
+  VariableInt.Set("4", 60);
+  Game.PrintMessage("Spawn cap set to 60!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap70"))
+ {
+  VariableInt.Set("4", 70);
+  Game.PrintMessage("Spawn cap set to 70!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap80"))
+ {
+  VariableInt.Set("4", 80);
+  Game.PrintMessage("Spawn cap set to 80!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap90"))
+ {
+  VariableInt.Set("4", 90);
+  Game.PrintMessage("Spawn cap set to 90!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncap100"))
+ {
+  VariableInt.Set("4", 100);
+  Game.PrintMessage("Spawn cap set to 100!");
+ }
+ If(String.Equals(VariableString("input"), "/spawncapoff"))
+ {
+  VariableInt.Set("4", 999999);
+  Game.PrintMessage("Spawn cap turned off!");
+ }
+
+ }
+
+ If(String.StartsWith(VariableString("input"), "/initialt"))
+ {
+
+ If(String.Equals(VariableString("input"), "/initialt1"))
+ {
+  VariableInt.Set("5", 1);
+  Game.PrintMessage("Initial titans set to 1!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt2"))
+ {
+  VariableInt.Set("5", 2);
+  Game.PrintMessage("Initial titans set to 2!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt3"))
+ {
+  VariableInt.Set("5", 3);
+  Game.PrintMessage("Initial titans set to 3!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt4"))
+ {
+  VariableInt.Set("5", 4);
+  Game.PrintMessage("Initial titans set to 4!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt5"))
+ {
+  VariableInt.Set("5", 5);
+  Game.PrintMessage("Initial titans set to 5!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt6"))
+ {
+  VariableInt.Set("5", 6);
+  Game.PrintMessage("Initial titans set to 6!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt7"))
+ {
+  VariableInt.Set("5", 7);
+  Game.PrintMessage("Initial titans set to 7!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt8"))
+ {
+  VariableInt.Set("5", 8);
+  Game.PrintMessage("Initial titans set to 8!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt9"))
+ {
+  VariableInt.Set("5", 9);
+  Game.PrintMessage("Initial titans set to 9!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt10"))
+ {
+  VariableInt.Set("5", 10);
+  Game.PrintMessage("Initial titans set to 10!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt11"))
+ {
+  VariableInt.Set("5", 11);
+  Game.PrintMessage("Initial titans set to 11!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt12"))
+ {
+  VariableInt.Set("5", 12);
+  Game.PrintMessage("Initial titans set to 12!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt13"))
+ {
+  VariableInt.Set("5", 13);
+  Game.PrintMessage("Initial titans set to 13!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt14"))
+ {
+  VariableInt.Set("5", 14);
+  Game.PrintMessage("Initial titans set to 14!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt15"))
+ {
+  VariableInt.Set("5", 15);
+  Game.PrintMessage("Initial titans set to 15!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt16"))
+ {
+  VariableInt.Set("5", 16);
+  Game.PrintMessage("Initial titans set to 16!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt17"))
+ {
+  VariableInt.Set("5", 17);
+  Game.PrintMessage("Initial titans set to 17!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt18"))
+ {
+  VariableInt.Set("5", 18);
+  Game.PrintMessage("Initial titans set to 18!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt19"))
+ {
+  VariableInt.Set("5", 19);
+  Game.PrintMessage("Initial titans set to 19!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt20"))
+ {
+  VariableInt.Set("5", 20);
+  Game.PrintMessage("Initial titans set to 20!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt21"))
+ {
+  VariableInt.Set("5", 21);
+  Game.PrintMessage("Initial titans set to 21!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt22"))
+ {
+  VariableInt.Set("5", 22);
+  Game.PrintMessage("Initial titans set to 22!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt23"))
+ {
+  VariableInt.Set("5", 23);
+  Game.PrintMessage("Initial titans set to 23!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt24"))
+ {
+  VariableInt.Set("5", 24);
+  Game.PrintMessage("Initial titans set to 24!");
+ }
+ If(String.Equals(VariableString("input"), "/initialt25"))
+ {
+  VariableInt.Set("5", 25);
+  Game.PrintMessage("Initial titans set to 25!");
+ }
+
+ }
+
+ If(String.StartsWith(VariableString("input"), "/increment"))
+ {
+
+ If(String.Equals(VariableString("input"), "/increment-10"))
+ {
+  VariableInt.Set("7", -10);
+  Game.PrintMessage("Increment per wave set to -10!");
+ }
+ If(String.Equals(VariableString("input"), "/increment-9"))
+ {
+  VariableInt.Set("7", -9);
+  Game.PrintMessage("Increment per wave set to -9!");
+ }
+ If(String.Equals(VariableString("input"), "/increment-8"))
+ {
+  VariableInt.Set("7", -8);
+  Game.PrintMessage("Increment per wave set to -8!");
+ }
+ If(String.Equals(VariableString("input"), "/increment-7"))
+ {
+  VariableInt.Set("7", -7);
+  Game.PrintMessage("Increment per wave set to -7!");
+ }
+ If(String.Equals(VariableString("input"), "/increment-6"))
+ {
+  VariableInt.Set("7", -6);
+  Game.PrintMessage("Increment per wave set to -6!");
+ }
+ If(String.Equals(VariableString("input"), "/increment-5"))
+ {
+  VariableInt.Set("7", -5);
+  Game.PrintMessage("Increment per wave set to -5!");
+ }
+ If(String.Equals(VariableString("input"), "/increment-4"))
+ {
+  VariableInt.Set("7", -4);
+  Game.PrintMessage("Increment per wave set to -4!");
+ }
+ If(String.Equals(VariableString("input"), "/increment-3"))
+ {
+  VariableInt.Set("7", -3);
+  Game.PrintMessage("Increment per wave set to -3!");
+ }
+ If(String.Equals(VariableString("input"), "/increment-2"))
+ {
+  VariableInt.Set("7", -2);
+  Game.PrintMessage("Increment per wave set to -2!");
+ }
+ If(String.Equals(VariableString("input"), "/increment-1"))
+ {
+  VariableInt.Set("7", -1);
+  Game.PrintMessage("Increment per wave set to -1!");
+ }
+ If(String.Equals(VariableString("input"), "/increment0"))
+ {
+  VariableInt.Set("7", 0);
+  Game.PrintMessage("Increment per wave set to 0!");
+ }
+ If(String.Equals(VariableString("input"), "/increment1"))
+ {
+  VariableInt.Set("7", 1);
+  Game.PrintMessage("Increment per wave set to 1!");
+ }
+ If(String.Equals(VariableString("input"), "/increment2"))
+ {
+  VariableInt.Set("7", 2);
+  Game.PrintMessage("Increment per wave set to 2!");
+ }
+ If(String.Equals(VariableString("input"), "/increment3"))
+ {
+  VariableInt.Set("7", 3);
+  Game.PrintMessage("Increment per wave set to 3!");
+ }
+ If(String.Equals(VariableString("input"), "/increment4"))
+ {
+  VariableInt.Set("7", 4);
+  Game.PrintMessage("Increment per wave set to 4!");
+ }
+ If(String.Equals(VariableString("input"), "/increment5"))
+ {
+  VariableInt.Set("7", 5);
+  Game.PrintMessage("Increment per wave set to 5!");
+ }
+ If(String.Equals(VariableString("input"), "/increment6"))
+ {
+  VariableInt.Set("7", 6);
+  Game.PrintMessage("Increment per wave set to 6!");
+ }
+ If(String.Equals(VariableString("input"), "/increment7"))
+ {
+  VariableInt.Set("7", 7);
+  Game.PrintMessage("Increment per wave set to 7!");
+ }
+ If(String.Equals(VariableString("input"), "/increment8"))
+ {
+  VariableInt.Set("7", 8);
+  Game.PrintMessage("Increment per wave set to 8!");
+ }
+ If(String.Equals(VariableString("input"), "/increment9"))
+ {
+  VariableInt.Set("7", 9);
+  Game.PrintMessage("Increment per wave set to 9!");
+ }
+ If(String.Equals(VariableString("input"), "/increment10"))
+ {
+  VariableInt.Set("7", 10);
+  Game.PrintMessage("Increment per wave set to 10!");
+ }
+
+ }
+
+ If(String.StartsWith(VariableString("input"), "/lastwave"))
+ {
+
+ If(String.Equals(VariableString("input"), "/lastwave5"))
+ {
+  VariableInt.Set("12", 5);
+  Game.PrintMessage("Last wave set to 5!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave10"))
+ {
+  VariableInt.Set("12", 10);
+  Game.PrintMessage("Last wave set to 10!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave15"))
+ {
+  VariableInt.Set("12", 15);
+  Game.PrintMessage("Last wave set to 15!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave20"))
+ {
+  VariableInt.Set("12", 20);
+  Game.PrintMessage("Last wave set to 20!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave25"))
+ {
+  VariableInt.Set("12", 25);
+  Game.PrintMessage("Last wave set to 25!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave30"))
+ {
+  VariableInt.Set("12", 30);
+  Game.PrintMessage("Last wave set to 30!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave35"))
+ {
+  VariableInt.Set("12", 35);
+  Game.PrintMessage("Last wave set to 35!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave40"))
+ {
+  VariableInt.Set("12", 40);
+  Game.PrintMessage("Last wave set to 40!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave45"))
+ {
+  VariableInt.Set("12", 45);
+  Game.PrintMessage("Last wave set to 45!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave50"))
+ {
+  VariableInt.Set("12", 50);
+  Game.PrintMessage("Last wave set to 50!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave60"))
+ {
+  VariableInt.Set("12", 60);
+  Game.PrintMessage("Last wave set to 60!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave70"))
+ {
+  VariableInt.Set("12", 70);
+  Game.PrintMessage("Last wave set to 70!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave75"))
+ {
+  VariableInt.Set("12", 75);
+  Game.PrintMessage("Last wave set to 75!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave80"))
+ {
+  VariableInt.Set("12", 80);
+  Game.PrintMessage("Last wave set to 80!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave90"))
+ {
+  VariableInt.Set("12", 90);
+  Game.PrintMessage("Last wave set to 90!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave100"))
+ {
+  VariableInt.Set("12", 100);
+  Game.PrintMessage("Last wave set to 100!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave125"))
+ {
+  VariableInt.Set("12", 125);
+  Game.PrintMessage("Last wave set to 125!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave150"))
+ {
+  VariableInt.Set("12", 150);
+  Game.PrintMessage("Last wave set to 150!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave175"))
+ {
+  VariableInt.Set("12", 175);
+  Game.PrintMessage("Last wave set to 175!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave200"))
+ {
+  VariableInt.Set("12", 200);
+  Game.PrintMessage("Last wave set to 200!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave250"))
+ {
+  VariableInt.Set("12", 250);
+  Game.PrintMessage("Last wave set to 250!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave300"))
+ {
+  VariableInt.Set("12", 300);
+  Game.PrintMessage("Last wave set to 300!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave350"))
+ {
+  VariableInt.Set("12", 350);
+  Game.PrintMessage("Last wave set to 350!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave400"))
+ {
+  VariableInt.Set("12", 400);
+  Game.PrintMessage("Last wave set to 400!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave450"))
+ {
+  VariableInt.Set("12", 450);
+  Game.PrintMessage("Last wave set to 450!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave500"))
+ {
+  VariableInt.Set("12", 500);
+  Game.PrintMessage("Last wave set to 500!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave600"))
+ {
+  VariableInt.Set("12", 600);
+  Game.PrintMessage("Last wave set to 600!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave700"))
+ {
+  VariableInt.Set("12", 700);
+  Game.PrintMessage("Last wave set to 700!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave750"))
+ {
+  VariableInt.Set("12", 750);
+  Game.PrintMessage("Last wave set to 750!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave800"))
+ {
+  VariableInt.Set("12", 800);
+  Game.PrintMessage("Last wave set to 800!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave900"))
+ {
+  VariableInt.Set("12", 900);
+  Game.PrintMessage("Last wave set to 900!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwave1000"))
+ {
+  VariableInt.Set("12", 1000);
+  Game.PrintMessage("Last wave set to 1000!");
+ }
+ If(String.Equals(VariableString("input"), "/lastwavemax"))
+ {
+  VariableInt.Set("12", 999999);
+  Game.PrintMessage("Last wave set to 999999!");
+ }
+
+ }
+
+ If(String.StartsWith(VariableString("input"), "/rev"))
+ {
+
+ If(String.Equals(VariableString("input"), "/revwave"))
+ {
+  If(Bool.Equals(VariableBool("5"), false));
+  {
+   VariableBool.Set("7", true);
+  }
+  If(Bool.Equals(VariableBool("5"), true));
+  {
+   VariableBool.Set("7", false);
+  }
+  If(Bool.Equals(VariableBool("7"), false));
+  {
+   VariableBool.Set("5", false);
+   Game.PrintMessage("Revive<size=1>___</size>on<size=1>___</size>wave<size=1>___</size>start: No");
+  }
+  If(Bool.Equals(VariableBool("7"), true));
+  {
+   VariableBool.Set("3", true);
+   Game.PrintMessage("Revive<size=1>___</size>on<size=1>___</size>wave<size=1>___</size>start:<size=1>___</size>Yes");
+  }
+ }
+ If(String.Equals(VariableString("input"), "/revwave1"))
+ {
+  VariableInt.Set("13", 1);
+  Game.PrintMessage("Revives every wave!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave2"))
+ {
+  VariableInt.Set("13", 2);
+  Game.PrintMessage("Revives every 2 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave3"))
+ {
+  VariableInt.Set("13", 3);
+  Game.PrintMessage("Revives every 3 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave4"))
+ {
+  VariableInt.Set("13", 4);
+  Game.PrintMessage("Revives every 4 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave5"))
+ {
+  VariableInt.Set("13", 5);
+  Game.PrintMessage("Revives every 5 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave6"))
+ {
+  VariableInt.Set("13", 6);
+  Game.PrintMessage("Revives every 6 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave7"))
+ {
+  VariableInt.Set("13", 7);
+  Game.PrintMessage("Revives every 7 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave8"))
+ {
+  VariableInt.Set("13", 8);
+  Game.PrintMessage("Revives every 8 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave9"))
+ {
+  VariableInt.Set("13", 9);
+  Game.PrintMessage("Revives every 9 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave10"))
+ {
+  VariableInt.Set("13", 10);
+  Game.PrintMessage("Revives every 10 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave11"))
+ {
+  VariableInt.Set("13", 11);
+  Game.PrintMessage("Revives every 11 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave12"))
+ {
+  VariableInt.Set("13", 12);
+  Game.PrintMessage("Revives every 12 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave13"))
+ {
+  VariableInt.Set("13", 13);
+  Game.PrintMessage("Revives every 13 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave14"))
+ {
+  VariableInt.Set("13", 14);
+  Game.PrintMessage("Revives every 14 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave15"))
+ {
+  VariableInt.Set("13", 15);
+  Game.PrintMessage("Revives every 15 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave16"))
+ {
+  VariableInt.Set("13", 16);
+  Game.PrintMessage("Revives every 16 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave17"))
+ {
+  VariableInt.Set("13", 17);
+  Game.PrintMessage("Revives every 17 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave18"))
+ {
+  VariableInt.Set("13", 18);
+  Game.PrintMessage("Revives every 18 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave19"))
+ {
+  VariableInt.Set("13", 19);
+  Game.PrintMessage("Revives every 19 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave20"))
+ {
+  VariableInt.Set("13", 20);
+  Game.PrintMessage("Revives every 20 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave21"))
+ {
+  VariableInt.Set("13", 21);
+  Game.PrintMessage("Revives every 21 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave22"))
+ {
+  VariableInt.Set("13", 22);
+  Game.PrintMessage("Revives every 22 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave23"))
+ {
+  VariableInt.Set("13", 23);
+  Game.PrintMessage("Revives every 23 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave24"))
+ {
+  VariableInt.Set("13", 24);
+  Game.PrintMessage("Revives every 24 waves!");
+ }
+ If(String.Equals(VariableString("input"), "/revwave25"))
+ {
+  VariableInt.Set("13", 25);
+  Game.PrintMessage("Revives every 25 waves!");
+ }
+
+ If(String.Equals(VariableString("input"), "/revtime"))
+ {
+  If(Bool.Equals(VariableBool("6"), false));
+  {
+   VariableBool.Set("7", true);
+  }
+  If(Bool.Equals(VariableBool("6"), true));
+  {
+   VariableBool.Set("7", false);
+  }
+  If(Bool.Equals(VariableBool("7"), false));
+  {
+   VariableBool.Set("6", false);
+   Game.PrintMessage("Revive<size=1>___</size>every<size=1>___</size>few<size=1>___</size>seconds: No");
+  }
+  If(Bool.Equals(VariableBool("7"), true));
+  {
+   VariableBool.Set("6", true);
+   Game.PrintMessage("Revive<size=1>___</size>every<size=1>___</size>few<size=1>___</size>seconds:<size=1>___</size>Yes");
+  }
+ }
+ If(String.Equals(VariableString("input"), "/revtime1"))
+ {
+  VariableInt.Set("14", 1);
+  Game.PrintMessage("Timed revives set to 1 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime2"))
+ {
+  VariableInt.Set("14", 2);
+  Game.PrintMessage("Timed revives set to 2 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime3"))
+ {
+  VariableInt.Set("14", 3);
+  Game.PrintMessage("Timed revives set to 3 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime4"))
+ {
+  VariableInt.Set("14", 4);
+  Game.PrintMessage("Timed revives set to 4 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime5"))
+ {
+  VariableInt.Set("14", 5);
+  Game.PrintMessage("Timed revives set to 5 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime6"))
+ {
+  VariableInt.Set("14", 6);
+  Game.PrintMessage("Timed revives set to 6 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime7"))
+ {
+  VariableInt.Set("14", 7);
+  Game.PrintMessage("Timed revives set to 7 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime8"))
+ {
+  VariableInt.Set("14", 8);
+  Game.PrintMessage("Timed revives set to 8 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime9"))
+ {
+  VariableInt.Set("14", 9);
+  Game.PrintMessage("Timed revives set to 9 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime10"))
+ {
+  VariableInt.Set("14", 10);
+  Game.PrintMessage("Timed revives set to 10 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime15"))
+ {
+  VariableInt.Set("14", 15);
+  Game.PrintMessage("Timed revives set to 15 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime20"))
+ {
+  VariableInt.Set("14", 20);
+  Game.PrintMessage("Timed revives set to 20 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime25"))
+ {
+  VariableInt.Set("14", 25);
+  Game.PrintMessage("Timed revives set to 25 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime30"))
+ {
+  VariableInt.Set("14", 30);
+  Game.PrintMessage("Timed revives set to 30 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime35"))
+ {
+  VariableInt.Set("14", 35);
+  Game.PrintMessage("Timed revives set to 35 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime40"))
+ {
+  VariableInt.Set("14", 40);
+  Game.PrintMessage("Timed revives set to 40 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime45"))
+ {
+  VariableInt.Set("14", 45);
+  Game.PrintMessage("Timed revives set to 45 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime50"))
+ {
+  VariableInt.Set("14", 50);
+  Game.PrintMessage("Timed revives set to 50 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime55"))
+ {
+  VariableInt.Set("14", 55);
+  Game.PrintMessage("Timed revives set to 55 seconds!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime60"))
+ {
+  VariableInt.Set("14", 60);
+  Game.PrintMessage("Timed revives set to 1 minute!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime120"))
+ {
+  VariableInt.Set("14", 120);
+  Game.PrintMessage("Timed revives set to 2 minutes!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime180"))
+ {
+  VariableInt.Set("14", 180);
+  Game.PrintMessage("Timed revives set to 3 minutes!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime240"))
+ {
+  VariableInt.Set("14", 240);
+  Game.PrintMessage("Timed revives set to 4 minutes!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime300"))
+ {
+  VariableInt.Set("14", 300);
+  Game.PrintMessage("Timed revives set to 5 minutes!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime360"))
+ {
+  VariableInt.Set("14", 360);
+  Game.PrintMessage("Timed revives set to 6 minutes!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime420"))
+ {
+  VariableInt.Set("14", 420);
+  Game.PrintMessage("Timed revives set to 7 minutes!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime480"))
+ {
+  VariableInt.Set("14", 480);
+  Game.PrintMessage("Timed revives set to 8 minutes!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime540"))
+ {
+  VariableInt.Set("14", 540);
+  Game.PrintMessage("Timed revives set to 9 minutes!");
+ }
+ If(String.Equals(VariableString("input"), "/revtime600"))
+ {
+  VariableInt.Set("14", 600);
+  Game.PrintMessage("Timed revives set to 10 minutes!");
+ }
+
+ }
+
+ If(String.StartsWith(VariableString("input"), "/health"))
+ {
+
+ If(String.Equals(VariableString("input"), "/healthmode"))
+ {
+  If(Bool.Equals(VariableBool("2"), false));
+  {
+   VariableBool.Set("7", true);
+  }
+  If(Bool.Equals(VariableBool("2"), true));
+  {
+   VariableBool.Set("7", false);
+  }
+  If(Bool.Equals(VariableBool("7"), false));
+  {
+   VariableBool.Set("2", false);
+   Game.PrintMessage("Titan<size=1>_____</size>health<size=1>_____</size>mode<size=1>_____</size>is<size=1>_____</size>off!");
+  }
+  If(Bool.Equals(VariableBool("7"), true));
+  {
+   VariableBool.Set("2", true);
+   Game.PrintMessage("Titan<size=1>_____</size>health<size=1>_____</size>mode<size=1>_____</size>is<size=1>_____</size>on!");
+  }
+ }
+
+ If(String.Equals(VariableString("input"), "/healthmodescaled"))
+ {
+  VariableInt.Set("15", 0);
+  Game.PrintMessage("Health Mode: Scaled");
+ }
+ If(String.Equals(VariableString("input"), "/healthmodefixed"))
+ {
+  VariableInt.Set("15", 1);
+  Game.PrintMessage("Health Mode: Fixed");
+ }
+
+ If(String.Equals(VariableString("input"), "/healthmin0"))
+ {
+  VariableInt.Set("16", 0);
+  Game.PrintMessage("Minimum Health: 0");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin50"))
+ {
+  VariableInt.Set("16", 50);
+  Game.PrintMessage("Minimum Health: 50");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin100"))
+ {
+  VariableInt.Set("16", 100);
+  Game.PrintMessage("Minimum Health: 100");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin150"))
+ {
+  VariableInt.Set("16", 150);
+  Game.PrintMessage("Minimum Health: 150");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin200"))
+ {
+  VariableInt.Set("16", 200);
+  Game.PrintMessage("Minimum Health: 200");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin250"))
+ {
+  VariableInt.Set("16", 250);
+  Game.PrintMessage("Minimum Health: 250");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin300"))
+ {
+  VariableInt.Set("16", 300);
+  Game.PrintMessage("Minimum Health: 300");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin350"))
+ {
+  VariableInt.Set("16", 350);
+  Game.PrintMessage("Minimum Health: 350");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin400"))
+ {
+  VariableInt.Set("16", 400);
+  Game.PrintMessage("Minimum Health: 400");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin450"))
+ {
+  VariableInt.Set("16", 450);
+  Game.PrintMessage("Minimum Health: 450");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin500"))
+ {
+  VariableInt.Set("16", 500);
+  Game.PrintMessage("Minimum Health: 500");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin550"))
+ {
+  VariableInt.Set("16", 550);
+  Game.PrintMessage("Minimum Health: 550");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin600"))
+ {
+  VariableInt.Set("16", 600);
+  Game.PrintMessage("Minimum Health: 600");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin650"))
+ {
+  VariableInt.Set("16", 650);
+  Game.PrintMessage("Minimum Health: 650");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin700"))
+ {
+  VariableInt.Set("16", 700);
+  Game.PrintMessage("Minimum Health: 700");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin750"))
+ {
+  VariableInt.Set("16", 750);
+  Game.PrintMessage("Minimum Health: 750");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin800"))
+ {
+  VariableInt.Set("16", 800);
+  Game.PrintMessage("Minimum Health: 800");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin850"))
+ {
+  VariableInt.Set("16", 850);
+  Game.PrintMessage("Minimum Health: 850");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin900"))
+ {
+  VariableInt.Set("16", 900);
+  Game.PrintMessage("Minimum Health: 900");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin950"))
+ {
+  VariableInt.Set("16", 950);
+  Game.PrintMessage("Minimum Health: 950");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1000"))
+ {
+  VariableInt.Set("16", 1000);
+  Game.PrintMessage("Minimum Health: 1000");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1050"))
+ {
+  VariableInt.Set("16", 1050);
+  Game.PrintMessage("Minimum Health: 1050");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1100"))
+ {
+  VariableInt.Set("16", 1100);
+  Game.PrintMessage("Minimum Health: 1100");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1150"))
+ {
+  VariableInt.Set("16", 1150);
+  Game.PrintMessage("Minimum Health: 1150");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1200"))
+ {
+  VariableInt.Set("16", 1200);
+  Game.PrintMessage("Minimum Health: 1200");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1250"))
+ {
+  VariableInt.Set("16", 1250);
+  Game.PrintMessage("Minimum Health: 1250");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1300"))
+ {
+  VariableInt.Set("16", 1300);
+  Game.PrintMessage("Minimum Health: 1300");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1350"))
+ {
+  VariableInt.Set("16", 1350);
+  Game.PrintMessage("Minimum Health: 1350");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1400"))
+ {
+  VariableInt.Set("16", 1400);
+  Game.PrintMessage("Minimum Health: 1400");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1450"))
+ {
+  VariableInt.Set("16", 1450);
+  Game.PrintMessage("Minimum Health: 1450");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1500"))
+ {
+  VariableInt.Set("16", 1500);
+  Game.PrintMessage("Minimum Health: 1500");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1550"))
+ {
+  VariableInt.Set("16", 1550);
+  Game.PrintMessage("Minimum Health: 1550");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1600"))
+ {
+  VariableInt.Set("16", 1600);
+  Game.PrintMessage("Minimum Health: 1600");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1650"))
+ {
+  VariableInt.Set("16", 1650);
+  Game.PrintMessage("Minimum Health: 1650");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1700"))
+ {
+  VariableInt.Set("16", 1700);
+  Game.PrintMessage("Minimum Health: 1700");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1750"))
+ {
+  VariableInt.Set("16", 1750);
+  Game.PrintMessage("Minimum Health: 1750");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1800"))
+ {
+  VariableInt.Set("16", 1800);
+  Game.PrintMessage("Minimum Health: 1800");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1850"))
+ {
+  VariableInt.Set("16", 1850);
+  Game.PrintMessage("Minimum Health: 1850");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1900"))
+ {
+  VariableInt.Set("16", 1900);
+  Game.PrintMessage("Minimum Health: 1900");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin1950"))
+ {
+  VariableInt.Set("16", 1950);
+  Game.PrintMessage("Minimum Health: 1950");
+ }
+ If(String.Equals(VariableString("input"), "/healthmin2000"))
+ {
+  VariableInt.Set("16", 2000);
+  Game.PrintMessage("Minimum Health: 2000");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax0"))
+ {
+  VariableInt.Set("17", 0);
+  Game.PrintMessage("Maximum Health: 0");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax50"))
+ {
+  VariableInt.Set("17", 50);
+  Game.PrintMessage("Maximum Health: 50");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax100"))
+ {
+  VariableInt.Set("17", 100);
+  Game.PrintMessage("Maximum Health: 100");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax150"))
+ {
+  VariableInt.Set("17", 150);
+  Game.PrintMessage("Maximum Health: 150");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax200"))
+ {
+  VariableInt.Set("17", 200);
+  Game.PrintMessage("Maximum Health: 200");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax250"))
+ {
+  VariableInt.Set("17", 250);
+  Game.PrintMessage("Maximum Health: 250");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax300"))
+ {
+  VariableInt.Set("17", 300);
+  Game.PrintMessage("Maximum Health: 300");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax350"))
+ {
+  VariableInt.Set("17", 350);
+  Game.PrintMessage("Maximum Health: 350");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax400"))
+ {
+  VariableInt.Set("17", 400);
+  Game.PrintMessage("Maximum Health: 400");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax450"))
+ {
+  VariableInt.Set("17", 450);
+  Game.PrintMessage("Maximum Health: 450");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax500"))
+ {
+  VariableInt.Set("17", 500);
+  Game.PrintMessage("Maximum Health: 500");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax550"))
+ {
+  VariableInt.Set("17", 550);
+  Game.PrintMessage("Maximum Health: 550");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax600"))
+ {
+  VariableInt.Set("17", 600);
+  Game.PrintMessage("Maximum Health: 600");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax650"))
+ {
+  VariableInt.Set("17", 650);
+  Game.PrintMessage("Maximum Health: 650");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax700"))
+ {
+  VariableInt.Set("17", 700);
+  Game.PrintMessage("Maximum Health: 700");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax750"))
+ {
+  VariableInt.Set("17", 750);
+  Game.PrintMessage("Maximum Health: 750");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax800"))
+ {
+  VariableInt.Set("17", 800);
+  Game.PrintMessage("Maximum Health: 800");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax850"))
+ {
+  VariableInt.Set("17", 850);
+  Game.PrintMessage("Maximum Health: 850");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax900"))
+ {
+  VariableInt.Set("17", 900);
+  Game.PrintMessage("Maximum Health: 900");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax950"))
+ {
+  VariableInt.Set("17", 950);
+  Game.PrintMessage("Maximum Health: 950");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1000"))
+ {
+  VariableInt.Set("17", 1000);
+  Game.PrintMessage("Maximum Health: 1000");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1050"))
+ {
+  VariableInt.Set("17", 1050);
+  Game.PrintMessage("Maximum Health: 1050");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1100"))
+ {
+  VariableInt.Set("17", 1100);
+  Game.PrintMessage("Maximum Health: 1100");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1150"))
+ {
+  VariableInt.Set("17", 1150);
+  Game.PrintMessage("Maximum Health: 1150");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1200"))
+ {
+  VariableInt.Set("17", 1200);
+  Game.PrintMessage("Maximum Health: 1200");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1250"))
+ {
+  VariableInt.Set("17", 1250);
+  Game.PrintMessage("Maximum Health: 1250");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1300"))
+ {
+  VariableInt.Set("17", 1300);
+  Game.PrintMessage("Maximum Health: 1300");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1350"))
+ {
+  VariableInt.Set("17", 1350);
+  Game.PrintMessage("Maximum Health: 1350");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1400"))
+ {
+  VariableInt.Set("17", 1400);
+  Game.PrintMessage("Maximum Health: 1400");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1450"))
+ {
+  VariableInt.Set("17", 1450);
+  Game.PrintMessage("Maximum Health: 1450");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1500"))
+ {
+  VariableInt.Set("17", 1500);
+  Game.PrintMessage("Maximum Health: 1500");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1550"))
+ {
+  VariableInt.Set("17", 1550);
+  Game.PrintMessage("Maximum Health: 1550");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1600"))
+ {
+  VariableInt.Set("17", 1600);
+  Game.PrintMessage("Maximum Health: 1600");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1650"))
+ {
+  VariableInt.Set("17", 1650);
+  Game.PrintMessage("Maximum Health: 1650");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1700"))
+ {
+  VariableInt.Set("17", 1700);
+  Game.PrintMessage("Maximum Health: 1700");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1750"))
+ {
+  VariableInt.Set("17", 1750);
+  Game.PrintMessage("Maximum Health: 1750");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1800"))
+ {
+  VariableInt.Set("17", 1800);
+  Game.PrintMessage("Maximum Health: 1800");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1850"))
+ {
+  VariableInt.Set("17", 1850);
+  Game.PrintMessage("Maximum Health: 1850");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1900"))
+ {
+  VariableInt.Set("17", 1900);
+  Game.PrintMessage("Maximum Health: 1900");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax1950"))
+ {
+  VariableInt.Set("17", 1950);
+  Game.PrintMessage("Maximum Health: 1950");
+ }
+ If(String.Equals(VariableString("input"), "/healthmax2000"))
+ {
+  VariableInt.Set("17", 2000);
+  Game.PrintMessage("Maximum Health: 2000");
+ }
+
+ }
+
+ If(String.StartsWith(VariableString("input"), "/bosshealth"))
+ {
+
+ If(String.Equals(VariableString("input"), "/bosshealthmin0"))
+ {
+  VariableInt.Set("18", 0);
+  Game.PrintMessage("Minimum Health: 0");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin500"))
+ {
+  VariableInt.Set("18", 500);
+  Game.PrintMessage("Minimum Health: 500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin1000"))
+ {
+  VariableInt.Set("18", 1000);
+  Game.PrintMessage("Minimum Health: 1000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin1500"))
+ {
+  VariableInt.Set("18", 1500);
+  Game.PrintMessage("Minimum Health: 1500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin2000"))
+ {
+  VariableInt.Set("18", 2000);
+  Game.PrintMessage("Minimum Health: 2000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin2500"))
+ {
+  VariableInt.Set("18", 2500);
+  Game.PrintMessage("Minimum Health: 2500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin3000"))
+ {
+  VariableInt.Set("18", 3000);
+  Game.PrintMessage("Minimum Health: 3000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin3500"))
+ {
+  VariableInt.Set("18", 3500);
+  Game.PrintMessage("Minimum Health: 3500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin4000"))
+ {
+  VariableInt.Set("18", 4000);
+  Game.PrintMessage("Minimum Health: 4000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin4500"))
+ {
+  VariableInt.Set("18", 4500);
+  Game.PrintMessage("Minimum Health: 4500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin5000"))
+ {
+  VariableInt.Set("18", 5000);
+  Game.PrintMessage("Minimum Health: 5000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin5500"))
+ {
+  VariableInt.Set("18", 5500);
+  Game.PrintMessage("Minimum Health: 5500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin6000"))
+ {
+  VariableInt.Set("18", 6000);
+  Game.PrintMessage("Minimum Health: 6000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin6500"))
+ {
+  VariableInt.Set("18", 6500);
+  Game.PrintMessage("Minimum Health: 6500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin7000"))
+ {
+  VariableInt.Set("18", 7000);
+  Game.PrintMessage("Minimum Health: 7000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin7500"))
+ {
+  VariableInt.Set("18", 7500);
+  Game.PrintMessage("Minimum Health: 7500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin8000"))
+ {
+  VariableInt.Set("18", 8000);
+  Game.PrintMessage("Minimum Health: 8000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin8500"))
+ {
+  VariableInt.Set("18", 8500);
+  Game.PrintMessage("Minimum Health: 8500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin9000"))
+ {
+  VariableInt.Set("18", 9000);
+  Game.PrintMessage("Minimum Health: 9000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin9500"))
+ {
+  VariableInt.Set("18", 9500);
+  Game.PrintMessage("Minimum Health: 9500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin10000"))
+ {
+  VariableInt.Set("18", 10000);
+  Game.PrintMessage("Minimum Health: 10000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin10500"))
+ {
+  VariableInt.Set("18", 10500);
+  Game.PrintMessage("Minimum Health: 10500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin1100"))
+ {
+  VariableInt.Set("18", 1100);
+  Game.PrintMessage("Minimum Health: 1100");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin11500"))
+ {
+  VariableInt.Set("18", 11500);
+  Game.PrintMessage("Minimum Health: 11500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin12000"))
+ {
+  VariableInt.Set("18", 12000);
+  Game.PrintMessage("Minimum Health: 12000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin12500"))
+ {
+  VariableInt.Set("18", 12500);
+  Game.PrintMessage("Minimum Health: 12500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin13000"))
+ {
+  VariableInt.Set("18", 1300);
+  Game.PrintMessage("Minimum Health: 1300");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin1350"))
+ {
+  VariableInt.Set("18", 13500);
+  Game.PrintMessage("Minimum Health: 13500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin14000"))
+ {
+  VariableInt.Set("18", 14000);
+  Game.PrintMessage("Minimum Health: 14000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin14500"))
+ {
+  VariableInt.Set("18", 14500);
+  Game.PrintMessage("Minimum Health: 14500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin15000"))
+ {
+  VariableInt.Set("18", 15000);
+  Game.PrintMessage("Minimum Health: 15000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin15500"))
+ {
+  VariableInt.Set("18", 15500);
+  Game.PrintMessage("Minimum Health: 15500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin16000"))
+ {
+  VariableInt.Set("18", 16000);
+  Game.PrintMessage("Minimum Health: 16000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin16500"))
+ {
+  VariableInt.Set("18", 16500);
+  Game.PrintMessage("Minimum Health: 16500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin17000"))
+ {
+  VariableInt.Set("18", 17000);
+  Game.PrintMessage("Minimum Health: 17000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin17500"))
+ {
+  VariableInt.Set("18", 17500);
+  Game.PrintMessage("Minimum Health: 17500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin18000"))
+ {
+  VariableInt.Set("18", 18000);
+  Game.PrintMessage("Minimum Health: 18000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin18500"))
+ {
+  VariableInt.Set("18", 18500);
+  Game.PrintMessage("Minimum Health: 18500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin19000"))
+ {
+  VariableInt.Set("18", 19000);
+  Game.PrintMessage("Minimum Health: 19000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin19500"))
+ {
+  VariableInt.Set("18", 19500);
+  Game.PrintMessage("Minimum Health: 19500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmin20000"))
+ {
+  VariableInt.Set("18", 20000);
+  Game.PrintMessage("Minimum Health: 20000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax0"))
+ {
+  VariableInt.Set("19", 0);
+  Game.PrintMessage("Maximum Health: 0");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax500"))
+ {
+  VariableInt.Set("19", 500);
+  Game.PrintMessage("Maximum Health: 500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax1000"))
+ {
+  VariableInt.Set("19", 1000);
+  Game.PrintMessage("Maximum Health: 1000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax1500"))
+ {
+  VariableInt.Set("19", 1500);
+  Game.PrintMessage("Maximum Health: 1500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax2000"))
+ {
+  VariableInt.Set("19", 2000);
+  Game.PrintMessage("Maximum Health: 2000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax2500"))
+ {
+  VariableInt.Set("19", 2500);
+  Game.PrintMessage("Maximum Health: 2500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax3000"))
+ {
+  VariableInt.Set("19", 3000);
+  Game.PrintMessage("Maximum Health: 3000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax3500"))
+ {
+  VariableInt.Set("19", 3500);
+  Game.PrintMessage("Maximum Health: 3500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax4000"))
+ {
+  VariableInt.Set("19", 4000);
+  Game.PrintMessage("Maximum Health: 4000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax4500"))
+ {
+  VariableInt.Set("19", 4500);
+  Game.PrintMessage("Maximum Health: 4500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax5000"))
+ {
+  VariableInt.Set("19", 5000);
+  Game.PrintMessage("Maximum Health: 5000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax5500"))
+ {
+  VariableInt.Set("19", 5500);
+  Game.PrintMessage("Maximum Health: 5500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax6000"))
+ {
+  VariableInt.Set("19", 6000);
+  Game.PrintMessage("Maximum Health: 6000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax6500"))
+ {
+  VariableInt.Set("19", 6500);
+  Game.PrintMessage("Maximum Health: 6500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax7000"))
+ {
+  VariableInt.Set("19", 7000);
+  Game.PrintMessage("Maximum Health: 7000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax7500"))
+ {
+  VariableInt.Set("19", 7500);
+  Game.PrintMessage("Maximum Health: 7500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax8000"))
+ {
+  VariableInt.Set("19", 8000);
+  Game.PrintMessage("Maximum Health: 8000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax8500"))
+ {
+  VariableInt.Set("19", 8500);
+  Game.PrintMessage("Maximum Health: 8500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax9000"))
+ {
+  VariableInt.Set("19", 9000);
+  Game.PrintMessage("Maximum Health: 9000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax9500"))
+ {
+  VariableInt.Set("19", 9500);
+  Game.PrintMessage("Maximum Health: 9500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax10000"))
+ {
+  VariableInt.Set("19", 10000);
+  Game.PrintMessage("Maximum Health: 10000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax10500"))
+ {
+  VariableInt.Set("19", 10500);
+  Game.PrintMessage("Maximum Health: 10500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax1100"))
+ {
+  VariableInt.Set("19", 1100);
+  Game.PrintMessage("Maximum Health: 1100");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax11500"))
+ {
+  VariableInt.Set("19", 11500);
+  Game.PrintMessage("Maximum Health: 11500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax12000"))
+ {
+  VariableInt.Set("19", 12000);
+  Game.PrintMessage("Maximum Health: 12000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax12500"))
+ {
+  VariableInt.Set("19", 12500);
+  Game.PrintMessage("Maximum Health: 12500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax13000"))
+ {
+  VariableInt.Set("19", 1300);
+  Game.PrintMessage("Maximum Health: 1300");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax1350"))
+ {
+  VariableInt.Set("19", 13500);
+  Game.PrintMessage("Maximum Health: 13500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax14000"))
+ {
+  VariableInt.Set("19", 14000);
+  Game.PrintMessage("Maximum Health: 14000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax14500"))
+ {
+  VariableInt.Set("19", 14500);
+  Game.PrintMessage("Maximum Health: 14500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax15000"))
+ {
+  VariableInt.Set("19", 15000);
+  Game.PrintMessage("Maximum Health: 15000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax15500"))
+ {
+  VariableInt.Set("19", 15500);
+  Game.PrintMessage("Maximum Health: 15500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax16000"))
+ {
+  VariableInt.Set("19", 16000);
+  Game.PrintMessage("Maximum Health: 16000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax16500"))
+ {
+  VariableInt.Set("19", 16500);
+  Game.PrintMessage("Maximum Health: 16500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax17000"))
+ {
+  VariableInt.Set("19", 17000);
+  Game.PrintMessage("Maximum Health: 17000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax17500"))
+ {
+  VariableInt.Set("19", 17500);
+  Game.PrintMessage("Maximum Health: 17500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax18000"))
+ {
+  VariableInt.Set("19", 18000);
+  Game.PrintMessage("Maximum Health: 18000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax18500"))
+ {
+  VariableInt.Set("19", 18500);
+  Game.PrintMessage("Maximum Health: 18500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax19000"))
+ {
+  VariableInt.Set("19", 19000);
+  Game.PrintMessage("Maximum Health: 19000");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax19500"))
+ {
+  VariableInt.Set("19", 19500);
+  Game.PrintMessage("Maximum Health: 19500");
+ }
+ If(String.Equals(VariableString("input"), "/bosshealthmax20000"))
+ {
+  VariableInt.Set("19", 20000);
+  Game.PrintMessage("Maximum Health: 20000");
+ }
+
+ }
+
+ If(String.StartsWith(VariableString("input"), "/size"))
+ {
+
+ If(String.Equals(VariableString("input"), "/sizemin01"))
+ {
+  VariableFloat.Set("0", 0.1);
+  Game.PrintMessage("Minimum Size: 01");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin02"))
+ {
+  VariableFloat.Set("0", 0.2);
+  Game.PrintMessage("Minimum Size: 02");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin03"))
+ {
+  VariableFloat.Set("0", 0.3);
+  Game.PrintMessage("Minimum Size: 03");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin04"))
+ {
+  VariableFloat.Set("0", 0.4);
+  Game.PrintMessage("Minimum Size: 04");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin05"))
+ {
+  VariableFloat.Set("0", 0.5);
+  Game.PrintMessage("Minimum Size: 05");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin06"))
+ {
+  VariableFloat.Set("0", 0.6);
+  Game.PrintMessage("Minimum Size: 06");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin07"))
+ {
+  VariableFloat.Set("0", 0.7);
+  Game.PrintMessage("Minimum Size: 07");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin08"))
+ {
+  VariableFloat.Set("0", 0.8);
+  Game.PrintMessage("Minimum Size: 08");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin09"))
+ {
+  VariableFloat.Set("0", 0.9);
+  Game.PrintMessage("Minimum Size: 09");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin10"))
+ {
+  VariableFloat.Set("0", 1.0);
+  Game.PrintMessage("Minimum Size: 10");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin11"))
+ {
+  VariableFloat.Set("0", 1.1);
+  Game.PrintMessage("Minimum Size: 11");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin12"))
+ {
+  VariableFloat.Set("0", 1.2);
+  Game.PrintMessage("Minimum Size: 12");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin13"))
+ {
+  VariableFloat.Set("0", 1.3);
+  Game.PrintMessage("Minimum Size: 13");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin14"))
+ {
+  VariableFloat.Set("0", 1.4);
+  Game.PrintMessage("Minimum Size: 14");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin15"))
+ {
+  VariableFloat.Set("0", 1.5);
+  Game.PrintMessage("Minimum Size: 15");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin16"))
+ {
+  VariableFloat.Set("0", 1.6);
+  Game.PrintMessage("Minimum Size: 16");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin17"))
+ {
+  VariableFloat.Set("0", 1.7);
+  Game.PrintMessage("Minimum Size: 17");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin18"))
+ {
+  VariableFloat.Set("0", 1.8);
+  Game.PrintMessage("Minimum Size: 18");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin19"))
+ {
+  VariableFloat.Set("0", 1.9);
+  Game.PrintMessage("Minimum Size: 19");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin20"))
+ {
+  VariableFloat.Set("0", 2.0);
+  Game.PrintMessage("Minimum Size: 20");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin21"))
+ {
+  VariableFloat.Set("0", 2.1);
+  Game.PrintMessage("Minimum Size: 21");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin22"))
+ {
+  VariableFloat.Set("0", 2.2);
+  Game.PrintMessage("Minimum Size: 22");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin23"))
+ {
+  VariableFloat.Set("0", 2.3);
+  Game.PrintMessage("Minimum Size: 23");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin24"))
+ {
+  VariableFloat.Set("0", 2.4);
+  Game.PrintMessage("Minimum Size: 24");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin25"))
+ {
+  VariableFloat.Set("0", 2.5);
+  Game.PrintMessage("Minimum Size: 25");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin26"))
+ {
+  VariableFloat.Set("0", 2.6);
+  Game.PrintMessage("Minimum Size: 26");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin27"))
+ {
+  VariableFloat.Set("0", 2.7);
+  Game.PrintMessage("Minimum Size: 27");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin28"))
+ {
+  VariableFloat.Set("0", 2.8);
+  Game.PrintMessage("Minimum Size: 28");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin29"))
+ {
+  VariableFloat.Set("0", 2.9);
+  Game.PrintMessage("Minimum Size: 29");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin30"))
+ {
+  VariableFloat.Set("0", 3.0);
+  Game.PrintMessage("Minimum Size: 30");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin31"))
+ {
+  VariableFloat.Set("0", 3.1);
+  Game.PrintMessage("Minimum Size: 31");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin32"))
+ {
+  VariableFloat.Set("0", 3.2);
+  Game.PrintMessage("Minimum Size: 32");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin33"))
+ {
+  VariableFloat.Set("0", 3.3);
+  Game.PrintMessage("Minimum Size: 33");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin34"))
+ {
+  VariableFloat.Set("0", 3.4);
+  Game.PrintMessage("Minimum Size: 34");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin35"))
+ {
+  VariableFloat.Set("0", 3.5);
+  Game.PrintMessage("Minimum Size: 35");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin36"))
+ {
+  VariableFloat.Set("0", 3.6);
+  Game.PrintMessage("Minimum Size: 36");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin37"))
+ {
+  VariableFloat.Set("0", 3.7);
+  Game.PrintMessage("Minimum Size: 37");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin38"))
+ {
+  VariableFloat.Set("0", 3.8);
+  Game.PrintMessage("Minimum Size: 38");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin39"))
+ {
+  VariableFloat.Set("0", 3.9);
+  Game.PrintMessage("Minimum Size: 39");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin40"))
+ {
+  VariableFloat.Set("0", 4.0);
+  Game.PrintMessage("Minimum Size: 40");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin41"))
+ {
+  VariableFloat.Set("0", 4.1);
+  Game.PrintMessage("Minimum Size: 41");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin42"))
+ {
+  VariableFloat.Set("0", 4.2);
+  Game.PrintMessage("Minimum Size: 42");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin43"))
+ {
+  VariableFloat.Set("0", 4.3);
+  Game.PrintMessage("Minimum Size: 43");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin44"))
+ {
+  VariableFloat.Set("0", 4.4);
+  Game.PrintMessage("Minimum Size: 44");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin45"))
+ {
+  VariableFloat.Set("0", 4.5);
+  Game.PrintMessage("Minimum Size: 45");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin46"))
+ {
+  VariableFloat.Set("0", 4.6);
+  Game.PrintMessage("Minimum Size: 46");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin47"))
+ {
+  VariableFloat.Set("0", 4.7);
+  Game.PrintMessage("Minimum Size: 47");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin48"))
+ {
+  VariableFloat.Set("0", 4.8);
+  Game.PrintMessage("Minimum Size: 48");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin49"))
+ {
+  VariableFloat.Set("0", 4.9);
+  Game.PrintMessage("Minimum Size: 49");
+ }
+ If(String.Equals(VariableString("input"), "/sizemin50"))
+ {
+  VariableFloat.Set("0", 5.0);
+  Game.PrintMessage("Minimum Size: 50");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax01"))
+ {
+  VariableFloat.Set("1", 0.1);
+  Game.PrintMessage("Maximum Size: 01");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax02"))
+ {
+  VariableFloat.Set("1", 0.2);
+  Game.PrintMessage("Maximum Size: 02");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax03"))
+ {
+  VariableFloat.Set("1", 0.3);
+  Game.PrintMessage("Maximum Size: 03");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax04"))
+ {
+  VariableFloat.Set("1", 0.4);
+  Game.PrintMessage("Maximum Size: 04");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax05"))
+ {
+  VariableFloat.Set("1", 0.5);
+  Game.PrintMessage("Maximum Size: 05");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax06"))
+ {
+  VariableFloat.Set("1", 0.6);
+  Game.PrintMessage("Maximum Size: 06");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax07"))
+ {
+  VariableFloat.Set("1", 0.7);
+  Game.PrintMessage("Maximum Size: 07");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax08"))
+ {
+  VariableFloat.Set("1", 0.8);
+  Game.PrintMessage("Maximum Size: 08");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax09"))
+ {
+  VariableFloat.Set("1", 0.9);
+  Game.PrintMessage("Maximum Size: 09");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax10"))
+ {
+  VariableFloat.Set("1", 1.0);
+  Game.PrintMessage("Maximum Size: 10");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax11"))
+ {
+  VariableFloat.Set("1", 1.1);
+  Game.PrintMessage("Maximum Size: 11");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax12"))
+ {
+  VariableFloat.Set("1", 1.2);
+  Game.PrintMessage("Maximum Size: 12");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax13"))
+ {
+  VariableFloat.Set("1", 1.3);
+  Game.PrintMessage("Maximum Size: 13");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax14"))
+ {
+  VariableFloat.Set("1", 1.4);
+  Game.PrintMessage("Maximum Size: 14");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax15"))
+ {
+  VariableFloat.Set("1", 1.5);
+  Game.PrintMessage("Maximum Size: 15");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax16"))
+ {
+  VariableFloat.Set("1", 1.6);
+  Game.PrintMessage("Maximum Size: 16");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax17"))
+ {
+  VariableFloat.Set("1", 1.7);
+  Game.PrintMessage("Maximum Size: 17");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax18"))
+ {
+  VariableFloat.Set("1", 1.8);
+  Game.PrintMessage("Maximum Size: 18");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax19"))
+ {
+  VariableFloat.Set("1", 1.9);
+  Game.PrintMessage("Maximum Size: 19");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax20"))
+ {
+  VariableFloat.Set("1", 2.0);
+  Game.PrintMessage("Maximum Size: 20");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax21"))
+ {
+  VariableFloat.Set("1", 2.1);
+  Game.PrintMessage("Maximum Size: 21");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax22"))
+ {
+  VariableFloat.Set("1", 2.2);
+  Game.PrintMessage("Maximum Size: 22");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax23"))
+ {
+  VariableFloat.Set("1", 2.3);
+  Game.PrintMessage("Maximum Size: 23");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax24"))
+ {
+  VariableFloat.Set("1", 2.4);
+  Game.PrintMessage("Maximum Size: 24");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax25"))
+ {
+  VariableFloat.Set("1", 2.5);
+  Game.PrintMessage("Maximum Size: 25");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax26"))
+ {
+  VariableFloat.Set("1", 2.6);
+  Game.PrintMessage("Maximum Size: 26");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax27"))
+ {
+  VariableFloat.Set("1", 2.7);
+  Game.PrintMessage("Maximum Size: 27");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax28"))
+ {
+  VariableFloat.Set("1", 2.8);
+  Game.PrintMessage("Maximum Size: 28");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax29"))
+ {
+  VariableFloat.Set("1", 2.9);
+  Game.PrintMessage("Maximum Size: 29");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax30"))
+ {
+  VariableFloat.Set("1", 3.0);
+  Game.PrintMessage("Maximum Size: 30");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax31"))
+ {
+  VariableFloat.Set("1", 3.1);
+  Game.PrintMessage("Maximum Size: 31");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax32"))
+ {
+  VariableFloat.Set("1", 3.2);
+  Game.PrintMessage("Maximum Size: 32");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax33"))
+ {
+  VariableFloat.Set("1", 3.3);
+  Game.PrintMessage("Maximum Size: 33");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax34"))
+ {
+  VariableFloat.Set("1", 3.4);
+  Game.PrintMessage("Maximum Size: 34");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax35"))
+ {
+  VariableFloat.Set("1", 3.5);
+  Game.PrintMessage("Maximum Size: 35");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax36"))
+ {
+  VariableFloat.Set("1", 3.6);
+  Game.PrintMessage("Maximum Size: 36");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax37"))
+ {
+  VariableFloat.Set("1", 3.7);
+  Game.PrintMessage("Maximum Size: 37");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax38"))
+ {
+  VariableFloat.Set("1", 3.8);
+  Game.PrintMessage("Maximum Size: 38");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax39"))
+ {
+  VariableFloat.Set("1", 3.9);
+  Game.PrintMessage("Maximum Size: 39");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax40"))
+ {
+  VariableFloat.Set("1", 4.0);
+  Game.PrintMessage("Maximum Size: 40");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax41"))
+ {
+  VariableFloat.Set("1", 4.1);
+  Game.PrintMessage("Maximum Size: 41");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax42"))
+ {
+  VariableFloat.Set("1", 4.2);
+  Game.PrintMessage("Maximum Size: 42");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax43"))
+ {
+  VariableFloat.Set("1", 4.3);
+  Game.PrintMessage("Maximum Size: 43");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax44"))
+ {
+  VariableFloat.Set("1", 4.4);
+  Game.PrintMessage("Maximum Size: 44");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax45"))
+ {
+  VariableFloat.Set("1", 4.5);
+  Game.PrintMessage("Maximum Size: 45");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax46"))
+ {
+  VariableFloat.Set("1", 4.6);
+  Game.PrintMessage("Maximum Size: 46");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax47"))
+ {
+  VariableFloat.Set("1", 4.7);
+  Game.PrintMessage("Maximum Size: 47");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax48"))
+ {
+  VariableFloat.Set("1", 4.8);
+  Game.PrintMessage("Maximum Size: 48");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax49"))
+ {
+  VariableFloat.Set("1", 4.9);
+  Game.PrintMessage("Maximum Size: 49");
+ }
+ If(String.Equals(VariableString("input"), "/sizemax50"))
+ {
+  VariableFloat.Set("1", 5.0);
+  Game.PrintMessage("Maximum Size: 50");
+ }
+
+ }
+
+ If(String.StartsWith(VariableString("input"), "/bosssize"))
+ {
+
+ If(String.Equals(VariableString("input"), "/bosssizemin00"))
+ {
+  VariableFloat.Set("2", 0.1);
+  Game.PrintMessage("Boss Minimum Size: 01");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin05"))
+ {
+  VariableFloat.Set("2", 0.5);
+  Game.PrintMessage("Boss Minimum Size: 05");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin10"))
+ {
+  VariableFloat.Set("2", 1.0);
+  Game.PrintMessage("Boss Minimum Size: 10");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin15"))
+ {
+  VariableFloat.Set("2", 1.5);
+  Game.PrintMessage("Boss Minimum Size: 15");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin20"))
+ {
+  VariableFloat.Set("2", 2.0);
+  Game.PrintMessage("Boss Minimum Size: 20");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin25"))
+ {
+  VariableFloat.Set("2", 2.5);
+  Game.PrintMessage("Boss Minimum Size: 25");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin30"))
+ {
+  VariableFloat.Set("2", 3.0);
+  Game.PrintMessage("Boss Minimum Size: 30");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin35"))
+ {
+  VariableFloat.Set("2", 3.5);
+  Game.PrintMessage("Boss Minimum Size: 35");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin40"))
+ {
+  VariableFloat.Set("2", 4.0);
+  Game.PrintMessage("Boss Minimum Size: 40");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin45"))
+ {
+  VariableFloat.Set("2", 4.5);
+  Game.PrintMessage("Boss Minimum Size: 45");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin50"))
+ {
+  VariableFloat.Set("2", 5.0);
+  Game.PrintMessage("Boss Minimum Size: 50");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin55"))
+ {
+  VariableFloat.Set("2", 5.5);
+  Game.PrintMessage("Boss Minimum Size: 55");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin60"))
+ {
+  VariableFloat.Set("2", 6.0);
+  Game.PrintMessage("Boss Minimum Size: 60");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin65"))
+ {
+  VariableFloat.Set("2", 6.5);
+  Game.PrintMessage("Boss Minimum Size: 65");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin70"))
+ {
+  VariableFloat.Set("2", 7.0);
+  Game.PrintMessage("Boss Minimum Size: 70");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin75"))
+ {
+  VariableFloat.Set("2", 7.5);
+  Game.PrintMessage("Boss Minimum Size: 75");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin80"))
+ {
+  VariableFloat.Set("2", 8.0);
+  Game.PrintMessage("Boss Minimum Size: 80");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin85"))
+ {
+  VariableFloat.Set("2", 8.5);
+  Game.PrintMessage("Boss Minimum Size: 85");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin90"))
+ {
+  VariableFloat.Set("2", 9.0);
+  Game.PrintMessage("Boss Minimum Size: 90");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin95"))
+ {
+  VariableFloat.Set("2", 9.5);
+  Game.PrintMessage("Boss Minimum Size: 95");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin100"))
+ {
+  VariableFloat.Set("2", 10.0);
+  Game.PrintMessage("Boss Minimum Size: 100");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin105"))
+ {
+  VariableFloat.Set("2", 10.5);
+  Game.PrintMessage("Boss Minimum Size: 105");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin110"))
+ {
+  VariableFloat.Set("2", 11.0);
+  Game.PrintMessage("Boss Minimum Size: 110");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin115"))
+ {
+  VariableFloat.Set("2", 11.5);
+  Game.PrintMessage("Boss Minimum Size: 115");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin120"))
+ {
+  VariableFloat.Set("2", 12.0);
+  Game.PrintMessage("Boss Minimum Size: 120");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin125"))
+ {
+  VariableFloat.Set("2", 12.5);
+  Game.PrintMessage("Boss Minimum Size: 125");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin130"))
+ {
+  VariableFloat.Set("2", 13.0);
+  Game.PrintMessage("Boss Minimum Size: 130");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin135"))
+ {
+  VariableFloat.Set("2", 13.5);
+  Game.PrintMessage("Boss Minimum Size: 135");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin140"))
+ {
+  VariableFloat.Set("2", 14.0);
+  Game.PrintMessage("Boss Minimum Size: 140");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin145"))
+ {
+  VariableFloat.Set("2", 14.5);
+  Game.PrintMessage("Boss Minimum Size: 145");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin150"))
+ {
+  VariableFloat.Set("2", 15.0);
+  Game.PrintMessage("Boss Minimum Size: 1150");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin155"))
+ {
+  VariableFloat.Set("2", 15.5);
+  Game.PrintMessage("Boss Minimum Size: 155");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin160"))
+ {
+  VariableFloat.Set("2", 16.0);
+  Game.PrintMessage("Boss Minimum Size: 160");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin165"))
+ {
+  VariableFloat.Set("2", 16.5);
+  Game.PrintMessage("Boss Minimum Size: 165");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin170"))
+ {
+  VariableFloat.Set("2", 17.0);
+  Game.PrintMessage("Boss Minimum Size: 170");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin175"))
+ {
+  VariableFloat.Set("2", 17.5);
+  Game.PrintMessage("Boss Minimum Size: 175");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin180"))
+ {
+  VariableFloat.Set("2", 18.0);
+  Game.PrintMessage("Boss Minimum Size: 180");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin185"))
+ {
+  VariableFloat.Set("2", 18.5);
+  Game.PrintMessage("Boss Minimum Size: 185");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin190"))
+ {
+  VariableFloat.Set("2", 19.0);
+  Game.PrintMessage("Boss Minimum Size: 190");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin195"))
+ {
+  VariableFloat.Set("2", 19.5);
+  Game.PrintMessage("Boss Minimum Size: 195");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemin200"))
+ {
+  VariableFloat.Set("2", 20.0);
+  Game.PrintMessage("Boss Minimum Size: 200");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax00"))
+ {
+  VariableFloat.Set("3", 0.1);
+  Game.PrintMessage("Boss Maximum Size: 01");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax05"))
+ {
+  VariableFloat.Set("3", 0.5);
+  Game.PrintMessage("Boss Maximum Size: 05");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax10"))
+ {
+  VariableFloat.Set("3", 1.0);
+  Game.PrintMessage("Boss Maximum Size: 10");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax15"))
+ {
+  VariableFloat.Set("3", 1.5);
+  Game.PrintMessage("Boss Maximum Size: 15");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax20"))
+ {
+  VariableFloat.Set("3", 2.0);
+  Game.PrintMessage("Boss Maximum Size: 20");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax25"))
+ {
+  VariableFloat.Set("3", 2.5);
+  Game.PrintMessage("Boss Maximum Size: 25");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax30"))
+ {
+  VariableFloat.Set("3", 3.0);
+  Game.PrintMessage("Boss Maximum Size: 30");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax35"))
+ {
+  VariableFloat.Set("3", 3.5);
+  Game.PrintMessage("Boss Maximum Size: 35");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax40"))
+ {
+  VariableFloat.Set("3", 4.0);
+  Game.PrintMessage("Boss Maximum Size: 40");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax45"))
+ {
+  VariableFloat.Set("3", 4.5);
+  Game.PrintMessage("Boss Maximum Size: 45");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax50"))
+ {
+  VariableFloat.Set("3", 5.0);
+  Game.PrintMessage("Boss Maximum Size: 50");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax55"))
+ {
+  VariableFloat.Set("3", 5.5);
+  Game.PrintMessage("Boss Maximum Size: 55");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax60"))
+ {
+  VariableFloat.Set("3", 6.0);
+  Game.PrintMessage("Boss Maximum Size: 60");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax65"))
+ {
+  VariableFloat.Set("3", 6.5);
+  Game.PrintMessage("Boss Maximum Size: 65");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax70"))
+ {
+  VariableFloat.Set("3", 7.0);
+  Game.PrintMessage("Boss Maximum Size: 70");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax75"))
+ {
+  VariableFloat.Set("3", 7.5);
+  Game.PrintMessage("Boss Maximum Size: 75");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax80"))
+ {
+  VariableFloat.Set("3", 8.0);
+  Game.PrintMessage("Boss Maximum Size: 80");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax85"))
+ {
+  VariableFloat.Set("3", 8.5);
+  Game.PrintMessage("Boss Maximum Size: 85");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax90"))
+ {
+  VariableFloat.Set("3", 9.0);
+  Game.PrintMessage("Boss Maximum Size: 90");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax95"))
+ {
+  VariableFloat.Set("3", 9.5);
+  Game.PrintMessage("Boss Maximum Size: 95");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax100"))
+ {
+  VariableFloat.Set("3", 10.0);
+  Game.PrintMessage("Boss Maximum Size: 100");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax105"))
+ {
+  VariableFloat.Set("3", 10.5);
+  Game.PrintMessage("Boss Maximum Size: 105");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax110"))
+ {
+  VariableFloat.Set("3", 11.0);
+  Game.PrintMessage("Boss Maximum Size: 110");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax115"))
+ {
+  VariableFloat.Set("3", 11.5);
+  Game.PrintMessage("Boss Maximum Size: 115");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax120"))
+ {
+  VariableFloat.Set("3", 12.0);
+  Game.PrintMessage("Boss Maximum Size: 120");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax125"))
+ {
+  VariableFloat.Set("3", 12.5);
+  Game.PrintMessage("Boss Maximum Size: 125");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax130"))
+ {
+  VariableFloat.Set("3", 13.0);
+  Game.PrintMessage("Boss Maximum Size: 130");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax135"))
+ {
+  VariableFloat.Set("3", 13.5);
+  Game.PrintMessage("Boss Maximum Size: 135");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax140"))
+ {
+  VariableFloat.Set("3", 14.0);
+  Game.PrintMessage("Boss Maximum Size: 140");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax145"))
+ {
+  VariableFloat.Set("3", 14.5);
+  Game.PrintMessage("Boss Maximum Size: 145");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax150"))
+ {
+  VariableFloat.Set("3", 15.0);
+  Game.PrintMessage("Boss Maximum Size: 1150");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax155"))
+ {
+  VariableFloat.Set("3", 15.5);
+  Game.PrintMessage("Boss Maximum Size: 155");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax160"))
+ {
+  VariableFloat.Set("3", 16.0);
+  Game.PrintMessage("Boss Maximum Size: 160");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax165"))
+ {
+  VariableFloat.Set("3", 16.5);
+  Game.PrintMessage("Boss Maximum Size: 165");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax170"))
+ {
+  VariableFloat.Set("3", 17.0);
+  Game.PrintMessage("Boss Maximum Size: 170");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax175"))
+ {
+  VariableFloat.Set("3", 17.5);
+  Game.PrintMessage("Boss Maximum Size: 175");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax180"))
+ {
+  VariableFloat.Set("3", 18.0);
+  Game.PrintMessage("Boss Maximum Size: 180");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax185"))
+ {
+  VariableFloat.Set("3", 18.5);
+  Game.PrintMessage("Boss Maximum Size: 185");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax190"))
+ {
+  VariableFloat.Set("3", 19.0);
+  Game.PrintMessage("Boss Maximum Size: 190");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax195"))
+ {
+  VariableFloat.Set("3", 19.5);
+  Game.PrintMessage("Boss Maximum Size: 195");
+ }
+ If(String.Equals(VariableString("input"), "/bosssizemax200"))
+ {
+  VariableFloat.Set("3", 20.0);
+  Game.PrintMessage("Boss Maximum Size: 200");
+ }
+
+ }
+
+ If(String.Equals(VariableString("input"), "/getkillcount"))
+ {
+  VariableString.Set("message", "Kills:<size=1>___</size>");
+  If(Int.GreaterThan(VariableInt("10"), 0))
+  {
+   VariableString.Append("message", VariableInt("10").ConvertToString());
+  }
+  If(Int.Equals(VariableInt("10"), 0))
+  {
+   VariableString.Append("message", "None");
+  }
+  Game.PrintMessage(VariableString("message"));
+ }
+ If(String.Equals(VariableString("input"), "/resetkillcount"))
+ {
+  VariableInt.Set("10", 0);
+ }
+
+ If(String.Equals(VariableString("input"),"/gettime"))
+ {
+  VariableInt.Set("hours", VariableInt("11"));
+  VariableInt.Divide("hours", 3600);
+  VariableInt.Set("minutes", VariableInt("11"));
+  While(Int.GreaterThan(VariableInt("minutes"), 3600))
+  {
+   VariableInt.Subtract("minutes", 3600);
+  }
+  VariableInt.Divide("minutes", 60);
+  VariableInt.Set("seconds", VariableInt("11"));
+  VariableInt.Modulo("seconds", 60);
+  VariableString.Set("message", "Time: ");
+  VariableString.Append("message", VariableInt("hours").ConvertToString());
+  VariableString.Append("message", ":");
+  If(Int.LessThan(VariableInt("minutes"), 10))
+  {
+   VariableString.Append("message", "0");
+  }
+  VariableString.Append("message", VariableInt("minutes").ConvertToString());
+  VariableString.Append("message", ":");
+  If(Int.LessThan(VariableInt("seconds"), 10))
+  {
+   VariableString.Append("message", "0");
+  }
+  VariableString.Append("message", VariableInt("seconds").ConvertToString());
+  Game.PrintMessage(VariableString("message"));
+ }
+
+ If(String.Equals(VariableString("input"),"/resettime"))
+ {
+  VariableInt.Set("11", 0);
+  Game.PrintMessage("Time Reset!");
+ }
+
+ If(String.Equals(VariableString("input"),"/resetsettings"))
+ {
+  VariableBool.Set("2", false);
+  VariableInt.Set("3", 1);
+  VariableInt.Set("4", 25);
+  VariableInt.Set("5", 3);
+  VariableInt.Set("6", 3);
+  VariableInt.Set("7", 1);
+  VariableBool.Set("3", true);
+  VariableInt.Set("8", 5);
+  VariableBool.Set("4", false);
+  VariableInt.Set("9", 10);
+  VariableInt.Set("12", 999999);
+  VariableBool.Set("5", true);
+  VariableInt.Set("13", 1);
+  VariableBool.Set("6", false);
+  VariableInt.Set("14", 10);
+  VariableInt.Set("15", 0);
+  VariableInt.Set("16", 250);
+  VariableInt.Set("17", 1000);
+  VariableFloat.Set("0", 1.0);
+  VariableFloat.Set("1", 3.0);
+  VariableInt.Set("18", 5000);
+  VariableInt.Set("19", 10000);
+  VariableFloat.Set("2", 3.0);
+  VariableFloat.Set("3", 6.0);
+  Game.PrintMessage("Settings reset to default!");
+ }
+
+ If(String.Equals(VariableString("input"),"/getsettings"))
+ {
+  Game.PrintMessage("--------------------------Current Settings--------------------------");
+
+  VariableString.Set("message", "Health:<size=1>___</size>");
+  If(Bool.Equals(VariableBool("2"), false))
+  {
+   VariableString.Append("message", "Off<size=1>___</size>|<size=1>___</size><size=1>___</size>Min:<size=1>___</size>");
+  }
+  If(Bool.Equals(VariableBool("2"), true))
+  {
+   VariableString.Append("message", "On<size=1>___</size>|<size=1>___</size><size=1>___</size>Min:<size=1>___</size>");
+  }
+  VariableString.Append("message", VariableInt("16").ConvertToString());
+  VariableString.Append("message", "<size=1>___</size>Max:<size=1>___</size>");
+  VariableString.Append("message", VariableInt("17").ConvertToString());
+  Game.PrintMessage(VariableString("message"));
+  VariableString.Set("message", "   Bosses:<size=1>___</size>On<size=1>___</size>|<size=1>___</size>Min:<size=1>___</size>");
+  VariableString.Append("message", VariableInt("18").ConvertToString());
+  VariableString.Append("message", "<size=1>___</size>Max:<size=1>___</size>");
+  VariableString.Append("message", VariableInt("19").ConvertToString());
+  Game.PrintMessage(VariableString("message"));
+
+  VariableString.Set("message", "Sizes:<size=1>___</size>Min:<size=1>___</size>");
+  VariableString.Append("message", VariableFloat("0").ConvertToString());
+  VariableString.Append("message", "<size=1>___</size>Max:<size=1>___</size>");
+  VariableString.Append("message", VariableFloat("1").ConvertToString());
+  VariableString.Append("message", "<size=1>___</size>|<size=1>___</size>Bosses:<size=1>___</size>Min:<size=1>___</size>");
+  VariableString.Append("message", VariableFloat("2").ConvertToString());
+  VariableString.Append("message", "<size=1>___</size>Max:<size=1>___</size>");
+  VariableString.Append("message", VariableFloat("3").ConvertToString());
+  Game.PrintMessage(VariableString("message"));
+
+  If(Int.Equals(VariableInt("3"), 0))
+  {
+   Game.PrintMessage("Spawn<size=1>___</size>Rate:<size=1>___</size>Easy");
+  }
+  If(Int.Equals(VariableInt("3"), 1))
+  {
+   Game.PrintMessage("Spawn<size=1>___</size>Rate:<size=1>___</size>Normal");
+  }
+  If(Int.Equals(VariableInt("3"), 2))
+  {
+   Game.PrintMessage("Spawn<size=1>___</size>Rate:<size=1>___</size>Hard");
+  }
+  If(Int.Equals(VariableInt("3"), 3))
+  {
+   Game.PrintMessage("Spawn<size=1>___</size>Rate:<size=1>___</size>Super");
+  }
+  If(Int.Equals(VariableInt("3"), 4))
+  {
+   Game.PrintMessage("Spawn<size=1>___</size>Rate:<size=1>___</size>Extreme");
+  }
+  If(Int.Equals(VariableInt("3"), 6))
+  {
+   Game.PrintMessage("Spawn<size=1>___</size>Rate:<size=1>___</size>Hell");
+  }
+
+  VariableString.Set("message", "Spawn<size=1>___</size>Cap:<size=1>___</size>");
+  VariableString.Append("message", VariableInt("4").ConvertToString());
+  Game.PrintMessage(VariableString("message"));
+
+  VariableString.Set("message", "Initial<size=1>___</size>Titans:<size=1>___</size>");  
+  VariableString.Append("message", VariableInt("5").ConvertToString());
+  Game.PrintMessage(VariableString("message"));
+
+  VariableString.Set("message", "Increment:<size=1>___</size>");  
+  VariableString.Append("message", VariableInt("7").ConvertToString());
+  Game.PrintMessage(VariableString("message"));
+
+  If(Bool.Equals(VariableBool("3"), false))
+  {
+   VariableString.Set("message", "No<size=1>___</size>punks<size=1>___</size>every<size=1>___</size>");
+  }
+  If(Bool.Equals(VariableBool("3"), true))
+  {
+   VariableString.Set("message", "Punks<size=1>___</size>every<size=1>___</size>");
+  }
+  VariableString.Append("message", VariableInt("8").ConvertToString());
+  VariableString.Append("message", "<size=1>___</size>waves");
+  Game.PrintMessage(VariableString("message"));
+
+  If(Bool.Equals(VariableBool("4"), false))
+  {
+   VariableString.Set("message", "No<size=1>___</size>bosses<size=1>___</size>every<size=1>___</size>");
+  }
+  If(Bool.Equals(VariableBool("4"), true))
+  {
+   VariableString.Set("message", "Bosses<size=1>___</size>every<size=1>___</size>");
+  }
+  VariableString.Append("message", VariableInt("9").ConvertToString());
+  VariableString.Append("message", "<size=1>___</size>waves");
+  Game.PrintMessage(VariableString("message"));
+
+  VariableString.Set("message", "Last<size=1>___</size>Wave:<size=1>___</size>");
+  VariableString.Append("message", VariableInt("12").ConvertToString());
+  Game.PrintMessage(VariableString("message"));
+
+  If(Bool.Equals(VariableBool("5"), false))
+  {
+   VariableString.Set("message", "No<size=1>___</size>revives<size=1>___</size>every<size=1>___</size>");
+  }
+  If(Bool.Equals(VariableBool("5"), true))
+  {
+   VariableString.Set("message", "Revives<size=1>___</size>every<size=1>___</size>");
+  }
+  VariableString.Append("message", VariableInt("13").ConvertToString());
+  VariableString.Append("message", "<size=1>___</size>waves");
+  Game.PrintMessage(VariableString("message"));
+
+  If(Bool.Equals(VariableBool("6"), false))
+  {
+   VariableString.Set("message", "No<size=1>___</size>revives<size=1>___</size>every<size=1>___</size>");
+  }
+  If(Bool.Equals(VariableBool("6"), true))
+  {
+   VariableString.Set("message", "Revives<size=1>___</size>every<size=1>___</size>");
+  }
+  VariableString.Append("message", VariableInt("14").ConvertToString());
+  VariableString.Append("message", "<size=1>___</size>seconds");
+  Game.PrintMessage(VariableString("message"));
+ }
+
+ If(String.Equals(VariableString("input"), "/clear"))
+ {
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+  Game.PrintMessage("");
+ }
+
+ If(String.Contains(VariableString("input"), "help"))
+ {
+
+ If(String.Equals(VariableString("input"), "/help"))
+ {
+  Game.PrintMessage("-----------------------------------Help-----------------------------------");
+  Game.PrintMessage("Toggle Wave Mode: /wavemode");
+  Game.PrintMessage("Help for punk waves: /punkhelp");
+  Game.PrintMessage("Help for boss waves: /bosshelp");
+  Game.PrintMessage("Help for spawn rates: /spawnratehelp");
+  Game.PrintMessage("Help for spawn cap: /spawncaphelp");
+  Game.PrintMessage("Help for initial titans: /initialthelp");
+  Game.PrintMessage("Help for titan increment: /incrementhelp");
+  Game.PrintMessage("Help for last wave: /lastwavehelp");
+  Game.PrintMessage("Help for revives: /revhelp");
+  Game.PrintMessage("Help for titan health: /healthhelp");
+  Game.PrintMessage("Help for titan sizes: /sizehelp");
+  Game.PrintMessage("Page 2 of Help: /help2");
+ }
+
+ If(String.Equals(VariableString("input"), "/help2"))
+ {
+  Game.PrintMessage("----------------------------------Help 2---------------------------------");
+  Game.PrintMessage("Help for Expedition Mod settings: /emhelp");
+  Game.PrintMessage("Get current Wave: /getwave");
+  Game.PrintMessage("Reset Wave count: /resetwaves");
+  Game.PrintMessage("Get total kills: /getkillcount");
+  Game.PrintMessage("Reset kill count: /resetkillcount");
+  Game.PrintMessage("Get mission time: /gettime");
+  Game.PrintMessage("Reset mission time: /resettime");
+  Game.PrintMessage("Reset custom settings: /resetsettings");
+  Game.PrintMessage("Get custom settings: /getsettings");
+  Game.PrintMessage("Clear chat: /clear");
+ }
+
+ If(String.Equals(VariableString("input"), "/punkhelp"))
+ {
+  Game.PrintMessage("------------------------------Punk Help------------------------------");
+  Game.PrintMessage("Toggle punks every few waves: /punkwaves");
+  Game.PrintMessage("Set punk wave frequency to [#]: /punkwaves[#]");
+  Game.PrintMessage(" Can<size=1>__</size>use<size=1>__</size>integers<size=1>__</size>1-25");
+  Game.PrintMessage(" Example:<size=1>__</size>/punkwaves5<size=1>__</size>has<size=1>__</size>punk<size=1>__</size>only<size=1>__</size>waves<size=1>__</size>");
+  Game.PrintMessage("  every<size=1>__</size>5<size=1>__</size>waves");
+ }
+ If(String.Equals(VariableString("input"), "/bosshelp"))
+ {
+  Game.PrintMessage("------------------------------Boss Help------------------------------");
+  Game.PrintMessage("Boss<size=1>___</size>waves<size=1>___</size>override<size=1>___</size>punk<size=1>___</size>waves<size=1>___</size>when<size=1>___</size>they<size=1>___</size>overlap");
+  Game.PrintMessage("Toggle bosses every few waves: /bosswaves");
+  Game.PrintMessage("Set punk wave frequency to [#]: /bosswaves[#]");
+  Game.PrintMessage(" Can<size=1>__</size>use<size=1>__</size>integers<size=1>__</size>1-25");
+  Game.PrintMessage(" Example:<size=1>__</size>/bosswaves10<size=1>__</size>has<size=1>__</size>boss<size=1>__</size>only<size=1>__</size>waves<size=1>__</size>");
+  Game.PrintMessage("  every<size=1>__</size>10<size=1>__</size>waves");
+ }
+ If(String.Equals(VariableString("input"), "/spawnratehelp"))
+ {
+  Game.PrintMessage("-------------------------Spawn Rate Help-------------------------");
+  Game.PrintMessage("Set spawn rates to Easy: /spawnratee");   //0
+  Game.PrintMessage("Set spawn rates to Normal: /spawnraten"); //1
+  Game.PrintMessage("Set spawn rates to Hard: /spawnrateh");   //2
+  Game.PrintMessage("Set spawn rates to Super: /spawnrates");  //3
+  Game.PrintMessage("Set spawn rates to Extreme: /spawnratex");//4
+  Game.PrintMessage("Set spawn rates to Hell: /spawnratehell");//6
+  Game.PrintMessage("Get spawn rates percentages: /spawnratehelp2");
+ }
+ If(String.Equals(VariableString("input"), "/spawnratehelp2"))
+ {
+  Game.PrintMessage("-----------------------Spawn Rate Help 2-----------------------");
+  Game.PrintMessage("Easy: P:<size=1>__</size>0% <size=1>__</size>C:<size=1>__</size>0% <size=1>__</size>J:<size=1>__</size>10% <size=1>__</size>A:<size=1>__</size>20% <size=1>__</size>T:<size=1>__</size>70%");
+  Game.PrintMessage("  Bosses: P:<size=1>__</size>30% <size=1>__</size>C:<size=1>__</size>0% <size=1>__</size>J:<size=1>__</size>14% <size=1>__</size>A:<size=1>__</size>40% <size=1>__</size>T:<size=1>__</size>16%");
+  Game.PrintMessage("Normal: P:<size=1>__</size>0% <size=1>__</size>C:<size=1>__</size>1% <size=1>__</size>J:<size=1>__</size>19% <size=1>__</size>A:<size=1>__</size>30% <size=1>__</size>T:<size=1>__</size>50%");
+  Game.PrintMessage("  Bosses: P:<size=1>__</size>35% <size=1>__</size>C:<size=1>__</size>5% <size=1>__</size>J:<size=1>__</size>13% <size=1>__</size>A:<size=1>__</size>30% <size=1>__</size>T:<size=1>__</size>17%");
+  Game.PrintMessage("Hard: P:<size=1>__</size>0% <size=1>__</size>C:<size=1>__</size>3% <size=1>__</size>J:<size=1>__</size>24% <size=1>__</size>A:<size=1>__</size>40% <size=1>__</size>T:<size=1>__</size>33%");
+  Game.PrintMessage("  Bosses: P:<size=1>__</size>40% <size=1>__</size>C:<size=1>__</size>10% <size=1>__</size>J:<size=1>__</size>12% <size=1>__</size>A:<size=1>__</size>20% <size=1>__</size>T:<size=1>__</size>18%");
+  Game.PrintMessage("Super: P:<size=1>__</size>35% <size=1>__</size>C:<size=1>__</size>35% <size=1>__</size>J:<size=1>__</size>20% <size=1>__</size>A:<size=1>__</size>9% <size=1>__</size>T:<size=1>__</size>1%");
+  Game.PrintMessage("  Bosses: P:<size=1>__</size>45% <size=1>__</size>C:<size=1>__</size>20% <size=1>__</size>J:<size=1>__</size>11% <size=1>__</size>A:<size=1>__</size>5% <size=1>__</size>T:<size=1>__</size>19%");
+  Game.PrintMessage("Extreme: P:<size=1>__</size>0% <size=1>__</size>C:<size=1>__</size>0% <size=1>__</size>J:<size=1>__</size>10% <size=1>__</size>A:<size=1>__</size>20% <size=1>__</size>T:<size=1>__</size>70%");
+  Game.PrintMessage("  Bosses: P:<size=1>__</size>50% <size=1>__</size>C:<size=1>__</size>30% <size=1>__</size>J:<size=1>__</size>0% <size=1>__</size>A:<size=1>__</size>0% <size=1>__</size>T:<size=1>__</size>20%");
+  Game.PrintMessage("Hell: P:<size=1>__</size>50% <size=1>__</size>C:<size=1>__</size>50% <size=1>__</size>J:<size=1>__</size>0% <size=1>__</size>A:<size=1>__</size>0% <size=1>__</size>T:<size=1>__</size>0%");
+  Game.PrintMessage("  Bosses: P:<size=1>__</size>38% <size=1>__</size>C:<size=1>__</size>37% <size=1>__</size>J:<size=1>__</size>0% <size=1>__</size>A:<size=1>__</size>0% <size=1>__</size>T:<size=1>__</size>25%");
+ }
+ If(String.Equals(VariableString("input"), "/spawncaphelp"))
+ {
+  Game.PrintMessage("-------------------------Spawn Cap Help--------------------------");
+  Game.PrintMessage("Turn<size=1>__</size>spawn<size=1>__</size>cap<size=1>__</size>off:<size=1>__</size>/spawncapoff");
+  Game.PrintMessage("Set<size=1>__</size>spawn<size=1>__</size>cap<size=1>__</size>to<size=1>__</size>[#}:<size=1>__</size>/spawncap[#]");
+  Game.PrintMessage(" [#]<size=1>__</size>can<size=1>__</size>be<size=1>__</size>any<size=1>__</size>integer<size=1>__</size>multiple<size=1>__</size>of<size=1>__</size>3<size=1>__</size>or<size=1>__</size>5<size=1>__</size>that<size=1>__</size>is<size=1>__</size>below<size=1>__</size>50");
+  Game.PrintMessage("  or<size=1>__</size>of<size=1>__</size>10<size=1>__</size>below<size=1>__</size>100");
+  Game.PrintMessage(" A<size=1>__</size>[#]<size=1>__</size>of<size=1>__</size>1<size=1>__</size>or<size=1>__</size>2<size=1>__</size>or<size=1>__</size>4<size=1>__</size>is<size=1>__</size>also<size=1>__</size>useable");
+  Game.PrintMessage("Example:<size=1>__</size>/spawncap9<size=1>__</size>sets<size=1>__</size>the<size=1>__</size>spawn<size=1>__</size>cap<size=1>__</size>to<size=1>__</size>9<size=1>__</size>titans");
+ }
+ If(String.Equals(VariableString("input"), "/initialthelp"))
+ {
+  Game.PrintMessage("----------------------Help for Initial Titans----------------------");
+  Game.PrintMessage("Set<size=1>__</size>number<size=1>__</size>of<size=1>__</size>titans<size=1>__</size>for<size=1>__</size>Wave<size=1>__</size>1<size=1>__</size>to<size=1>__</size>[#]:<size=1>__</size>/initialt[#]");
+  Game.PrintMessage(" where<size=1>__</size>[#]<size=1>__</size>is<size=1>__</size>an<size=1>__</size>integer<size=1>__</size>between<size=1>__</size>1<size=1>__</size>and<size=1>__</size>25");
+  Game.PrintMessage("Example:<size=1>__</size>/initialt3<size=1>__</size>would<size=1>__</size>set<size=1>__</size>the<size=1>__</size>number<size=1>__</size>of<size=1>__</size>titans<size=1>__</size>to<size=1>__</size>be");
+  Game.PrintMessage(" the<size=1>__</size>same<size=1>__</size>as<size=1>__</size>the<size=1>__</size>default");
+ }
+ If(String.Equals(VariableString("input"), "/incrementhelp"))
+ {
+  Game.PrintMessage("-------------------Help for Titan Increment--------------------");
+  Game.PrintMessage("Set<size=1>__</size>titan<size=1>__</size>increase<size=1>__</size>per<size=1>__</size>wave<size=1>__</size>to<size=1>__</size>[#]:<size=1>__</size>/increment[#]");
+  Game.PrintMessage(" where<size=1>__</size>[#]<size=1>__</size>is<size=1>__</size>an<size=1>__</size>integer<size=1>__</size>between<size=1>__</size>-10<size=1>__</size>and<size=1>__</size>10");
+  Game.PrintMessage("Example:<size=1>__</size>/increment3<size=1>__</size>would<size=1>__</size>set<size=1>__</size>the<size=1>__</size>increase<size=1>__</size>of");
+  Game.PrintMessage(" titans<size=1>__</size>per<size=1>__</size>wave<size=1>__</size>to<size=1>__</size>3<size=1>__</size>while<size=1>__</size>/increment1<size=1>__</size>is<size=1>__</size>default");
+ }
+ If(String.Equals(VariableString("input"), "/lastwavehelp"))
+ {
+  Game.PrintMessage("-----------------------Help for Last Wave-----------------------");
+  Game.PrintMessage("Set<size=1>__</size>last<size=1>__</size>wave<size=1>__</size>to<size=1>__</size>[#]:<size=1>__</size>/lastwave[#]");
+  Game.PrintMessage(" where<size=1>__</size>[#]<size=1>__</size>is<size=1>__</size>an<size=1>__</size>integer<size=1>__</size>multiple<size=1>__</size>of:");
+  Game.PrintMessage(" 5<size=1>__</size>below<size=1>__</size>50<size=1>__</size>|<size=1>__</size>10/25<size=1>__</size>below<size=1>__</size><size=1>__</size>100<size=1>__</size>|<size=1>__</size>25<size=1>__</size>below<size=1>__</size>200<size=1>__</size>|<size=1>__</size>50<size=1>__</size>below");
+  Game.PrintMessage(" 500<size=1>__</size>|<size=1>__</size>100/250<size=1>__</size>below<size=1>__</size>1000<size=1>__</size>|<size=1>__</size>max");
+  Game.PrintMessage("Example:<size=1>__</size>/lastwave35<size=1>__</size>would<size=1>__</size>set<size=1>__</size>the<size=1>__</size>last<size=1>__</size>wave<size=1>__</size>to<size=1>__</size>be<size=1>__</size>35");
+  Game.PrintMessage(" and<size=1>__</size>/lastwavemax<size=1>__</size>would<size=1>__</size>set<size=1>__</size>the<size=1>__</size>last<size=1>__</size>wave<size=1>__</size>to<size=1>__</size>999999");
+ }
+ If(String.Equals(VariableString("input"), "/revhelp"))
+ {
+  Game.PrintMessage("--------------------------Help for Revives-------------------------");
+  Game.PrintMessage("Toggle<size=1>__</size>revives<size=1>__</size>with<size=1>__</size>each<size=1>__</size>new<size=1>__</size>wave:<size=1>__</size>/revwave");
+  Game.PrintMessage("Toggle<size=1>__</size>timed<size=1>__</size>revives:<size=1>__</size>/revtime");
+  Game.PrintMessage("Set<size=1>__</size>wave<size=1>__</size>revives<size=1>__</size>to<size=1>__</size>occur<size=1>__</size>every<size=1>__</size>[#]<size=1>__</size>waves:<size=1>__</size>/revwave[#]");
+  Game.PrintMessage(" Example:<size=1>__</size>/revwave1<size=1>__</size>would<size=1>__</size>revive<size=1>__</size>every<size=1>__</size>wave");
+  Game.PrintMessage(" Can<size=1>__</size>use<size=1>__</size>any<size=1>__</size>integer<size=1>__</size>1-25");
+  Game.PrintMessage("Set<size=1>__</size>timed<size=1>__</size>revives<size=1>__</size>to<size=1>__</size>every<size=1>__</size>[#]<size=1>__</size>seconds:<size=1>__</size>/revtime[#]");
+  Game.PrintMessage(" Example:<size=1>__</size>/revtime10<size=1>__</size>sets<size=1>__</size>the<size=1>__</size>time<size=1>__</size>between<size=1>__</size>revives<size=1>__</size>to");
+  Game.PrintMessage("  10<size=1>__</size>seconds");
+  Game.PrintMessage(" Can<size=1>__</size>use<size=1>__</size>1-10<size=1>__</size>and<size=1>__</size>multiples<size=1>__</size>of:<size=1>__</size>5<size=1>__</size>5-60<size=1>__</size>|<size=1>__</size>60<size=1>__</size>60-600");
+ }
+ If(String.Equals(VariableString("input"), "/healthhelp"))
+ {
+  Game.PrintMessage("-----------------------Help for Titan Health----------------------");
+  Game.PrintMessage("To<size=1>___</size>set<size=1>___</size>health<size=1>___</size>mode<size=1>___</size>to<size=1>___</size>scaled:<size=1>___</size>/healthmodescaled");
+  Game.PrintMessage("To<size=1>___</size>set<size=1>___</size>health<size=1>___</size>mode<size=1>___</size>to<size=1>___</size>fixed:<size=1>___</size>/healthmodefixed");
+  Game.PrintMessage("To<size=1>___</size>set<size=1>___</size>minimum<size=1>___</size>health<size=1>___</size>to<size=1>___</size>[#]:<size=1>___</size>/healthmin[#]");
+  Game.PrintMessage(" For<size=1>___</size>bosses:<size=1>___</size>/bosshealthmin[#]");
+  Game.PrintMessage("To<size=1>___</size>set<size=1>___</size>maximum<size=1>___</size>health<size=1>___</size>to<size=1>___</size>[#]:<size=1>___</size>/healthmax[#]");
+  Game.PrintMessage(" For<size=1>___</size>bosses:<size=1>___</size>/bosshealthmax[#]");
+  Game.PrintMessage("For<size=1>___</size>normal<size=1>___</size>titans<size=1>___</size>[#]<size=1>___</size>can<size=1>___</size>be<size=1>___</size>any<size=1>___</size>multiple<size=1>___</size>of<size=1>___</size>50<size=1>___</size>from");
+  Game.PrintMessage(" 0<size=1>___</size>to<size=1>___</size>2000");
+  Game.PrintMessage("For<size=1>___</size>boss<size=1>___</size>titans<size=1>___</size>[#]<size=1>___</size>can<size=1>___</size>be<size=1>___</size>any<size=1>___</size>multiple<size=1>___</size>of<size=1>___</size>500<size=1>___</size>from");
+  Game.PrintMessage(" 0<size=1>___</size>to<size=1>___</size>20000");
+  Game.PrintMessage("Fixed<size=1>___</size>health<size=1>___</size>mode<size=1>___</size>uses<size=1>___</size>maximum<size=1>___</size>health<size=1>___</size>value");
+  Game.PrintMessage("If<size=1>___</size>minimum<size=1>___</size>health<size=1>___</size>is<size=1>___</size>smaller<size=1>___</size>than<size=1>___</size>maximum<size=1>___</size>the");
+  Game.PrintMessage(" scaling<size=1>___</size>will<size=1>___</size>be<size=1>___</size>inverted");
+ }
+ If(String.Equals(VariableString("input"), "/sizehelp"))
+ {
+  Game.PrintMessage("-----------------------Help for Titan Sizes----------------------");
+  Game.PrintMessage("To<size=1>___</size>set<size=1>___</size>minimum<size=1>___</size>size<size=1>___</size>to<size=1>___</size>[#]:<size=1>___</size>/sizemin[#]");
+  Game.PrintMessage(" For<size=1>___</size>bosses:<size=1>___</size>/bosssizemin[#]");
+  Game.PrintMessage("To<size=1>___</size>set<size=1>___</size>maximum<size=1>___</size>size<size=1>___</size>to<size=1>___</size>[#]:<size=1>___</size>/sizemax[#]");
+  Game.PrintMessage(" For<size=1>___</size>bosses:<size=1>___</size>/bosssizemax[#]");
+  Game.PrintMessage("For<size=1>___</size>normal<size=1>___</size>titans<size=1>___</size>[#]<size=1>___</size>can<size=1>___</size>be<size=1>___</size>any<size=1>___</size>multiple<size=1>___</size>of<size=1>___</size>one");
+  Game.PrintMessage(" tenth<size=1>___</size>from<size=1>___</size>0<size=1>___</size>to<size=1>___</size>5<size=1>___</size>without<size=1>___</size>the<size=1>___</size>decimal");
+  Game.PrintMessage("For<size=1>___</size>bosses<size=1>___</size>[#]<size=1>___</size>can<size=1>___</size>be<size=1>___</size>any<size=1>___</size>multiple<size=1>___</size>of<size=1>___</size>one<size=1>___</size>half<size=1>___</size>from");
+  Game.PrintMessage(" 0<size=1>___</size>to<size=1>___</size>20<size=1>___</size>written<size=1>___</size>without<size=1>___</size>the<size=1>___</size>decimal");
+  Game.PrintMessage("Example:<size=1>___</size>/sizemin05<size=1>___</size>would<size=1>___</size>set<size=1>___</size>the<size=1>___</size>minimum<size=1>___</size>titan");
+  Game.PrintMessage(" size<size=1>___</size>to<size=1>___</size>one<size=1>___</size>half<size=1>___</size>while<size=1>___</size>/bosssizemax75<size=1>___</size>would<size=1>___</size>set");
+  Game.PrintMessage(" maximum<size=1>___</size>boss<size=1>___</size>size<size=1>___</size>to<size=1>___</size>seven<size=1>___</size>and<size=1>___</size>a<size=1>___</size>half");
+ }
+ If(String.Equals(VariableString("input"), "/emhelp"))
+ {
+  Game.PrintMessage("-----------------------Help for EM Settings----------------------");
+  Game.PrintMessage("Set Titan View Distance: /commonvd [distance]");
+  Game.PrintMessage(" Example:<size=1>__</size>/commonvd<size=1>__</size>1000<size=1>__</size>would<size=1>__</size>allow<size=1>__</size>titans<size=1>__</size>to");
+  Game.PrintMessage("  notice<size=1>__</size>players<size=1>__</size>1000u<size=1>__</size>away");
+  Game.PrintMessage("Fogmode: /fogmodee 1 [density] [color]");
+  Game.PrintMessage(" Example:<size=1>__</size>/fogmodee<size=1>__</size>1<size=1>__</size>1000<size=1>__</size>5<size=1>__</size>would<size=1>__</size><size=1>__</size>create<size=1>__</size>thick<size=1>__</size>gray");
+  Game.PrintMessage("  fog");
+ }
+
+ }
+
+}
+
+OnTitanDie("titan", "player")
+{
+ VariableInt.Add("10", 1);
+}

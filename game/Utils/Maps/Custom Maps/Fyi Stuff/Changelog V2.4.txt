@@ -1,0 +1,72 @@
+New!
+- Incendium - Inferno 1
+- Incendium - Inferno 1 (Campfire Edition)
+- Incendium - Inferno 1 (Imp Edition)
+- A Link Has Been Added for Alex4Wins Map Editor, so people can make their own reversed, tilted ect maps
+- Dany - The Nuke
+- Riblei + Alex4TheWin + Sylvia - Celestial Marine (Beta)
+- Appolina + Eim - Red Mirrored Akina (Obstacle Edit)
+- Alpi + Eim - Galactic Hell (Obstacle Edit)
+- Eliope + Eim - Makina Royal (Lava, Obstacle Edit)
+- Eliope + Eim - Makina ABC (Obstacle Edit)
+- Eliope + Eim - BOTR Hard
+- Riblei + Eim - Falling Candies (Obstacle Edit)
+- oNoto + Eim - Happy Birthday XII (Final, Obstacle Edit)
+- Cowcowtony + Eim - Future Trax 3 (Obstacle Edit)
+- Mb12 + Eim - Tomb Escape (Hard)
+- Golden Lord + Eim - GHoR (Obstacle Edit)
+- oNoto + Eim - NTK1 (Obstacle Edit)
+- Feng + Sylcium + Eim - Akina With Obsticles
+- Na$Ty_shen - Nasty
+- Solidus - Practice Stage + Annie
+- Solidus - Save The Village
+- Eliope + Riblei - District Racers (Extended)
+- Frenchie - Elrimch To Trost 
+	+ Logic
+- Saif - Custom Map Racing 1
+- Saif - Custom Map Racing 2
+- Saif - Custom Map Racing 3
+- Saif - Snow
+- Unknown - Island War
+- Zillion + Eliope - Makina Dro + Port Racers 1
+- Unknown - Large Maze Map V3
+- Loki + Antigasp - Racing 123 (Sigh Edit)
+- Eliope - Makina Honor (Brick)
+- Eliope - Makina Honor (Desert, Low Res)
+- Eliope - Makina Honor (Wooden)
+- Eliope - Makina Honor (Grassy)
+- Eliope - The Way Of The Racers (Bois)
+- Eliope - The Way Of The Racers (Winter)
+- Eliope - The Way Of The Racers (Ancient)
+- Eliope - The Way Of The Racers (Dark)
+- Eliope - 40 Yards
+- Eliope + Zender - The Way Of The Racers Lv2 (Optimized, Lava Floor Fix)
+- Riblei + Alex4TheWin + Sylvia - Celestial Marine (Water Edit)
+- Riblei - Falling Candies
+- Riblei + Eliope - The Blood of the Racers I,  II,  IV
+- Guest Creator - Anthill Race
+- Guest Creator + Alex4TheWin - Lava Maze Race (Dark)
+- Guest Creator - Balls
+- Guest Creator - Fall Race
+- Guest Creator - Short Fall
+- Guest Creator - Tubes & Horses (HORSE ON REQUIRED)
+- Guest Creator - Very Hard Racing
+- Guest Creator - Horse Race (WIP)
+- Guest Creator - Castle Map (WIP)
+
+Note; 
+- I got lazy at some point, theres likely things missing from here, but the most should be here
+- The Guest Creator Maps have been given names, curtisy of alex4win for convinience. Do tell if you find the actual names
+
+Edits:
+- Loki - Racing 123 (Origional) has been put into broken, and the fix by antigasp has replaced it
+- Minor Edits and restructures
+- Eliope + Luxueux - The Way Of The Racers (re-texture) has been renamed to Eliope - The Way Of The Racers (Luxueux) turns out eliope called it that for some reason :weirdchamp:
+- Sylvia + Putte - PS2 (1) Has been moved to broken *thx riblei also unfinished
+- Removal of a bunch of duplicated maps
+- Eliope - Makina Team (Fixed End Cubiod) has been fixed *thx riblei
+- Appolina - Endless Lava Obstacles 2 'Candy Land' (Early Version) has been moved to broken due to missing roof
+- Newer Version of the XYZ ZYX Edit by riblei has replaced the origional
+- Files By Riblei have been edited to reflect Eliope's Involvement and seperate them from riblei's own solo maps
+- JP Guest Creator has now been Merged into as Guest Creator to avoid confusion
+- Incendium's Maps have been updated
