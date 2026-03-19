@@ -1095,8 +1095,9 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 				return;
 			}
 		}
-		if (FengCustomInputs.Inputs.isInputDown[InputCode.pause])
+		if (FengGameManagerMKII.instance.needChooseSide && FengCustomInputs.Inputs.isInputDown[InputCode.pause])
 		{
+            FengCustomInputs.Inputs.justUPDATEME();
 			if (!FengCustomInputs.Inputs.menuOn)
 			{
 				isPausing = true;
@@ -1106,7 +1107,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 				}
 				FengCustomInputs.Inputs.menuOn = (Screen.showCursor = true);
 				Screen.lockCursor = false;
-			}
+            }
 			else
 			{
 				isPausing = false;

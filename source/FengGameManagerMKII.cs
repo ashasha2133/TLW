@@ -2127,23 +2127,26 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 						CharacterSelection.AutoLoadCamera();
 					}
 				}
-				if (FengCustomInputs.Inputs.isInputDown[InputCode.pause])
-				{
-					if (!FengCustomInputs.Inputs.menuOn)
-					{
+            }
+			else
+			{
+                if (FengCustomInputs.Inputs.isInputDown[InputCode.pause])
+                {
+                    FengCustomInputs.Inputs.justUPDATEME();
+                    if (!FengCustomInputs.Inputs.menuOn)
+                    {
                         Screen.showCursor = true;
                         Screen.lockCursor = false;
                         Camera.main.GetComponent<SpectatorMovement>().disable = true;
                         Camera.main.GetComponent<MouseLook>().disable = true;
                         FengCustomInputs.Inputs.menuOn = true;
-                        FengCustomInputs.Inputs.justUPDATEME();
                     }
-					else
-					{
-						saveSettings();
-						quitSetting();
-					}
-				}
+                    else
+                    {
+                        saveSettings();
+                        quitSetting();
+                    }
+                }
             }
 			coreadd();
 
