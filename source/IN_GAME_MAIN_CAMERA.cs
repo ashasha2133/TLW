@@ -1090,29 +1090,29 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 					lockAngle = false;
 				}
 			}
-			if (spectatorMode)
+            if (FengCustomInputs.Inputs.isInputDown[InputCode.pause])
+            {
+                FengCustomInputs.Inputs.justUPDATEME();
+                if (!FengCustomInputs.Inputs.menuOn)
+                {
+                    isPausing = true;
+                    if (gametype == GAMETYPE.SINGLE)
+                    {
+                        Time.timeScale = 0f;
+                    }
+                    FengCustomInputs.Inputs.menuOn = (Screen.showCursor = true);
+                    Screen.lockCursor = false;
+                }
+                else
+                {
+                    isPausing = false;
+                    FengGameManagerMKII.instance.saveSettings();
+                    FengGameManagerMKII.instance.quitSetting();
+                }
+            }
+            if (spectatorMode)
 			{
 				return;
-			}
-		}
-		if (FengGameManagerMKII.instance.needChooseSide && FengCustomInputs.Inputs.isInputDown[InputCode.pause])
-		{
-            FengCustomInputs.Inputs.justUPDATEME();
-			if (!FengCustomInputs.Inputs.menuOn)
-			{
-				isPausing = true;
-				if (gametype == GAMETYPE.SINGLE)
-				{
-					Time.timeScale = 0f;
-				}
-				FengCustomInputs.Inputs.menuOn = (Screen.showCursor = true);
-				Screen.lockCursor = false;
-            }
-			else
-			{
-				isPausing = false;
-				FengGameManagerMKII.instance.saveSettings();
-				FengGameManagerMKII.instance.quitSetting();
 			}
 		}
 		if (needSetHUD)
