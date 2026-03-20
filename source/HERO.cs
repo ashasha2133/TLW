@@ -642,10 +642,10 @@ public class HERO : MONO, IAnarchyScriptHero
 		}
 		if (FengCustomInputs.Inputs.isInputDown[InputCode.attack1] && skillCDDuration <= 0f)
 		{
-			if (GameSettings.BombFlying > 0)
-			{
-				//CustomAudioManager.Play(CustomAudioManager.AudioFile.BombFlying);
-			}
+			//if (GameSettings.BombFlying > 0)
+			//{
+			//	CustomAudioManager.Play(CustomAudioManager.AudioFile.BombFlying);
+			//}
 			LaunchThunderSpear();
 		}
 		else if (myBomb != null && !myBomb.Disabled)
