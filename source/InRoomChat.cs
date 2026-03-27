@@ -1045,7 +1045,7 @@ public class InRoomChat : Photon.MonoBehaviour
     private void Open(string[] args)
     {
         PhotonNetwork.room.open = true;
-        Chat("<color=#FFCC00>Room Open</color>");
+        Chat("<color=#FFCC00>Room Opened</color>");
     }
 
     [MyCommand("hide")]
