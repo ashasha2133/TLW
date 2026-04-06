@@ -1663,9 +1663,26 @@ public class InRoomChat : Photon.MonoBehaviour
 	[MyCommand("kill")]
 	private void Kill(string[] args)
 	{
-		int.TryParse(args[1], out int id);
-		HERO hero = HERO.FindMyHero(id);
-		hero.photonView.RPC("netDie2", PhotonTargets.All, -1, "Fuck You");
+		if (args.Length > 1 &&  int.TryParse(args[1], out int id))
+		{
+			HERO hero = HERO.FindMyHero(id);
+			if (!hero.HasDied())
+			{
+				hero.photonView.RPC("netDie2", PhotonTargets.All, -1, "Fuck You");
+			}
+		}
+		else
+		{
+			foreach (PhotonPlayer player in PhotonNetwork.playerList)
+			{
+				HERO hero = HERO.FindMyHero(player.ID);
+				if (hero == null) continue;
+				if (!hero.HasDied())
+				{
+					hero.photonView.RPC("netDie2", PhotonTargets.All, -1, "Fuck You");
+				}
+            }
+		}
     }
 
     [MyCommand("stay")]
