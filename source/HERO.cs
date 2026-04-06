@@ -4020,6 +4020,10 @@ public class HERO : MONO, IAnarchyScriptHero
 	{
 		hasDied = true;
 		state = HERO_STATE.Die;
+		if (!basePV.isMine)
+		{
+            FengGameManagerMKII.instance.photonView.RPC("Chat", PhotonPlayer.Find(base.photonView.owner.ID), "<color=#FFCC00>type -rev to revive</color>", string.Empty);
+        }
 	}
 
 	[RPC]

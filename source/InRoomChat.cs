@@ -719,6 +719,7 @@ public class InRoomChat : Photon.MonoBehaviour
 	[BotCommand("revive")]
 	private void SelfRev(string[] args)
 	{
+		if (GameSettings.bombMode == 1) return;
 		int.TryParse(args[args.Length - 1], out int num);
 		if (NetworkingPeer.mActors.TryGetValue(num, out var value))
 		{
