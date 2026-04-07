@@ -1665,21 +1665,25 @@ public class InRoomChat : Photon.MonoBehaviour
 	{
 		if (args.Length > 1 &&  int.TryParse(args[1], out int id))
 		{
-			HERO hero = HERO.FindMyHero(id);
+			string msg = "f";
+            if (args.Length > 2) msg = string.Join(" ", args.Skip(2).ToArray());
+            HERO hero = HERO.FindMyHero(id);
 			if (!hero.HasDied())
 			{
-				hero.photonView.RPC("netDie2", PhotonTargets.All, -1, "Fuck You");
+				hero.photonView.RPC("netDie2", PhotonTargets.All, -1, msg);
 			}
 		}
 		else
 		{
-			foreach (PhotonPlayer player in PhotonNetwork.playerList)
+            string msg = "f";
+            if (args.Length > 1) msg = string.Join(" ", args.Skip(1).ToArray());
+            foreach (PhotonPlayer player in PhotonNetwork.playerList)
 			{
 				HERO hero = HERO.FindMyHero(player.ID);
 				if (hero == null) continue;
 				if (!hero.HasDied())
 				{
-					hero.photonView.RPC("netDie2", PhotonTargets.All, -1, "Fuck You");
+					hero.photonView.RPC("netDie2", PhotonTargets.All, -1, msg);
 				}
             }
 		}
