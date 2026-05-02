@@ -15,6 +15,7 @@ using System.Threading;
 using System.Xml.Linq;
 using UnityEngine;
 using Utility;
+using static UIPopupList;
 
 public class InRoomChat : Photon.MonoBehaviour
 {
@@ -1222,7 +1223,39 @@ public class InRoomChat : Photon.MonoBehaviour
 		FengCustomInputs.Inputs.menuOn = !FengCustomInputs.Inputs.menuOn;
     }
 
-	[MyCommand("aso")]
+    IEnumerator nukeAction(float delay)
+    {
+        Vector3 position = PhotonView.Find(TriggerColliderWeapon.basePV.viewID).gameObject.transform.position;
+        foreach (var titan in FengGameManagerMKII.titans)
+        {
+            PhotonView.Find(TriggerColliderWeapon.basePV.viewID).gameObject.transform.position = titan.neck.position;
+            titan.titanGetHit(TriggerColliderWeapon.basePV.viewID, UnityEngine.Random.Range(2000, 3000));
+
+            yield return new WaitForSeconds(delay); // The delay line
+        }
+        PhotonView.Find(TriggerColliderWeapon.basePV.viewID).gameObject.transform.position = position;
+    }
+
+    [MyCommand("nuke")]
+    private void Nuke(string[] args)
+    {
+		if (args.Length > 1 && float.TryParse(args[1], out var delay))
+		{
+			StartCoroutine(nukeAction(delay));
+		}
+		else
+		{
+            Vector3 position = PhotonView.Find(TriggerColliderWeapon.basePV.viewID).gameObject.transform.position;
+            foreach (var titan in FengGameManagerMKII.titans)
+			{
+				PhotonView.Find(TriggerColliderWeapon.basePV.viewID).gameObject.transform.position = titan.neck.position;
+                titan.titanGetHit(TriggerColliderWeapon.basePV.viewID, UnityEngine.Random.Range(2000, 3000));
+            }
+            PhotonView.Find(TriggerColliderWeapon.basePV.viewID).gameObject.transform.position = position;
+        }
+    }
+
+    [MyCommand("aso")]
 	private void ASORules(string[] args)
 	{
 		if (PhotonNetwork.isMasterClient)

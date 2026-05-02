@@ -151,7 +151,7 @@ public class TITAN : MONO
 
 	public TitanTrigger myTitanTrigger;
 
-	private new Transform neck;
+	public new Transform neck;
 
 	private bool needFreshCorePosition;
 
@@ -3105,7 +3105,7 @@ public class TITAN : MONO
 		}
 		else
 		{
-			FengGameManagerMKII.PView.RPC("netShowDamage", photonView.owner, speed);
+            FengGameManagerMKII.PView.RPC("netShowDamage", photonView.owner, speed);
 		}
 	}
 

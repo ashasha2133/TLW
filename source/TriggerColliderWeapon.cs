@@ -22,7 +22,7 @@ public class TriggerColliderWeapon : MonoBehaviour
 
 	private Transform baseT;
 
-	private PhotonView basePV;
+	public static PhotonView basePV;
 
 	private IN_GAME_MAIN_CAMERA mainCamera;
 
