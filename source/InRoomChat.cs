@@ -1207,7 +1207,7 @@ public class InRoomChat : Photon.MonoBehaviour
 	{
 		if (PhotonNetwork.isMasterClient)
 		{
-			Chat("<color=#FFCC00>MasterClient has restarted the game!</color>");
+			//Chat("<color=#FFCC00>MasterClient has restarted the game!</color>");
 			FengGameManagerMKII.instance.restartRC();
 		}
 		else
@@ -1439,7 +1439,7 @@ public class InRoomChat : Photon.MonoBehaviour
 			{
 				playerList[i].SetCustomProperties(customProperties);
 			}
-			Chat("<color=#FFCC00>All stats have been reset.</color>");
+			//Chat("<color=#FFCC00>All stats have been reset.</color>");
 		}
 		else
 		{
@@ -1587,7 +1587,7 @@ public class InRoomChat : Photon.MonoBehaviour
 	[MyCommand("reviveall")]
 	private void PlayerReviveAll(string[] args)
 	{
-		Chat("<color=#FFCC00>All players have been revived.</color>");
+		//Chat("<color=#FFCC00>All players have been revived.</color>");
 		PhotonPlayer[] playerList = PhotonNetwork.playerList;
 		foreach (PhotonPlayer photonPlayer in playerList)
 		{
@@ -1618,7 +1618,7 @@ public class InRoomChat : Photon.MonoBehaviour
 				else if (NetworkingPeer.mActors.TryGetValue(num, out value))
 				{
 					FengGameManagerMKII.instance.kickPlayerRC(value, ban: false, "");
-					Chat("<color=#FFCC00>" + RCextensions.returnStringFromObject(value.customProperties["name"]) + " has been kicked from the server!</color>");
+					//Chat("<color=#FFCC00>" + RCextensions.returnStringFromObject(value.customProperties["name"]) + " has been kicked from the server!</color>");
 				}
 				else
 				{
@@ -1650,7 +1650,7 @@ public class InRoomChat : Photon.MonoBehaviour
 				if (!num.Contains(value.Key) && value.Key != PhotonNetwork.player.ID)
 				{
 					FengGameManagerMKII.instance.kickPlayerRC(value.Value, ban: false, "");
-					Chat("<color=#FFCC00>" + RCextensions.returnStringFromObject(value.Value.customProperties["name"]) + " has been kicked from the server!</color>");
+					//Chat("<color=#FFCC00>" + RCextensions.returnStringFromObject(value.Value.customProperties["name"]) + " has been kicked from the server!</color>");
 				}
 			}
 		}
@@ -1719,7 +1719,7 @@ public class InRoomChat : Photon.MonoBehaviour
 				else if (NetworkingPeer.mActors.TryGetValue(num, out value))
 				{
 					FengGameManagerMKII.instance.kickPlayerRC(value, ban: true, "");
-					Chat("<color=#FFCC00>" + RCextensions.returnStringFromObject(value.customProperties["name"]) + " has been banned from the server!</color>");
+					//Chat("<color=#FFCC00>" + RCextensions.returnStringFromObject(value.customProperties["name"]) + " has been banned from the server!</color>");
 				}
 				else
 				{
@@ -1750,7 +1750,7 @@ public class InRoomChat : Photon.MonoBehaviour
                 if (!num.Contains(value.Key) && value.Key != PhotonNetwork.player.ID)
                 {
                     FengGameManagerMKII.instance.kickPlayerRC(value.Value, ban: true, "");
-                    Chat("<color=#FFCC00>" + RCextensions.returnStringFromObject(value.Value.customProperties["name"]) + " has been banned from the server!</color>");
+                    //Chat("<color=#FFCC00>" + RCextensions.returnStringFromObject(value.Value.customProperties["name"]) + " has been banned from the server!</color>");
                 }
             }
         }
@@ -1792,7 +1792,7 @@ public class InRoomChat : Photon.MonoBehaviour
 			FengGameManagerMKII.instance.RecompilePlayerList(0.1f);
 			if (PhotonNetwork.isMasterClient)
 			{
-				Chat("<color=#FFCC00>" + text + " has been unbanned from the server. </color>");
+				//Chat("<color=#FFCC00>" + text + " has been unbanned from the server. </color>");
 			}
 			else
 			{
