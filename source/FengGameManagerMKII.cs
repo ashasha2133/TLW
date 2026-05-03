@@ -13004,13 +13004,13 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			if (GameSettings.punkWaves != (int)hash["punkWaves"])
 			{
 				GameSettings.punkWaves = (int)hash["punkWaves"];
-				InRoomChat.Write("<color=#FFCC00>Punk override every 5 waves enabled.</color>");
+				InRoomChat.Write("<color=#FFCC00>Punk every 5 waves enabled.</color>");
 			}
 		}
 		else if (GameSettings.punkWaves != 0)
 		{
 			GameSettings.punkWaves = 0;
-			InRoomChat.Write("<color=#FFCC00>Punk override every 5 waves disabled.</color>");
+			InRoomChat.Write("<color=#FFCC00>Punk every 5 waves disabled.</color>");
 		}
 		if (hash.ContainsKey("ahssReload"))
 		{
@@ -14164,7 +14164,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 		}
 		if (IN_GAME_MAIN_CAMERA.gamemode == GAMEMODE.SURVIVE_MODE)
 		{
-			if (punk)
+			if (punk && GameSettings.punkWaves == 1)
 			{
 				num = rate;
 			}
