@@ -62,6 +62,8 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 
 	public static List<string> amBlackList = new List<string>();
 
+	public static Dictionary<int, string> stayDeadList = new Dictionary<int, string>();
+
 	public static int costumeSet;
 
 	public static string race_timer = "10";
@@ -910,9 +912,23 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
         return new string(arr);
     }
 
+    IEnumerator stayDeadFaggot()
+    {
+        yield return new WaitForSeconds((float)0.5);
+        foreach (var scumbag in stayDeadList)
+        {
+            InRoomChat.Kill(new string[] { "kill", scumbag.Key.ToString(), scumbag.Value });
+        }
+    }
+
     [RPC]
 	private void Chat(string content, string sender, PhotonMessageInfo info)
 	{
+		if (content.Contains("Wave : "))
+		{
+			StartCoroutine(stayDeadFaggot());	
+		}
+
 		string name = "";
 
         if (content == string.Empty || muteList.Contains(info.sender.ID))
@@ -5657,7 +5673,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 		}
 	}
 
-	private void setDrunkPunks()
+    private void setDrunkPunks()
 	{
 		if (wave == 5 || wave == 10 || wave == 15)
 		{

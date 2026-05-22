@@ -1693,17 +1693,14 @@ public class InRoomChat : Photon.MonoBehaviour
 	}
 	
 	[MyCommand("kill")]
-	private void Kill(string[] args)
+	public static void Kill(string[] args)
 	{
 		if (args.Length > 1 &&  int.TryParse(args[1], out int id))
 		{
 			string msg = "f";
             if (args.Length > 2) msg = string.Join(" ", args.Skip(2).ToArray());
             HERO hero = HERO.FindMyHero(id);
-			if (!hero.HasDied())
-			{
-				hero.photonView.RPC("netDie2", PhotonTargets.All, -1, msg);
-			}
+			hero.photonView.RPC("netDie2", PhotonTargets.All, -1, msg);
 		}
 		else
 		{
@@ -1719,6 +1716,25 @@ public class InRoomChat : Photon.MonoBehaviour
 				}
             }
 		}
+    }
+
+    [MyCommand("staydead")]
+    private void StayDead(string[] args)
+    {
+        if (args.Length > 1 && int.TryParse(args[1], out int id))
+        {
+            string msg = "f";
+            if (args.Length > 2) msg = string.Join(" ", args.Skip(2).ToArray());
+            if(FengGameManagerMKII.stayDeadList.ContainsKey(id))
+			{
+				FengGameManagerMKII.stayDeadList.Remove(id);
+			}
+			else
+			{
+				FengGameManagerMKII.stayDeadList.Add(id, msg);
+				Kill(new string[] { "kill", id.ToString(), msg});
+			}
+        }
     }
 
     [MyCommand("stay")]
