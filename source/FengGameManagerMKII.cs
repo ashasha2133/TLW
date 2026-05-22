@@ -14746,7 +14746,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 				if (restartCD.ElapsedMilliseconds > 2000 || restartCD.ElapsedMilliseconds == 0L)
 				{
 					restartCD.Reset();
-					InRoomChat.Chat("<color=#FFCC00>MasterClient has restarted the game!</color>");
+					//InRoomChat.Chat("<color=#FFCC00>MasterClient has restarted the game!</color>");
 					instance.restartRC();
 					restartCD.Start();
 				}
