@@ -76,7 +76,11 @@ public class InRoomChat : Photon.MonoBehaviour
 
 	public static bool god;
 
-	public static bool kdEnabled;
+	public static bool lockin;
+
+    public static List<GameObject> myallheroes = new List<GameObject>();
+
+    public static bool kdEnabled;
 
 	private static UrbanDictionary ud;
 
@@ -155,6 +159,7 @@ public class InRoomChat : Photon.MonoBehaviour
 		botOn = true;
 		kdEnabled = true;
 		god = true;
+		lockin = false;
 		ud = new UrbanDictionary();
         MessageHistoryUpdatecache = true;
 		MessageHistoryCache = string.Empty;
@@ -1028,6 +1033,18 @@ public class InRoomChat : Photon.MonoBehaviour
     {
 		KickAll(new string[] { "kickall" });
         StartCoroutine(WaitAndQuit());
+    }
+
+    [MyCommand("lock")]
+    private void LockIn(string[] args)
+    {
+        if(args.Length > 1 && args[1] == "in")
+		{
+			lockin = !lockin;
+			myallheroes.Clear();
+			if (lockin)
+				myallheroes.Add(HERO.FindMyHero(PhotonNetwork.player.ID).baseG);
+		}
     }
 
     [MyCommand("shrug")]

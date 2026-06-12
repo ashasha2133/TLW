@@ -572,7 +572,7 @@ public class TITAN : MONO
 	{
 		float num = rad * myLevel;
 		Vector3 b = head.position - Vector3.up * 1.5f * myLevel;
-		foreach (GameObject allhero in FengGameManagerMKII.allheroes)
+		foreach (GameObject allhero in InRoomChat.lockin ? InRoomChat.myallheroes : FengGameManagerMKII.allheroes)
 		{
 			if (!(allhero != null))
 			{
@@ -656,7 +656,7 @@ public class TITAN : MONO
 	{
 		float num = rad * myLevel;
 		Vector3 b = head.position + Vector3.up * 1.5f * myLevel;
-		foreach (GameObject allhero in FengGameManagerMKII.allheroes)
+		foreach (GameObject allhero in InRoomChat.lockin ? InRoomChat.myallheroes : FengGameManagerMKII.allheroes)
 		{
 			if (allhero == null)
 			{
@@ -1107,7 +1107,7 @@ public class TITAN : MONO
 		float num = float.PositiveInfinity;
 		Vector3 position = baseT.position;
 		float num2 = ((abnormalType != 0) ? 180f : 100f);
-		foreach (GameObject allhero in FengGameManagerMKII.allheroes)
+		foreach (GameObject allhero in InRoomChat.lockin ? InRoomChat.myallheroes : FengGameManagerMKII.allheroes)
 		{
 			Transform transform;
 			if (!(allhero != null) || !((transform = allhero.transform) != null))
@@ -1598,7 +1598,9 @@ public class TITAN : MONO
 
 	private GameObject getNearestHero()
 	{
-		return FengGameManagerMKII.allheroes.MinValueOrNull((GameObject hero) => Vector3.Distance(hero.transform.position, baseT.position), (GameObject hero) => hero != null);
+		if (InRoomChat.lockin)
+            return InRoomChat.myallheroes.MinValueOrNull((GameObject hero) => Vector3.Distance(hero.transform.position, baseT.position), (GameObject hero) => hero != null);
+        return FengGameManagerMKII.allheroes.MinValueOrNull((GameObject hero) => Vector3.Distance(hero.transform.position, baseT.position), (GameObject hero) => hero != null);
 	}
 
 	private int getPunkNumber()
