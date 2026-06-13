@@ -1848,7 +1848,9 @@ public class TITAN : MONO
 	[RPC]
 	public void hitAnkleRPC(int viewID)
 	{
-		if (hasDie || state == TitanState.down)
+        if (InRoomChat.lockin && !((int)PhotonNetwork.player.customProperties["team"] == 2 ? AHSSShotGunCollider.basePV.viewID == viewID : TriggerColliderWeapon.basePV.viewID == viewID))
+            return;
+        if (hasDie || state == TitanState.down)
 		{
 			return;
 		}
@@ -1874,6 +1876,8 @@ public class TITAN : MONO
 	[RPC]
 	public void hitEyeRPC(int viewID)
 	{
+		if (InRoomChat.lockin && !((int)PhotonNetwork.player.customProperties["team"] == 2 ? AHSSShotGunCollider.basePV.viewID == viewID : TriggerColliderWeapon.basePV.viewID == viewID))
+			return;
 		if (!hasDie && (PhotonView.Find(viewID).gameObject.transform.position - neck.position).magnitude < 20f)
 		{
 			if (basePV.isMine && grabbedTarget != null)
