@@ -2341,7 +2341,7 @@ public class TITAN : MONO
 	[RPC]
 	private void netDie()
 	{
-		asClientLookTarget = false;
+        asClientLookTarget = false;
 		if (!hasDie)
 		{
 			hasDie = true;
@@ -3071,7 +3071,7 @@ public class TITAN : MONO
 	public void titanGetHit(int viewID, int speed)
 	{
 		PhotonView photonView = PhotonView.Find(viewID);
-		if (!(photonView != null) || !((photonView.gameObject.transform.position - neck.position).magnitude < lagMax) || hasDie || !(Time.time - healthTime > 0.2f))
+        if (!(photonView != null) || !((photonView.gameObject.transform.position - neck.position).magnitude < lagMax) || hasDie || !(Time.time - healthTime > 0.2f) || (InRoomChat.lockin && !((int)PhotonNetwork.player.customProperties["team"] == 2 ? AHSSShotGunCollider.basePV.viewID == viewID : TriggerColliderWeapon.basePV.viewID == viewID)))
 		{
 			return;
 		}
