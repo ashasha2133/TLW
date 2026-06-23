@@ -48,9 +48,9 @@ public class PhotonStatsGui : MonoBehaviour
 		healthStatsVisible = GUILayout.Toggle(healthStatsVisible, "health");
 		trafficStatsOn = GUILayout.Toggle(trafficStatsOn, "traffic");
 		GUILayout.EndHorizontal();
-		string text = string.Format("Out|In|Sum:\t{0,4} | {1,4} | {2,4}", trafficStatsGameLevel.TotalOutgoingMessageCount, trafficStatsGameLevel.TotalIncomingMessageCount, trafficStatsGameLevel.TotalMessageCount);
+		string text = $"Out|In|Sum:\t{trafficStatsGameLevel.TotalOutgoingMessageCount,4} | {trafficStatsGameLevel.TotalIncomingMessageCount,4} | {trafficStatsGameLevel.TotalMessageCount,4}";
 		string text2 = $"{num}sec average:";
-		string text3 = string.Format("Out|In|Sum:\t{0,4} | {1,4} | {2,4}", trafficStatsGameLevel.TotalOutgoingMessageCount / num, trafficStatsGameLevel.TotalIncomingMessageCount / num, trafficStatsGameLevel.TotalMessageCount / num);
+		string text3 = $"Out|In|Sum:\t{trafficStatsGameLevel.TotalOutgoingMessageCount / num,4} | {trafficStatsGameLevel.TotalIncomingMessageCount / num,4} | {trafficStatsGameLevel.TotalMessageCount / num,4}";
 		GUILayout.Label(text);
 		GUILayout.Label(text2);
 		GUILayout.Label(text3);

@@ -873,24 +873,24 @@ public class custom_inputs : MonoBehaviour
 
 	private void loadConfig()
 	{
-		string @string = PlayerPrefs.GetString("KeyCodes");
-		string string2 = PlayerPrefs.GetString("Joystick_input");
-		string string3 = PlayerPrefs.GetString("Names_input");
-		string string4 = PlayerPrefs.GetString("KeyCodes2");
-		string string5 = PlayerPrefs.GetString("Joystick_input2");
-		string string6 = PlayerPrefs.GetString("Names_input2");
+		string text = PlayerPrefs.GetString("KeyCodes");
+		string text2 = PlayerPrefs.GetString("Joystick_input");
+		string text3 = PlayerPrefs.GetString("Names_input");
+		string text4 = PlayerPrefs.GetString("KeyCodes2");
+		string text5 = PlayerPrefs.GetString("Joystick_input2");
+		string text6 = PlayerPrefs.GetString("Names_input2");
 		char[] separator = new char[1] { '*' };
-		string[] array = @string.Split(separator);
+		string[] array = text.Split(separator);
 		char[] separator2 = new char[1] { '*' };
-		joystickString = string2.Split(separator2);
+		joystickString = text2.Split(separator2);
 		char[] separator3 = new char[1] { '*' };
-		inputString = string3.Split(separator3);
+		inputString = text3.Split(separator3);
 		char[] separator4 = new char[1] { '*' };
-		string[] array2 = string4.Split(separator4);
+		string[] array2 = text4.Split(separator4);
 		char[] separator5 = new char[1] { '*' };
-		joystickString2 = string5.Split(separator5);
+		joystickString2 = text5.Split(separator5);
 		char[] separator6 = new char[1] { '*' };
-		inputString2 = string6.Split(separator6);
+		inputString2 = text6.Split(separator6);
 		for (int i = 0; i < DescriptionString.Length; i++)
 		{
 			int.TryParse(array[i], out var result);

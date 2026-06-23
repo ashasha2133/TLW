@@ -1,7 +1,7 @@
 using System.Collections;
 using Anarchy.Custom.Interfaces;
 using Anarchy.Custom.Level;
-//using CustomAudio;
+using CustomAudio;
 using Photon;
 using UnityEngine;
 
@@ -93,7 +93,12 @@ public class Bullet : Photon.MonoBehaviour, IAnarchyScriptHook
 	public void checkTitan()
 	{
 		GameObject main_object = IN_GAME_MAIN_CAMERA.main_object;
-		if (!(main_object != null) || !(master != null) || !(master == main_object) || !Physics.Raycast(layerMask: ((LayerMask)(1 << LayerMask.NameToLayer("PlayerAttackBox"))).value, origin: baseT.position, direction: velocity, hitInfo: out var hitInfo, distance: 10f))
+		if (!(main_object != null) || !(master != null) || !(master == main_object))
+		{
+			return;
+		}
+		LayerMask layerMask = 1 << LayerMask.NameToLayer("PlayerAttackBox");
+		if (!Physics.Raycast(baseT.position, velocity, out var hitInfo, 10f, layerMask.value))
 		{
 			return;
 		}
@@ -142,7 +147,7 @@ public class Bullet : Photon.MonoBehaviour, IAnarchyScriptHook
 				return;
 			}
 		}
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && !basePV.isMine)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !basePV.isMine)
 		{
 			if (phase == 0)
 			{
@@ -177,25 +182,25 @@ public class Bullet : Photon.MonoBehaviour, IAnarchyScriptHook
 					}
 					MasterHero.lastHook = transform.root;
 					baseT.parent = transform;
-					if (GameSettings.HookTitan > 0)
+					if (GameSettings.HookTitan > 0 && AudioListener.volume > 0f)
 					{
-						//CustomAudioManager.Play(CustomAudioManager.AudioFile.HookTitan);
+						CustomAudioManager.Play(CustomAudioManager.AudioFile.HookTitan);
 					}
 				}
 				else if (transform.gameObject.layer == LayerMask.NameToLayer("Ground"))
 				{
 					MasterHero.lastHook = null;
 					CustomAnarchyLevel.Instance.OnHookAttachedToGround(this, hitInfo.collider.gameObject);
-					if (GameSettings.HookObject > 0)
+					if (GameSettings.HookObject > 0 && AudioListener.volume > 0f)
 					{
-						//CustomAudioManager.Play(CustomAudioManager.AudioFile.HookObject);
+						CustomAudioManager.Play(CustomAudioManager.AudioFile.HookObject);
 					}
 				}
 				else if (transform.gameObject.layer == LayerMask.NameToLayer("NetworkObject") && transform.gameObject.tag == "Player" && !leviMode)
 				{
-					if (GameSettings.HookTitan > 0)
+					if (GameSettings.HookTitan > 0 && AudioListener.volume > 0f)
 					{
-						//CustomAudioManager.Play(CustomAudioManager.AudioFile.HookTitan);
+						CustomAudioManager.Play(CustomAudioManager.AudioFile.HookTitan);
 					}
 					if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.MULTIPLAYER)
 					{
@@ -336,7 +341,7 @@ public class Bullet : Photon.MonoBehaviour, IAnarchyScriptHook
 			phase = 0;
 			this.leviMode = leviMode;
 			left = isLeft;
-			if (IN_GAME_MAIN_CAMERA.gametype != 0 && basePV.isMine)
+			if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && basePV.isMine)
 			{
 				object[] parameters = new object[2]
 				{
@@ -495,7 +500,7 @@ public class Bullet : Photon.MonoBehaviour, IAnarchyScriptHook
 				MasterHero.hook["right"] = null;
 			}
 		}
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && basePV.isMine)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && basePV.isMine)
 		{
 			PhotonNetwork.Destroy(basePV);
 			PhotonNetwork.RemoveRPCs(basePV);
@@ -511,7 +516,7 @@ public class Bullet : Photon.MonoBehaviour, IAnarchyScriptHook
 	{
 		if (master == null)
 		{
-			if (IN_GAME_MAIN_CAMERA.gametype != 0 && basePV.isMine)
+			if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && basePV.isMine)
 			{
 				PhotonNetwork.Destroy(base.gameObject);
 				PhotonNetwork.RemoveRPCs(basePV);

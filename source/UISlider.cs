@@ -283,7 +283,7 @@ public class UISlider : IgnoreTimeScale
 				Vector3 vector = mTrans.localPosition + (Vector3)(mCenter - mSize * 0.5f);
 				Vector3 vector2 = mTrans.localPosition - vector;
 				Vector3 vector3 = mTrans.InverseTransformPoint(ray.GetPoint(enter)) + vector2;
-				Set((direction != 0) ? (vector3.y / mSize.y) : (vector3.x / mSize.x), force: false);
+				Set((direction != Direction.Horizontal) ? (vector3.y / mSize.y) : (vector3.x / mSize.x), force: false);
 			}
 		}
 	}

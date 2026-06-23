@@ -5,46 +5,46 @@ public class TweenVolume : UITweener
 {
 	public float from;
 
-	//private AudioSource mSource;
+	private AudioSource mSource;
 
 	public float to = 1f;
 
-	//public AudioSource audioSource
-	//{
-	//	get
-	//	{
-	//		if (mSource == null)
-	//		{
-	//			mSource = base.audio;
-	//			if (mSource == null)
-	//			{
-	//				mSource = GetComponentInChildren<AudioSource>();
-	//				if (mSource == null)
-	//				{
-	//					base.enabled = false;
-	//				}
-	//			}
-	//		}
-	//		return mSource;
-	//	}
-	//}
+	public AudioSource audioSource
+	{
+		get
+		{
+			if (mSource == null)
+			{
+				mSource = base.audio;
+				if (mSource == null)
+				{
+					mSource = GetComponentInChildren<AudioSource>();
+					if (mSource == null)
+					{
+						base.enabled = false;
+					}
+				}
+			}
+			return mSource;
+		}
+	}
 
-	//public float volume
-	//{
-	//	get
-	//	{
-	//		return audioSource.volume;
-	//	}
-	//	set
-	//	{
-	//		audioSource.volume = value;
-	//	}
-	//}
+	public float volume
+	{
+		get
+		{
+			return audioSource.volume;
+		}
+		set
+		{
+			audioSource.volume = value;
+		}
+	}
 
 	public static TweenVolume Begin(GameObject go, float duration, float targetVolume)
 	{
 		TweenVolume tweenVolume = UITweener.Begin<TweenVolume>(go, duration);
-		//tweenVolume.from = tweenVolume.volume;
+		tweenVolume.from = tweenVolume.volume;
 		tweenVolume.to = targetVolume;
 		if (duration <= 0f)
 		{
@@ -56,7 +56,7 @@ public class TweenVolume : UITweener
 
 	protected override void OnUpdate(float factor, bool isFinished)
 	{
-		//volume = from * (1f - factor) + to * factor;
-		//mSource.enabled = mSource.volume > 0.01f;
+		volume = from * (1f - factor) + to * factor;
+		mSource.enabled = mSource.volume > 0.01f;
 	}
 }

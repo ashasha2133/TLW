@@ -82,7 +82,7 @@ public class StylishComponent : MonoBehaviour
 
 	public StylishComponent()
 	{
-		string[,] array = (styleRankText = new string[11, 2]
+		string[,] array = new string[11, 2]
 		{
 			{ "D", "eja Vu" },
 			{ "C", "asual" },
@@ -95,7 +95,8 @@ public class StylishComponent : MonoBehaviour
 			{ "E", "thereal!!!" },
 			{ "Z", "enith" },
 			{ "G", "ET A LIFE!!!" }
-		});
+		};
+		styleRankText = array;
 		chainRankMultiplier = new float[12]
 		{
 			1f, 1.1f, 1.2f, 1.3f, 1.5f, 1.7f, 2f, 2.3f, 2.5f, 2.5f,

@@ -34,7 +34,7 @@ public abstract class UIItemSlot : MonoBehaviour
 			mDraggedItem = Replace(null);
 			if (mDraggedItem != null)
 			{
-				//NGUITools.PlaySound(grabSound);
+				NGUITools.PlaySound(grabSound);
 			}
 			UpdateCursor();
 		}
@@ -46,7 +46,7 @@ public abstract class UIItemSlot : MonoBehaviour
 		{
 			UICamera.currentTouch.clickNotification = UICamera.ClickNotification.BasedOnDelta;
 			mDraggedItem = Replace(null);
-			//NGUITools.PlaySound(grabSound);
+			NGUITools.PlaySound(grabSound);
 			UpdateCursor();
 		}
 	}
@@ -56,15 +56,15 @@ public abstract class UIItemSlot : MonoBehaviour
 		InvGameItem invGameItem = Replace(mDraggedItem);
 		if (mDraggedItem == invGameItem)
 		{
-			//NGUITools.PlaySound(errorSound);
+			NGUITools.PlaySound(errorSound);
 		}
 		else if (invGameItem != null)
 		{
-			//NGUITools.PlaySound(grabSound);
+			NGUITools.PlaySound(grabSound);
 		}
 		else
 		{
-			//NGUITools.PlaySound(placeSound);
+			NGUITools.PlaySound(placeSound);
 		}
 		mDraggedItem = invGameItem;
 		UpdateCursor();

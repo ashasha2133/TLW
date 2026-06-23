@@ -1,20 +1,19 @@
 using System.Collections;
 
-namespace UnityEngine
+namespace UnityEngine;
+
+public abstract class CustomYieldInstruction : IEnumerator
 {
-	public abstract class CustomYieldInstruction : IEnumerator
+	public abstract bool keepWaiting { get; }
+
+	public object Current => null;
+
+	public bool MoveNext()
 	{
-		public abstract bool keepWaiting { get; }
+		return keepWaiting;
+	}
 
-		public object Current => null;
-
-		public bool MoveNext()
-		{
-			return keepWaiting;
-		}
-
-		public void Reset()
-		{
-		}
+	public void Reset()
+	{
 	}
 }

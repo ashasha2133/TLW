@@ -1,4 +1,3 @@
-namespace Events
-{
-	public delegate void EventDelegate(string kEvent);
-}
+namespace Events;
+
+public delegate void EventDelegate(string kEvent);

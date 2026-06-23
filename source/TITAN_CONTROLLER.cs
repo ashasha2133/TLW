@@ -77,7 +77,8 @@ public class TITAN_CONTROLLER : MonoBehaviour
 				float y = currentCamera.transform.rotation.eulerAngles.y;
 				float num3 = Mathf.Atan2(num, num2) * 57.29578f;
 				num3 = 0f - num3 + 90f;
-				float num4 = (targetDirection = y + num3);
+				float num4 = y + num3;
+				targetDirection = num4;
 			}
 			else
 			{
@@ -108,7 +109,8 @@ public class TITAN_CONTROLLER : MonoBehaviour
 			float y2 = currentCamera.transform.rotation.eulerAngles.y;
 			float num3 = Mathf.Atan2(num, num2) * 57.29578f;
 			num3 = 0f - num3 + 90f;
-			float num4 = (targetDirection = y2 + num3);
+			float num4 = y2 + num3;
+			targetDirection = num4;
 		}
 		else
 		{

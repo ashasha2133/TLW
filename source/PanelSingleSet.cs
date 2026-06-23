@@ -83,12 +83,12 @@ public class PanelSingleSet : MonoBehaviour
 
 	private Vector2 characters = Vector2.zero;
 
-	//private AudioSource room_slide;
+	private AudioSource room_slide;
 
 	private void Start()
 	{
-		//room_slide = Camera.main.gameObject.AddComponent<AudioSource>();
-		//room_slide.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("room_slide");
+		room_slide = Camera.main.gameObject.AddComponent<AudioSource>();
+		room_slide.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("room_slide");
 		MapSelected = 0;
 		dayLightSelected = 0;
 		LoadCamera();
@@ -360,7 +360,10 @@ public class PanelSingleSet : MonoBehaviour
 	private IEnumerator Giffy()
 	{
 		numbers[0] = true;
-		//room_slide.Play();
+		if (!room_slide.isPlaying && AudioListener.volume > 0f && FengGameManagerMKII.InterfaceVolume > 0f)
+		{
+			room_slide.Play();
+		}
 		yield return new WaitForSeconds(0.04f);
 		numbers[1] = true;
 		yield return new WaitForSeconds(0.04f);

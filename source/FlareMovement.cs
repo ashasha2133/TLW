@@ -36,6 +36,8 @@ public class FlareMovement : MonoBehaviour
 	private void Start()
 	{
 		hero = IN_GAME_MAIN_CAMERA.main_object;
+		baseR.useGravity = false;
+		baseR.velocity = baseT.forward * 15f;
 		if (!nohint && hero != null)
 		{
 			hintT = (hint = (GameObject)Object.Instantiate(CacheResources.Load("UI/" + color + "FlareHint"))).transform;
@@ -105,7 +107,7 @@ public class FlareMovement : MonoBehaviour
 		}
 		if (timer < 4f)
 		{
-			baseR.AddForce((baseT.forward + baseT.up * 5f) * Time.deltaTime * 5f, ForceMode.VelocityChange);
+			baseR.AddForce(baseT.forward * Time.deltaTime * 20f, ForceMode.VelocityChange);
 		}
 		else
 		{

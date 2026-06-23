@@ -1,4 +1,3 @@
-using System;
 using AnimationOrTween;
 using UnityEngine;
 
@@ -98,7 +97,7 @@ public abstract class UITweener : IgnoreTimeScale
 	public static T Begin<T>(GameObject go, float duration) where T : UITweener
 	{
 		T val = go.GetComponent<T>();
-		if ((UnityEngine.Object)val == (UnityEngine.Object)null)
+		if (val == null)
 		{
 			val = go.AddComponent<T>();
 		}
@@ -170,7 +169,7 @@ public abstract class UITweener : IgnoreTimeScale
 		float num = Mathf.Clamp01(factor);
 		if (method == Method.EaseIn)
 		{
-			num = 1f - Mathf.Sin((float)Math.E * 449f / 777f * (1f - num));
+			num = 1f - Mathf.Sin(1.570796f * (1f - num));
 			if (steeperCurves)
 			{
 				num *= num;
@@ -178,7 +177,7 @@ public abstract class UITweener : IgnoreTimeScale
 		}
 		else if (method == Method.EaseOut)
 		{
-			num = Mathf.Sin((float)Math.E * 449f / 777f * num);
+			num = Mathf.Sin(1.570796f * num);
 			if (steeperCurves)
 			{
 				num = 1f - num;

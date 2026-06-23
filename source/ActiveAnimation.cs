@@ -214,7 +214,7 @@ public class ActiveAnimation : IgnoreTimeScale
 				{
 					eventReceiver.SendMessage(callWhenFinished, this, SendMessageOptions.DontRequireReceiver);
 				}
-				if (mDisableDirection != 0 && mLastDirection == mDisableDirection)
+				if (mDisableDirection != Direction.Toggle && mLastDirection == mDisableDirection)
 				{
 					NGUITools.SetActive(base.gameObject, state: false);
 				}

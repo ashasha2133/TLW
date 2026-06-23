@@ -4,11 +4,7 @@ using UnityEngine;
 
 public class AHSSShotGunCollider : MonoBehaviour
 {
-    private Transform baseT;
-
-    public static PhotonView basePV;
-
-    public bool active_me;
+	public bool active_me;
 
 	private int count;
 
@@ -181,7 +177,7 @@ public class AHSSShotGunCollider : MonoBehaviour
 						{
 							IN_GAME_MAIN_CAMERA.mainCamera.startSnapShot2(component2.transform.position, num5, component2.transform.root.gameObject, 0.02f);
 						}
-						component2.transform.root.GetComponent<TITAN>().titanGetHit(basePV.viewID, num5);
+						component2.transform.root.GetComponent<TITAN>().titanGetHit(base.transform.root.gameObject.GetPhotonView().viewID, num5);
 					}
 				}
 			}
@@ -388,7 +384,5 @@ public class AHSSShotGunCollider : MonoBehaviour
 		}
 		active_me = true;
 		count = 0;
-		baseT = base.transform;
-		basePV = baseT.root.gameObject.GetPhotonView();
-    }
+	}
 }

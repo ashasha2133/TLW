@@ -1,17 +1,112 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using Boo.Lang;
 using UnityEngine;
 
 public class TABPlayerlist : MonoBehaviour
 {
+	private int windowId;
+
+	private Rect windowRect;
+
+	private GUIStyle clearStyle;
+
+	private bool bombMode;
+
 	public static bool DetectIsVisible;
 
-	public Rect detectionrect = GUIHelpers.AlignRect((float)Screen.width / 1.5f, (float)Screen.height / 1.5f, GUIHelpers.Alignment.CENTER, 0f, 0f);
+	public Rect detectionrect;
 
 	private Vector2 Scroll = Vector2.zero;
 
 	private GUIStyle contentStyle = new GUIStyle();
+
+	private GUIStyle backgroundColor;
+
+	private GUIStyle headerColor;
+
+	private GUIStyle row1Color;
+
+	private GUIStyle row2Color;
+
+	private float scaleFactor = 1f;
+
+	private const float BASE_RESOLUTION_WIDTH = 1920f;
+
+	private List<TableElement> cachedHeaders;
+
+	private List<List<TableElement>> cachedRows;
+
+	private bool cacheValid;
+
+	private int lastPlayerCount;
+
+	private bool lastBombMode;
+
+	private float lastCacheTime;
+
+	private const float CACHE_REFRESH_INTERVAL = 1f;
+
+	private void Awake()
+	{
+		windowId = 1;
+		windowRect = new Rect(0f, 0f, 1000f, 0f);
+		UpdateScaleFactor();
+		clearStyle = new GUIStyle();
+		clearStyle.normal.background = MakeTex(2, 2, new Color(0f, 0f, 0f, 0f));
+		backgroundColor = new GUIStyle();
+		backgroundColor.normal.background = MakeTex(2, 2, new Color(0.15f, 0.15f, 0.18f, 0.7f));
+		backgroundColor.padding = new RectOffset(5, 5, 5, 5);
+		headerColor = new GUIStyle();
+		headerColor.normal.background = MakeTex(2, 2, new Color(0.11f, 0.11f, 0.14f, 0.8f));
+		headerColor.normal.textColor = new Color(1f, 1f, 1f, 1f);
+		headerColor.fontSize = Mathf.RoundToInt(14f * scaleFactor);
+		headerColor.fontStyle = FontStyle.Bold;
+		headerColor.padding = new RectOffset(5, 5, 5, 5);
+		row1Color = new GUIStyle();
+		row1Color.normal.background = MakeTex(2, 2, new Color(0.13f, 0.13f, 0.16f, 0.7f));
+		row1Color.padding = new RectOffset(5, 5, 5, 5);
+		row2Color = new GUIStyle();
+		row2Color.normal.background = MakeTex(2, 2, new Color(0.15f, 0.15f, 0.18f, 0.7f));
+		row2Color.padding = new RectOffset(5, 5, 5, 5);
+	}
+
+	private void UpdateScaleFactor()
+	{
+		scaleFactor = Mathf.Clamp((float)Screen.width / 1920f, 0.5f, 2f);
+	}
+
+	private bool ShouldInvalidateCache()
+	{
+		if (!cacheValid)
+		{
+			return true;
+		}
+		int num = ((PhotonNetwork.playerList != null) ? PhotonNetwork.playerList.Length : 0);
+		if (num != lastPlayerCount)
+		{
+			lastPlayerCount = num;
+			return true;
+		}
+		bool flag = GameSettings.bombMode != 0;
+		if (flag != lastBombMode)
+		{
+			lastBombMode = flag;
+			return true;
+		}
+		if (Time.time - lastCacheTime > 1f)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	public void InvalidateCache()
+	{
+		cacheValid = false;
+		cachedHeaders = null;
+		cachedRows = null;
+	}
 
 	private string GetCSV(List<TableElement> headers, List<List<TableElement>> rows)
 	{
@@ -34,74 +129,26 @@ public class TABPlayerlist : MonoBehaviour
 		return text;
 	}
 
-	private void DrawTable(int ID, GUIStyle contentStyle, List<TableElement> headers, List<List<TableElement>> rows)
+	private void DrawTable(int ID)
 	{
-		GUIStyle gUIStyle = new GUIStyle();
-		gUIStyle.normal.background = MakeTex(1, 1, new Color(0.15f, 0.15f, 0.18f, 0.7f));
-		GUIStyle style = new GUIStyle
+		try
 		{
-			normal = 
+			GUIStyle gUIStyle = new GUIStyle(GUI.skin.label);
+			gUIStyle.alignment = TextAnchor.MiddleCenter;
+			if (PhotonNetwork.inRoom)
 			{
-				background = MakeTex(1, 1, new Color(0.11f, 0.11f, 0.14f, 0.8f))
+				bool flag = GameSettings.bombMode != 0;
+				CreatePlayerlist(ID, gUIStyle, flag);
 			}
-		};
-		GUIStyle gUIStyle2 = new GUIStyle
-		{
-			normal = 
-			{
-				background = MakeTex(1, 1, new Color(0.13f, 0.13f, 0.16f, 0.7f))
-			}
-		};
-		GUIStyle gUIStyle3 = new GUIStyle
-		{
-			normal = 
-			{
-				background = MakeTex(1, 1, new Color(0.15f, 0.15f, 0.18f, 0.7f))
-			}
-		};
-		Scroll = GUILayout.BeginScrollView(Scroll, gUIStyle);
-		GUILayout.BeginHorizontal(style);
-		GUILayout.FlexibleSpace();
-		foreach (TableElement header in headers)
-		{
-			if (GUILayout.Button(header.ToString(), contentStyle, GUILayout.Width(header.width)) && header.hasAction)
-			{
-				string cSV = GetCSV(headers, rows);
-				TextEditor textEditor = new TextEditor();
-				textEditor.content = new GUIContent
-				{
-					text = cSV
-				};
-				textEditor.SelectAll();
-				textEditor.Copy();
-			}
-			GUILayout.FlexibleSpace();
 		}
-		GUILayout.EndHorizontal();
-		int num = 0;
-		foreach (List<TableElement> row in rows)
+		catch (Exception ex)
 		{
-			GUILayout.BeginHorizontal((num++ % 2 == 0) ? gUIStyle2 : gUIStyle3);
-			GUILayout.FlexibleSpace();
-			foreach (TableElement item in row)
-			{
-				if (GUILayout.Button(item.ToString(), contentStyle, GUILayout.Width(item.width)) && item.hasAction)
-				{
-					string cSV2 = GetCSV(headers, new List<List<TableElement>> { row });
-					TextEditor textEditor2 = new TextEditor();
-					textEditor2.content = new GUIContent
-					{
-						text = cSV2
-					};
-					textEditor2.SelectAll();
-					textEditor2.Copy();
-				}
-				GUILayout.FlexibleSpace();
-			}
-			GUILayout.EndHorizontal();
+			Debug.Log("Error in DrawTable: " + ex.Message + ex.StackTrace);
 		}
-		GUILayout.EndScrollView();
-		GUI.DragWindow();
+		finally
+		{
+			GUI.DragWindow();
+		}
 	}
 
 	private Texture2D MakeTex(int width, int height, Color col)
@@ -117,49 +164,138 @@ public class TABPlayerlist : MonoBehaviour
 		return texture2D;
 	}
 
-	private void CreatePlayerlist(int ID, GUIStyle contentStyle)
+	private void DrawTableLayout(int ID, GUIStyle contentStyle, List<TableElement> headers, List<List<TableElement>> rows)
 	{
-		List<TableElement> headers = new List<TableElement>
+		GUIStyle gUIStyle = new GUIStyle(contentStyle);
+		gUIStyle.alignment = TextAnchor.MiddleCenter;
+		gUIStyle.margin = new RectOffset(0, 0, 0, 0);
+		gUIStyle.padding = new RectOffset(2, 2, 2, 2);
+		GUIStyle gUIStyle2 = new GUIStyle(contentStyle);
+		gUIStyle2.alignment = TextAnchor.MiddleCenter;
+		gUIStyle2.margin = new RectOffset(0, 0, 0, 0);
+		gUIStyle2.padding = new RectOffset(2, 2, 2, 2);
+		GUILayout.BeginVertical(backgroundColor);
+		GUILayout.BeginHorizontal(headerColor, GUILayout.ExpandWidth(expand: true));
+		foreach (TableElement header in headers)
 		{
-			new TableElement("ID", "header", "small", hasAction: true),
-			new TableElement("Name", "header", "large"),
-			new TableElement("Kills", "header", "small"),
-			new TableElement("Deaths", "header", "small"),
-			new TableElement("Max Damage", "header"),
-			new TableElement("Total Damage", "header", "large"),
-			new TableElement("Balance", "header"),
-			new TableElement("Ping", "header", "small"),
-			new TableElement("Mod", "header", "small")
-		};
-		List<List<TableElement>> list = new List<List<TableElement>>();
-		PhotonPlayer[] array = PhotonNetwork.playerList.OrderBy((PhotonPlayer player) => player.ID).ToArray();
-		foreach (PhotonPlayer photonPlayer in array)
-		{
-			if (photonPlayer.ID > 0 && photonPlayer != null && !photonPlayer.ToString().Contains("Unknown") && !(photonPlayer.ToString() == string.Empty))
+			if (GUILayout.Button(header.ToString(), gUIStyle, GUILayout.Width(header.width), GUILayout.ExpandHeight(expand: false)) && header.hasAction)
 			{
-				string content = ((!photonPlayer.isLocal) ? ("[" + photonPlayer.ID + "] ") : ("<color=#00CC00>[" + photonPlayer.ID + "]</color> ")) + (photonPlayer.isMasterClient ? "(MC)" : "");
-				string content2 = (RCextensions.returnBoolFromObject(photonPlayer.customProperties["dead"]) ? ("<color=red>*dead*</color> " + photonPlayer.uiname.hexColor()) : photonPlayer.uiname.hexColor());
-				int num = RCextensions.returnIntFromObject(photonPlayer.customProperties["kills"]);
-				int num2 = RCextensions.returnIntFromObject(photonPlayer.customProperties["deaths"]);
-				int num3 = RCextensions.returnIntFromObject(photonPlayer.customProperties["max_dmg"]);
-				int num4 = RCextensions.returnIntFromObject(photonPlayer.customProperties["total_dmg"]);
-				double num5 = (double)(1200 * RCextensions.returnIntFromObject(photonPlayer.customProperties["kills"]) + RCextensions.returnIntFromObject(photonPlayer.customProperties["total_dmg"])) * (Math.Pow(10.0, 4.0) + (double)RCextensions.returnIntFromObject(photonPlayer.customProperties["max_dmg"])) / (5.0 * Math.Pow(10.0, 5.0) * (double)(20 + RCextensions.returnIntFromObject(photonPlayer.customProperties["deaths"])));
-				string content3 = ((photonPlayer.customProperties["Ping"] != null) ? RCextensions.returnIntFromObject(photonPlayer.customProperties["Ping"]).ToString() : "-");
-				list.Add(new List<TableElement>
+				string cSV = GetCSV(headers, rows);
+				TextEditor textEditor = new TextEditor();
+				textEditor.content = new GUIContent
 				{
-					new TableElement(content, "cell", "small", hasAction: true),
-					new TableElement(content2, "cell", "large"),
-					new TableElement(num.ToString(), "cell", "small"),
-					new TableElement(num2.ToString(), "cell", "small"),
-					new TableElement(num3.ToString(), "cell"),
-					new TableElement(num4.ToString(), "cell", "large"),
-					new TableElement(num5.ToString("N2"), "cell", "", hasAction: false, num5.ToString()),
-					new TableElement(content3, "cell", "small"),
-					new TableElement(Mods(photonPlayer), "cell", "small")
-				});
+					text = cSV
+				};
+				textEditor.SelectAll();
+				textEditor.Copy();
 			}
 		}
-		DrawTable(ID, contentStyle, headers, list);
+		GUILayout.EndHorizontal();
+		int num = 0;
+		foreach (List<TableElement> row in rows)
+		{
+			GUILayout.BeginHorizontal((num++ % 2 == 0) ? row1Color : row2Color, GUILayout.ExpandWidth(expand: true));
+			foreach (TableElement item in row)
+			{
+				if (GUILayout.Button(item.ToString(), gUIStyle2, GUILayout.Width(item.width), GUILayout.ExpandHeight(expand: false)) && item.hasAction)
+				{
+					string cSV2 = GetCSV(headers, new List<List<TableElement>> { row });
+					TextEditor textEditor2 = new TextEditor();
+					textEditor2.content = new GUIContent
+					{
+						text = cSV2
+					};
+					textEditor2.SelectAll();
+					textEditor2.Copy();
+				}
+			}
+			GUILayout.EndHorizontal();
+		}
+		GUILayout.EndVertical();
+	}
+
+	private void CreatePlayerlist(int ID, GUIStyle contentStyle, bool bombMode)
+	{
+		if (ShouldInvalidateCache())
+		{
+			BuildPlayerlistCache(bombMode);
+		}
+		if (cachedHeaders != null && cachedRows != null)
+		{
+			DrawTableLayout(ID, contentStyle, cachedHeaders, cachedRows);
+		}
+	}
+
+	private void BuildPlayerlistCache(bool bombMode)
+	{
+		UpdateScaleFactor();
+		List<TableElement> list = new List<TableElement>
+		{
+			new TableElement("ID", "header", "small", hasAction: true, "", scaleFactor),
+			new TableElement("Name", "header", "large", hasAction: false, "", scaleFactor),
+			new TableElement("Kills", "header", "small", hasAction: false, "", scaleFactor),
+			new TableElement("Deaths", "header", "small", hasAction: false, "", scaleFactor)
+		};
+		if (bombMode)
+		{
+			list.Add(new TableElement("New Bomb Stats", "header", "large", hasAction: false, "", scaleFactor));
+			list.Add(new TableElement("Old Bomb Stats", "header", "large", hasAction: false, "", scaleFactor));
+		}
+		else
+		{
+			list.Add(new TableElement("Max Damage", "header", "", hasAction: false, "", scaleFactor));
+			list.Add(new TableElement("Total Damage", "header", "large", hasAction: false, "", scaleFactor));
+		}
+		list.Add(new TableElement("Ping", "header", "small", hasAction: false, "", scaleFactor));
+		list.Add(new TableElement("Mod", "header", "small", hasAction: false, "", scaleFactor));
+		List<List<TableElement>> list2 = new List<List<TableElement>>();
+		if (PhotonNetwork.playerList != null)
+		{
+			PhotonPlayer[] array = PhotonNetwork.playerList.OrderBy((PhotonPlayer player) => player.ID).ToArray();
+			foreach (PhotonPlayer photonPlayer in array)
+			{
+				if (photonPlayer.ID > 0 && photonPlayer != null && !photonPlayer.ToString().Contains("Unknown") && !(photonPlayer.ToString() == string.Empty))
+				{
+					string content = ((!photonPlayer.isLocal) ? ("[" + photonPlayer.ID + "] ") : ("<color=#00CC00>[" + photonPlayer.ID + "]</color> ")) + (photonPlayer.isMasterClient ? "(MC)" : "");
+					string text = photonPlayer.uiname.ToUpper().hexColor();
+					if (RCextensions.returnBoolFromObject(photonPlayer.customProperties["dead"]))
+					{
+						text = "<color=red>[DEAD]</color> " + text;
+					}
+					int num2 = RCextensions.returnIntFromObject(photonPlayer.customProperties["kills"]);
+					int num3 = RCextensions.returnIntFromObject(photonPlayer.customProperties["deaths"]);
+					string content2 = ((photonPlayer.customProperties["Ping"] != null) ? RCextensions.returnIntFromObject(photonPlayer.customProperties["Ping"]).ToString() : "-");
+					List<TableElement> list3 = new List<TableElement>
+					{
+						new TableElement(content, "cell", "small", hasAction: true, "", scaleFactor),
+						new TableElement(text, "cell", "large", hasAction: false, "", scaleFactor),
+						new TableElement(num2.ToString(), "cell", "small", hasAction: false, "", scaleFactor),
+						new TableElement(num3.ToString(), "cell", "small", hasAction: false, "", scaleFactor)
+					};
+					if (bombMode)
+					{
+						list3.Add(new TableElement(NewStatsString(photonPlayer), "cell", "large", hasAction: false, "", scaleFactor));
+						list3.Add(new TableElement(OldStatsString(photonPlayer), "cell", "large", hasAction: false, "", scaleFactor));
+					}
+					else
+					{
+						int num4 = RCextensions.returnIntFromObject(photonPlayer.customProperties["max_dmg"]);
+						int num5 = RCextensions.returnIntFromObject(photonPlayer.customProperties["total_dmg"]);
+						list3.Add(new TableElement(num4.ToString(), "cell", "", hasAction: false, "", scaleFactor));
+						list3.Add(new TableElement(num5.ToString(), "cell", "large", hasAction: false, "", scaleFactor));
+					}
+					list3.Add(new TableElement(content2, "cell", "small", hasAction: false, "", scaleFactor));
+					list3.Add(new TableElement(Mods(photonPlayer), "cell", "small", hasAction: false, "", scaleFactor));
+					list2.Add(list3);
+				}
+			}
+		}
+		cachedHeaders = list;
+		cachedRows = list2;
+		cacheValid = true;
+		lastCacheTime = Time.time;
+		lastPlayerCount = ((PhotonNetwork.playerList != null) ? PhotonNetwork.playerList.Length : 0);
+		lastBombMode = bombMode;
 	}
 
 	private string Mods(PhotonPlayer player)
@@ -182,46 +318,6 @@ public class TABPlayerlist : MonoBehaviour
 			result = "RRC";
 		}
 		return result;
-	}
-
-	private void CreateBombPlayerlist(int ID, GUIStyle contentStyle)
-	{
-		List<TableElement> headers = new List<TableElement>
-		{
-			new TableElement("ID", "header", "small", hasAction: true),
-			new TableElement("Name", "header", "large"),
-			new TableElement("Kills", "header", "small"),
-			new TableElement("Deaths", "header", "small"),
-			new TableElement("New Bomb Stats", "header", "large"),
-			new TableElement("Old Bomb Stats", "header", "large"),
-			new TableElement("Ping", "header", "small"),
-			new TableElement("Mod", "header", "small")
-		};
-		List<List<TableElement>> list = new List<List<TableElement>>();
-		PhotonPlayer[] array = PhotonNetwork.playerList.OrderBy((PhotonPlayer player) => player.ID).ToArray();
-		foreach (PhotonPlayer photonPlayer in array)
-		{
-			if (photonPlayer.ID > 0 && photonPlayer != null && !photonPlayer.ToString().Contains("Unknown") && !(photonPlayer.ToString() == string.Empty))
-			{
-				string content = ((!photonPlayer.isLocal) ? ("[" + photonPlayer.ID + "] ") : ("<color=#00CC00>[" + photonPlayer.ID + "]</color> ")) + (photonPlayer.isMasterClient ? "(MC)" : "");
-				string content2 = (RCextensions.returnBoolFromObject(photonPlayer.customProperties["dead"]) ? ("<color=red>*dead*</color> " + photonPlayer.uiname.hexColor()) : photonPlayer.uiname.hexColor());
-				int num = RCextensions.returnIntFromObject(photonPlayer.customProperties["kills"]);
-				int num2 = RCextensions.returnIntFromObject(photonPlayer.customProperties["deaths"]);
-				string content3 = ((photonPlayer.customProperties["Ping"] != null) ? RCextensions.returnIntFromObject(photonPlayer.customProperties["Ping"]).ToString() : "-");
-				list.Add(new List<TableElement>
-				{
-					new TableElement(content, "cell", "small", hasAction: true),
-					new TableElement(content2, "cell", "large"),
-					new TableElement(num.ToString(), "cell", "small"),
-					new TableElement(num2.ToString(), "cell", "small"),
-					new TableElement(NewStatsString(photonPlayer), "cell", "large"),
-					new TableElement(OldStatsString(photonPlayer), "cell", "large"),
-					new TableElement(content3, "cell", "small"),
-					new TableElement(Mods(photonPlayer), "cell", "small")
-				});
-			}
-		}
-		DrawTable(ID, contentStyle, headers, list);
 	}
 
 	private string OldStatsString(PhotonPlayer player)
@@ -279,9 +375,8 @@ public class TABPlayerlist : MonoBehaviour
 					text = text + RCextensions.returnFloatFromObject(player.customProperties[item]) + " ";
 				}
 			}
-			return text;
 		}
-		if (HERO.BombStatsCounter.ContainsKey(player))
+		else if (HERO.BombStatsCounter.ContainsKey(player))
 		{
 			text = HERO.BombStatsCounter[player];
 			int num = text.IndexOf('+');
@@ -293,40 +388,42 @@ public class TABPlayerlist : MonoBehaviour
 		return text;
 	}
 
-	private void CheckerWindow(int ID)
-	{
-		contentStyle = new GUIStyle(GUI.skin.label);
-		contentStyle.alignment = TextAnchor.MiddleCenter;
-		if (PhotonNetwork.inRoom)
-		{
-			if (GameSettings.bombMode == 0)
-			{
-				CreatePlayerlist(ID, contentStyle);
-			}
-			else
-			{
-				CreateBombPlayerlist(ID, contentStyle);
-			}
-		}
-	}
-
 	private void OnGUI()
 	{
 		if (DetectIsVisible)
 		{
-			detectionrect = GUI.Window(600, detectionrect, CheckerWindow, "<color=white><b>Playerlist</b></color>");
+			windowRect.y = 120f * scaleFactor;
+			float num = ((GameSettings.bombMode != 0) ? 920f : 860f);
+			windowRect.width = num * scaleFactor;
+			windowRect.x = Mathf.Round(((float)Screen.width - windowRect.width) * 0.5f);
+			windowRect = GUILayout.Window(windowId, windowRect, DrawTable, string.Empty, clearStyle);
 		}
 	}
 
 	private void Update()
 	{
-		if (FengGameManagerMKII.inputRC.isInputExtras(InputCodeRC.secondplayerlist))
+		bool detectIsVisible = DetectIsVisible;
+		bool detectIsVisible2 = false;
+		InputManagerRC inputRC = FengGameManagerMKII.inputRC;
+		int secondplayerlist = InputCodeRC.secondplayerlist;
+		if (inputRC != null)
 		{
-			DetectIsVisible = true;
+			detectIsVisible2 = ((inputRC.extrawheel == null || secondplayerlist < 0 || secondplayerlist >= inputRC.extrawheel.Length || inputRC.extrawheel[secondplayerlist] != 0 || inputRC.extraKey == null || secondplayerlist >= inputRC.extraKey.Length || inputRC.extraKey[secondplayerlist] == KeyCode.None) ? inputRC.isInputExtras(secondplayerlist) : Input.GetKey(inputRC.extraKey[secondplayerlist]));
 		}
-		else if (FengGameManagerMKII.inputRC.isInputExtrasUp(InputCodeRC.secondplayerlist))
+		DetectIsVisible = detectIsVisible2;
+		if (DetectIsVisible && !detectIsVisible)
 		{
-			DetectIsVisible = false;
+			InvalidateCache();
+		}
+		bombMode = GameSettings.bombMode != 0;
+	}
+
+	public static void ClearAllCaches()
+	{
+		TABPlayerlist[] array = UnityEngine.Object.FindObjectsOfType<TABPlayerlist>();
+		for (int i = 0; i < array.Length; i++)
+		{
+			array[i].InvalidateCache();
 		}
 	}
 }

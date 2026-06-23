@@ -618,8 +618,8 @@ public class UICamera : MonoBehaviour
 		currentTouchID = -100;
 		currentTouch = mController;
 		inputHasFocus = mSel != null && mSel.GetComponent<UIInput>() != null;
-		bool flag = (submitKey0 != 0 && Input.GetKeyDown(submitKey0)) || (submitKey1 != 0 && Input.GetKeyDown(submitKey1));
-		bool flag2 = (submitKey0 != 0 && Input.GetKeyUp(submitKey0)) || (submitKey1 != 0 && Input.GetKeyUp(submitKey1));
+		bool flag = (submitKey0 != KeyCode.None && Input.GetKeyDown(submitKey0)) || (submitKey1 != KeyCode.None && Input.GetKeyDown(submitKey1));
+		bool flag2 = (submitKey0 != KeyCode.None && Input.GetKeyUp(submitKey0)) || (submitKey1 != KeyCode.None && Input.GetKeyUp(submitKey1));
 		if (flag || flag2)
 		{
 			currentTouch.current = mSel;
@@ -664,11 +664,11 @@ public class UICamera : MonoBehaviour
 		{
 			Notify(mSel, "OnKey", KeyCode.Tab);
 		}
-		if (cancelKey0 != 0 && Input.GetKeyDown(cancelKey0))
+		if (cancelKey0 != KeyCode.None && Input.GetKeyDown(cancelKey0))
 		{
 			Notify(mSel, "OnKey", KeyCode.Escape);
 		}
-		if (cancelKey1 != 0 && Input.GetKeyDown(cancelKey1))
+		if (cancelKey1 != KeyCode.None && Input.GetKeyDown(cancelKey1))
 		{
 			Notify(mSel, "OnKey", KeyCode.Escape);
 		}
@@ -705,7 +705,7 @@ public class UICamera : MonoBehaviour
 		}
 		else
 		{
-			if (currentTouch.clickNotification != 0 && !stickyPress && !unpressed && currentTouch.pressStarted && currentTouch.pressed != hoveredObject)
+			if (currentTouch.clickNotification != ClickNotification.None && !stickyPress && !unpressed && currentTouch.pressStarted && currentTouch.pressed != hoveredObject)
 			{
 				isDragging = true;
 				Notify(currentTouch.pressed, "OnPress", false);
@@ -759,7 +759,7 @@ public class UICamera : MonoBehaviour
 			{
 				Notify(currentTouch.pressed, "OnHover", true);
 			}
-			if (currentTouch.dragged == currentTouch.current || (currentTouch.clickNotification != 0 && currentTouch.totalDelta.magnitude < num))
+			if (currentTouch.dragged == currentTouch.current || (currentTouch.clickNotification != ClickNotification.None && currentTouch.totalDelta.magnitude < num))
 			{
 				if (currentTouch.pressed != mSel)
 				{
@@ -770,7 +770,7 @@ public class UICamera : MonoBehaviour
 				{
 					mSel = currentTouch.pressed;
 				}
-				if (currentTouch.clickNotification != 0)
+				if (currentTouch.clickNotification != ClickNotification.None)
 				{
 					float realtimeSinceStartup = Time.realtimeSinceStartup;
 					Notify(currentTouch.pressed, "OnClick", null);
@@ -877,12 +877,12 @@ public class UICamera : MonoBehaviour
 					f__amcache31 = (RaycastHit r1, RaycastHit r2) => r1.distance.CompareTo(r2.distance);
 				}
 				Array.Sort(array, f__amcache31);
-				int j = 0;
-				for (int num = array.Length; j < num; j++)
+				int num = 0;
+				for (int num2 = array.Length; num < num2; num++)
 				{
-					if (IsVisible(ref array[j]))
+					if (IsVisible(ref array[num]))
 					{
-						hit = array[j];
+						hit = array[num];
 						return true;
 					}
 				}
@@ -935,7 +935,7 @@ public class UICamera : MonoBehaviour
 		{
 			onCustomInput();
 		}
-		if (useMouse && mSel != null && ((cancelKey0 != 0 && Input.GetKeyDown(cancelKey0)) || (cancelKey1 != 0 && Input.GetKeyDown(cancelKey1))))
+		if (useMouse && mSel != null && ((cancelKey0 != KeyCode.None && Input.GetKeyDown(cancelKey0)) || (cancelKey1 != KeyCode.None && Input.GetKeyDown(cancelKey1))))
 		{
 			selectedObject = null;
 		}

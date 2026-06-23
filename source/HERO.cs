@@ -6,7 +6,7 @@ using System.Linq;
 using Anarchy.Custom.Interfaces;
 using Anarchy.Custom.Level;
 using BRM;
-//using CustomAudio;
+using CustomAudio;
 using Events;
 using ExitGames.Client.Photon;
 using UnityEngine;
@@ -45,9 +45,9 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	private bool attackReleased;
 
-	//public AudioSource audio_ally;
+	public AudioSource audio_ally;
 
-	//public AudioSource audio_hitwall;
+	public AudioSource audio_hitwall;
 
 	private GameObject badGuy;
 
@@ -201,7 +201,7 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	public float maxVelocityChange = 10f;
 
-	//public AudioSource meatDie;
+	public AudioSource meatDie;
 
 	public Bomb myBomb;
 
@@ -241,7 +241,7 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	private bool rightGunHasBullet = true;
 
-	//public AudioSource rope;
+	public AudioSource rope;
 
 	private float rTapTime = -1f;
 
@@ -259,9 +259,9 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	public string skillIDHUD;
 
-	//public AudioSource slash;
+	public AudioSource slash;
 
-	//public AudioSource slashHit;
+	public AudioSource slashHit;
 
 	private ParticleSystem smoke_3dmg;
 
@@ -306,8 +306,6 @@ public class HERO : MONO, IAnarchyScriptHero
 	private float useGasSpeed = 0.2f;
 
 	public bool useGun;
-
-	public bool usingAhss;
 
 	private float uTapTime = -1f;
 
@@ -490,7 +488,7 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	public bool IsMine()
 	{
-		if (IN_GAME_MAIN_CAMERA.gametype != 0)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE)
 		{
 			return base.photonView.isMine;
 		}
@@ -582,7 +580,7 @@ public class HERO : MONO, IAnarchyScriptHero
 		detonate = false;
 		bombTime = 0f;
 		skillCDDuration = 10f;
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		Ray ray = Camera.main.ScreenPointToRay(GetAimPosition());
 		LayerMask layerMask = (1 << LayerMask.NameToLayer("Ground")) | (1 << LayerMask.NameToLayer("EnemyBox"));
 		Vector3 vector = baseT.position + ray.direction * 1000f;
 		if (Physics.Raycast(ray, out var hitInfo, 1000000f, layerMask.value))
@@ -594,14 +592,20 @@ public class HERO : MONO, IAnarchyScriptHero
 		if (Vector3.Cross(baseT.forward, vector2).y < 0f && state != HERO_STATE.Land)
 		{
 			position = ThunderSpearL.transform.position;
-			//ThunderSpearL.audio.Play();
+			if (AudioListener.volume > 0f)
+			{
+				ThunderSpearL.audio.Play();
+			}
 			SetThunderSpears(hasLeft: false, hasRight: true);
 			attackAnimation = "AHSS_shoot_l";
 		}
 		else
 		{
 			position = ThunderSpearR.transform.position;
-			//ThunderSpearR.audio.Play();
+			if (AudioListener.volume > 0f)
+			{
+				ThunderSpearR.audio.Play();
+			}
 			SetThunderSpears(hasLeft: true, hasRight: false);
 			attackAnimation = "AHSS_shoot_r";
 		}
@@ -642,10 +646,10 @@ public class HERO : MONO, IAnarchyScriptHero
 		}
 		if (FengCustomInputs.Inputs.isInputDown[InputCode.attack1] && skillCDDuration <= 0f)
 		{
-			//if (GameSettings.BombFlying > 0)
-			//{
-			//	CustomAudioManager.Play(CustomAudioManager.AudioFile.BombFlying);
-			//}
+			if (GameSettings.BombFlying > 0 && AudioListener.volume > 0f)
+			{
+				CustomAudioManager.Play(CustomAudioManager.AudioFile.BombFlying);
+			}
 			LaunchThunderSpear();
 		}
 		else if (myBomb != null && !myBomb.Disabled)
@@ -921,7 +925,7 @@ public class HERO : MONO, IAnarchyScriptHero
 				}
 			}
 		}
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && !basePV.isMine)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !basePV.isMine)
 		{
 			baseG.layer = LayerMask.NameToLayer("NetworkObject");
 			if (IN_GAME_MAIN_CAMERA.dayLight == DayLight.Night)
@@ -968,22 +972,18 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	public void SetInterpolationIfEnabled(bool interpolate)
 	{
-		if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE || (base.photonView.isMine && interpolate))
+		if (interpolate)
 		{
-			if ((int)FengGameManagerMKII.settings[294] == 0)
+			foreach (HERO hero in FengGameManagerMKII.heroes)
 			{
-				baseR.interpolation = RigidbodyInterpolation.Interpolate;
+				if (hero.photonView.isMine)
+				{
+					baseR.interpolation = RigidbodyInterpolation.Interpolate;
+				}
 			}
-			else if ((int)FengGameManagerMKII.settings[294] == 1)
-			{
-				baseR.interpolation = RigidbodyInterpolation.Extrapolate;
-			}
-			else if ((int)FengGameManagerMKII.settings[294] == 2)
-			{
-				baseR.interpolation = RigidbodyInterpolation.None;
-			}
+			return;
 		}
-		else if (!interpolate)
+		if (!interpolate)
 		{
 			baseR.interpolation = RigidbodyInterpolation.None;
 		}
@@ -1061,7 +1061,7 @@ public class HERO : MONO, IAnarchyScriptHero
 		falseAttack();
 		skillCDDuration = skillCDLast;
 		IN_GAME_MAIN_CAMERA.mainCamera.setMainObject(baseG);
-		if (IN_GAME_MAIN_CAMERA.gametype != 0)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE)
 		{
 			basePV.RPC("backToHumanRPC", PhotonTargets.Others);
 		}
@@ -1102,13 +1102,13 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	private void bodyLean()
 	{
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && !basePV.isMine)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !basePV.isMine)
 		{
 			return;
 		}
 		float z = 0f;
 		needLean = false;
-		if (!usingAhss && state == HERO_STATE.Attack && attackAnimation != "attack3_1" && attackAnimation != "attack3_2" && !IsFiringThunderSpear())
+		if (!useGun && state == HERO_STATE.Attack && attackAnimation != "attack3_1" && attackAnimation != "attack3_2" && !IsFiringThunderSpear())
 		{
 			targetRotation = Quaternion.Euler((0f - Mathf.Atan2(baseR.velocity.y, Mathf.Sqrt(baseR.velocity.x * baseR.velocity.x + baseR.velocity.z * baseR.velocity.z)) * 57.29578f) * (1f - Vector3.Angle(baseR.velocity, baseT.forward) / 90f), facingDirection, 0f);
 			if ((isLeftHandHooked && bulletLeft != null) || (isRightHandHooked && bulletRight != null))
@@ -1138,7 +1138,7 @@ public class HERO : MONO, IAnarchyScriptHero
 		if (needLean)
 		{
 			float num = 0f;
-			if (!usingAhss && state != HERO_STATE.Attack)
+			if (!useGun && state != HERO_STATE.Attack)
 			{
 				num = currentSpeed * 0.1f;
 				num = Mathf.Min(num, 20f);
@@ -1176,7 +1176,7 @@ public class HERO : MONO, IAnarchyScriptHero
 			float oldRangeCost = BombUtil.GetOldRangeCost(BombUtil.GetBombRange(num2, 0f, 4f, 7f));
 			float oldSpeedCost = BombUtil.GetOldSpeedCost(bombSpeed);
 			float oldCooldownCost = BombUtil.GetOldCooldownCost(bombCD);
-			base.photonView.RPC("BombStats", PhotonTargets.TLWandRRC, oldRadiusCost.ToString("0.##") + " / " + oldRangeCost.ToString("0.##") + " / " + oldSpeedCost.ToString("0.##") + " / " + oldCooldownCost.ToString("0.##") + " + " + num.ToString("0.##") + " / " + num2.ToString("0.##") + " / " + num3.ToString("0.##") + " / " + num4.ToString("0.##"));
+			base.photonView.RPC("BombStats", PhotonTargets.TLWUsers, oldRadiusCost.ToString("0.##") + " / " + oldRangeCost.ToString("0.##") + " / " + oldSpeedCost.ToString("0.##") + " / " + oldCooldownCost.ToString("0.##") + " + " + num.ToString("0.##") + " / " + num2.ToString("0.##") + " / " + num3.ToString("0.##") + " / " + num4.ToString("0.##"));
 			ExitGames.Client.Photon.Hashtable hashtable = new ExitGames.Client.Photon.Hashtable();
 			if ((int)FengGameManagerMKII.settings[359] == 0)
 			{
@@ -1314,7 +1314,7 @@ public class HERO : MONO, IAnarchyScriptHero
 		hookRefL2T = hookRefL2.transform;
 		hookRefR1T = hookRefR1.transform;
 		hookRefR2T = hookRefR2.transform;
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && !basePV.isMine)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !basePV.isMine)
 		{
 			return;
 		}
@@ -1397,9 +1397,9 @@ public class HERO : MONO, IAnarchyScriptHero
 		throwedBlades = false;
 		if (useGun)
 		{
-			if (basePV.isMine && GameSettings.GunsReload > 0)
+			if (basePV.isMine && GameSettings.GunsReload > 0 && AudioListener.volume > 0f)
 			{
-				//CustomAudioManager.Play(CustomAudioManager.AudioFile.GunsReload);
+				CustomAudioManager.Play(CustomAudioManager.AudioFile.GunsReload);
 			}
 			if (!leftGunHasBullet && !rightGunHasBullet)
 			{
@@ -1444,16 +1444,15 @@ public class HERO : MONO, IAnarchyScriptHero
 				{
 					reloadAnimation = "AHSS_gun_reload_both_air";
 				}
-                if (!InRoomChat.god) leftGunHasBullet = (rightGunHasBullet = false);
-                else leftGunHasBullet = (rightGunHasBullet = true);
-            }
+				leftGunHasBullet = (rightGunHasBullet = false);
+			}
 			crossFade(reloadAnimation, 0.05f);
 		}
 		else
 		{
-			if (basePV.isMine && GameSettings.BladesReload > 0)
+			if (basePV.isMine && GameSettings.BladesReload > 0 && AudioListener.volume > 0f)
 			{
-				//CustomAudioManager.Play(CustomAudioManager.AudioFile.BladesReload);
+				CustomAudioManager.Play(CustomAudioManager.AudioFile.BladesReload);
 			}
 			if (!grounded)
 			{
@@ -1572,7 +1571,7 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	private void checkTitan()
 	{
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		Ray ray = Camera.main.ScreenPointToRay(GetAimPosition());
 		LayerMask layerMask = 1 << LayerMask.NameToLayer("PlayerAttackBox");
 		LayerMask layerMask2 = 1 << LayerMask.NameToLayer("Ground");
 		LayerMask layerMask3 = 1 << LayerMask.NameToLayer("EnemyBox");
@@ -1594,9 +1593,9 @@ public class HERO : MONO, IAnarchyScriptHero
 				{
 					continue;
 				}
-				RaycastHit raycastHit;
-				RaycastHit raycastHit2 = (raycastHit = list[i]);
-				if (raycastHit2.distance < num)
+				RaycastHit raycastHit2;
+				RaycastHit raycastHit = (raycastHit2 = list[i]);
+				if (raycastHit.distance < num)
 				{
 					num -= 60f;
 					if (num <= 60f)
@@ -1652,7 +1651,7 @@ public class HERO : MONO, IAnarchyScriptHero
 		}
 		customAnimationSpeed();
 		playAnimation(currentPlayingClipName());
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && basePV.isMine)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && basePV.isMine)
 		{
 			basePV.RPC("netContinueAnimation", PhotonTargets.Others);
 		}
@@ -1708,14 +1707,14 @@ public class HERO : MONO, IAnarchyScriptHero
 			Quaternion rotation = Quaternion.Euler(0f, facingDirection, 0f);
 			baseR.rotation = rotation;
 			targetRotation = rotation;
-			//if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE)
-			//{
-			//	UnityEngine.Object.Instantiate(Resources.Load("FX/boost_smoke"), base.transform.position, base.transform.rotation);
-			//}
-			//else
-			//{
-			//	PhotonNetwork.Instantiate("FX/boost_smoke", base.transform.position, base.transform.rotation, 0);
-			//}
+			if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE)
+			{
+				UnityEngine.Object.Instantiate(Resources.Load("FX/boost_smoke"), base.transform.position, base.transform.rotation);
+			}
+			else
+			{
+				PhotonNetwork.Instantiate("FX/boost_smoke", base.transform.position, base.transform.rotation, 0);
+			}
 			dashTime = 0.5f;
 			if (GameSettings.BackflipBurst == 0)
 			{
@@ -1730,16 +1729,16 @@ public class HERO : MONO, IAnarchyScriptHero
 			state = HERO_STATE.AirDodge;
 			falseAttack();
 			baseR.AddForce(dashV * 40f, ForceMode.VelocityChange);
-			if (GameSettings.GasBurst > 0)
+			if (GameSettings.GasBurst > 0 && AudioListener.volume > 0f)
 			{
-				//CustomAudioManager.Play(CustomAudioManager.AudioFile.GasBurst);
+				CustomAudioManager.Play(CustomAudioManager.AudioFile.GasBurst);
 			}
 		}
 	}
 
 	public void die(Vector3 v, bool isBite)
-    {
-        if (invincible <= 0f)
+	{
+		if (invincible <= 0f)
 		{
 			if (titanForm && eren_titan != null)
 			{
@@ -1753,7 +1752,10 @@ public class HERO : MONO, IAnarchyScriptHero
 			{
 				RBullet.removeMe();
 			}
-			//meatDie.Play();
+			if (AudioListener.volume > 0f)
+			{
+				meatDie.Play();
+			}
 			if ((IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE || basePV.isMine) && !useGun)
 			{
 				leftbladetrail.Deactivate();
@@ -1768,16 +1770,14 @@ public class HERO : MONO, IAnarchyScriptHero
 			breakApart(v, isBite);
 			IN_GAME_MAIN_CAMERA.mainCamera.gameOver = true;
 			FengGameManagerMKII.instance.gameLose2();
-			if (InRoomChat.god)
-			{
-				FengGameManagerMKII.instance.needChooseSide = true;
-				FengGameManagerMKII.justSuicide = false;
-			}
-            falseAttack();
+			falseAttack();
 			hasDied = true;
-			//Transform obj = baseT.Find("audio_die");
-			//obj.parent = null;
-			//obj.GetComponent<AudioSource>().Play();
+			Transform transform = baseT.Find("audio_die");
+			transform.parent = null;
+			if (AudioListener.volume > 0f)
+			{
+				transform.GetComponent<AudioSource>().Play();
+			}
 			if (PlayerPrefs.HasKey("EnableSS") && PlayerPrefs.GetInt("EnableSS") == 1)
 			{
 				IN_GAME_MAIN_CAMERA.mainCamera.startSnapShot2(baseT.position, 0, null, 0.02f);
@@ -1787,8 +1787,8 @@ public class HERO : MONO, IAnarchyScriptHero
 	}
 
 	public void die2(Transform tf)
-    {
-        if (invincible <= 0f)
+	{
+		if (invincible <= 0f)
 		{
 			if (titanForm && eren_titan != null)
 			{
@@ -1802,23 +1802,24 @@ public class HERO : MONO, IAnarchyScriptHero
 			{
 				RBullet.removeMe();
 			}
-			//Transform obj = baseT.Find("audio_die");
-			//obj.parent = null;
-			//obj.GetComponent<AudioSource>().Play();
-			//meatDie.Play();
+			Transform transform = baseT.Find("audio_die");
+			transform.parent = null;
+			if (AudioListener.volume > 0f)
+			{
+				transform.GetComponent<AudioSource>().Play();
+			}
+			if (AudioListener.volume > 0f)
+			{
+				meatDie.Play();
+			}
 			IN_GAME_MAIN_CAMERA.mainCamera.setMainObject(null);
 			IN_GAME_MAIN_CAMERA.mainCamera.gameOver = true;
-            if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE)
+			if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE)
 			{
 				GameObject.Find("MultiplayerManager").GetComponent<FengGameManagerMKII>().ReportKillToChatConsoleFeed("Titan", "You", 0);
 			}
 			FengGameManagerMKII.instance.gameLose2();
-			if (InRoomChat.god)
-			{
-				FengGameManagerMKII.instance.needChooseSide = true;
-				FengGameManagerMKII.justSuicide = false;
-			}
-            falseAttack();
+			falseAttack();
 			hasDied = true;
 			((GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("hitMeat2"))).transform.position = baseT.position;
 			UnityEngine.Object.Destroy(baseG);
@@ -1879,12 +1880,12 @@ public class HERO : MONO, IAnarchyScriptHero
 		baseR.velocity = Vector3.zero;
 		baseT.position = eren_titan.transform.Find("Amarture/Core/Controller_Body/hip/spine/chest/neck").position;
 		titanForm = true;
-		if (IN_GAME_MAIN_CAMERA.gametype != 0)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE)
 		{
 			object[] parameters = new object[1] { eren_titan.GetPhotonView().viewID };
 			basePV.RPC("whoIsMyErenTitan", PhotonTargets.Others, parameters);
 		}
-		if (smoke_3dmg.enableEmission && IN_GAME_MAIN_CAMERA.gametype != 0 && basePV.isMine)
+		if (smoke_3dmg.enableEmission && IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && basePV.isMine)
 		{
 			object[] parameters2 = new object[1] { false };
 			basePV.RPC("net3DMGSMOKE", PhotonTargets.Others, parameters2);
@@ -1974,7 +1975,7 @@ public class HERO : MONO, IAnarchyScriptHero
 		currentSpeed = baseR.velocity.magnitude;
 		if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE || basePV.isMine)
 		{
-			if (state == HERO_STATE.Attack && usingAhss)
+			if (state == HERO_STATE.Attack && useGun)
 			{
 				baseT.rotation = Quaternion.Lerp(baseT.rotation, gunDummy.transform.rotation, Time.deltaTime * 30f);
 			}
@@ -2225,10 +2226,10 @@ public class HERO : MONO, IAnarchyScriptHero
 						}
 						if (num != 0f || num2 != 0f)
 						{
-							//if (basePV.isMine && GameSettings.Walk > 0 && !CustomAudioManager.Walk.isPlaying && baseA.IsPlaying("run"))
-							//{
-							//	//CustomAudioManager.Play(CustomAudioManager.AudioFile.Walk);
-							//}
+							if (basePV.isMine && GameSettings.Walk > 0 && AudioListener.volume > 0f && !CustomAudioManager.Walk.isPlaying && baseA.IsPlaying("run"))
+							{
+								CustomAudioManager.Play(CustomAudioManager.AudioFile.Walk);
+							}
 							if (!baseA.IsPlaying("run") && !baseA.IsPlaying("jump") && !baseA.IsPlaying("run_sasha") && (!baseA.IsPlaying("horse_geton") || baseA["horse_geton"].normalizedTime >= 0.5f))
 							{
 								if (buffTime > 0f && currentBuff == BUFF.SpeedUp)
@@ -2287,7 +2288,7 @@ public class HERO : MONO, IAnarchyScriptHero
 						float num7 = 0.6f * gravity * num6 / (2f * num5);
 						force += num7 * (myHorse.transform.position - baseT.position).normalized;
 					}
-					if (state != HERO_STATE.Attack || !usingAhss)
+					if (state != HERO_STATE.Attack || !useGun)
 					{
 						baseR.AddForce(force, ForceMode.VelocityChange);
 						baseR.rotation = Quaternion.Lerp(baseG.transform.rotation, Quaternion.Euler(0f, facingDirection, 0f), Time.deltaTime * 10f);
@@ -2443,10 +2444,10 @@ public class HERO : MONO, IAnarchyScriptHero
 					}
 					else if (baseA.IsPlaying("wallrun"))
 					{
-						//if (basePV.isMine && GameSettings.Walk > 0 && !CustomAudioManager.Walk.isPlaying)
-						//{
-						//	//CustomAudioManager.Play(CustomAudioManager.AudioFile.Walk);
-						//}
+						if (basePV.isMine && GameSettings.Walk > 0 && AudioListener.volume > 0f && !CustomAudioManager.Walk.isPlaying)
+						{
+							CustomAudioManager.Play(CustomAudioManager.AudioFile.Walk);
+						}
 						baseR.AddForce(Vector3.up * speed - baseR.velocity, ForceMode.VelocityChange);
 						wallRunTime += Time.deltaTime;
 						if (wallRunTime > 1f || (num2 == 0f && num == 0f))
@@ -2485,7 +2486,7 @@ public class HERO : MONO, IAnarchyScriptHero
 							facingDirection = num10;
 							targetRotation = Quaternion.Euler(0f, facingDirection, 0f);
 						}
-						if (!flag2 && !flag3 && !isMounted && FengCustomInputs.Inputs.isInput[InputCode.jump] && currentGas > 0f)
+						if (!isMounted && FengCustomInputs.Inputs.isInput[InputCode.jump] && currentGas > 0f)
 						{
 							if (num != 0f || num2 != 0f)
 							{
@@ -2609,23 +2610,25 @@ public class HERO : MONO, IAnarchyScriptHero
 				}
 				if (!_cancelGasDisable)
 				{
+					if (flag)
+					{
+						useGas(useGasSpeed * Time.deltaTime);
+					}
 					bool flag6 = ((GameSettings.yourGas > 0) ? flag : flag);
 					bool flag7 = ((GameSettings.yourGas > 0) ? smoke_3dmg.enableEmission : EnableSmoke);
 					if (flag6 != flag7)
 					{
-						if (IN_GAME_MAIN_CAMERA.gametype != 0 && base.photonView.isMine)
+						if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && base.photonView.isMine)
 						{
 							object[] parameters = new object[1] { flag6 };
 							basePV.RPC("net3DMGSMOKE", PhotonTargets.Others, parameters);
 						}
 						if (GameSettings.yourGas > 0)
 						{
-							useGas(useGasSpeed * Time.deltaTime);
 							smoke_3dmg.enableEmission = flag6;
 						}
 						else
 						{
-							useGas(useGasSpeed * Time.deltaTime);
 							EnableSmoke = flag6;
 						}
 					}
@@ -2736,9 +2739,9 @@ public class HERO : MONO, IAnarchyScriptHero
 	{
 		if ((baseA.IsPlaying(standAnimation) || baseA.IsPlaying("run") || baseA.IsPlaying("run_sasha")) && (currentBladeSta != totalBladeSta || currentBladeNum != totalBladeNum || currentGas != totalGas || leftBulletLeft != bulletMAX || rightBulletLeft != bulletMAX))
 		{
-			if (GameSettings.Refill > 0 && basePV.isMine)
+			if (GameSettings.Refill > 0 && AudioListener.volume > 0f && basePV.isMine)
 			{
-				//CustomAudioManager.Play(CustomAudioManager.AudioFile.Refill);
+				CustomAudioManager.Play(CustomAudioManager.AudioFile.Refill);
 			}
 			state = HERO_STATE.FillGas;
 			crossFade("supply", 0.1f);
@@ -2871,7 +2874,7 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	public void lateUpdate()
 	{
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && myNetWorkNameT != null)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && myNetWorkNameT != null)
 		{
 			if (titanForm && eren_titan != null)
 			{
@@ -2929,7 +2932,8 @@ public class HERO : MONO, IAnarchyScriptHero
 			{
 				Vector3 to = vector6 + vector7;
 				float num = Vector3.Angle(vector5 - baseT.position, baseR.velocity) * 0.001f * FengGameManagerMKII.instance.tiltSlider;
-				to2 = Quaternion.Euler(z: ((IN_GAME_MAIN_CAMERA.mainT.right + vector7.normalized).magnitude >= 1f) ? ((0f - Vector3.Angle(vector6, to)) * num) : (Vector3.Angle(vector6, to) * num), x: IN_GAME_MAIN_CAMERA.mainT.rotation.eulerAngles.x, y: IN_GAME_MAIN_CAMERA.mainT.rotation.eulerAngles.y);
+				Vector3 vector8 = IN_GAME_MAIN_CAMERA.mainT.right + vector7.normalized;
+				to2 = Quaternion.Euler(IN_GAME_MAIN_CAMERA.mainT.rotation.eulerAngles.x, IN_GAME_MAIN_CAMERA.mainT.rotation.eulerAngles.y, (vector8.magnitude >= 1f) ? ((0f - Vector3.Angle(vector6, to)) * num) : (Vector3.Angle(vector6, to) * num));
 			}
 			else
 			{
@@ -2956,8 +2960,8 @@ public class HERO : MONO, IAnarchyScriptHero
 		}
 		if (leftArmAim || rightArmAim)
 		{
-			Vector3 vector8 = gunTarget - baseT.position;
-			float num2 = 0f - Mathf.DeltaAngle((0f - Mathf.Atan2(vector8.z, vector8.x)) * 57.29578f, baseT.rotation.eulerAngles.y - 90f);
+			Vector3 vector9 = gunTarget - baseT.position;
+			float num2 = 0f - Mathf.DeltaAngle((0f - Mathf.Atan2(vector9.z, vector9.x)) * 57.29578f, baseT.rotation.eulerAngles.y - 90f);
 			headMovement();
 			if (!isLeftHandHooked && leftArmAim && num2 < 40f && num2 > -90f)
 			{
@@ -3156,7 +3160,7 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	private void loadskin()
 	{
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && !basePV.isMine)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !basePV.isMine)
 		{
 			return;
 		}
@@ -3260,7 +3264,6 @@ public class HERO : MONO, IAnarchyScriptHero
 		string text14 = (string)FengGameManagerMKII.settings[num14];
 		string text15 = (string)FengGameManagerMKII.settings[num15];
 		string text16 = text12 + "," + text2 + "," + text3 + "," + text4 + "," + text5 + "," + text6 + "," + text7 + "," + text8 + "," + text9 + "," + text10 + "," + text11 + "," + text + "," + text13 + "," + text14 + "," + text15;
-
 		if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE)
 		{
 			if ((int)FengGameManagerMKII.settings[0] != 0)
@@ -3318,192 +3321,192 @@ public class HERO : MONO, IAnarchyScriptHero
 		}
 		if (ThunderSpearLModel != null)
 		{
-			Renderer renderer7 = ThunderSpearLModel.renderer;
+			Renderer renderer = ThunderSpearLModel.renderer;
 			if (iteratorVariable2[13].EndsWith(".jpg") || iteratorVariable2[13].EndsWith(".png") || iteratorVariable2[13].EndsWith(".jpeg"))
 			{
 				if (RCextensions.CheckIP(iteratorVariable2[13]))
 				{
 					if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[13]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[13]);
-						yield return link18;
-						Texture2D mainTexture = RCextensions.loadimage(link18, mipmap, 1000000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[13]);
+						yield return link;
+						Texture2D mainTexture = RCextensions.loadimage(link, mipmap, 1000000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[13]))
 						{
 							iteratorVariable1 = true;
-							renderer7.material.mainTexture = mainTexture;
-							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[13], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[13]];
+							renderer.material.mainTexture = mainTexture;
+							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[13], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[13]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[13]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[13]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[13]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[13]];
 					}
 				}
 			}
 			else if (iteratorVariable2[13].ToLower() == "transparent")
 			{
-				renderer7.enabled = false;
+				renderer.enabled = false;
 			}
 		}
 		if (ThunderSpearRModel != null)
 		{
-			Renderer renderer7 = ThunderSpearRModel.renderer;
+			Renderer renderer = ThunderSpearRModel.renderer;
 			if (iteratorVariable2[14].EndsWith(".jpg") || iteratorVariable2[14].EndsWith(".png") || iteratorVariable2[14].EndsWith(".jpeg"))
 			{
 				if (RCextensions.CheckIP(iteratorVariable2[14]))
 				{
 					if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[14]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[14]);
-						yield return link18;
-						Texture2D mainTexture2 = RCextensions.loadimage(link18, mipmap, 1000000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[14]);
+						yield return link;
+						Texture2D mainTexture2 = RCextensions.loadimage(link, mipmap, 1000000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[14]))
 						{
 							iteratorVariable1 = true;
-							renderer7.material.mainTexture = mainTexture2;
-							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[14], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[14]];
+							renderer.material.mainTexture = mainTexture2;
+							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[14], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[14]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[14]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[14]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[14]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[14]];
 					}
 				}
 			}
 			else if (iteratorVariable2[14].ToLower() == "transparent")
 			{
-				renderer7.enabled = false;
+				renderer.enabled = false;
 			}
 		}
 		if (setup.part_hair_1 != null)
 		{
-			Renderer renderer7 = setup.part_hair_1.renderer;
+			Renderer renderer = setup.part_hair_1.renderer;
 			if (iteratorVariable2[1].EndsWith(".jpg") || iteratorVariable2[1].EndsWith(".png") || iteratorVariable2[1].EndsWith(".jpeg"))
 			{
 				if (RCextensions.CheckIP(iteratorVariable2[1]))
 				{
 					if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[1]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[1]);
-						yield return link18;
-						Texture2D mainTexture3 = RCextensions.loadimage(link18, mipmap, 200000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[1]);
+						yield return link;
+						Texture2D mainTexture3 = RCextensions.loadimage(link, mipmap, 200000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[1]))
 						{
 							iteratorVariable1 = true;
 							if (setup.myCostume.hairInfo.id >= 0)
 							{
-								renderer7.material = CharacterMaterials.materials[setup.myCostume.hairInfo.texture];
+								renderer.material = CharacterMaterials.materials[setup.myCostume.hairInfo.texture];
 							}
-							renderer7.material.mainTexture = mainTexture3;
-							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[1], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[1]];
+							renderer.material.mainTexture = mainTexture3;
+							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[1], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[1]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[1]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[1]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[1]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[1]];
 					}
 				}
 			}
 			else if (iteratorVariable2[1].ToLower() == "transparent")
 			{
-				renderer7.enabled = false;
+				renderer.enabled = false;
 			}
 		}
 		if (setup.part_cape != null)
 		{
-			Renderer renderer7 = setup.part_cape.renderer;
+			Renderer renderer = setup.part_cape.renderer;
 			if (iteratorVariable2[7].EndsWith(".jpg") || iteratorVariable2[7].EndsWith(".png") || iteratorVariable2[7].EndsWith(".jpeg"))
 			{
 				if (RCextensions.CheckIP(iteratorVariable2[7]))
 				{
 					if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[7]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[7]);
-						yield return link18;
-						Texture2D mainTexture4 = RCextensions.loadimage(link18, mipmap, 300000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[7]);
+						yield return link;
+						Texture2D mainTexture4 = RCextensions.loadimage(link, mipmap, 300000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[7]))
 						{
 							iteratorVariable1 = true;
-							renderer7.material.mainTexture = mainTexture4;
-							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[7], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[7]];
+							renderer.material.mainTexture = mainTexture4;
+							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[7], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[7]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[7]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[7]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[7]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[7]];
 					}
 				}
 			}
 			else if (iteratorVariable2[7].ToLower() == "transparent")
 			{
-				renderer7.enabled = false;
+				renderer.enabled = false;
 			}
 		}
 		if (setup.part_chest_3 != null)
 		{
-			Renderer renderer7 = setup.part_chest_3.renderer;
+			Renderer renderer = setup.part_chest_3.renderer;
 			if (iteratorVariable2[6].EndsWith(".jpg") || iteratorVariable2[6].EndsWith(".png") || iteratorVariable2[6].EndsWith(".jpeg"))
 			{
 				if (RCextensions.CheckIP(iteratorVariable2[6]))
 				{
 					if (!FengGameManagerMKII.linkHash[1].ContainsKey(iteratorVariable2[6]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[6]);
-						yield return link18;
-						Texture2D mainTexture5 = RCextensions.loadimage(link18, mipmap, 500000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[6]);
+						yield return link;
+						Texture2D mainTexture5 = RCextensions.loadimage(link, mipmap, 500000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[1].ContainsKey(iteratorVariable2[6]))
 						{
 							iteratorVariable1 = true;
-							renderer7.material.mainTexture = mainTexture5;
-							FengGameManagerMKII.linkHash[1].Add(iteratorVariable2[6], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[6]];
+							renderer.material.mainTexture = mainTexture5;
+							FengGameManagerMKII.linkHash[1].Add(iteratorVariable2[6], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[6]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[6]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[6]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[6]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[6]];
 					}
 				}
 			}
 			else if (iteratorVariable2[6].ToLower() == "transparent")
 			{
-				renderer7.enabled = false;
+				renderer.enabled = false;
 			}
 		}
 		Renderer[] componentsInChildren = GetComponentsInChildren<Renderer>();
-		foreach (Renderer renderer7 in componentsInChildren)
+		foreach (Renderer renderer in componentsInChildren)
 		{
-			if (renderer7.name.Contains(FengGameManagerMKII.s[1]))
+			if (renderer.name.Contains(FengGameManagerMKII.s[1]))
 			{
 				if (iteratorVariable2[1].EndsWith(".jpg") || iteratorVariable2[1].EndsWith(".png") || iteratorVariable2[1].EndsWith(".jpeg"))
 				{
@@ -3513,37 +3516,37 @@ public class HERO : MONO, IAnarchyScriptHero
 					}
 					if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[1]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[1]);
-						yield return link18;
-						Texture2D mainTexture6 = RCextensions.loadimage(link18, mipmap, 200000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[1]);
+						yield return link;
+						Texture2D mainTexture6 = RCextensions.loadimage(link, mipmap, 200000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[1]))
 						{
 							iteratorVariable1 = true;
 							if (setup.myCostume.hairInfo.id >= 0)
 							{
-								renderer7.material = CharacterMaterials.materials[setup.myCostume.hairInfo.texture];
+								renderer.material = CharacterMaterials.materials[setup.myCostume.hairInfo.texture];
 							}
-							renderer7.material.mainTexture = mainTexture6;
-							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[1], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[1]];
+							renderer.material.mainTexture = mainTexture6;
+							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[1], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[1]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[1]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[1]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[1]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[1]];
 					}
 				}
 				else if (iteratorVariable2[1].ToLower() == "transparent")
 				{
-					renderer7.enabled = false;
+					renderer.enabled = false;
 				}
 			}
-			else if (renderer7.name.Contains(FengGameManagerMKII.s[2]))
+			else if (renderer.name.Contains(FengGameManagerMKII.s[2]))
 			{
 				if (iteratorVariable2[2].EndsWith(".jpg") || iteratorVariable2[2].EndsWith(".png") || iteratorVariable2[2].EndsWith(".jpeg"))
 				{
@@ -3553,35 +3556,35 @@ public class HERO : MONO, IAnarchyScriptHero
 					}
 					if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[2]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[2]);
-						yield return link18;
-						Texture2D mainTexture7 = RCextensions.loadimage(link18, mipmap, 200000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[2]);
+						yield return link;
+						Texture2D mainTexture7 = RCextensions.loadimage(link, mipmap, 200000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[2]))
 						{
 							iteratorVariable1 = true;
-							renderer7.material.mainTextureScale = renderer7.material.mainTextureScale * 8f;
-							renderer7.material.mainTextureOffset = new Vector2(0f, 0f);
-							renderer7.material.mainTexture = mainTexture7;
-							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[2], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[2]];
+							renderer.material.mainTextureScale = renderer.material.mainTextureScale * 8f;
+							renderer.material.mainTextureOffset = new Vector2(0f, 0f);
+							renderer.material.mainTexture = mainTexture7;
+							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[2], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[2]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[2]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[2]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[2]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[2]];
 					}
 				}
 				else if (iteratorVariable2[2].ToLower() == "transparent")
 				{
-					renderer7.enabled = false;
+					renderer.enabled = false;
 				}
 			}
-			else if (renderer7.name.Contains(FengGameManagerMKII.s[3]))
+			else if (renderer.name.Contains(FengGameManagerMKII.s[3]))
 			{
 				if (iteratorVariable2[3].EndsWith(".jpg") || iteratorVariable2[3].EndsWith(".png") || iteratorVariable2[3].EndsWith(".jpeg"))
 				{
@@ -3591,35 +3594,35 @@ public class HERO : MONO, IAnarchyScriptHero
 					}
 					if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[3]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[3]);
-						yield return link18;
-						Texture2D mainTexture8 = RCextensions.loadimage(link18, mipmap, 200000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[3]);
+						yield return link;
+						Texture2D mainTexture8 = RCextensions.loadimage(link, mipmap, 200000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[3]))
 						{
 							iteratorVariable1 = true;
-							renderer7.material.mainTextureScale = renderer7.material.mainTextureScale * 8f;
-							renderer7.material.mainTextureOffset = new Vector2(0f, 0f);
-							renderer7.material.mainTexture = mainTexture8;
-							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[3], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[3]];
+							renderer.material.mainTextureScale = renderer.material.mainTextureScale * 8f;
+							renderer.material.mainTextureOffset = new Vector2(0f, 0f);
+							renderer.material.mainTexture = mainTexture8;
+							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[3], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[3]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[3]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[3]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[3]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[3]];
 					}
 				}
 				else if (iteratorVariable2[3].ToLower() == "transparent")
 				{
-					renderer7.enabled = false;
+					renderer.enabled = false;
 				}
 			}
-			else if (renderer7.name.Contains(FengGameManagerMKII.s[4]))
+			else if (renderer.name.Contains(FengGameManagerMKII.s[4]))
 			{
 				if (iteratorVariable2[4].EndsWith(".jpg") || iteratorVariable2[4].EndsWith(".png") || iteratorVariable2[4].EndsWith(".jpeg"))
 				{
@@ -3629,35 +3632,35 @@ public class HERO : MONO, IAnarchyScriptHero
 					}
 					if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[4]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[4]);
-						yield return link18;
-						Texture2D mainTexture9 = RCextensions.loadimage(link18, mipmap, 200000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[4]);
+						yield return link;
+						Texture2D mainTexture9 = RCextensions.loadimage(link, mipmap, 200000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[4]))
 						{
 							iteratorVariable1 = true;
-							renderer7.material.mainTextureScale = renderer7.material.mainTextureScale * 8f;
-							renderer7.material.mainTextureOffset = new Vector2(0f, 0f);
-							renderer7.material.mainTexture = mainTexture9;
-							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[4], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[4]];
+							renderer.material.mainTextureScale = renderer.material.mainTextureScale * 8f;
+							renderer.material.mainTextureOffset = new Vector2(0f, 0f);
+							renderer.material.mainTexture = mainTexture9;
+							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[4], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[4]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[4]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[4]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[4]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[4]];
 					}
 				}
 				else if (iteratorVariable2[4].ToLower() == "transparent")
 				{
-					renderer7.enabled = false;
+					renderer.enabled = false;
 				}
 			}
-			else if (renderer7.name.Contains(FengGameManagerMKII.s[5]) || renderer7.name.Contains(FengGameManagerMKII.s[6]) || renderer7.name.Contains(FengGameManagerMKII.s[10]))
+			else if (renderer.name.Contains(FengGameManagerMKII.s[5]) || renderer.name.Contains(FengGameManagerMKII.s[6]) || renderer.name.Contains(FengGameManagerMKII.s[10]))
 			{
 				if (iteratorVariable2[5].EndsWith(".jpg") || iteratorVariable2[5].EndsWith(".png") || iteratorVariable2[5].EndsWith(".jpeg"))
 				{
@@ -3667,33 +3670,33 @@ public class HERO : MONO, IAnarchyScriptHero
 					}
 					if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[5]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[5]);
-						yield return link18;
-						Texture2D mainTexture10 = RCextensions.loadimage(link18, mipmap, 200000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[5]);
+						yield return link;
+						Texture2D mainTexture10 = RCextensions.loadimage(link, mipmap, 200000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[5]))
 						{
 							iteratorVariable1 = true;
-							renderer7.material.mainTexture = mainTexture10;
-							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[5], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[5]];
+							renderer.material.mainTexture = mainTexture10;
+							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[5], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[5]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[5]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[5]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[5]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[5]];
 					}
 				}
 				else if (iteratorVariable2[5].ToLower() == "transparent")
 				{
-					renderer7.enabled = false;
+					renderer.enabled = false;
 				}
 			}
-			else if (renderer7.name.Contains(FengGameManagerMKII.s[7]) || renderer7.name.Contains(FengGameManagerMKII.s[8]) || renderer7.name.Contains(FengGameManagerMKII.s[9]) || renderer7.name.Contains(FengGameManagerMKII.s[24]))
+			else if (renderer.name.Contains(FengGameManagerMKII.s[7]) || renderer.name.Contains(FengGameManagerMKII.s[8]) || renderer.name.Contains(FengGameManagerMKII.s[9]) || renderer.name.Contains(FengGameManagerMKII.s[24]))
 			{
 				if (iteratorVariable2[6].EndsWith(".jpg") || iteratorVariable2[6].EndsWith(".png") || iteratorVariable2[6].EndsWith(".jpeg"))
 				{
@@ -3703,33 +3706,33 @@ public class HERO : MONO, IAnarchyScriptHero
 					}
 					if (!FengGameManagerMKII.linkHash[1].ContainsKey(iteratorVariable2[6]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[6]);
-						yield return link18;
-						Texture2D mainTexture11 = RCextensions.loadimage(link18, mipmap, 500000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[6]);
+						yield return link;
+						Texture2D mainTexture11 = RCextensions.loadimage(link, mipmap, 500000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[1].ContainsKey(iteratorVariable2[6]))
 						{
 							iteratorVariable1 = true;
-							renderer7.material.mainTexture = mainTexture11;
-							FengGameManagerMKII.linkHash[1].Add(iteratorVariable2[6], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[6]];
+							renderer.material.mainTexture = mainTexture11;
+							FengGameManagerMKII.linkHash[1].Add(iteratorVariable2[6], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[6]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[6]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[6]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[6]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[6]];
 					}
 				}
 				else if (iteratorVariable2[6].ToLower() == "transparent")
 				{
-					renderer7.enabled = false;
+					renderer.enabled = false;
 				}
 			}
-			else if (renderer7.name.Contains(FengGameManagerMKII.s[11]) || renderer7.name.Contains(FengGameManagerMKII.s[12]))
+			else if (renderer.name.Contains(FengGameManagerMKII.s[11]) || renderer.name.Contains(FengGameManagerMKII.s[12]))
 			{
 				if (iteratorVariable2[7].EndsWith(".jpg") || iteratorVariable2[7].EndsWith(".png") || iteratorVariable2[7].EndsWith(".jpeg"))
 				{
@@ -3739,33 +3742,33 @@ public class HERO : MONO, IAnarchyScriptHero
 					}
 					if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[7]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[7]);
-						yield return link18;
-						Texture2D mainTexture12 = RCextensions.loadimage(link18, mipmap, 200000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[7]);
+						yield return link;
+						Texture2D mainTexture12 = RCextensions.loadimage(link, mipmap, 200000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[7]))
 						{
 							iteratorVariable1 = true;
-							renderer7.material.mainTexture = mainTexture12;
-							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[7], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[7]];
+							renderer.material.mainTexture = mainTexture12;
+							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[7], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[7]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[7]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[7]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[7]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[7]];
 					}
 				}
 				else if (iteratorVariable2[7].ToLower() == "transparent")
 				{
-					renderer7.enabled = false;
+					renderer.enabled = false;
 				}
 			}
-			else if (renderer7.name.Contains(FengGameManagerMKII.s[15]) || ((renderer7.name.Contains(FengGameManagerMKII.s[13]) || renderer7.name.Contains(FengGameManagerMKII.s[26])) && !renderer7.name.Contains("_r")))
+			else if (renderer.name.Contains(FengGameManagerMKII.s[15]) || ((renderer.name.Contains(FengGameManagerMKII.s[13]) || renderer.name.Contains(FengGameManagerMKII.s[26])) && !renderer.name.Contains("_r")))
 			{
 				if (iteratorVariable2[8].EndsWith(".jpg") || iteratorVariable2[8].EndsWith(".png") || iteratorVariable2[8].EndsWith(".jpeg"))
 				{
@@ -3775,33 +3778,33 @@ public class HERO : MONO, IAnarchyScriptHero
 					}
 					if (!FengGameManagerMKII.linkHash[1].ContainsKey(iteratorVariable2[8]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[8]);
-						yield return link18;
-						Texture2D mainTexture13 = RCextensions.loadimage(link18, mipmap, 500000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[8]);
+						yield return link;
+						Texture2D mainTexture13 = RCextensions.loadimage(link, mipmap, 500000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[1].ContainsKey(iteratorVariable2[8]))
 						{
 							iteratorVariable1 = true;
-							renderer7.material.mainTexture = mainTexture13;
-							FengGameManagerMKII.linkHash[1].Add(iteratorVariable2[8], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[8]];
+							renderer.material.mainTexture = mainTexture13;
+							FengGameManagerMKII.linkHash[1].Add(iteratorVariable2[8], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[8]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[8]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[8]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[8]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[8]];
 					}
 				}
 				else if (iteratorVariable2[8].ToLower() == "transparent")
 				{
-					renderer7.enabled = false;
+					renderer.enabled = false;
 				}
 			}
-			else if (renderer7.name.Contains(FengGameManagerMKII.s[17]) || renderer7.name.Contains(FengGameManagerMKII.s[16]) || (renderer7.name.Contains(FengGameManagerMKII.s[26]) && renderer7.name.Contains("_r")))
+			else if (renderer.name.Contains(FengGameManagerMKII.s[17]) || renderer.name.Contains(FengGameManagerMKII.s[16]) || (renderer.name.Contains(FengGameManagerMKII.s[26]) && renderer.name.Contains("_r")))
 			{
 				if (iteratorVariable2[9].EndsWith(".jpg") || iteratorVariable2[9].EndsWith(".png") || iteratorVariable2[9].EndsWith(".jpeg"))
 				{
@@ -3811,33 +3814,33 @@ public class HERO : MONO, IAnarchyScriptHero
 					}
 					if (!FengGameManagerMKII.linkHash[1].ContainsKey(iteratorVariable2[9]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[9]);
-						yield return link18;
-						Texture2D mainTexture14 = RCextensions.loadimage(link18, mipmap, 500000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[9]);
+						yield return link;
+						Texture2D mainTexture14 = RCextensions.loadimage(link, mipmap, 500000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[1].ContainsKey(iteratorVariable2[9]))
 						{
 							iteratorVariable1 = true;
-							renderer7.material.mainTexture = mainTexture14;
-							FengGameManagerMKII.linkHash[1].Add(iteratorVariable2[9], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[9]];
+							renderer.material.mainTexture = mainTexture14;
+							FengGameManagerMKII.linkHash[1].Add(iteratorVariable2[9], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[9]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[9]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[9]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[9]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[9]];
 					}
 				}
 				else if (iteratorVariable2[9].ToLower() == "transparent")
 				{
-					renderer7.enabled = false;
+					renderer.enabled = false;
 				}
 			}
-			else if (renderer7.name == FengGameManagerMKII.s[18] && iteratorVariable3)
+			else if (renderer.name == FengGameManagerMKII.s[18] && iteratorVariable3)
 			{
 				if (iteratorVariable2[10].EndsWith(".jpg") || iteratorVariable2[10].EndsWith(".png") || iteratorVariable2[10].EndsWith(".jpeg"))
 				{
@@ -3847,35 +3850,35 @@ public class HERO : MONO, IAnarchyScriptHero
 					}
 					if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[10]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[10]);
-						yield return link18;
-						Texture2D mainTexture15 = RCextensions.loadimage(link18, mipmap, 200000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[10]);
+						yield return link;
+						Texture2D mainTexture15 = RCextensions.loadimage(link, mipmap, 200000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[10]))
 						{
 							iteratorVariable1 = true;
-							renderer7.material.mainTexture = mainTexture15;
-							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[10], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[10]];
+							renderer.material.mainTexture = mainTexture15;
+							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[10], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[10]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[10]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[10]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[10]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[10]];
 					}
 				}
 				else if (iteratorVariable2[10].ToLower() == "transparent")
 				{
-					renderer7.enabled = false;
+					renderer.enabled = false;
 				}
 			}
 			else
 			{
-				if (!renderer7.name.Contains(FengGameManagerMKII.s[25]))
+				if (!renderer.name.Contains(FengGameManagerMKII.s[25]))
 				{
 					continue;
 				}
@@ -3887,30 +3890,30 @@ public class HERO : MONO, IAnarchyScriptHero
 					}
 					if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[11]))
 					{
-						WWW link18 = new WWW(iteratorVariable2[11]);
-						yield return link18;
-						Texture2D mainTexture16 = RCextensions.loadimage(link18, mipmap, 200000);
-						link18.Dispose();
+						WWW link = new WWW(iteratorVariable2[11]);
+						yield return link;
+						Texture2D mainTexture16 = RCextensions.loadimage(link, mipmap, 200000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[11]))
 						{
 							iteratorVariable1 = true;
-							renderer7.material.mainTexture = mainTexture16;
-							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[11], renderer7.material);
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[11]];
+							renderer.material.mainTexture = mainTexture16;
+							FengGameManagerMKII.linkHash[0].Add(iteratorVariable2[11], renderer.material);
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[11]];
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[11]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[11]];
 						}
 					}
 					else
 					{
-						renderer7.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[11]];
+						renderer.material = (Material)FengGameManagerMKII.linkHash[0][iteratorVariable2[11]];
 					}
 				}
 				else if (iteratorVariable2[11].ToLower() == "transparent")
 				{
-					renderer7.enabled = false;
+					renderer.enabled = false;
 				}
 			}
 		}
@@ -3920,9 +3923,9 @@ public class HERO : MONO, IAnarchyScriptHero
 			if (gameObject != null)
 			{
 				componentsInChildren = gameObject.GetComponentsInChildren<Renderer>();
-				foreach (Renderer renderer7 in componentsInChildren)
+				foreach (Renderer renderer in componentsInChildren)
 				{
-					if (!renderer7.name.Contains(FengGameManagerMKII.s[19]))
+					if (!renderer.name.Contains(FengGameManagerMKII.s[19]))
 					{
 						continue;
 					}
@@ -3934,30 +3937,30 @@ public class HERO : MONO, IAnarchyScriptHero
 						}
 						if (!FengGameManagerMKII.linkHash[1].ContainsKey(iteratorVariable2[0]))
 						{
-							WWW link18 = new WWW(iteratorVariable2[0]);
-							yield return link18;
-							Texture2D mainTexture17 = RCextensions.loadimage(link18, mipmap, 500000);
-							link18.Dispose();
+							WWW link = new WWW(iteratorVariable2[0]);
+							yield return link;
+							Texture2D mainTexture17 = RCextensions.loadimage(link, mipmap, 500000);
+							link.Dispose();
 							if (!FengGameManagerMKII.linkHash[1].ContainsKey(iteratorVariable2[0]))
 							{
 								iteratorVariable1 = true;
-								renderer7.material.mainTexture = mainTexture17;
-								FengGameManagerMKII.linkHash[1].Add(iteratorVariable2[0], renderer7.material);
-								renderer7.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[0]];
+								renderer.material.mainTexture = mainTexture17;
+								FengGameManagerMKII.linkHash[1].Add(iteratorVariable2[0], renderer.material);
+								renderer.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[0]];
 							}
 							else
 							{
-								renderer7.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[0]];
+								renderer.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[0]];
 							}
 						}
 						else
 						{
-							renderer7.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[0]];
+							renderer.material = (Material)FengGameManagerMKII.linkHash[1][iteratorVariable2[0]];
 						}
 					}
 					else if (iteratorVariable2[0].ToLower() == "transparent")
 					{
-						renderer7.enabled = false;
+						renderer.enabled = false;
 					}
 				}
 			}
@@ -3970,10 +3973,10 @@ public class HERO : MONO, IAnarchyScriptHero
 		{
 			if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[12]))
 			{
-				WWW link18 = new WWW(iteratorVariable2[12]);
-				yield return link18;
-				Texture2D mainTexture18 = RCextensions.loadimage(link18, mipmap, 200000);
-				link18.Dispose();
+				WWW link = new WWW(iteratorVariable2[12]);
+				yield return link;
+				Texture2D mainTexture18 = RCextensions.loadimage(link, mipmap, 200000);
+				link.Dispose();
 				if (!FengGameManagerMKII.linkHash[0].ContainsKey(iteratorVariable2[12]))
 				{
 					iteratorVariable1 = true;
@@ -4020,10 +4023,6 @@ public class HERO : MONO, IAnarchyScriptHero
 	{
 		hasDied = true;
 		state = HERO_STATE.Die;
-		if (!basePV.isMine)
-		{
-            FengGameManagerMKII.instance.photonView.RPC("Chat", PhotonPlayer.Find(base.photonView.owner.ID), "<color=#FFCC00>type -rev to revive</color>", string.Empty);
-        }
 	}
 
 	[RPC]
@@ -4084,14 +4083,9 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	[RPC]
 	public void netDie(Vector3 v, bool isBite, int viewID = -1, string titanName = "", bool killByTitan = true, PhotonMessageInfo info = null)
-    {
-        if (basePV.isMine && info != null && IN_GAME_MAIN_CAMERA.gamemode != GAMEMODE.BOSS_FIGHT_CT)
+	{
+		if (basePV.isMine && info != null && IN_GAME_MAIN_CAMERA.gamemode != GAMEMODE.BOSS_FIGHT_CT)
 		{
-			if (InRoomChat.god)
-			{
-				FengGameManagerMKII.instance.needChooseSide = true;
-				FengGameManagerMKII.justSuicide = false;
-			}
 			if (invincible > 0f || (PhotonNetwork.player.customProperties["dead"] != null && RCextensions.returnBoolFromObject(PhotonNetwork.player.customProperties["dead"])))
 			{
 				FengGameManagerMKII.ThrowJusticeDefensive(info.sender, "malicious netDie1");
@@ -4173,7 +4167,10 @@ public class HERO : MONO, IAnarchyScriptHero
 		{
 			RBullet.removeMe();
 		}
-		//meatDie.Play();
+		if (AudioListener.volume > 0f)
+		{
+			meatDie.Play();
+		}
 		if (!useGun && (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE || basePV.isMine))
 		{
 			leftbladetrail.Deactivate();
@@ -4194,7 +4191,10 @@ public class HERO : MONO, IAnarchyScriptHero
 		if (transform != null)
 		{
 			transform.parent = null;
-			//transform.GetComponent<AudioSource>().Play();
+			if (AudioListener.volume > 0f)
+			{
+				transform.GetComponent<AudioSource>().Play();
+			}
 		}
 		sync.disabled = true;
 		if (basePV.isMine)
@@ -4202,9 +4202,9 @@ public class HERO : MONO, IAnarchyScriptHero
 			PhotonNetwork.RemoveRPCs(basePV);
 			ExitGames.Client.Photon.Hashtable hashtable = new ExitGames.Client.Photon.Hashtable();
 			hashtable.Add("dead", true);
-			hashtable.Add("deaths",RCextensions.returnIntFromObject(PhotonNetwork.player.customProperties["deaths"]) + 1);
-			PhotonNetwork.player.SetCustomProperties(hashtable); //tasw
-            object[] parameters = new object[1] { (!(titanName == string.Empty)) ? 1 : 0 };
+			hashtable.Add("deaths", RCextensions.returnIntFromObject(PhotonNetwork.player.customProperties["deaths"]) + 1);
+			PhotonNetwork.player.SetCustomProperties(hashtable);
+			object[] parameters = new object[1] { (!(titanName == string.Empty)) ? 1 : 0 };
 			FengGameManagerMKII.PView.RPC("someOneIsDead", PhotonTargets.MasterClient, parameters);
 			if (viewID != -1)
 			{
@@ -4213,8 +4213,8 @@ public class HERO : MONO, IAnarchyScriptHero
 				{
 					FengGameManagerMKII.instance.sendKillInfo(killByTitan, "[FFC000][" + info.sender.ID + "][FFFFFF]" + RCextensions.returnStringFromObject(photonView.owner.customProperties["name"]), t2: false, RCextensions.returnStringFromObject(PhotonNetwork.player.customProperties["name"]), 0);
 					hashtable = new ExitGames.Client.Photon.Hashtable();
-                    hashtable.Add("kills", RCextensions.returnIntFromObject(photonView.owner.customProperties["kills"]) + 1); //tasw
-                    photonView.owner.SetCustomProperties(hashtable);
+					hashtable.Add("kills", RCextensions.returnIntFromObject(photonView.owner.customProperties["kills"]) + 1);
+					photonView.owner.SetCustomProperties(hashtable);
 				}
 			}
 			else
@@ -4251,7 +4251,10 @@ public class HERO : MONO, IAnarchyScriptHero
 				skillCD.transform.localPosition = localPosition;
 			}
 		}
-		//meatDie.Play();
+		if (AudioListener.volume > 0f)
+		{
+			meatDie.Play();
+		}
 		if (bulletLeft != null)
 		{
 			LBullet.removeMe();
@@ -4260,25 +4263,23 @@ public class HERO : MONO, IAnarchyScriptHero
 		{
 			RBullet.removeMe();
 		}
-		//Transform transform = baseT.Find("audio_die");
-		//if (transform != null)
-		//{
-		//	transform.parent = null;
-		//	//transform.GetComponent<AudioSource>().Play();
-		//}
+		Transform transform = baseT.Find("audio_die");
+		if (transform != null)
+		{
+			transform.parent = null;
+			if (AudioListener.volume > 0f)
+			{
+				transform.GetComponent<AudioSource>().Play();
+			}
+		}
 		if (basePV.isMine)
 		{
 			IN_GAME_MAIN_CAMERA.mainCamera.setMainObject(null);
 			IN_GAME_MAIN_CAMERA.mainCamera.setSpectorMode(val: true);
 			IN_GAME_MAIN_CAMERA.mainCamera.gameOver = true;
 			FengGameManagerMKII.instance.myRespawnTime = 0f;
-			if (InRoomChat.god)
-			{
-				FengGameManagerMKII.instance.needChooseSide = true;
-				FengGameManagerMKII.justSuicide = false;
-			}
-        }
-        falseAttack();
+		}
+		falseAttack();
 		hasDied = true;
 		sync.disabled = true;
 		if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.MULTIPLAYER && basePV.isMine)
@@ -4287,15 +4288,15 @@ public class HERO : MONO, IAnarchyScriptHero
 			ExitGames.Client.Photon.Hashtable hashtable = new ExitGames.Client.Photon.Hashtable();
 			hashtable.Add("dead", true);
 			hashtable.Add("deaths", (int)PhotonNetwork.player.customProperties["deaths"] + 1);
-			PhotonNetwork.player.SetCustomProperties(hashtable); //tasw
-            if (viewID != -1)
+			PhotonNetwork.player.SetCustomProperties(hashtable);
+			if (viewID != -1)
 			{
 				PhotonView photonView = PhotonView.Find(viewID);
 				if (photonView != null)
 				{
 					FengGameManagerMKII.instance.sendKillInfo(t1: true, "[FFC000][" + info.sender.ID + "][FFFFFF]" + RCextensions.returnStringFromObject(photonView.owner.customProperties["name"]), t2: false, RCextensions.returnStringFromObject(PhotonNetwork.player.customProperties["name"]), 0);
 					hashtable = new ExitGames.Client.Photon.Hashtable();
-                    hashtable.Add("kills", RCextensions.returnIntFromObject(photonView.owner.customProperties["kills"]) + 1); //tasw
+					hashtable.Add("kills", RCextensions.returnIntFromObject(photonView.owner.customProperties["kills"]) + 1);
 					photonView.owner.SetCustomProperties(hashtable);
 				}
 			}
@@ -4306,7 +4307,7 @@ public class HERO : MONO, IAnarchyScriptHero
 			object[] parameters = new object[1] { (!(titanName == string.Empty)) ? 1 : 0 };
 			FengGameManagerMKII.PView.RPC("someOneIsDead", PhotonTargets.MasterClient, parameters);
 		}
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && basePV.isMine)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && basePV.isMine)
 		{
 			PhotonNetwork.Instantiate("hitMeat2", baseT.position, Quaternion.Euler(270f, 0f, 0f), 0, null);
 		}
@@ -4333,13 +4334,8 @@ public class HERO : MONO, IAnarchyScriptHero
 	private void netDie2(int viewID = -1, string titanName = "", PhotonMessageInfo info = null)
 	{
 		if (basePV.isMine && info != null && IN_GAME_MAIN_CAMERA.gamemode != GAMEMODE.BOSS_FIGHT_CT)
-        {
-			if (InRoomChat.god)
-			{
-				FengGameManagerMKII.instance.needChooseSide = true;
-				FengGameManagerMKII.justSuicide = false;
-			}
-            if (invincible > 0f || (GameSettings.bombMode == 0 && PhotonNetwork.player.customProperties["dead"] != null && RCextensions.returnBoolFromObject(PhotonNetwork.player.customProperties["dead"])))
+		{
+			if (invincible > 0f || (GameSettings.bombMode == 0 && PhotonNetwork.player.customProperties["dead"] != null && RCextensions.returnBoolFromObject(PhotonNetwork.player.customProperties["dead"])))
 			{
 				FengGameManagerMKII.ThrowJusticeDefensive(info.sender, "malicious netDie2");
 			}
@@ -4392,7 +4388,7 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	public void netDieLocal(Vector3 v, bool isBite, int viewID = -1, string titanName = "", bool killByTitan = true)
 	{
-        if (basePV.isMine)
+		if (basePV.isMine)
 		{
 			Vector3 localPosition = Vector3.up * 5000f;
 			if (titanForm && eren_titan != null)
@@ -4420,7 +4416,10 @@ public class HERO : MONO, IAnarchyScriptHero
 		{
 			RBullet.removeMe();
 		}
-		//meatDie.Play();
+		if (AudioListener.volume > 0f)
+		{
+			meatDie.Play();
+		}
 		if (!useGun && (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE || basePV.isMine))
 		{
 			leftbladetrail.Deactivate();
@@ -4435,26 +4434,20 @@ public class HERO : MONO, IAnarchyScriptHero
 			IN_GAME_MAIN_CAMERA.mainCamera.setSpectorMode(val: false);
 			IN_GAME_MAIN_CAMERA.mainCamera.gameOver = true;
 			FengGameManagerMKII.instance.myRespawnTime = 0f;
-			if (InRoomChat.god)
-			{
-				FengGameManagerMKII.instance.needChooseSide = true;
-				FengGameManagerMKII.justSuicide = false;
-			}
-        }
+		}
 		hasDied = true;
-		//Transform obj = baseT.Find("audio_die");
-		//obj.parent = null;
-		//obj.GetComponent<AudioSource>().Play();
+		Transform obj = baseT.Find("audio_die");
+		obj.parent = null;
+		obj.GetComponent<AudioSource>().Play();
 		sync.disabled = true;
 		if (basePV.isMine)
 		{
 			PhotonNetwork.RemoveRPCs(basePV);
 			ExitGames.Client.Photon.Hashtable hashtable = new ExitGames.Client.Photon.Hashtable();
 			hashtable.Add("dead", true);
-			if (!InRoomChat.god)
-				hashtable.Add("deaths", RCextensions.returnIntFromObject(PhotonNetwork.player.customProperties["deaths"]) + 1);
-			PhotonNetwork.player.SetCustomProperties(hashtable); //tasw
-            object[] parameters = new object[1] { (!(titanName == string.Empty)) ? 1 : 0 };
+			hashtable.Add("deaths", RCextensions.returnIntFromObject(PhotonNetwork.player.customProperties["deaths"]) + 1);
+			PhotonNetwork.player.SetCustomProperties(hashtable);
+			object[] parameters = new object[1] { (!(titanName == string.Empty)) ? 1 : 0 };
 			FengGameManagerMKII.instance.photonView.RPC("someOneIsDead", PhotonTargets.MasterClient, parameters);
 			if (viewID != -1)
 			{
@@ -4463,7 +4456,7 @@ public class HERO : MONO, IAnarchyScriptHero
 				{
 					FengGameManagerMKII.instance.sendKillInfo(killByTitan, RCextensions.returnStringFromObject(photonView.owner.customProperties["name"]), t2: false, RCextensions.returnStringFromObject(PhotonNetwork.player.customProperties["name"]), 0);
 					hashtable = new ExitGames.Client.Photon.Hashtable();
-                    hashtable.Add("kills", RCextensions.returnIntFromObject(photonView.owner.customProperties["kills"]) + 1); //tasw
+					hashtable.Add("kills", RCextensions.returnIntFromObject(photonView.owner.customProperties["kills"]) + 1);
 					photonView.owner.SetCustomProperties(hashtable);
 				}
 			}
@@ -4730,7 +4723,7 @@ public class HERO : MONO, IAnarchyScriptHero
 		{
 			item.speed = 0f;
 		}
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && basePV.isMine)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && basePV.isMine)
 		{
 			basePV.RPC("netPauseAnimation", PhotonTargets.Others);
 		}
@@ -4890,12 +4883,12 @@ public class HERO : MONO, IAnarchyScriptHero
 					Vector3 to = baseT.position - bulletLT.position;
 					Vector3 to2 = baseT.position - bulletRT.position;
 					Vector3 vector2 = (bulletLT.position + bulletRT.position) * 0.5f;
-					Vector3 from = baseT.position - vector2;
-					if (Vector3.Angle(from, to) < 30f && Vector3.Angle(from, to2) < 30f)
+					Vector3 vector3 = baseT.position - vector2;
+					if (Vector3.Angle(vector3, to) < 30f && Vector3.Angle(vector3, to2) < 30f)
 					{
 						almostSingleHook = true;
-						Vector3 vector3 = vector2 - baseT.position;
-						facingDirection = Mathf.Atan2(vector3.x, vector3.z) * 57.29578f;
+						Vector3 vector4 = vector2 - baseT.position;
+						facingDirection = Mathf.Atan2(vector4.x, vector4.z) * 57.29578f;
 					}
 					else
 					{
@@ -5134,7 +5127,6 @@ public class HERO : MONO, IAnarchyScriptHero
 		{
 			standAnimation = "AHSS_stand_gun";
 			useGun = true;
-			usingAhss = true;
 			gunDummy = new GameObject();
 			gunDummy.name = "gunDummy";
 			gunDummy.transform.position = baseT.position;
@@ -5239,21 +5231,38 @@ public class HERO : MONO, IAnarchyScriptHero
 		}
 		if (flag)
 		{
-			if (GameSettings.Flare > 0)
+			if (GameSettings.Flare > 0 && AudioListener.volume > 0f)
 			{
-				//CustomAudioManager.Play(CustomAudioManager.AudioFile.Flare);
+				CustomAudioManager.Play(CustomAudioManager.AudioFile.Flare);
 			}
+			Ray ray = Camera.main.ScreenPointToRay(GetAimPosition());
+			LayerMask layerMask = (1 << LayerMask.NameToLayer("Ground")) | (1 << LayerMask.NameToLayer("EnemyBox"));
+			Vector3 vector = baseT.position + ray.direction * 1000f;
+			if (Physics.Raycast(ray, out var hitInfo, 1000000f, layerMask.value))
+			{
+				vector = hitInfo.point;
+			}
+			Quaternion rotation = Quaternion.LookRotation(Vector3.Normalize(vector - baseT.position));
 			if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE)
 			{
-				GameObject obj = (GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("FX/flareBullet" + type), baseT.position, baseT.rotation);
+				GameObject obj = (GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("FX/flareBullet" + type), baseT.position, rotation);
 				obj.GetComponent<FlareMovement>().dontShowHint();
 				UnityEngine.Object.Destroy(obj, 25f);
 			}
 			else
 			{
-				PhotonNetwork.Instantiate("FX/flareBullet" + type, baseT.position, baseT.rotation, 0).GetComponent<FlareMovement>().dontShowHint();
+				PhotonNetwork.Instantiate("FX/flareBullet" + type, baseT.position, rotation, 0).GetComponent<FlareMovement>().dontShowHint();
 			}
 		}
+	}
+
+	private Vector3 GetAimPosition()
+	{
+		if (IN_GAME_MAIN_CAMERA.cameraMode == CAMERA_TYPE.TPS || IN_GAME_MAIN_CAMERA.cameraMode == CAMERA_TYPE.NewTPS)
+		{
+			return new Vector3((float)Screen.width * 0.5f, (float)Screen.height * 0.5f, 0f);
+		}
+		return Input.mousePosition;
 	}
 
 	private void showAimUI2()
@@ -5269,15 +5278,15 @@ public class HERO : MONO, IAnarchyScriptHero
 			return;
 		}
 		checkTitan();
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		Ray ray = ((IN_GAME_MAIN_CAMERA.cameraMode != CAMERA_TYPE.TPS && IN_GAME_MAIN_CAMERA.cameraMode != CAMERA_TYPE.NewTPS) ? Camera.main.ScreenPointToRay(GetAimPosition()) : Camera.main.ScreenPointToRay(new Vector3((float)Screen.width * 0.5f, (float)Screen.height * 0.5f, 0f)));
 		LayerMask layerMask = 1 << LayerMask.NameToLayer("Ground");
 		LayerMask layerMask2 = (int)(LayerMask)(1 << LayerMask.NameToLayer("EnemyBox")) | (int)layerMask;
-		if (!Physics.Raycast(ray, out var hitInfo, 1E+07f, layerMask2.value))
+		if (!Physics.Raycast(ray, out var hitInfo, 10000000f, layerMask2.value))
 		{
 			return;
 		}
-		crossT1.localPosition = Input.mousePosition;
-		crossT1.localPosition -= new Vector3((float)Screen.width * 0.5f, (float)Screen.height * 0.5f, 0f);
+		Vector3 vector = ((IN_GAME_MAIN_CAMERA.cameraMode != CAMERA_TYPE.TPS && IN_GAME_MAIN_CAMERA.cameraMode != CAMERA_TYPE.NewTPS) ? Input.mousePosition : new Vector3((float)Screen.width * 0.5f, (float)Screen.height * 0.5f, 0f));
+		crossT1.localPosition = vector - new Vector3((float)Screen.width * 0.5f, (float)Screen.height * 0.5f, 0f);
 		crossT2.localPosition = crossT1.localPosition;
 		crossT1.localScale = new Vector3(FengGameManagerMKII.instance.CursorWidth, FengGameManagerMKII.instance.CursorHeight, 1f);
 		crossT2.localScale = new Vector3(FengGameManagerMKII.instance.CursorWidth, FengGameManagerMKII.instance.CursorHeight, 1f);
@@ -5307,11 +5316,11 @@ public class HERO : MONO, IAnarchyScriptHero
 		}
 		else if (myGroup == GROUP.A && (int)FengGameManagerMKII.settings[189] == 2)
 		{
-			text = text + (currentSpeed * 0.4f / 100f).ToString("F2") + "K  |  " + (currentSpeed / 100f).ToString("F2") + "K  |  " + (currentSpeed * 0.6f / 100f).ToString("F2") + "K";
+			text = text + (Mathf.Floor(currentSpeed * 0.4f / 10f) / 10f).ToString("F1") + "K  |  " + (Mathf.Floor(currentSpeed * 0.6f / 10f) / 10f).ToString("F1") + "K";
 		}
 		else if ((int)FengGameManagerMKII.settings[189] == 2)
 		{
-			text = text + (currentSpeed / 100f).ToString("F2") + " K";
+			text = text + (Mathf.Floor(currentSpeed / 10f) / 10f).ToString("F1") + " K";
 		}
 		LabelDistance.text = text;
 		if (magnitude > 120f)
@@ -5329,22 +5338,22 @@ public class HERO : MONO, IAnarchyScriptHero
 		{
 			return;
 		}
-		Vector3 vector = new Vector3(0f, 0.4f, 0f);
-		vector -= baseT.right * 0.3f;
 		Vector3 vector2 = new Vector3(0f, 0.4f, 0f);
-		vector2 += baseT.right * 0.3f;
+		vector2 -= baseT.right * 0.3f;
+		Vector3 vector3 = new Vector3(0f, 0.4f, 0f);
+		vector3 += baseT.right * 0.3f;
 		float num = ((hitInfo.distance <= 50f) ? (hitInfo.distance * 0.05f) : (hitInfo.distance * 0.3f));
-		Vector3 vector3 = hitInfo.point - baseT.right * num - (baseT.position + vector);
-		Vector3 vector4 = hitInfo.point + baseT.right * num - (baseT.position + vector2);
-		vector3.Normalize();
+		Vector3 vector4 = hitInfo.point - baseT.right * num - (baseT.position + vector2);
+		Vector3 vector5 = hitInfo.point + baseT.right * num - (baseT.position + vector3);
 		vector4.Normalize();
-		vector3 *= 1000000f;
+		vector5.Normalize();
 		vector4 *= 1000000f;
-		if (Physics.Linecast(baseT.position + vector, baseT.position + vector + vector3, out var hitInfo2, layerMask2.value))
+		vector5 *= 1000000f;
+		if (Physics.Linecast(baseT.position + vector2, baseT.position + vector2 + vector4, out var hitInfo2, layerMask2.value))
 		{
 			crossL1T.localPosition = Camera.main.WorldToScreenPoint(hitInfo2.point);
 			crossL1T.localPosition -= new Vector3((float)Screen.width * 0.5f, (float)Screen.height * 0.5f, 0f);
-			crossL1T.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(crossL1T.localPosition.y - (Input.mousePosition.y - (float)Screen.height * 0.5f), crossL1T.localPosition.x - (Input.mousePosition.x - (float)Screen.width * 0.5f)) * 57.29578f + 180f);
+			crossL1T.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(crossL1T.localPosition.y - (vector.y - (float)Screen.height * 0.5f), crossL1T.localPosition.x - (vector.x - (float)Screen.width * 0.5f)) * 57.29578f + 180f);
 			crossL2T.localPosition = crossL1T.localPosition;
 			crossL2T.localRotation = crossL1T.localRotation;
 			if (hitInfo2.distance > 120f)
@@ -5356,11 +5365,11 @@ public class HERO : MONO, IAnarchyScriptHero
 				crossL1T.localPosition += Vector3.up * 10000f;
 			}
 		}
-		if (Physics.Linecast(baseT.position + vector2, baseT.position + vector2 + vector4, out hitInfo2, layerMask2.value))
+		if (Physics.Linecast(baseT.position + vector3, baseT.position + vector3 + vector5, out hitInfo2, layerMask2.value))
 		{
 			crossR1T.localPosition = Camera.main.WorldToScreenPoint(hitInfo2.point);
 			crossR1T.localPosition -= new Vector3((float)Screen.width * 0.5f, (float)Screen.height * 0.5f, 0f);
-			crossR1T.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(crossR1T.localPosition.y - (Input.mousePosition.y - (float)Screen.height * 0.5f), crossR1T.localPosition.x - (Input.mousePosition.x - (float)Screen.width * 0.5f)) * 57.29578f);
+			crossR1T.localRotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(crossR1T.localPosition.y - (vector.y - (float)Screen.height * 0.5f), crossR1T.localPosition.x - (vector.x - (float)Screen.width * 0.5f)) * 57.29578f);
 			crossR2T.localPosition = crossR1T.localPosition;
 			crossR2T.localRotation = crossR1T.localRotation;
 			if (hitInfo2.distance > 120f)
@@ -5576,7 +5585,7 @@ public class HERO : MONO, IAnarchyScriptHero
 			{
 				RBullet.removeMe();
 			}
-			if (smoke_3dmg.enableEmission && IN_GAME_MAIN_CAMERA.gametype != 0 && basePV.isMine)
+			if (smoke_3dmg.enableEmission && IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && basePV.isMine)
 			{
 				object[] parameters = new object[1] { false };
 				basePV.RPC("net3DMGSMOKE", PhotonTargets.Others, parameters);
@@ -5608,27 +5617,27 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	private void suicide2()
 	{
-		if (IN_GAME_MAIN_CAMERA.gametype != 0)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE)
 		{
 			netDieLocal(baseR.velocity * 50f, isBite: false, -1, string.Empty);
 			FengGameManagerMKII.instance.needChooseSide = true;
-			FengGameManagerMKII.justSuicide = true;
+			FengGameManagerMKII.instance.justSuicide = true;
 			if (GameSettings.bombMode > 0)
 			{
 				ExitGames.Client.Photon.Hashtable hashtable = new ExitGames.Client.Photon.Hashtable();
 				hashtable.Add("deaths", RCextensions.returnIntFromObject(PhotonNetwork.player.customProperties["deaths"]) - 1);
 				PhotonNetwork.player.SetCustomProperties(hashtable);
-            }
+			}
 			FengGameManagerMKII.instance.BottomHUD(enabled: true);
 		}
 	}
 
 	private void throwBlades()
 	{
-		//if (!CustomAudioManager.BladesReload.isPlaying && GameSettings.BladesBroken > 0)
-		//{
-		//	//CustomAudioManager.Play(CustomAudioManager.AudioFile.BladesBroken);
-		//}
+		if (!CustomAudioManager.BladesReload.isPlaying && GameSettings.BladesBroken > 0 && AudioListener.volume > 0f)
+		{
+			CustomAudioManager.Play(CustomAudioManager.AudioFile.BladesBroken);
+		}
 		Transform transform = setup.part_blade_l.transform;
 		Transform transform2 = setup.part_blade_r.transform;
 		GameObject gameObject = (GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("Character_parts/character_blade_l"), transform.position, transform.rotation);
@@ -5692,15 +5701,7 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	public void update()
 	{
-        if (useGun && !grounded)
-		{
-			usingAhss = true;
-		}
-		else
-		{
-			usingAhss = false;
-		}
-        if (invincible > 0f)
+		if (invincible > 0f)
 		{
 			invincible -= Time.deltaTime;
 		}
@@ -5718,15 +5719,11 @@ public class HERO : MONO, IAnarchyScriptHero
 			updateCannon();
 			sync.disabled = true;
 		}
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && !basePV.isMine)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !basePV.isMine)
 		{
 			return;
 		}
-        if (FengCustomInputs.Inputs.isInputDown[InputCode.restart])
-        {
-            suicide2();
-        }
-        if (myCannonRegion != null)
+		if (myCannonRegion != null)
 		{
 			FengGameManagerMKII.instance.ShowHUDInfoCenter("Press 'Cannon Mount' key to use Cannon.");
 			if (FengGameManagerMKII.inputRC.isInputCannonDown(InputCodeRC.cannonMount))
@@ -5769,7 +5766,7 @@ public class HERO : MONO, IAnarchyScriptHero
 			else if (skillId == "eren")
 			{
 				showSkillCD();
-				if (IN_GAME_MAIN_CAMERA.gametype != 0 || (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE && !IN_GAME_MAIN_CAMERA.isPausing))
+				if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE || (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE && !IN_GAME_MAIN_CAMERA.isPausing))
 				{
 					calcSkillCD();
 					calcFlareCD();
@@ -5930,171 +5927,150 @@ public class HERO : MONO, IAnarchyScriptHero
 					baseR.velocity = Vector3.RotateTowards(current, baseR.velocity, num, num).normalized * (currentSpeed + 0.1f);
 				}
 			}
-
 			switch (state)
 			{
-				case HERO_STATE.Idle:
+			case HERO_STATE.Idle:
+			{
+				if (FengCustomInputs.Inputs.isInputDown[InputCode.flare1])
+				{
+					shootFlare(1);
+				}
+				if (FengCustomInputs.Inputs.isInputDown[InputCode.flare2])
+				{
+					shootFlare(2);
+				}
+				if (FengCustomInputs.Inputs.isInputDown[InputCode.flare3])
+				{
+					shootFlare(3);
+				}
+				if (FengCustomInputs.Inputs.isInputDown[InputCode.restart])
+				{
+					suicide2();
+				}
+				if (myHorse != null && isMounted && FengGameManagerMKII.inputRC.isInputHorseDown(InputCodeRC.horseMount))
+				{
+					getOffHorse();
+				}
+				if ((baseA.IsPlaying(standAnimation) || !grounded) && FengCustomInputs.Inputs.isInputDown[InputCode.reload] && (!useGun || GameSettings.ahssReload != 1 || grounded))
+				{
+					changeBlade();
+					return;
+				}
+				if (baseA.IsPlaying(standAnimation) && FengCustomInputs.Inputs.isInputDown[InputCode.salute])
+				{
+					salute();
+					return;
+				}
+				if (!isMounted && (FengCustomInputs.Inputs.isInputDown[InputCode.attack0] || FengCustomInputs.Inputs.isInputDown[InputCode.attack1]) && !useGun)
+				{
+					bool flag5 = false;
+					if (FengCustomInputs.Inputs.isInputDown[InputCode.attack1])
 					{
-						if (FengCustomInputs.Inputs.isInputDown[InputCode.flare1])
+						if (skillCDDuration > 0f || flag5)
 						{
-							shootFlare(1);
+							flag5 = true;
 						}
-						if (FengCustomInputs.Inputs.isInputDown[InputCode.flare2])
+						else
 						{
-							shootFlare(2);
-						}
-						if (FengCustomInputs.Inputs.isInputDown[InputCode.flare3])
-						{
-							shootFlare(3);
-						}
-						if (myHorse != null && isMounted && FengGameManagerMKII.inputRC.isInputHorseDown(InputCodeRC.horseMount))
-						{
-							getOffHorse();
-						}
-						if ((baseA.IsPlaying(standAnimation) || !grounded) && FengCustomInputs.Inputs.isInputDown[InputCode.reload] && (!useGun || GameSettings.ahssReload != 1 || grounded))
-						{
-							changeBlade();
-							return;
-						}
-						if (baseA.IsPlaying(standAnimation) && FengCustomInputs.Inputs.isInputDown[InputCode.salute])
-						{
-							salute();
-							return;
-						}
-						if (!isMounted && (FengCustomInputs.Inputs.isInputDown[InputCode.attack0] || FengCustomInputs.Inputs.isInputDown[InputCode.attack1]) && !usingAhss)
-						{
-							bool flag5 = false;
-							if (FengCustomInputs.Inputs.isInputDown[InputCode.attack1])
+							skillCDDuration = skillCDLast;
+							switch (skillId)
 							{
-								if (skillCDDuration > 0f || flag5)
+							case "eren":
+								erenTransform();
+								break;
+							case "marco":
+								if (IsGrounded())
 								{
-									flag5 = true;
+									attackAnimation = ((UnityEngine.Random.Range(0, 2) != 0) ? "special_marco_1" : "special_marco_0");
+									playAnimation(attackAnimation);
 								}
 								else
 								{
-									skillCDDuration = skillCDLast;
-									switch (skillId)
+									flag5 = true;
+									skillCDDuration = 0f;
+								}
+								break;
+							case "armin":
+								if (IsGrounded())
+								{
+									attackAnimation = "special_armin";
+									playAnimation("special_armin");
+								}
+								else
+								{
+									flag5 = true;
+									skillCDDuration = 0f;
+								}
+								break;
+							case "sasha":
+								attackAnimation = "special_sasha";
+								playAnimation("special_sasha");
+								currentBuff = BUFF.SpeedUp;
+								buffTime = 10f;
+								break;
+							case "mikasa":
+								attackAnimation = "attack3_1";
+								playAnimation("attack3_1");
+								baseR.velocity = Vector3.up * 10f;
+								break;
+							case "levi":
+							{
+								attackAnimation = "attack5";
+								playAnimation("attack5");
+								baseR.velocity += Vector3.up * 5f;
+								if (Physics.Raycast(IN_GAME_MAIN_CAMERA.mainC.ScreenPointToRay(GetAimPosition()), out var hitInfo, 10000000f, Layer.GroundEnemy.value))
+								{
+									if (bulletRight != null)
 									{
-										case "eren":
-											erenTransform();
-											break;
-										case "marco":
-											if (IsGrounded())
-											{
-												attackAnimation = ((UnityEngine.Random.Range(0, 2) != 0) ? "special_marco_1" : "special_marco_0");
-												playAnimation(attackAnimation);
-											}
-											else
-											{
-												flag5 = true;
-												skillCDDuration = 0f;
-											}
-											break;
-										case "armin":
-											if (IsGrounded())
-											{
-												attackAnimation = "special_armin";
-												playAnimation("special_armin");
-											}
-											else
-											{
-												flag5 = true;
-												skillCDDuration = 0f;
-											}
-											break;
-										case "sasha":
-											attackAnimation = "special_sasha";
-											playAnimation("special_sasha");
-											currentBuff = BUFF.SpeedUp;
-											buffTime = 10f;
-											break;
-										case "mikasa":
-											attackAnimation = "attack3_1";
-											playAnimation("attack3_1");
-											baseR.velocity = Vector3.up * 10f;
-											break;
-										case "levi":
-											{
-												attackAnimation = "attack5";
-												playAnimation("attack5");
-												baseR.velocity += Vector3.up * 5f;
-												if (Physics.Raycast(IN_GAME_MAIN_CAMERA.mainC.ScreenPointToRay(Input.mousePosition), out var hitInfo, 1E+07f, Layer.GroundEnemy.value))
-												{
-													if (bulletRight != null)
-													{
-														RBullet.disable();
-														releaseIfIHookSb();
-													}
-													dashDirection = hitInfo.point - baseT.position;
-													launchRightRope(hitInfo, single: true, 1);
-													//rope.Play();
-												}
-												facingDirection = Mathf.Atan2(dashDirection.x, dashDirection.z) * 57.29578f;
-												targetRotation = Quaternion.Euler(0f, facingDirection, 0f);
-												attackLoop = 3;
-												break;
-											}
-										case "petra":
-											{
-												attackAnimation = "special_petra";
-												playAnimation("special_petra");
-												baseR.velocity += Vector3.up * 5f;
-												if (Physics.Raycast(IN_GAME_MAIN_CAMERA.mainC.ScreenPointToRay(Input.mousePosition), out var hitInfo2, 1E+07f, Layer.GroundEnemy.value))
-												{
-													if (bulletRight != null)
-													{
-														RBullet.disable();
-														releaseIfIHookSb();
-													}
-													if (bulletLeft != null)
-													{
-														LBullet.disable();
-														releaseIfIHookSb();
-													}
-													dashDirection = hitInfo2.point - baseT.position;
-													launchLeftRope(hitInfo2, single: true, 0);
-													launchRightRope(hitInfo2, single: true);
-													//rope.Play();
-												}
-												facingDirection = Mathf.Atan2(dashDirection.x, dashDirection.z) * 57.29578f;
-												targetRotation = Quaternion.Euler(0f, facingDirection, 0f);
-												attackLoop = 3;
-												break;
-											}
-										default:
-											if (needLean)
-											{
-												if (leanLeft)
-												{
-													attackAnimation = ((UnityEngine.Random.Range(0, 2) == 0) ? "attack1_hook_l1" : "attack1_hook_l2");
-												}
-												else
-												{
-													attackAnimation = ((UnityEngine.Random.Range(0, 2) == 0) ? "attack1_hook_r1" : "attack1_hook_r2");
-												}
-											}
-											else
-											{
-												attackAnimation = "attack1";
-											}
-											playAnimation(attackAnimation);
-											break;
+										RBullet.disable();
+										releaseIfIHookSb();
+									}
+									dashDirection = hitInfo.point - baseT.position;
+									launchRightRope(hitInfo, single: true, 1);
+									if (AudioListener.volume > 0f)
+									{
+										rope.Play();
 									}
 								}
+								facingDirection = Mathf.Atan2(dashDirection.x, dashDirection.z) * 57.29578f;
+								targetRotation = Quaternion.Euler(0f, facingDirection, 0f);
+								attackLoop = 3;
+								break;
 							}
-							else if (FengCustomInputs.Inputs.isInputDown[InputCode.attack0])
+							case "petra":
 							{
+								attackAnimation = "special_petra";
+								playAnimation("special_petra");
+								baseR.velocity += Vector3.up * 5f;
+								if (Physics.Raycast(IN_GAME_MAIN_CAMERA.mainC.ScreenPointToRay(GetAimPosition()), out var hitInfo2, 10000000f, Layer.GroundEnemy.value))
+								{
+									if (bulletRight != null)
+									{
+										RBullet.disable();
+										releaseIfIHookSb();
+									}
+									if (bulletLeft != null)
+									{
+										LBullet.disable();
+										releaseIfIHookSb();
+									}
+									dashDirection = hitInfo2.point - baseT.position;
+									launchLeftRope(hitInfo2, single: true, 0);
+									launchRightRope(hitInfo2, single: true);
+									if (AudioListener.volume > 0f)
+									{
+										rope.Play();
+									}
+								}
+								facingDirection = Mathf.Atan2(dashDirection.x, dashDirection.z) * 57.29578f;
+								targetRotation = Quaternion.Euler(0f, facingDirection, 0f);
+								attackLoop = 3;
+								break;
+							}
+							default:
 								if (needLean)
 								{
-									if (FengCustomInputs.Inputs.isInput[InputCode.left])
-									{
-										attackAnimation = ((UnityEngine.Random.Range(0, 2) == 0) ? "attack1_hook_l1" : "attack1_hook_l2");
-									}
-									else if (FengCustomInputs.Inputs.isInput[InputCode.right])
-									{
-										attackAnimation = ((UnityEngine.Random.Range(0, 2) == 0) ? "attack1_hook_r1" : "attack1_hook_r2");
-									}
-									else if (leanLeft)
+									if (leanLeft)
 									{
 										attackAnimation = ((UnityEngine.Random.Range(0, 2) == 0) ? "attack1_hook_l1" : "attack1_hook_l2");
 									}
@@ -6103,651 +6079,673 @@ public class HERO : MONO, IAnarchyScriptHero
 										attackAnimation = ((UnityEngine.Random.Range(0, 2) == 0) ? "attack1_hook_r1" : "attack1_hook_r2");
 									}
 								}
-								else if (FengCustomInputs.Inputs.isInput[InputCode.left])
-								{
-									attackAnimation = "attack2";
-								}
-								else if (FengCustomInputs.Inputs.isInput[InputCode.right])
+								else
 								{
 									attackAnimation = "attack1";
 								}
-								else if (lastHook != null)
-								{
-									if (lastHook.Find("Amarture/Core/Controller_Body/hip/spine/chest/neck") != null)
-									{
-										attackAccordingToTarget(lastHook.Find("Amarture/Core/Controller_Body/hip/spine/chest/neck"));
-									}
-									else
-									{
-										flag5 = true;
-									}
-								}
-								else if (bulletLeft != null && bulletLT.parent != null)
-								{
-									Transform transform = bulletLT.parent.transform.root.Find("Amarture/Core/Controller_Body/hip/spine/chest/neck");
-									if (transform != null)
-									{
-										attackAccordingToTarget(transform);
-									}
-									else
-									{
-										attackAccordingToMouse();
-									}
-								}
-								else if (bulletRight != null && bulletRT.parent != null)
-								{
-									Transform transform2 = bulletRT.parent.transform.root.Find("Amarture/Core/Controller_Body/hip/spine/chest/neck");
-									if (transform2 != null)
-									{
-										attackAccordingToTarget(transform2);
-									}
-									else
-									{
-										attackAccordingToMouse();
-									}
-								}
-								else
-								{
-									GameObject gameObject3 = findNearestTitan();
-									if (gameObject3 != null)
-									{
-										Transform transform3 = gameObject3.transform.Find("Amarture/Core/Controller_Body/hip/spine/chest/neck");
-										if (transform3 != null)
-										{
-											attackAccordingToTarget(transform3);
-										}
-										else
-										{
-											attackAccordingToMouse();
-										}
-									}
-									else
-									{
-										attackAccordingToMouse();
-									}
-								}
-							}
-							if (!flag5)
-							{
-								triggerLeft.clearHits();
-								triggerRight.clearHits();
-								if (grounded)
-								{
-									baseR.AddForce(baseG.transform.forward * 200f);
-                                }
-                                playAnimation(attackAnimation);
-								baseA[attackAnimation].time = 0f;
-								buttonAttackRelease = false;
-								state = HERO_STATE.Attack;
-								if (grounded || attackAnimation == "attack3_1" || attackAnimation == "attack5" || attackAnimation == "special_petra")
-								{
-									attackReleased = true;
-									buttonAttackRelease = true;
-								}
-								else
-								{
-									attackReleased = false;
-								}
-								sparks.enableEmission = false;
+								playAnimation(attackAnimation);
+								break;
 							}
 						}
-						if (!usingAhss)
+					}
+					else if (FengCustomInputs.Inputs.isInputDown[InputCode.attack0])
+					{
+						if (needLean)
 						{
-							break;
-						}
-                        if (FengCustomInputs.Inputs.isInput[InputCode.attack1])
-						{
-							leftArmAim = true;
-							rightArmAim = true;
-						}
-						else if (FengCustomInputs.Inputs.isInput[InputCode.attack0])
-						{
-							if (leftGunHasBullet)
+							if (FengCustomInputs.Inputs.isInput[InputCode.left])
 							{
-								leftArmAim = true;
-								rightArmAim = false;
+								attackAnimation = ((UnityEngine.Random.Range(0, 2) == 0) ? "attack1_hook_l1" : "attack1_hook_l2");
+							}
+							else if (FengCustomInputs.Inputs.isInput[InputCode.right])
+							{
+								attackAnimation = ((UnityEngine.Random.Range(0, 2) == 0) ? "attack1_hook_r1" : "attack1_hook_r2");
+							}
+							else if (leanLeft)
+							{
+								attackAnimation = ((UnityEngine.Random.Range(0, 2) == 0) ? "attack1_hook_l1" : "attack1_hook_l2");
 							}
 							else
 							{
-								leftArmAim = false;
-								if (rightGunHasBullet)
-								{
-									rightArmAim = true;
-								}
-								else
-								{
-									rightArmAim = false;
-								}
+								attackAnimation = ((UnityEngine.Random.Range(0, 2) == 0) ? "attack1_hook_r1" : "attack1_hook_r2");
+							}
+						}
+						else if (FengCustomInputs.Inputs.isInput[InputCode.left])
+						{
+							attackAnimation = "attack2";
+						}
+						else if (FengCustomInputs.Inputs.isInput[InputCode.right])
+						{
+							attackAnimation = "attack1";
+						}
+						else if (lastHook != null)
+						{
+							if (lastHook.Find("Amarture/Core/Controller_Body/hip/spine/chest/neck") != null)
+							{
+								attackAccordingToTarget(lastHook.Find("Amarture/Core/Controller_Body/hip/spine/chest/neck"));
+							}
+							else
+							{
+								flag5 = true;
+							}
+						}
+						else if (bulletLeft != null && bulletLT.parent != null)
+						{
+							Transform transform = bulletLT.parent.transform.root.Find("Amarture/Core/Controller_Body/hip/spine/chest/neck");
+							if (transform != null)
+							{
+								attackAccordingToTarget(transform);
+							}
+							else
+							{
+								attackAccordingToMouse();
+							}
+						}
+						else if (bulletRight != null && bulletRT.parent != null)
+						{
+							Transform transform2 = bulletRT.parent.transform.root.Find("Amarture/Core/Controller_Body/hip/spine/chest/neck");
+							if (transform2 != null)
+							{
+								attackAccordingToTarget(transform2);
+							}
+							else
+							{
+								attackAccordingToMouse();
 							}
 						}
 						else
 						{
-							leftArmAim = false;
-							rightArmAim = false;
-						}
-						if ((leftArmAim || rightArmAim) && Physics.Raycast(IN_GAME_MAIN_CAMERA.mainC.ScreenPointToRay(Input.mousePosition), out var hitInfo3, 1E+07f, Layer.GroundEnemy.value))
-						{
-							gunTarget = hitInfo3.point;
-						}
-						bool flag6 = false;
-						bool flag7 = false;
-						bool flag8 = false;
-						if (FengCustomInputs.Inputs.isInputUp[InputCode.attack1] && skillId != "bomb")
-						{
-							if (leftGunHasBullet && rightGunHasBullet)
+							GameObject gameObject3 = findNearestTitan();
+							if (gameObject3 != null)
 							{
-								if (grounded)
+								Transform transform3 = gameObject3.transform.Find("Amarture/Core/Controller_Body/hip/spine/chest/neck");
+								if (transform3 != null)
 								{
-									attackAnimation = "AHSS_shoot_both";
+									attackAccordingToTarget(transform3);
 								}
 								else
 								{
-									attackAnimation = "AHSS_shoot_both_air";
+									attackAccordingToMouse();
 								}
-								flag6 = true;
-							}
-							else if (!leftGunHasBullet && !rightGunHasBullet)
-							{
-								flag7 = true;
 							}
 							else
 							{
-								flag8 = true;
+								attackAccordingToMouse();
 							}
 						}
-						if (flag8 || FengCustomInputs.Inputs.isInputUp[InputCode.attack0])
-						{
-							if (grounded)
-							{
-								if (leftGunHasBullet && rightGunHasBullet)
-								{
-									if (isLeftHandHooked)
-									{
-										attackAnimation = "AHSS_shoot_r";
-									}
-									else
-									{
-										attackAnimation = "AHSS_shoot_l";
-									}
-								}
-								else if (leftGunHasBullet)
-								{
-									attackAnimation = "AHSS_shoot_l";
-								}
-								else if (rightGunHasBullet)
-								{
-									attackAnimation = "AHSS_shoot_r";
-								}
-							}
-							else if (leftGunHasBullet && rightGunHasBullet)
-							{
-								if (isLeftHandHooked)
-								{
-									attackAnimation = "AHSS_shoot_r_air";
-								}
-								else
-								{
-									attackAnimation = "AHSS_shoot_l_air";
-								}
-							}
-							else if (leftGunHasBullet)
-							{
-								attackAnimation = "AHSS_shoot_l_air";
-							}
-							else if (rightGunHasBullet)
-							{
-								attackAnimation = "AHSS_shoot_r_air";
-							}
-							if (leftGunHasBullet || rightGunHasBullet)
-							{
-								flag6 = true;
-							}
-							else
-							{
-								flag7 = true;
-							}
-						}
-						if (flag6)
-						{
-							state = HERO_STATE.Attack;
-							crossFade(attackAnimation, 0.05f);
-							gunDummy.transform.position = baseT.position;
-							gunDummy.transform.rotation = baseT.rotation;
-							gunDummy.transform.LookAt(gunTarget);
-							attackReleased = false;
-							facingDirection = gunDummy.transform.rotation.eulerAngles.y;
-							targetRotation = Quaternion.Euler(0f, facingDirection, 0f);
-						}
-						else if (flag7 && (grounded || (LevelInfo.getInfo(FengGameManagerMKII.level).type != GAMEMODE.PVP_AHSS && GameSettings.ahssReload == 0)))
-						{
-							changeBlade();
-						}
-                        break;
 					}
-				case HERO_STATE.Attack:
-					if (usingAhss)
+					if (!flag5)
 					{
-                        //foreach (var src in GameObject.FindObjectsOfType<AudioSource>())
-                        //{
-                        //    if (src.name != "NotificationSound")
-                        //    {
-                        //        src.mute = true;
-                        //    }
-                        //}
-                    }
-                    if (!usingAhss)
-					{
-                        if (!FengCustomInputs.Inputs.isInput[InputCode.attack0])
+						triggerLeft.clearHits();
+						triggerRight.clearHits();
+						if (grounded)
 						{
+							baseR.AddForce(baseG.transform.forward * 200f);
+						}
+						playAnimation(attackAnimation);
+						baseA[attackAnimation].time = 0f;
+						buttonAttackRelease = false;
+						state = HERO_STATE.Attack;
+						if (grounded || attackAnimation == "attack3_1" || attackAnimation == "attack5" || attackAnimation == "special_petra")
+						{
+							attackReleased = true;
 							buttonAttackRelease = true;
 						}
-						if (!attackReleased)
+						else
 						{
-							if (buttonAttackRelease)
-							{
-								continueAnimation();
-								attackReleased = true;
-							}
-							else if (baseA[attackAnimation].normalizedTime >= 0.32f)
-							{
-								pauseAnimation();
-							}
+							attackReleased = false;
 						}
-						if (attackAnimation == "attack3_1" && currentBladeSta > 0f && !useGun)
+						sparks.enableEmission = false;
+					}
+				}
+				if (!useGun)
+				{
+					break;
+				}
+				if (FengCustomInputs.Inputs.isInput[InputCode.attack1])
+				{
+					leftArmAim = true;
+					rightArmAim = true;
+				}
+				else if (FengCustomInputs.Inputs.isInput[InputCode.attack0])
+				{
+					if (leftGunHasBullet)
+					{
+						leftArmAim = true;
+						rightArmAim = false;
+					}
+					else
+					{
+						leftArmAim = false;
+						if (rightGunHasBullet)
 						{
-							if (baseA[attackAnimation].normalizedTime >= 0.8f)
-							{
-								if (!triggerLeft.active_me)
-								{
-									triggerLeft.active_me = true;
-									if ((int)FengGameManagerMKII.settings[92] == 1)
-									{
-										leftbladetrail2.Activate();
-										rightbladetrail2.Activate();
-										leftbladetrail.Activate();
-										rightbladetrail.Activate();
-									}
-									baseR.velocity = -Vector3.up * 30f;
-								}
-								if (!triggerRight.active_me)
-								{
-									triggerRight.active_me = true;
-									//slash.Play();
-								}
-							}
-							else if (triggerLeft.active_me)
-							{
-								triggerLeft.active_me = false;
-								triggerRight.active_me = false;
-								triggerLeft.clearHits();
-								triggerRight.clearHits();
-								leftbladetrail.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
-								rightbladetrail.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
-								leftbladetrail2.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
-								rightbladetrail2.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
-							}
+							rightArmAim = true;
 						}
 						else
 						{
-							float num3;
-							float num2;
-							if (currentBladeSta == 0f)
+							rightArmAim = false;
+						}
+					}
+				}
+				else
+				{
+					leftArmAim = false;
+					rightArmAim = false;
+				}
+				if ((leftArmAim || rightArmAim) && Physics.Raycast(IN_GAME_MAIN_CAMERA.mainC.ScreenPointToRay(GetAimPosition()), out var hitInfo3, 10000000f, Layer.GroundEnemy.value))
+				{
+					gunTarget = hitInfo3.point;
+				}
+				bool flag6 = false;
+				bool flag7 = false;
+				bool flag8 = false;
+				if (FengCustomInputs.Inputs.isInputUp[InputCode.attack1] && skillId != "bomb")
+				{
+					if (leftGunHasBullet && rightGunHasBullet)
+					{
+						if (grounded)
+						{
+							attackAnimation = "AHSS_shoot_both";
+						}
+						else
+						{
+							attackAnimation = "AHSS_shoot_both_air";
+						}
+						flag6 = true;
+					}
+					else if (!leftGunHasBullet && !rightGunHasBullet)
+					{
+						flag7 = true;
+					}
+					else
+					{
+						flag8 = true;
+					}
+				}
+				if (flag8 || FengCustomInputs.Inputs.isInputUp[InputCode.attack0])
+				{
+					if (grounded)
+					{
+						if (leftGunHasBullet && rightGunHasBullet)
+						{
+							if (isLeftHandHooked)
 							{
-								num3 = (num2 = -1f);
-							}
-							else if (attackAnimation == "attack5")
-							{
-								num3 = 0.35f;
-								num2 = 0.5f;
-							}
-							else if (attackAnimation == "special_petra")
-							{
-								num3 = 0.35f;
-								num2 = 0.48f;
-							}
-							else if (attackAnimation == "special_armin")
-							{
-								num3 = 0.25f;
-								num2 = 0.35f;
-							}
-							else if (attackAnimation == "attack4")
-							{
-								num3 = 0.6f;
-								num2 = 0.9f;
-							}
-							else if (attackAnimation == "special_sasha")
-							{
-								num3 = (num2 = -1f);
+								attackAnimation = "AHSS_shoot_r";
 							}
 							else
 							{
-								num3 = 0.5f;
-								num2 = 0.85f;
-							}
-							if (baseA[attackAnimation].normalizedTime > num3 && baseA[attackAnimation].normalizedTime < num2)
-							{
-								if (!triggerLeft.active_me)
-								{
-									triggerLeft.active_me = true;
-									//slash.Play();
-									if ((int)FengGameManagerMKII.settings[92] == 1 && !useGun)
-									{
-										leftbladetrail2.Activate();
-										rightbladetrail2.Activate();
-										leftbladetrail.Activate();
-										rightbladetrail.Activate();
-									}
-								}
-								if (!triggerRight.active_me)
-								{
-									triggerRight.active_me = true;
-								}
-							}
-							else if (triggerLeft.active_me && !useGun)
-							{
-								triggerLeft.active_me = false;
-								triggerRight.active_me = false;
-								triggerLeft.clearHits();
-								triggerRight.clearHits();
-								leftbladetrail2.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
-								rightbladetrail2.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
-								leftbladetrail.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
-								rightbladetrail.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
-							}
-							if (attackLoop > 0 && baseA[attackAnimation].normalizedTime > num2)
-							{
-								attackLoop--;
-								playAnimationAt(attackAnimation, num3);
+								attackAnimation = "AHSS_shoot_l";
 							}
 						}
-						if (baseA[attackAnimation].normalizedTime >= 1f)
+						else if (leftGunHasBullet)
 						{
-							if (attackAnimation == "special_marco_0" || attackAnimation == "special_marco_1")
+							attackAnimation = "AHSS_shoot_l";
+						}
+						else if (rightGunHasBullet)
+						{
+							attackAnimation = "AHSS_shoot_r";
+						}
+					}
+					else if (leftGunHasBullet && rightGunHasBullet)
+					{
+						if (isLeftHandHooked)
+						{
+							attackAnimation = "AHSS_shoot_r_air";
+						}
+						else
+						{
+							attackAnimation = "AHSS_shoot_l_air";
+						}
+					}
+					else if (leftGunHasBullet)
+					{
+						attackAnimation = "AHSS_shoot_l_air";
+					}
+					else if (rightGunHasBullet)
+					{
+						attackAnimation = "AHSS_shoot_r_air";
+					}
+					if (leftGunHasBullet || rightGunHasBullet)
+					{
+						flag6 = true;
+					}
+					else
+					{
+						flag7 = true;
+					}
+				}
+				if (flag6)
+				{
+					state = HERO_STATE.Attack;
+					crossFade(attackAnimation, 0.05f);
+					gunDummy.transform.position = baseT.position;
+					gunDummy.transform.rotation = baseT.rotation;
+					gunDummy.transform.LookAt(gunTarget);
+					attackReleased = false;
+					facingDirection = gunDummy.transform.rotation.eulerAngles.y;
+					targetRotation = Quaternion.Euler(0f, facingDirection, 0f);
+				}
+				else if (flag7 && (grounded || (LevelInfo.getInfo(FengGameManagerMKII.level).type != GAMEMODE.PVP_AHSS && GameSettings.ahssReload == 0)))
+				{
+					changeBlade();
+				}
+				break;
+			}
+			case HERO_STATE.Attack:
+				if (!useGun)
+				{
+					if (!FengCustomInputs.Inputs.isInput[InputCode.attack0])
+					{
+						buttonAttackRelease = true;
+					}
+					if (!attackReleased)
+					{
+						if (buttonAttackRelease)
+						{
+							continueAnimation();
+							attackReleased = true;
+						}
+						else if (baseA[attackAnimation].normalizedTime >= 0.32f)
+						{
+							pauseAnimation();
+						}
+					}
+					if (attackAnimation == "attack3_1" && currentBladeSta > 0f)
+					{
+						if (baseA[attackAnimation].normalizedTime >= 0.8f)
+						{
+							if (!triggerLeft.active_me)
 							{
-								if (IN_GAME_MAIN_CAMERA.gametype != 0)
+								triggerLeft.active_me = true;
+								if ((int)FengGameManagerMKII.settings[92] == 1)
 								{
-									if (!PhotonNetwork.isMasterClient)
-									{
-										object[] parameters = new object[2] { 5f, 100f };
-										basePV.RPC("netTauntAttack", PhotonTargets.MasterClient, parameters);
-									}
-									else
-									{
-										netTauntAttackSelf(5f);
-									}
+									leftbladetrail2.Activate();
+									rightbladetrail2.Activate();
+									leftbladetrail.Activate();
+									rightbladetrail.Activate();
+								}
+								baseR.velocity = -Vector3.up * 30f;
+							}
+							if (!triggerRight.active_me)
+							{
+								triggerRight.active_me = true;
+								if (AudioListener.volume > 0f)
+								{
+									slash.Play();
+								}
+							}
+						}
+						else if (triggerLeft.active_me)
+						{
+							triggerLeft.active_me = false;
+							triggerRight.active_me = false;
+							triggerLeft.clearHits();
+							triggerRight.clearHits();
+							leftbladetrail.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
+							rightbladetrail.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
+							leftbladetrail2.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
+							rightbladetrail2.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
+						}
+					}
+					else
+					{
+						float num2;
+						float num3;
+						if (currentBladeSta == 0f)
+						{
+							num2 = (num3 = -1f);
+						}
+						else if (attackAnimation == "attack5")
+						{
+							num2 = 0.35f;
+							num3 = 0.5f;
+						}
+						else if (attackAnimation == "special_petra")
+						{
+							num2 = 0.35f;
+							num3 = 0.48f;
+						}
+						else if (attackAnimation == "special_armin")
+						{
+							num2 = 0.25f;
+							num3 = 0.35f;
+						}
+						else if (attackAnimation == "attack4")
+						{
+							num2 = 0.6f;
+							num3 = 0.9f;
+						}
+						else if (attackAnimation == "special_sasha")
+						{
+							num2 = (num3 = -1f);
+						}
+						else
+						{
+							num2 = 0.5f;
+							num3 = 0.85f;
+						}
+						if (baseA[attackAnimation].normalizedTime > num2 && baseA[attackAnimation].normalizedTime < num3)
+						{
+							if (!triggerLeft.active_me)
+							{
+								triggerLeft.active_me = true;
+								if (AudioListener.volume > 0f)
+								{
+									slash.Play();
+								}
+								if ((int)FengGameManagerMKII.settings[92] == 1)
+								{
+									leftbladetrail2.Activate();
+									rightbladetrail2.Activate();
+									leftbladetrail.Activate();
+									rightbladetrail.Activate();
+								}
+							}
+							if (!triggerRight.active_me)
+							{
+								triggerRight.active_me = true;
+							}
+						}
+						else if (triggerLeft.active_me)
+						{
+							triggerLeft.active_me = false;
+							triggerRight.active_me = false;
+							triggerLeft.clearHits();
+							triggerRight.clearHits();
+							leftbladetrail2.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
+							rightbladetrail2.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
+							leftbladetrail.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
+							rightbladetrail.StopSmoothly(FengGameManagerMKII.instance.SomeFadeTime / 4f);
+						}
+						if (attackLoop > 0 && baseA[attackAnimation].normalizedTime > num3)
+						{
+							attackLoop--;
+							playAnimationAt(attackAnimation, num2);
+						}
+					}
+					if (baseA[attackAnimation].normalizedTime >= 1f)
+					{
+						if (attackAnimation == "special_marco_0" || attackAnimation == "special_marco_1")
+						{
+							if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE)
+							{
+								if (!PhotonNetwork.isMasterClient)
+								{
+									object[] parameters = new object[2] { 5f, 100f };
+									basePV.RPC("netTauntAttack", PhotonTargets.MasterClient, parameters);
 								}
 								else
 								{
 									netTauntAttackSelf(5f);
 								}
-								falseAttack();
-								idle();
-							}
-							else if (attackAnimation == "special_armin")
-							{
-								if (IN_GAME_MAIN_CAMERA.gametype != 0)
-								{
-									if (!PhotonNetwork.isMasterClient)
-									{
-										basePV.RPC("netlaughAttack", PhotonTargets.MasterClient);
-									}
-									else
-									{
-										netlaughAttack();
-									}
-								}
-								else
-								{
-									GameObject[] array = GameObject.FindGameObjectsWithTag("titan");
-									foreach (GameObject gameObject in array)
-									{
-										if (Vector3.Distance(gameObject.transform.position, baseT.position) < 50f && Vector3.Angle(gameObject.transform.forward, baseT.position - gameObject.transform.position) < 90f && gameObject.GetComponent<TITAN>() != null)
-										{
-											gameObject.GetComponent<TITAN>().beLaughAttacked();
-										}
-									}
-								}
-								falseAttack();
-								idle();
-							}
-							else if (attackAnimation == "attack3_1")
-							{
-								baseR.velocity -= Vector3.up * Time.deltaTime * 30f;
 							}
 							else
 							{
-								falseAttack();
-								idle();
+								netTauntAttackSelf(5f);
 							}
+							falseAttack();
+							idle();
 						}
-						if (baseA.IsPlaying("attack3_2") && baseA["attack3_2"].normalizedTime >= 1f)
+						else if (attackAnimation == "special_armin")
+						{
+							if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE)
+							{
+								if (!PhotonNetwork.isMasterClient)
+								{
+									basePV.RPC("netlaughAttack", PhotonTargets.MasterClient);
+								}
+								else
+								{
+									netlaughAttack();
+								}
+							}
+							else
+							{
+								GameObject[] array = GameObject.FindGameObjectsWithTag("titan");
+								foreach (GameObject gameObject in array)
+								{
+									if (Vector3.Distance(gameObject.transform.position, baseT.position) < 50f && Vector3.Angle(gameObject.transform.forward, baseT.position - gameObject.transform.position) < 90f && gameObject.GetComponent<TITAN>() != null)
+									{
+										gameObject.GetComponent<TITAN>().beLaughAttacked();
+									}
+								}
+							}
+							falseAttack();
+							idle();
+						}
+						else if (attackAnimation == "attack3_1")
+						{
+							baseR.velocity -= Vector3.up * Time.deltaTime * 30f;
+						}
+						else
 						{
 							falseAttack();
 							idle();
 						}
-						break;
 					}
-					if (!attackReleased && baseA[attackAnimation].normalizedTime > 0.167f && usingAhss)
-					{
-                        attackReleased = true;
-						if (basePV.isMine && GameSettings.GunsShot > 0)
-						{
-							//CustomAudioManager.Play(CustomAudioManager.AudioFile.GunsShot);
-						}
-						bool flag4 = false;
-						if (attackAnimation == "AHSS_shoot_both" || attackAnimation == "AHSS_shoot_both_air")
-						{
-							flag4 = true;
-                            if (!InRoomChat.god) leftGunHasBullet = false;
-                            else leftGunHasBullet = true;
-                            if (!InRoomChat.god) rightGunHasBullet = false;
-                            else rightGunHasBullet = true;
-                            baseR.AddForce(-baseT.forward * 1000f, ForceMode.Acceleration);
-						}
-						else
-						{
-							if (attackAnimation == "AHSS_shoot_l" || attackAnimation == "AHSS_shoot_l_air")
-							{
-                                if (!InRoomChat.god) leftGunHasBullet = false;
-                                else leftGunHasBullet = true;
-                            }
-							else
-							{
-                                if (!InRoomChat.god) rightGunHasBullet = false;
-                                else rightGunHasBullet = true;
-                            }
-							baseR.AddForce(-baseT.forward * 600f, ForceMode.Acceleration);
-						}
-						baseR.AddForce(Vector3.up * 200f, ForceMode.Acceleration);
-						string text = "FX/shotGun";
-						if (flag4)
-						{
-							text = "FX/shotGun 1";
-						}
-						if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.MULTIPLAYER && basePV.isMine)
-						{
-							GameObject gameObject2 = PhotonNetwork.Instantiate(text, baseT.position + baseT.up * 0.8f - baseT.right * 0.1f, baseT.rotation, 0);
-							if (gameObject2.GetComponent<EnemyfxIDcontainer>() != null)
-							{
-								gameObject2.GetComponent<EnemyfxIDcontainer>().myOwnerViewID = basePV.viewID;
-							}
-						}
-						else
-						{
-							GameObject gameObject2 = (GameObject)UnityEngine.Object.Instantiate(CacheResources.Load(text), baseT.position + baseT.up * 0.8f - baseT.right * 0.1f, baseT.rotation);
-						}
-					}
-					if (baseA[attackAnimation].normalizedTime >= 1f)
-					{
-						falseAttack();
-						idle();
-					}
-					if (!baseA.IsPlaying(attackAnimation))
+					if (baseA.IsPlaying("attack3_2") && baseA["attack3_2"].normalizedTime >= 1f)
 					{
 						falseAttack();
 						idle();
 					}
 					break;
-				case HERO_STATE.ChangeBlade:
-					if (usingAhss)
+				}
+				if (!attackReleased && baseA[attackAnimation].normalizedTime > 0.167f)
+				{
+					attackReleased = true;
+					if (basePV.isMine && GameSettings.GunsShot > 0 && AudioListener.volume > 0f)
 					{
-						if (baseA[reloadAnimation].normalizedTime > 0.22f)
-						{
-							if (!leftGunHasBullet && setup.part_blade_l.activeSelf)
-							{
-								setup.part_blade_l.SetActive(value: false);
-								Transform transform4 = setup.part_blade_l.transform;
-								GameObject obj = (GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("Character_parts/character_gun_l"), transform4.position, transform4.rotation);
-								obj.renderer.material = CharacterMaterials.materials[setup.myCostume._3dmg_texture];
-								Vector3 force = -baseT.forward * 10f + baseT.up * 5f - baseT.right;
-								obj.rigidbody.AddForce(force, ForceMode.Impulse);
-								Vector3 torque = new Vector3(UnityEngine.Random.Range(-100, 100), UnityEngine.Random.Range(-100, 100), UnityEngine.Random.Range(-100, 100));
-								obj.rigidbody.AddTorque(torque, ForceMode.Acceleration);
-							}
-							if (!rightGunHasBullet && setup.part_blade_r.activeSelf)
-							{
-								setup.part_blade_r.SetActive(value: false);
-								Transform transform5 = setup.part_blade_r.transform;
-								GameObject obj2 = (GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("Character_parts/character_gun_r"), transform5.position, transform5.rotation);
-								obj2.renderer.material = CharacterMaterials.materials[setup.myCostume._3dmg_texture];
-								Vector3 force2 = -baseT.forward * 10f + baseT.up * 5f + baseT.right;
-								obj2.rigidbody.AddForce(force2, ForceMode.Impulse);
-								Vector3 torque2 = new Vector3(UnityEngine.Random.Range(-300, 300), UnityEngine.Random.Range(-300, 300), UnityEngine.Random.Range(-300, 300));
-								obj2.rigidbody.AddTorque(torque2, ForceMode.Acceleration);
-							}
-						}
-						if (baseA[reloadAnimation].normalizedTime > 0.62f && !throwedBlades)
-						{
-							throwedBlades = true;
-							if (leftBulletLeft > 0 && !leftGunHasBullet)
-							{
-								if (!InRoomChat.god) leftBulletLeft--;
-								setup.part_blade_l.SetActive(value: true);
-								leftGunHasBullet = true;
-							}
-							if (rightBulletLeft > 0 && !rightGunHasBullet)
-							{
-								setup.part_blade_r.SetActive(value: true);
-								if (!InRoomChat.god) rightBulletLeft--;
-								rightGunHasBullet = true;
-							}
-							updateRightMagUI();
-							updateLeftMagUI();
-						}
-						if (baseA[reloadAnimation].normalizedTime > 1f)
-						{
-							idle();
-						}
-						break;
+						CustomAudioManager.Play(CustomAudioManager.AudioFile.GunsShot);
 					}
-					if (!grounded)
+					bool flag4 = false;
+					if (attackAnimation == "AHSS_shoot_both" || attackAnimation == "AHSS_shoot_both_air")
 					{
-						if (baseA[reloadAnimation].normalizedTime >= 0.2f && !throwedBlades)
+						flag4 = true;
+						leftGunHasBullet = false;
+						rightGunHasBullet = false;
+						baseR.AddForce(-baseT.forward * 1000f, ForceMode.Acceleration);
+					}
+					else
+					{
+						if (attackAnimation == "AHSS_shoot_l" || attackAnimation == "AHSS_shoot_l_air")
 						{
-							throwedBlades = true;
-							if (setup.part_blade_l.activeSelf)
-							{
-								throwBlades();
-							}
+							leftGunHasBullet = false;
 						}
-						if (baseA[reloadAnimation].normalizedTime >= 0.56f && currentBladeNum > 0)
+						else
 						{
-							setup.part_blade_l.SetActive(value: true);
-							setup.part_blade_r.SetActive(value: true);
-							currentBladeSta = totalBladeSta;
+							rightGunHasBullet = false;
+						}
+						baseR.AddForce(-baseT.forward * 600f, ForceMode.Acceleration);
+					}
+					baseR.AddForce(Vector3.up * 200f, ForceMode.Acceleration);
+					string text = "FX/shotGun";
+					if (flag4)
+					{
+						text = "FX/shotGun 1";
+					}
+					if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.MULTIPLAYER && basePV.isMine)
+					{
+						GameObject gameObject2 = PhotonNetwork.Instantiate(text, baseT.position + baseT.up * 0.8f - baseT.right * 0.1f, baseT.rotation, 0);
+						if (gameObject2.GetComponent<EnemyfxIDcontainer>() != null)
+						{
+							gameObject2.GetComponent<EnemyfxIDcontainer>().myOwnerViewID = basePV.viewID;
 						}
 					}
 					else
 					{
-						if (baseA[reloadAnimation].normalizedTime >= 0.13f && !throwedBlades)
+						GameObject gameObject2 = (GameObject)UnityEngine.Object.Instantiate(CacheResources.Load(text), baseT.position + baseT.up * 0.8f - baseT.right * 0.1f, baseT.rotation);
+					}
+				}
+				if (baseA[attackAnimation].normalizedTime >= 1f)
+				{
+					falseAttack();
+					idle();
+				}
+				if (!baseA.IsPlaying(attackAnimation))
+				{
+					falseAttack();
+					idle();
+				}
+				break;
+			case HERO_STATE.ChangeBlade:
+				if (useGun)
+				{
+					if (baseA[reloadAnimation].normalizedTime > 0.22f)
+					{
+						if (!leftGunHasBullet && setup.part_blade_l.activeSelf)
 						{
-							throwedBlades = true;
-							if (setup.part_blade_l.activeSelf)
-							{
-								throwBlades();
-							}
+							setup.part_blade_l.SetActive(value: false);
+							Transform transform4 = setup.part_blade_l.transform;
+							GameObject obj = (GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("Character_parts/character_gun_l"), transform4.position, transform4.rotation);
+							obj.renderer.material = CharacterMaterials.materials[setup.myCostume._3dmg_texture];
+							Vector3 force = -baseT.forward * 10f + baseT.up * 5f - baseT.right;
+							obj.rigidbody.AddForce(force, ForceMode.Impulse);
+							Vector3 torque = new Vector3(UnityEngine.Random.Range(-100, 100), UnityEngine.Random.Range(-100, 100), UnityEngine.Random.Range(-100, 100));
+							obj.rigidbody.AddTorque(torque, ForceMode.Acceleration);
 						}
-						if (baseA[reloadAnimation].normalizedTime >= 0.37f && currentBladeNum > 0)
+						if (!rightGunHasBullet && setup.part_blade_r.activeSelf)
 						{
+							setup.part_blade_r.SetActive(value: false);
+							Transform transform5 = setup.part_blade_r.transform;
+							GameObject obj2 = (GameObject)UnityEngine.Object.Instantiate(CacheResources.Load("Character_parts/character_gun_r"), transform5.position, transform5.rotation);
+							obj2.renderer.material = CharacterMaterials.materials[setup.myCostume._3dmg_texture];
+							Vector3 force2 = -baseT.forward * 10f + baseT.up * 5f + baseT.right;
+							obj2.rigidbody.AddForce(force2, ForceMode.Impulse);
+							Vector3 torque2 = new Vector3(UnityEngine.Random.Range(-300, 300), UnityEngine.Random.Range(-300, 300), UnityEngine.Random.Range(-300, 300));
+							obj2.rigidbody.AddTorque(torque2, ForceMode.Acceleration);
+						}
+					}
+					if (baseA[reloadAnimation].normalizedTime > 0.62f && !throwedBlades)
+					{
+						throwedBlades = true;
+						if (leftBulletLeft > 0 && !leftGunHasBullet)
+						{
+							leftBulletLeft--;
 							setup.part_blade_l.SetActive(value: true);
+							leftGunHasBullet = true;
+						}
+						if (rightBulletLeft > 0 && !rightGunHasBullet)
+						{
 							setup.part_blade_r.SetActive(value: true);
-							currentBladeSta = totalBladeSta;
+							rightBulletLeft--;
+							rightGunHasBullet = true;
 						}
+						updateRightMagUI();
+						updateLeftMagUI();
 					}
-					if (baseA[reloadAnimation].normalizedTime >= 1f)
+					if (baseA[reloadAnimation].normalizedTime > 1f)
 					{
 						idle();
 					}
 					break;
-				case HERO_STATE.Salute:
-					if (baseA["salute"].normalizedTime >= 1f)
+				}
+				if (!grounded)
+				{
+					if (baseA[reloadAnimation].normalizedTime >= 0.2f && !throwedBlades)
 					{
-						idle();
-					}
-					break;
-				case HERO_STATE.GroundDodge:
-					if (baseA.IsPlaying("dodge"))
-					{
-						if (!grounded && !(baseA["dodge"].normalizedTime <= 0.6f))
+						throwedBlades = true;
+						if (setup.part_blade_l.activeSelf)
 						{
-							idle();
-						}
-						if (baseA["dodge"].normalizedTime >= 1f)
-						{
-							idle();
+							throwBlades();
 						}
 					}
-					break;
-				case HERO_STATE.Land:
-					if (baseA.IsPlaying("dash_land") && baseA["dash_land"].normalizedTime >= 1f)
+					if (baseA[reloadAnimation].normalizedTime >= 0.56f && currentBladeNum > 0)
 					{
-						idle();
-					}
-					break;
-				case HERO_STATE.FillGas:
-					if (baseA.IsPlaying("supply") && baseA["supply"].normalizedTime >= 1f)
-					{
+						setup.part_blade_l.SetActive(value: true);
+						setup.part_blade_r.SetActive(value: true);
 						currentBladeSta = totalBladeSta;
-						currentBladeNum = totalBladeNum;
-						currentGas = totalGas;
-						if (!usingAhss)
-						{
-							setup.part_blade_l.SetActive(value: true);
-							setup.part_blade_r.SetActive(value: true);
-						}
-						else
-						{
-							leftBulletLeft = (rightBulletLeft = bulletMAX);
-							leftGunHasBullet = (rightGunHasBullet = true);
-							setup.part_blade_l.SetActive(value: true);
-							setup.part_blade_r.SetActive(value: true);
-							updateRightMagUI();
-							updateLeftMagUI();
-						}
-						idle();
 					}
-					break;
-				case HERO_STATE.Slide:
-					if (!grounded)
+				}
+				else
+				{
+					if (baseA[reloadAnimation].normalizedTime >= 0.13f && !throwedBlades)
+					{
+						throwedBlades = true;
+						if (setup.part_blade_l.activeSelf)
+						{
+							throwBlades();
+						}
+					}
+					if (baseA[reloadAnimation].normalizedTime >= 0.37f && currentBladeNum > 0)
+					{
+						setup.part_blade_l.SetActive(value: true);
+						setup.part_blade_r.SetActive(value: true);
+						currentBladeSta = totalBladeSta;
+					}
+				}
+				if (baseA[reloadAnimation].normalizedTime >= 1f)
+				{
+					idle();
+				}
+				break;
+			case HERO_STATE.Salute:
+				if (baseA["salute"].normalizedTime >= 1f)
+				{
+					idle();
+				}
+				break;
+			case HERO_STATE.GroundDodge:
+				if (baseA.IsPlaying("dodge"))
+				{
+					if (!grounded && !(baseA["dodge"].normalizedTime <= 0.6f))
 					{
 						idle();
 					}
-					break;
-				case HERO_STATE.AirDodge:
-					if (dashTime > 0f)
+					if (baseA["dodge"].normalizedTime >= 1f)
 					{
-						dashTime -= Time.deltaTime;
-						if (currentSpeed > originVM)
-						{
-							baseR.AddForce(-baseR.velocity * Time.deltaTime * 1.7f, ForceMode.VelocityChange);
-						}
+						idle();
+					}
+				}
+				break;
+			case HERO_STATE.Land:
+				if (baseA.IsPlaying("dash_land") && baseA["dash_land"].normalizedTime >= 1f)
+				{
+					idle();
+				}
+				break;
+			case HERO_STATE.FillGas:
+				if (baseA.IsPlaying("supply") && baseA["supply"].normalizedTime >= 1f)
+				{
+					currentBladeSta = totalBladeSta;
+					currentBladeNum = totalBladeNum;
+					currentGas = totalGas;
+					if (!useGun)
+					{
+						setup.part_blade_l.SetActive(value: true);
+						setup.part_blade_r.SetActive(value: true);
 					}
 					else
 					{
-						dashTime = 0f;
-						idle();
+						leftBulletLeft = (rightBulletLeft = bulletMAX);
+						leftGunHasBullet = (rightGunHasBullet = true);
+						setup.part_blade_l.SetActive(value: true);
+						setup.part_blade_r.SetActive(value: true);
+						updateRightMagUI();
+						updateLeftMagUI();
 					}
-					break;
+					idle();
+				}
+				break;
+			case HERO_STATE.Slide:
+				if (!grounded)
+				{
+					idle();
+				}
+				break;
+			case HERO_STATE.AirDodge:
+				if (dashTime > 0f)
+				{
+					dashTime -= Time.deltaTime;
+					if (currentSpeed > originVM)
+					{
+						baseR.AddForce(-baseR.velocity * Time.deltaTime * 1.7f, ForceMode.VelocityChange);
+					}
+				}
+				else
+				{
+					dashTime = 0f;
+					idle();
+				}
+				break;
 			}
 			if (FengCustomInputs.Inputs.isInput[InputCode.leftRope] && ((!baseA.IsPlaying("attack3_1") && !baseA.IsPlaying("attack5") && !baseA.IsPlaying("special_petra") && state != HERO_STATE.Grab) || state == HERO_STATE.Idle))
 			{
@@ -6757,12 +6755,15 @@ public class HERO : MONO, IAnarchyScriptHero
 				}
 				else
 				{
-					Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+					Ray ray = Camera.main.ScreenPointToRay(GetAimPosition());
 					LayerMask layerMask = 1 << LayerMask.NameToLayer("Ground");
 					if (Physics.Raycast(ray, out var hitInfo4, 10000f, ((LayerMask)((int)(LayerMask)(1 << LayerMask.NameToLayer("EnemyBox")) | (int)layerMask)).value))
 					{
 						launchLeftRope(hitInfo4, single: true, 0);
-						//rope.Play();
+						if (AudioListener.volume > 0f)
+						{
+							rope.Play();
+						}
 					}
 				}
 			}
@@ -6778,12 +6779,15 @@ public class HERO : MONO, IAnarchyScriptHero
 				}
 				else
 				{
-					Ray ray2 = Camera.main.ScreenPointToRay(Input.mousePosition);
+					Ray ray2 = Camera.main.ScreenPointToRay(GetAimPosition());
 					LayerMask layerMask2 = 1 << LayerMask.NameToLayer("Ground");
 					if (Physics.Raycast(ray2, out var hitInfo5, 10000f, ((LayerMask)((int)(LayerMask)(1 << LayerMask.NameToLayer("EnemyBox")) | (int)layerMask2)).value))
 					{
 						launchRightRope(hitInfo5, single: true);
-						//rope.Play();
+						if (AudioListener.volume > 0f)
+						{
+							rope.Play();
+						}
 					}
 				}
 			}
@@ -6797,17 +6801,20 @@ public class HERO : MONO, IAnarchyScriptHero
 				EHold = true;
 				if (bulletLeft == null && bulletRight == null)
 				{
-					Ray ray3 = Camera.main.ScreenPointToRay(Input.mousePosition);
+					Ray ray3 = Camera.main.ScreenPointToRay(GetAimPosition());
 					LayerMask layerMask3 = 1 << LayerMask.NameToLayer("Ground");
 					if (Physics.Raycast(ray3, out var hitInfo6, 1000000f, ((LayerMask)((int)(LayerMask)(1 << LayerMask.NameToLayer("EnemyBox")) | (int)layerMask3)).value))
 					{
 						launchLeftRope(hitInfo6, single: false, 0);
 						launchRightRope(hitInfo6, single: false);
-						//rope.Play();
+						if (AudioListener.volume > 0f)
+						{
+							rope.Play();
+						}
 					}
 				}
 			}
-			if (IN_GAME_MAIN_CAMERA.gametype != 0 || (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE && !IN_GAME_MAIN_CAMERA.isPausing))
+			if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE || (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE && !IN_GAME_MAIN_CAMERA.isPausing))
 			{
 				calcSkillCD();
 				calcFlareCD();
@@ -6837,7 +6844,7 @@ public class HERO : MONO, IAnarchyScriptHero
 			}
 			if (!IN_GAME_MAIN_CAMERA.isPausing)
 			{
-				if (!PhotonNetwork.offlineMode && IN_GAME_MAIN_CAMERA.gametype != 0)
+				if (!PhotonNetwork.offlineMode && IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE)
 				{
 					ReceiveSendMount();
 				}
@@ -6856,17 +6863,32 @@ public class HERO : MONO, IAnarchyScriptHero
 			calcSkillCD();
 			showSkillCD();
 		}
-  //      if (GameSettings.Slide > 0)
-		//{
-		//	if (state == HERO_STATE.Slide && !CustomAudioManager.AudioIsPlaying(CustomAudioManager.AudioFile.Slide))
-		//	{
-		//		//CustomAudioManager.Play(CustomAudioManager.AudioFile.Slide);
-		//	}
-		//	if (state != HERO_STATE.Slide && CustomAudioManager.AudioIsPlaying(CustomAudioManager.AudioFile.Slide))
-		//	{
-		//		CustomAudioManager.Stop(CustomAudioManager.AudioFile.Slide);
-		//	}
-		//}
+		if (GameSettings.Slide > 0)
+		{
+			if (state == HERO_STATE.Slide && !CustomAudioManager.AudioIsPlaying(CustomAudioManager.AudioFile.Slide) && AudioListener.volume > 0f)
+			{
+				CustomAudioManager.Play(CustomAudioManager.AudioFile.Slide);
+			}
+			if (state != HERO_STATE.Slide && CustomAudioManager.AudioIsPlaying(CustomAudioManager.AudioFile.Slide))
+			{
+				CustomAudioManager.Stop(CustomAudioManager.AudioFile.Slide);
+			}
+		}
+		if (GameSettings.GasSound > 0)
+		{
+			if (smoke_3dmg.enableEmission && !CustomAudioManager.AudioIsPlaying(CustomAudioManager.AudioFile.Gas))
+			{
+				if (AudioListener.volume > 0f)
+				{
+					CustomAudioManager.Play(CustomAudioManager.AudioFile.Gas);
+				}
+				CustomAudioManager.Play(CustomAudioManager.AudioFile.Gas);
+			}
+			if (!smoke_3dmg.enableEmission && CustomAudioManager.AudioIsPlaying(CustomAudioManager.AudioFile.Gas))
+			{
+				CustomAudioManager.Stop(CustomAudioManager.AudioFile.Gas);
+			}
+		}
 		if (GameSettings.bombMode > 0 && Input.GetKeyDown(FengGameManagerMKII.BombSpecialKey))
 		{
 			if ((int)FengGameManagerMKII.settings[291] == 1)
@@ -6878,7 +6900,7 @@ public class HERO : MONO, IAnarchyScriptHero
 				FengGameManagerMKII.settings[291] = 1;
 			}
 		}
-    }
+	}
 
 	public static HERO FindMyHero(int ownerID)
 	{
@@ -7021,12 +7043,7 @@ public class HERO : MONO, IAnarchyScriptHero
 			HERO hERO = NearestPlayer(this);
 			if (hERO != null && Vector3.Distance(hERO.transform.position, base.transform.position) < 15f)
 			{
-				string content = string.Concat(new string[3]
-				{
-					"Press [FFFF00] Alpha4[-] to ask ",
-					(string)hERO.photonView.owner.customProperties["name"],
-					"[-] to carry you.\n"
-				});
+				string content = "Press [FFFF00] Alpha4[-] to ask " + (string)hERO.photonView.owner.customProperties["name"] + "[-] to carry you.\n";
 				GameObject.Find("MultiplayerManager").GetComponent<FengGameManagerMKII>().ShowHUDInfoTopCenter(content);
 				if (Input.GetKeyDown(KeyCode.Alpha4))
 				{
@@ -7090,51 +7107,45 @@ public class HERO : MONO, IAnarchyScriptHero
 
 	public void useBlade(int amount)
 	{
-		if (!InRoomChat.god)
+		if (amount == 0)
 		{
-			if (amount == 0)
+			amount = 1;
+		}
+		amount *= 2;
+		if (!(currentBladeSta > 0f))
+		{
+			return;
+		}
+		currentBladeSta -= amount;
+		if (currentBladeSta <= 0f)
+		{
+			if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE || basePV.isMine)
 			{
-				amount = 1;
+				leftbladetrail.Deactivate();
+				rightbladetrail.Deactivate();
+				leftbladetrail2.Deactivate();
+				rightbladetrail2.Deactivate();
+				triggerLeft.active_me = false;
+				triggerRight.active_me = false;
 			}
-			amount *= 2;
-			if (!(currentBladeSta > 0f))
-			{
-				return;
-			}
-			currentBladeSta -= amount;
-			if (currentBladeSta <= 0f)
-			{
-				if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE || basePV.isMine)
-				{
-					leftbladetrail.Deactivate();
-					rightbladetrail.Deactivate();
-					leftbladetrail2.Deactivate();
-					rightbladetrail2.Deactivate();
-					triggerLeft.active_me = false;
-					triggerRight.active_me = false;
-				}
-				currentBladeSta = 0f;
-				throwBlades();
-			}
+			currentBladeSta = 0f;
+			throwBlades();
 		}
 	}
 
 	private void useGas(float amount)
 	{
-		if (!InRoomChat.god)
+		if (amount == 0f)
 		{
-			if (amount == 0f)
+			amount = useGasSpeed;
+		}
+		amount *= GasUsageModifier;
+		if (currentGas > 0f && GameSettings.bombMode <= 0)
+		{
+			currentGas -= amount;
+			if (currentGas < 0f)
 			{
-				amount = useGasSpeed;
-			}
-			amount *= GasUsageModifier;
-			if (currentGas > 0f && GameSettings.bombMode <= 0)
-			{
-				currentGas -= amount;
-				if (currentGas < 0f)
-				{
-					currentGas = 0f;
-				}
+				currentGas = 0f;
 			}
 		}
 	}

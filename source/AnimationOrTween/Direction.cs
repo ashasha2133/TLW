@@ -1,9 +1,8 @@
-namespace AnimationOrTween
+namespace AnimationOrTween;
+
+public enum Direction
 {
-	public enum Direction
-	{
-		Forward = 1,
-		Reverse = -1,
-		Toggle = 0
-	}
+	Forward = 1,
+	Reverse = -1,
+	Toggle = 0
 }

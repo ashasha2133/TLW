@@ -29,10 +29,10 @@ internal class PhotonHandler : Photon.MonoBehaviour, IPhotonPeerListener
 	{
 		get
 		{
-			string @string = PlayerPrefs.GetString("PUNCloudBestRegion", string.Empty);
-			if (!string.IsNullOrEmpty(@string))
+			string text = PlayerPrefs.GetString("PUNCloudBestRegion", string.Empty);
+			if (!string.IsNullOrEmpty(text))
 			{
-				return Region.Parse(@string);
+				return Region.Parse(text);
 			}
 			return CloudRegionCode.none;
 		}

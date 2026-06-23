@@ -102,7 +102,7 @@ public class UILabel : UIWidget
 			if (!mEffectColor.Equals(value))
 			{
 				mEffectColor = value;
-				if (mEffectStyle != 0)
+				if (mEffectStyle != Effect.None)
 				{
 					hasChanged = true;
 				}
@@ -495,7 +495,7 @@ public class UILabel : UIWidget
 			mFont.Print(processedText, color, verts, uvs, cols, mEncoding, mSymbols, UIFont.Alignment.Center, Mathf.RoundToInt(relativeSize.x * (float)mFont.size), mPremultiply);
 			break;
 		}
-		if (effectStyle != 0)
+		if (effectStyle != Effect.None)
 		{
 			int size2 = verts.size;
 			float num = 1f / (float)mFont.size;

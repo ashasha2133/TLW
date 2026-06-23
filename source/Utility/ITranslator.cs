@@ -1,15 +1,14 @@
 using UnityEngine;
 
-namespace Utility
+namespace Utility;
+
+public interface ITranslator
 {
-	public interface ITranslator
-	{
-		string GetErrorMessage();
+	string GetErrorMessage();
 
-		bool IsWorking();
+	bool IsWorking();
 
-		WWW GetWWW(string fromLang, string toLang, string text);
+	WWW GetWWW(string fromLang, string toLang, string text);
 
-		string ParseTranslation(WWW link, string originalText);
-	}
+	string ParseTranslation(WWW link, string originalText);
 }

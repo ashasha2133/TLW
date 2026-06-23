@@ -13,8 +13,7 @@ public class Horse : Photon.MonoBehaviour
 
 	private Vector3 setPoint;
 
-	private float speed = InRoomChat.god ? 500f : 45f;
-	private float followSpeed = 70f;
+	private float speed = 45f;
 
 	private string State = "idle";
 
@@ -45,7 +44,8 @@ public class Horse : Photon.MonoBehaviour
 
 	private float getHeight(Vector3 pt)
 	{
-		if (Physics.Raycast(layerMask: ((LayerMask)(1 << LayerMask.NameToLayer("Ground"))).value, origin: pt, direction: -Vector3.up, hitInfo: out var hitInfo, distance: 1000f))
+		LayerMask layerMask = 1 << LayerMask.NameToLayer("Ground");
+		if (Physics.Raycast(pt, -Vector3.up, out var hitInfo, 1000f, layerMask.value))
 		{
 			return hitInfo.point.y;
 		}
@@ -55,7 +55,8 @@ public class Horse : Photon.MonoBehaviour
 	public bool IsGrounded()
 	{
 		LayerMask layerMask = 1 << LayerMask.NameToLayer("Ground");
-		return Physics.Raycast(layerMask: ((LayerMask)((1 << LayerMask.NameToLayer("EnemyBox")) | (int)layerMask)).value, origin: base.gameObject.transform.position + Vector3.up * 0.1f, direction: -Vector3.up, distance: 0.3f);
+		LayerMask layerMask2 = (1 << LayerMask.NameToLayer("EnemyBox")) | (int)layerMask;
+		return Physics.Raycast(base.gameObject.transform.position + Vector3.up * 0.1f, -Vector3.up, 0.3f, layerMask2.value);
 	}
 
 	private void LateUpdate()
@@ -76,11 +77,10 @@ public class Horse : Photon.MonoBehaviour
 			myHero.rigidbody.velocity = base.rigidbody.velocity;
 			if (controller.targetDirection != -874f)
 			{
-				base.gameObject.transform.rotation = Quaternion.Lerp(base.gameObject.transform.rotation, Quaternion.Euler(0f, controller.targetDirection, 0f), InRoomChat.god ? 1 : 100f * Time.deltaTime / (base.rigidbody.velocity.magnitude + 20f));
+				base.gameObject.transform.rotation = Quaternion.Lerp(base.gameObject.transform.rotation, Quaternion.Euler(0f, controller.targetDirection, 0f), 100f * Time.deltaTime / (base.rigidbody.velocity.magnitude + 20f));
 				if (controller.isWALKDown)
 				{
-                    speed = InRoomChat.god ? 500f : 45f;
-                    base.rigidbody.AddForce(base.transform.forward * speed * 0.6f, ForceMode.Acceleration);
+					base.rigidbody.AddForce(base.transform.forward * speed * 0.6f, ForceMode.Acceleration);
 					if (base.rigidbody.velocity.magnitude >= speed * 0.6f)
 					{
 						base.rigidbody.AddForce((0f - speed) * 0.6f * base.rigidbody.velocity.normalized, ForceMode.Acceleration);
@@ -88,8 +88,7 @@ public class Horse : Photon.MonoBehaviour
 				}
 				else
 				{
-                    speed = InRoomChat.god ? 500f : 45f;
-                    base.rigidbody.AddForce(base.transform.forward * speed, ForceMode.Acceleration);
+					base.rigidbody.AddForce(base.transform.forward * speed, ForceMode.Acceleration);
 					if (base.rigidbody.velocity.magnitude >= speed)
 					{
 						base.rigidbody.AddForce((0f - speed) * base.rigidbody.velocity.normalized, ForceMode.Acceleration);
@@ -187,18 +186,18 @@ public class Horse : Photon.MonoBehaviour
 			base.gameObject.transform.rotation = Quaternion.Lerp(base.gameObject.transform.rotation, Quaternion.Euler(0f, base.gameObject.transform.rotation.eulerAngles.y + num, 0f), 200f * Time.deltaTime / (base.rigidbody.velocity.magnitude + 20f));
 			if (Vector3.Distance(setPoint, base.transform.position) < 20f)
 			{
-				base.rigidbody.AddForce(base.transform.forward * followSpeed * 0.7f, ForceMode.Acceleration);
-				if (base.rigidbody.velocity.magnitude >= followSpeed)
+				base.rigidbody.AddForce(base.transform.forward * speed * 0.7f, ForceMode.Acceleration);
+				if (base.rigidbody.velocity.magnitude >= speed)
 				{
-					base.rigidbody.AddForce((0f - followSpeed) * 0.7f * base.rigidbody.velocity.normalized, ForceMode.Acceleration);
+					base.rigidbody.AddForce((0f - speed) * 0.7f * base.rigidbody.velocity.normalized, ForceMode.Acceleration);
 				}
 			}
 			else
 			{
-				base.rigidbody.AddForce(base.transform.forward * followSpeed, ForceMode.Acceleration);
-				if (base.rigidbody.velocity.magnitude >= followSpeed)
+				base.rigidbody.AddForce(base.transform.forward * speed, ForceMode.Acceleration);
+				if (base.rigidbody.velocity.magnitude >= speed)
 				{
-					base.rigidbody.AddForce((0f - followSpeed) * base.rigidbody.velocity.normalized, ForceMode.Acceleration);
+					base.rigidbody.AddForce((0f - speed) * base.rigidbody.velocity.normalized, ForceMode.Acceleration);
 				}
 			}
 			timeElapsed += Time.deltaTime;
@@ -222,7 +221,8 @@ public class Horse : Photon.MonoBehaviour
 			if (awayTimer > 6f)
 			{
 				awayTimer = 0f;
-				if (Physics.Linecast(layerMask: ((LayerMask)(1 << LayerMask.NameToLayer("Ground"))).value, start: base.transform.position + Vector3.up, end: myHero.transform.position + Vector3.up))
+				LayerMask layerMask = 1 << LayerMask.NameToLayer("Ground");
+				if (Physics.Linecast(base.transform.position + Vector3.up, myHero.transform.position + Vector3.up, layerMask.value))
 				{
 					base.transform.position = new Vector3(myHero.transform.position.x, getHeight(myHero.transform.position + Vector3.up * 5f), myHero.transform.position.z);
 				}

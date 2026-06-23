@@ -2,55 +2,54 @@ using System.Collections.Generic;
 using SimpleJSON;
 using UnityEngine;
 
-namespace Utility
+namespace Utility;
+
+public class UnlimitedGoogleTranslate : ITranslator
 {
-	public class UnlimitedGoogleTranslate : ITranslator
+	private bool _isWorking;
+
+	private int _numMessagesSent;
+
+	private readonly int _maxMessages = 3000;
+
+	public UnlimitedGoogleTranslate()
 	{
-		private bool _isWorking;
+		_isWorking = true;
+	}
 
-		private int _numMessagesSent;
+	public bool IsWorking()
+	{
+		return _isWorking;
+	}
 
-		private readonly int _maxMessages = 3000;
+	public WWW GetWWW(string fromLang, string toLang, string text)
+	{
+		return new WWW("https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=" + fromLang + "&tl=" + toLang + "&q=" + text, null, new Dictionary<string, string> { { "user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36" } });
+	}
 
-		public UnlimitedGoogleTranslate()
+	public string ParseTranslation(WWW link, string originalText)
+	{
+		_numMessagesSent++;
+		if (_numMessagesSent > _maxMessages)
 		{
-			_isWorking = true;
+			_isWorking = false;
+			return originalText;
 		}
-
-		public bool IsWorking()
+		if (link.error != null)
 		{
-			return _isWorking;
+			_isWorking = false;
+			return originalText;
 		}
-
-		public WWW GetWWW(string fromLang, string toLang, string text)
+		if (link.text == "[" + originalText + "]")
 		{
-			return new WWW("https://clients5.google.com/translate_a/t?client=dict-chrome-ex&sl=" + fromLang + "&tl=" + toLang + "&q=" + text, null, new Dictionary<string, string> { { "user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36" } });
+			_isWorking = false;
+			return originalText;
 		}
+		return JSON.Parse(link.text).AsArray[0].Value;
+	}
 
-		public string ParseTranslation(WWW link, string originalText)
-		{
-			_numMessagesSent++;
-			if (_numMessagesSent > _maxMessages)
-			{
-				_isWorking = false;
-				return originalText;
-			}
-			if (link.error != null)
-			{
-				_isWorking = false;
-				return originalText;
-			}
-			if (link.text == "[" + originalText + "]")
-			{
-				_isWorking = false;
-				return originalText;
-			}
-			return JSON.Parse(link.text).AsArray[0].Value;
-		}
-
-		public string GetErrorMessage()
-		{
-			return "<color=red>[Translation Error - Switching API]</color>";
-		}
+	public string GetErrorMessage()
+	{
+		return "<color=red>[Translation Error - Switching API]</color>";
 	}
 }

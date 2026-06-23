@@ -275,16 +275,16 @@ public abstract class UIWidget : MonoBehaviour
 				mChanged = true;
 				Vector3 vector2 = NGUIMath.CalculateWidgetCorners(this)[0];
 				Transform obj = cachedTransform;
-				Vector3 vector3 = obj.position;
+				Vector3 position = obj.position;
 				float z = obj.localPosition.z;
-				vector3.x += vector.x - vector2.x;
-				vector3.y += vector.y - vector2.y;
-				cachedTransform.position = vector3;
-				vector3 = cachedTransform.localPosition;
-				vector3.x = Mathf.Round(vector3.x);
-				vector3.y = Mathf.Round(vector3.y);
-				vector3.z = z;
-				cachedTransform.localPosition = vector3;
+				position.x += vector.x - vector2.x;
+				position.y += vector.y - vector2.y;
+				cachedTransform.position = position;
+				position = cachedTransform.localPosition;
+				position.x = Mathf.Round(position.x);
+				position.y = Mathf.Round(position.y);
+				position.z = z;
+				cachedTransform.localPosition = position;
 			}
 		}
 	}

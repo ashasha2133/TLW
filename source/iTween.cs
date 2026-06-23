@@ -263,6 +263,26 @@ public class iTween : MonoBehaviour
 
 	public string _name;
 
+	public float delay;
+
+	public float delayStarted;
+
+	public EaseType easeType;
+
+	public string id;
+
+	public bool isPaused;
+
+	public bool isRunning;
+
+	public LoopType loopType;
+
+	public string method;
+
+	public float time;
+
+	public string type;
+
 	private static Dictionary<string, int> f__switchmap10;
 
 	private static Dictionary<string, int> f__switchmap11;
@@ -291,37 +311,21 @@ public class iTween : MonoBehaviour
 
 	private ApplyTween apply;
 
-	//private AudioSource audioSource;
+	private AudioSource audioSource;
 
 	private static GameObject cameraFade;
 
 	private Color[,] colors;
 
-	public float delay;
-
-	public float delayStarted;
-
 	private EasingFunction ease;
-
-	public EaseType easeType;
 
 	private float[] floats;
 
-	public string id;
-
 	private bool isLocal;
-
-	public bool isPaused;
-
-	public bool isRunning;
 
 	private float lastRealTime;
 
 	private bool loop;
-
-	public LoopType loopType;
-
-	public string method;
 
 	private NamedValueColor namedcolorvalue;
 
@@ -345,13 +349,7 @@ public class iTween : MonoBehaviour
 
 	private Transform thisTransform;
 
-	public float time;
-
 	private Hashtable tweenArguments;
-
-	public static List<Hashtable> tweens = new List<Hashtable>();
-
-	public string type;
 
 	private bool useRealTime;
 
@@ -360,6 +358,8 @@ public class iTween : MonoBehaviour
 	private Vector3[] vector3s;
 
 	private bool wasPaused;
+
+	public static List<Hashtable> tweens = new List<Hashtable>();
 
 	private iTween(Hashtable h)
 	{
@@ -370,12 +370,12 @@ public class iTween : MonoBehaviour
 	{
 		vector2s[2].x = ease(vector2s[0].x, vector2s[1].x, percentage);
 		vector2s[2].y = ease(vector2s[0].y, vector2s[1].y, percentage);
-		//audioSource.volume = vector2s[2].x;
-		//audioSource.pitch = vector2s[2].y;
+		audioSource.volume = vector2s[2].x;
+		audioSource.pitch = vector2s[2].y;
 		if (percentage == 1f)
 		{
-			//audioSource.volume = vector2s[1].x;
-			//audioSource.pitch = vector2s[1].y;
+			audioSource.volume = vector2s[1].x;
+			audioSource.pitch = vector2s[1].y;
 		}
 	}
 
@@ -859,23 +859,23 @@ public class iTween : MonoBehaviour
 	public static void AudioFrom(GameObject target, Hashtable args)
 	{
 		args = CleanArgs(args);
-		//AudioSource audioSource;
-		//if (args.Contains("audiosource"))
-		//{
-			//audioSource = (AudioSource)args["audiosource"];
-		//}
-		//else
-		//{
-		//	if (!(target.GetComponent<AudioSource>() != null))
-		//	{
-		//		return;
-		//	}
-		//	audioSource = target.audio;
-		//}
+		AudioSource audioSource;
+		if (args.Contains("audiosource"))
+		{
+			audioSource = (AudioSource)args["audiosource"];
+		}
+		else
+		{
+			if (!(target.GetComponent<AudioSource>() != null))
+			{
+				return;
+			}
+			audioSource = target.audio;
+		}
 		Vector2 vector = default(Vector2);
 		Vector2 vector2 = default(Vector2);
-		//vector.x = (vector2.x = audioSource.volume);
-		//vector.y = (vector2.y = audioSource.pitch);
+		vector.x = (vector2.x = audioSource.volume);
+		vector.y = (vector2.y = audioSource.pitch);
 		if (args.Contains("volume"))
 		{
 			vector2.x = (float)args["volume"];
@@ -884,8 +884,8 @@ public class iTween : MonoBehaviour
 		{
 			vector2.y = (float)args["pitch"];
 		}
-		//audioSource.volume = vector2.x;
-		//audioSource.pitch = vector2.y;
+		audioSource.volume = vector2.x;
+		audioSource.pitch = vector2.y;
 		args["volume"] = vector.x;
 		args["pitch"] = vector.y;
 		if (!args.Contains("easetype"))
@@ -935,20 +935,20 @@ public class iTween : MonoBehaviour
 		{
 			num = Defaults.updateTime;
 		}
-		//AudioSource audioSource;
-		//if (args.Contains("audiosource"))
-		//{
-		//	audioSource = (AudioSource)args["audiosource"];
-		//}
-		//else
-		//{
-		//	if (!(target.GetComponent<AudioSource>() != null))
-		//	{
-		//		return;
-		//	}
-		//	audioSource = target.audio;
-		//}
-		//array[0] = (array[1] = new Vector2(audioSource.volume, audioSource.pitch));
+		AudioSource audioSource;
+		if (args.Contains("audiosource"))
+		{
+			audioSource = (AudioSource)args["audiosource"];
+		}
+		else
+		{
+			if (!(target.GetComponent<AudioSource>() != null))
+			{
+				return;
+			}
+			audioSource = target.audio;
+		}
+		array[0] = (array[1] = new Vector2(audioSource.volume, audioSource.pitch));
 		if (args.Contains("volume"))
 		{
 			array[1].x = (float)args["volume"];
@@ -959,8 +959,8 @@ public class iTween : MonoBehaviour
 		}
 		array[3].x = Mathf.SmoothDampAngle(array[0].x, array[1].x, ref array[2].x, num);
 		array[3].y = Mathf.SmoothDampAngle(array[0].y, array[1].y, ref array[2].y, num);
-		//audioSource.volume = array[3].x;
-		//audioSource.pitch = array[3].y;
+		audioSource.volume = array[3].x;
+		audioSource.pitch = array[3].y;
 	}
 
 	public static void AudioUpdate(GameObject target, float volume, float pitch, float time)
@@ -1455,6 +1455,56 @@ public class iTween : MonoBehaviour
 			}
 		}
 		UnityEngine.Object.Destroy(this);
+	}
+
+	public static void CleanupDestroyedTweens()
+	{
+		for (int num = tweens.Count - 1; num >= 0; num--)
+		{
+			if (tweens[num]["target"] as GameObject == null)
+			{
+				tweens.RemoveAt(num);
+			}
+		}
+	}
+
+	public static int GetActiveTweenCount()
+	{
+		return tweens.Count;
+	}
+
+	public static void ForceCleanupAll()
+	{
+		for (int i = 0; i < tweens.Count; i++)
+		{
+			GameObject gameObject = (GameObject)tweens[i]["target"];
+			if (!(gameObject != null))
+			{
+				continue;
+			}
+			iTween[] components = gameObject.GetComponents<iTween>();
+			for (int j = 0; j < components.Length; j++)
+			{
+				if (components[j] != null)
+				{
+					UnityEngine.Object.Destroy(components[j]);
+				}
+			}
+		}
+		tweens.Clear();
+	}
+
+	public static void StopAll()
+	{
+		for (int i = 0; i < tweens.Count; i++)
+		{
+			GameObject gameObject = (GameObject)tweens[i]["target"];
+			if (gameObject != null)
+			{
+				Stop(gameObject);
+			}
+		}
+		tweens.Clear();
 	}
 
 	public static void DrawLine(Transform[] line)
@@ -1963,7 +2013,7 @@ public class iTween : MonoBehaviour
 	private float easeInSine(float start, float end, float value)
 	{
 		end -= start;
-		return (0f - end) * Mathf.Cos(value * ((float)Math.E * 449f / 777f)) + end + start;
+		return (0f - end) * Mathf.Cos(value * 1.570796f) + end + start;
 	}
 
 	private float easeOutBack(float start, float end, float value)
@@ -1987,7 +2037,7 @@ public class iTween : MonoBehaviour
 			value -= 0.5454546f;
 			return end * (7.5625f * value * value + 0.75f) + start;
 		}
-		if ((double)value < 0.90909090909090906)
+		if ((double)value < 0.9090909090909091)
 		{
 			value -= 0.8181818f;
 			return end * (7.5625f * value * value + 0.9375f) + start;
@@ -2066,7 +2116,7 @@ public class iTween : MonoBehaviour
 	private float easeOutSine(float start, float end, float value)
 	{
 		end -= start;
-		return end * Mathf.Sin(value * ((float)Math.E * 449f / 777f)) + start;
+		return end * Mathf.Sin(value * 1.570796f) + start;
 	}
 
 	private void EnableKinematic()
@@ -2144,19 +2194,19 @@ public class iTween : MonoBehaviour
 	private void GenerateAudioToTargets()
 	{
 		vector2s = new Vector2[3];
-		//if (tweenArguments.Contains("audiosource"))
-		//{
-		//	audioSource = (AudioSource)tweenArguments["audiosource"];
-		//}
-		//else if (GetComponent<AudioSource>() != null)
-		//{
-		//	audioSource = base.audio;
-		//}
-		//else
-		//{
-		//	Dispose();
-		//}
-		//vector2s[0] = (vector2s[1] = new Vector2(audioSource.volume, audioSource.pitch));
+		if (tweenArguments.Contains("audiosource"))
+		{
+			audioSource = (AudioSource)tweenArguments["audiosource"];
+		}
+		else if (GetComponent<AudioSource>() != null)
+		{
+			audioSource = base.audio;
+		}
+		else
+		{
+			Dispose();
+		}
+		vector2s[0] = (vector2s[1] = new Vector2(audioSource.volume, audioSource.pitch));
 		if (tweenArguments.Contains("volume"))
 		{
 			vector2s[1].x = (float)tweenArguments["volume"];
@@ -2862,30 +2912,30 @@ public class iTween : MonoBehaviour
 
 	private void GenerateStabTargets()
 	{
-		//if (tweenArguments.Contains("audiosource"))
-		//{
-		//	audioSource = (AudioSource)tweenArguments["audiosource"];
-		//}
-		//else if (GetComponent<AudioSource>() != null)
-		//{
-		//	audioSource = base.audio;
-		//}
-		//else
-		//{
-		//	base.gameObject.AddComponent<AudioSource>();
-		//	audioSource = base.audio;
-		//	audioSource.playOnAwake = false;
-		//}
-		//audioSource.clip = (AudioClip)tweenArguments["audioclip"];
-		//if (tweenArguments.Contains("pitch"))
-		//{
-		//	audioSource.pitch = (float)tweenArguments["pitch"];
-		//}
-		//if (tweenArguments.Contains("volume"))
-		//{
-		//	audioSource.volume = (float)tweenArguments["volume"];
-		//}
-		//time = audioSource.clip.length / audioSource.pitch;
+		if (tweenArguments.Contains("audiosource"))
+		{
+			audioSource = (AudioSource)tweenArguments["audiosource"];
+		}
+		else if (GetComponent<AudioSource>() != null)
+		{
+			audioSource = base.audio;
+		}
+		else
+		{
+			base.gameObject.AddComponent<AudioSource>();
+			audioSource = base.audio;
+			audioSource.playOnAwake = false;
+		}
+		audioSource.clip = (AudioClip)tweenArguments["audioclip"];
+		if (tweenArguments.Contains("pitch"))
+		{
+			audioSource.pitch = (float)tweenArguments["pitch"];
+		}
+		if (tweenArguments.Contains("volume"))
+		{
+			audioSource.volume = (float)tweenArguments["volume"];
+		}
+		time = audioSource.clip.length / audioSource.pitch;
 	}
 
 	private void GenerateTargets()
@@ -3642,43 +3692,43 @@ public class iTween : MonoBehaviour
 		}
 		else
 		{
-			Vector3 vector;
-			Vector3 vector2 = ((!flag) ? (vector = target.transform.position) : (vector = target.transform.localPosition));
+			Vector3 vector2;
+			Vector3 vector = ((!flag) ? (vector2 = target.transform.position) : (vector2 = target.transform.localPosition));
 			if (args.Contains("position"))
 			{
 				if (args["position"].GetType() == typeof(Transform))
 				{
-					vector = ((Transform)args["position"]).position;
+					vector2 = ((Transform)args["position"]).position;
 				}
 				else if (args["position"].GetType() == typeof(Vector3))
 				{
-					vector = (Vector3)args["position"];
+					vector2 = (Vector3)args["position"];
 				}
 			}
 			else
 			{
 				if (args.Contains("x"))
 				{
-					vector.x = (float)args["x"];
+					vector2.x = (float)args["x"];
 				}
 				if (args.Contains("y"))
 				{
-					vector.y = (float)args["y"];
+					vector2.y = (float)args["y"];
 				}
 				if (args.Contains("z"))
 				{
-					vector.z = (float)args["z"];
+					vector2.z = (float)args["z"];
 				}
 			}
 			if (flag)
 			{
-				target.transform.localPosition = vector;
+				target.transform.localPosition = vector2;
 			}
 			else
 			{
-				target.transform.position = vector;
+				target.transform.position = vector2;
 			}
-			args["position"] = vector2;
+			args["position"] = vector;
 		}
 		args["type"] = "move";
 		args["method"] = "to";
@@ -4337,43 +4387,43 @@ public class iTween : MonoBehaviour
 	{
 		args = CleanArgs(args);
 		bool flag = ((!args.Contains("islocal")) ? Defaults.isLocal : ((bool)args["islocal"]));
-		Vector3 vector;
-		Vector3 vector2 = ((!flag) ? (vector = target.transform.eulerAngles) : (vector = target.transform.localEulerAngles));
+		Vector3 vector2;
+		Vector3 vector = ((!flag) ? (vector2 = target.transform.eulerAngles) : (vector2 = target.transform.localEulerAngles));
 		if (args.Contains("rotation"))
 		{
 			if (args["rotation"].GetType() == typeof(Transform))
 			{
-				vector = ((Transform)args["rotation"]).eulerAngles;
+				vector2 = ((Transform)args["rotation"]).eulerAngles;
 			}
 			else if (args["rotation"].GetType() == typeof(Vector3))
 			{
-				vector = (Vector3)args["rotation"];
+				vector2 = (Vector3)args["rotation"];
 			}
 		}
 		else
 		{
 			if (args.Contains("x"))
 			{
-				vector.x = (float)args["x"];
+				vector2.x = (float)args["x"];
 			}
 			if (args.Contains("y"))
 			{
-				vector.y = (float)args["y"];
+				vector2.y = (float)args["y"];
 			}
 			if (args.Contains("z"))
 			{
-				vector.z = (float)args["z"];
+				vector2.z = (float)args["z"];
 			}
 		}
 		if (flag)
 		{
-			target.transform.localEulerAngles = vector;
+			target.transform.localEulerAngles = vector2;
 		}
 		else
 		{
-			target.transform.eulerAngles = vector;
+			target.transform.eulerAngles = vector2;
 		}
-		args["rotation"] = vector2;
+		args["rotation"] = vector;
 		args["type"] = "rotate";
 		args["method"] = "to";
 		Launch(target, args);
@@ -4686,11 +4736,7 @@ public class iTween : MonoBehaviour
 
 	public static void Stop()
 	{
-		for (int i = 0; i < tweens.Count; i++)
-		{
-			Stop((GameObject)tweens[i]["target"]);
-		}
-		tweens.Clear();
+		StopAll();
 	}
 
 	public static void Stop(string type)
@@ -4883,7 +4929,7 @@ public class iTween : MonoBehaviour
 		}
 		if (type == "stab")
 		{
-			//audioSource.PlayOneShot(audioSource.clip);
+			audioSource.PlayOneShot(audioSource.clip);
 		}
 		if (type == "move" || type == "scale" || type == "rotate" || type == "punch" || type == "shake" || type == "curve" || type == "look")
 		{

@@ -1,12 +1,11 @@
-namespace ApplicationManagers
+namespace ApplicationManagers;
+
+public enum AutoUpdateStatus
 {
-	public enum AutoUpdateStatus
-	{
-		Updated,
-		Updating,
-		NeedRestart,
-		FailedUpdate,
-		LauncherOutdated,
-		MacTranslocated
-	}
+	Updated,
+	Updating,
+	NeedRestart,
+	FailedUpdate,
+	LauncherOutdated,
+	MacTranslocated
 }

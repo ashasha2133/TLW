@@ -52,11 +52,11 @@ public class UICenterOnChild : MonoBehaviour
 		}
 		Vector4 clipRange = mDrag.panel.clipRange;
 		Transform cachedTransform = mDrag.panel.cachedTransform;
-		Vector3 vector = cachedTransform.localPosition;
-		vector.x += clipRange.x;
-		vector.y += clipRange.y;
-		vector = cachedTransform.parent.TransformPoint(vector);
-		Vector3 vector2 = vector - mDrag.currentMomentum * (mDrag.momentumAmount * 0.1f);
+		Vector3 localPosition = cachedTransform.localPosition;
+		localPosition.x += clipRange.x;
+		localPosition.y += clipRange.y;
+		localPosition = cachedTransform.parent.TransformPoint(localPosition);
+		Vector3 vector = localPosition - mDrag.currentMomentum * (mDrag.momentumAmount * 0.1f);
 		mDrag.currentMomentum = Vector3.zero;
 		float num = float.MaxValue;
 		Transform transform = null;
@@ -65,7 +65,7 @@ public class UICenterOnChild : MonoBehaviour
 		for (int childCount = transform2.childCount; i < childCount; i++)
 		{
 			Transform child = transform2.GetChild(i);
-			float num2 = Vector3.SqrMagnitude(child.position - vector2);
+			float num2 = Vector3.SqrMagnitude(child.position - vector);
 			if (num2 < num)
 			{
 				num = num2;
@@ -75,22 +75,22 @@ public class UICenterOnChild : MonoBehaviour
 		if (transform != null)
 		{
 			mCenteredObject = transform.gameObject;
-			Vector3 vector3 = cachedTransform.InverseTransformPoint(transform.position);
-			Vector3 vector4 = cachedTransform.InverseTransformPoint(vector);
-			Vector3 vector5 = vector3 - vector4;
+			Vector3 vector2 = cachedTransform.InverseTransformPoint(transform.position);
+			Vector3 vector3 = cachedTransform.InverseTransformPoint(localPosition);
+			Vector3 vector4 = vector2 - vector3;
 			if (mDrag.scale.x == 0f)
 			{
-				vector5.x = 0f;
+				vector4.x = 0f;
 			}
 			if (mDrag.scale.y == 0f)
 			{
-				vector5.y = 0f;
+				vector4.y = 0f;
 			}
 			if (mDrag.scale.z == 0f)
 			{
-				vector5.z = 0f;
+				vector4.z = 0f;
 			}
-			SpringPanel.Begin(mDrag.gameObject, cachedTransform.localPosition - vector5, springStrength).onFinished = onFinished;
+			SpringPanel.Begin(mDrag.gameObject, cachedTransform.localPosition - vector4, springStrength).onFinished = onFinished;
 		}
 		else
 		{

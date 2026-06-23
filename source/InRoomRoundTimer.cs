@@ -55,7 +55,7 @@ public class InRoomRoundTimer : MonoBehaviour
 
 	private void StartRoundNow()
 	{
-		if (PhotonNetwork.time < 9.9999997473787516E-05)
+		if (PhotonNetwork.time < 9.999999747378752E-05)
 		{
 			startRoundWhenTimeIsSynced = true;
 			return;

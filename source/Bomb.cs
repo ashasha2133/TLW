@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-//using CustomAudio;
+using CustomAudio;
 using Events;
 using Photon;
 using UnityEngine;
@@ -136,7 +136,7 @@ public class Bomb : Photon.MonoBehaviour
 	{
 		if (!Disabled)
 		{
-            try
+			try
 			{
 				base.rigidbody.isKinematic = false;
 				PhotonNetwork.Instantiate("RCAsset/BombExplodeMain", baseT.position, Quaternion.Euler(0f, 0f, 0f), 0);
@@ -146,20 +146,13 @@ public class Bomb : Photon.MonoBehaviour
 			{
 			}
 			DestroySelf();
-			if (GameSettings.BombExplosion > 0)
+			if (GameSettings.BombExplosion > 0 && AudioListener.volume > 0f)
 			{
-				//CustomAudioManager.Play(CustomAudioManager.AudioFile.BombExplosion);
+				CustomAudioManager.Play(CustomAudioManager.AudioFile.BombExplosion);
 			}
 			myHero.skillCDDuration = myHero.bombCD;
-        }
-        //foreach (var src in GameObject.FindObjectsOfType<AudioSource>())
-        //{
-        //    if (src.name != "NotificationSound")
-        //    {
-        //        src.mute = true;
-        //    }
-        //}
-    }
+		}
+	}
 
 	private void KillPlayersInRadius(float radius)
 	{
@@ -182,24 +175,24 @@ public class Bomb : Photon.MonoBehaviour
 				if (num == 0 || num != num2)
 				{
 					KillPlayer(hero);
-					if (GameSettings.BombKill > 0)
+					if (GameSettings.BombKill > 0 && AudioListener.volume > 0f)
 					{
 						float x = Mathf.Clamp(IN_GAME_MAIN_CAMERA.main_objectR.velocity.magnitude / 100f, 0f, 8f);
 						float pitch = ThymesUtils.Map(x, 0f, 8f, 1f, 2f);
 						float volume = ThymesUtils.Map(x, 0f, 8f, 0.2f, 0.6f) * PlayerPrefs.GetFloat("vol", 1f);
-						//CustomAudioManager.PlayDynamic(CustomAudioManager.AudioFile.BombKill, pitch, volume);
+						CustomAudioManager.PlayDynamic(CustomAudioManager.AudioFile.BombKill, pitch, volume);
 					}
 				}
 			}
 			else
 			{
 				KillPlayer(hero);
-				if (GameSettings.BombKill > 0)
+				if (GameSettings.BombKill > 0 && AudioListener.volume > 0f)
 				{
 					float x2 = Mathf.Clamp(IN_GAME_MAIN_CAMERA.main_objectR.velocity.magnitude / 100f, 0f, 8f);
 					float pitch2 = ThymesUtils.Map(x2, 0f, 8f, 1f, 2f);
 					float volume2 = ThymesUtils.Map(x2, 0f, 8f, 0.2f, 0.6f) * PlayerPrefs.GetFloat("vol", 1f);
-					//CustomAudioManager.PlayDynamic(CustomAudioManager.AudioFile.BombKill, pitch2, volume2);
+					CustomAudioManager.PlayDynamic(CustomAudioManager.AudioFile.BombKill, pitch2, volume2);
 				}
 			}
 		}

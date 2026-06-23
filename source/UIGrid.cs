@@ -56,7 +56,7 @@ public class UIGrid : MonoBehaviour
 				if (NGUITools.GetActive(transform2.gameObject) || !hideInactive)
 				{
 					float z = transform2.localPosition.z;
-					transform2.localPosition = ((arrangement != 0) ? new Vector3(cellWidth * (float)num2, (0f - cellHeight) * (float)num, z) : new Vector3(cellWidth * (float)num, (0f - cellHeight) * (float)num2, z));
+					transform2.localPosition = ((arrangement != Arrangement.Horizontal) ? new Vector3(cellWidth * (float)num2, (0f - cellHeight) * (float)num, z) : new Vector3(cellWidth * (float)num, (0f - cellHeight) * (float)num2, z));
 					if (++num >= maxPerLine && maxPerLine > 0)
 					{
 						num = 0;
@@ -73,7 +73,7 @@ public class UIGrid : MonoBehaviour
 				if (NGUITools.GetActive(child2.gameObject) || !hideInactive)
 				{
 					float z2 = child2.localPosition.z;
-					child2.localPosition = ((arrangement != 0) ? new Vector3(cellWidth * (float)num2, (0f - cellHeight) * (float)num, z2) : new Vector3(cellWidth * (float)num, (0f - cellHeight) * (float)num2, z2));
+					child2.localPosition = ((arrangement != Arrangement.Horizontal) ? new Vector3(cellWidth * (float)num2, (0f - cellHeight) * (float)num, z2) : new Vector3(cellWidth * (float)num, (0f - cellHeight) * (float)num2, z2));
 					if (++num >= maxPerLine && maxPerLine > 0)
 					{
 						num = 0;

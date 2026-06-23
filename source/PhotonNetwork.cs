@@ -426,7 +426,7 @@ public static class PhotonNetwork
 		{
 			if (value != isOfflineMode && (!value || !connected))
 			{
-				if (networkingPeer.PeerState != 0)
+				if (networkingPeer.PeerState != PeerStateValue.Disconnected)
 				{
 					networkingPeer.Disconnect();
 				}
@@ -647,7 +647,7 @@ public static class PhotonNetwork
 			port = 5055;
 			break;
 		}
-		if (networkingPeer.PeerState != 0)
+		if (networkingPeer.PeerState != PeerStateValue.Disconnected)
 		{
 			return false;
 		}
@@ -954,7 +954,7 @@ public static class PhotonNetwork
 			return null;
 		}
 		T val = ((!prefabName.StartsWith("RCAsset/")) ? CacheResources.Load<T>(prefabName) : CacheResources.RCLoad<T>(prefabName.Substring(8)));
-		if ((UnityEngine.Object)val == (UnityEngine.Object)null)
+		if (val == null)
 		{
 			return null;
 		}
@@ -996,7 +996,7 @@ public static class PhotonNetwork
 			return null;
 		}
 		T val = pool.Enable<T>(prefabName, position, rotation, localOnly: true);
-		if ((UnityEngine.Object)val == (UnityEngine.Object)null)
+		if (val == null)
 		{
 			return null;
 		}
@@ -1054,7 +1054,7 @@ public static class PhotonNetwork
 			return null;
 		}
 		T val = pool.Enable<T>(prefabName, position, rotation, localOnly: true);
-		if ((UnityEngine.Object)val == (UnityEngine.Object)null)
+		if (val == null)
 		{
 			return null;
 		}
@@ -1155,8 +1155,7 @@ public static class PhotonNetwork
 
 	public static void InternalCleanPhotonMonoFromSceneIfStuck()
 	{
-		PhotonHandler[] array = UnityEngine.Object.FindObjectsOfType(typeof(PhotonHandler)) as PhotonHandler[];
-		if (array == null || array.Length == 0)
+		if (!(UnityEngine.Object.FindObjectsOfType(typeof(PhotonHandler)) is PhotonHandler[] array) || array.Length == 0)
 		{
 			return;
 		}
@@ -1179,7 +1178,7 @@ public static class PhotonNetwork
 
 	public static bool JoinLobby(TypedLobby typedLobby)
 	{
-		if (!connected || Server != 0)
+		if (!connected || Server != ServerConnection.MasterServer)
 		{
 			return false;
 		}
@@ -1208,7 +1207,7 @@ public static class PhotonNetwork
 			NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnJoinedRoom);
 			return true;
 		}
-		if (networkingPeer.server != 0 || !connectedAndReady)
+		if (networkingPeer.server != ServerConnection.MasterServer || !connectedAndReady)
 		{
 			return false;
 		}
@@ -1241,7 +1240,7 @@ public static class PhotonNetwork
 			NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnJoinedRoom);
 			return true;
 		}
-		if (networkingPeer.server != 0 || !connectedAndReady)
+		if (networkingPeer.server != ServerConnection.MasterServer || !connectedAndReady)
 		{
 			return false;
 		}
@@ -1266,7 +1265,7 @@ public static class PhotonNetwork
 			NetworkingPeer.SendMonoMessage(PhotonNetworkingMessage.OnJoinedRoom);
 			return true;
 		}
-		if (networkingPeer.server != 0 || !connectedAndReady)
+		if (networkingPeer.server != ServerConnection.MasterServer || !connectedAndReady)
 		{
 			return false;
 		}

@@ -738,10 +738,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_hair.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[4]);
-					yield return var35;
-					Texture2D texture = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[4]);
+					yield return var0;
+					Texture2D texture = var0.texture;
+					var0.Dispose();
 					setup.part_hair.renderer.material.SetTexture("_MainTex", texture);
 				}
 			}
@@ -754,10 +754,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_glass.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[6]);
-					yield return var35;
-					Texture2D texture2 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[6]);
+					yield return var0;
+					Texture2D texture2 = var0.texture;
+					var0.Dispose();
 					setup.part_glass.renderer.material.mainTexture = texture2;
 				}
 			}
@@ -770,10 +770,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_face.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[7]);
-					yield return var35;
-					Texture2D texture3 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[7]);
+					yield return var0;
+					Texture2D texture3 = var0.texture;
+					var0.Dispose();
 					setup.part_face.renderer.material.mainTexture = texture3;
 				}
 			}
@@ -792,10 +792,10 @@ public class CustomCharacterManager : MonoBehaviour
 					setup.part_chest.renderer.enabled = true;
 					setup.part_hand_l.renderer.enabled = true;
 					setup.part_hand_r.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[8]);
-					yield return var35;
-					Texture2D texture4 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[8]);
+					yield return var0;
+					Texture2D texture4 = var0.texture;
+					var0.Dispose();
 					setup.part_head.renderer.material.SetTexture("_MainTex", texture4);
 					setup.part_chest.renderer.material.SetTexture("_MainTex", texture4);
 					setup.part_hand_l.renderer.material.SetTexture("_MainTex", texture4);
@@ -819,10 +819,10 @@ public class CustomCharacterManager : MonoBehaviour
 					setup.part_leg.renderer.enabled = true;
 					setup.part_upper_body.renderer.enabled = true;
 					setup.part_chest_2.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[9]);
-					yield return var35;
-					Texture2D texture5 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[9]);
+					yield return var0;
+					Texture2D texture5 = var0.texture;
+					var0.Dispose();
 					setup.part_arm_l.renderer.material.SetTexture("_MainTex", texture5);
 					setup.part_arm_r.renderer.material.SetTexture("_MainTex", texture5);
 					setup.part_leg.renderer.material.SetTexture("_MainTex", texture5);
@@ -839,10 +839,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_cape.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[10]);
-					yield return var35;
-					Texture2D texture6 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[10]);
+					yield return var0;
+					Texture2D texture6 = var0.texture;
+					var0.Dispose();
 					setup.part_cape.renderer.material.SetTexture("_MainTex", texture6);
 				}
 			}
@@ -855,10 +855,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_chest_1.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[14]);
-					yield return var35;
-					Texture2D texture7 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[14]);
+					yield return var0;
+					Texture2D texture7 = var0.texture;
+					var0.Dispose();
 					setup.part_chest_1.renderer.material.SetTexture("_MainTex", texture7);
 				}
 			}
@@ -871,10 +871,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_blade_l.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[11]);
-					yield return var35;
-					Texture2D texture8 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[11]);
+					yield return var0;
+					Texture2D texture8 = var0.texture;
+					var0.Dispose();
 					setup.part_3dmg_gas_l.renderer.material.SetTexture("_MainTex", texture8);
 					setup.part_blade_l.renderer.material.SetTexture("_MainTex", texture8);
 					setup.part_3dmg.renderer.material.SetTexture("_MainTex", texture8);
@@ -890,10 +890,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_blade_r.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[12]);
-					yield return var35;
-					Texture2D texture9 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[12]);
+					yield return var0;
+					Texture2D texture9 = var0.texture;
+					var0.Dispose();
 					setup.part_blade_r.renderer.material.SetTexture("_MainTex", texture9);
 					setup.part_3dmg_gas_r.renderer.material.SetTexture("_MainTex", texture9);
 					setup.part_3dmg.renderer.material.SetTexture("_MainTex", texture9);
@@ -912,10 +912,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_hair.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[135]);
-					yield return var35;
-					Texture2D texture10 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[135]);
+					yield return var0;
+					Texture2D texture10 = var0.texture;
+					var0.Dispose();
 					setup.part_hair.renderer.material.SetTexture("_MainTex", texture10);
 				}
 			}
@@ -928,10 +928,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_glass.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[137]);
-					yield return var35;
-					Texture2D texture11 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[137]);
+					yield return var0;
+					Texture2D texture11 = var0.texture;
+					var0.Dispose();
 					setup.part_glass.renderer.material.mainTexture = texture11;
 				}
 			}
@@ -944,10 +944,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_face.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[138]);
-					yield return var35;
-					Texture2D texture12 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[138]);
+					yield return var0;
+					Texture2D texture12 = var0.texture;
+					var0.Dispose();
 					setup.part_face.renderer.material.mainTexture = texture12;
 				}
 			}
@@ -966,10 +966,10 @@ public class CustomCharacterManager : MonoBehaviour
 					setup.part_chest.renderer.enabled = true;
 					setup.part_hand_l.renderer.enabled = true;
 					setup.part_hand_r.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[139]);
-					yield return var35;
-					Texture2D texture13 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[139]);
+					yield return var0;
+					Texture2D texture13 = var0.texture;
+					var0.Dispose();
 					setup.part_head.renderer.material.SetTexture("_MainTex", texture13);
 					setup.part_chest.renderer.material.SetTexture("_MainTex", texture13);
 					setup.part_hand_l.renderer.material.SetTexture("_MainTex", texture13);
@@ -993,10 +993,10 @@ public class CustomCharacterManager : MonoBehaviour
 					setup.part_leg.renderer.enabled = true;
 					setup.part_upper_body.renderer.enabled = true;
 					setup.part_chest_2.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[140]);
-					yield return var35;
-					Texture2D texture14 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[140]);
+					yield return var0;
+					Texture2D texture14 = var0.texture;
+					var0.Dispose();
 					setup.part_arm_l.renderer.material.SetTexture("_MainTex", texture14);
 					setup.part_arm_r.renderer.material.SetTexture("_MainTex", texture14);
 					setup.part_leg.renderer.material.SetTexture("_MainTex", texture14);
@@ -1013,10 +1013,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_cape.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[141]);
-					yield return var35;
-					Texture2D texture15 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[141]);
+					yield return var0;
+					Texture2D texture15 = var0.texture;
+					var0.Dispose();
 					setup.part_cape.renderer.material.SetTexture("_MainTex", texture15);
 				}
 			}
@@ -1029,10 +1029,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_chest_1.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[145]);
-					yield return var35;
-					Texture2D texture16 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[145]);
+					yield return var0;
+					Texture2D texture16 = var0.texture;
+					var0.Dispose();
 					setup.part_chest_1.renderer.material.SetTexture("_MainTex", texture16);
 				}
 			}
@@ -1045,10 +1045,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_blade_l.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[142]);
-					yield return var35;
-					Texture2D texture17 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[142]);
+					yield return var0;
+					Texture2D texture17 = var0.texture;
+					var0.Dispose();
 					setup.part_3dmg_gas_l.renderer.material.SetTexture("_MainTex", texture17);
 					setup.part_blade_l.renderer.material.SetTexture("_MainTex", texture17);
 					setup.part_3dmg.renderer.material.SetTexture("_MainTex", texture17);
@@ -1064,10 +1064,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_blade_r.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[143]);
-					yield return var35;
-					Texture2D texture18 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[143]);
+					yield return var0;
+					Texture2D texture18 = var0.texture;
+					var0.Dispose();
 					setup.part_blade_r.renderer.material.SetTexture("_MainTex", texture18);
 					setup.part_3dmg_gas_r.renderer.material.SetTexture("_MainTex", texture18);
 					setup.part_3dmg.renderer.material.SetTexture("_MainTex", texture18);
@@ -1086,10 +1086,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_hair.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[148]);
-					yield return var35;
-					Texture2D texture19 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[148]);
+					yield return var0;
+					Texture2D texture19 = var0.texture;
+					var0.Dispose();
 					setup.part_hair.renderer.material.SetTexture("_MainTex", texture19);
 				}
 			}
@@ -1102,10 +1102,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_glass.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[150]);
-					yield return var35;
-					Texture2D texture20 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[150]);
+					yield return var0;
+					Texture2D texture20 = var0.texture;
+					var0.Dispose();
 					setup.part_glass.renderer.material.mainTexture = texture20;
 				}
 			}
@@ -1118,10 +1118,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_face.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[151]);
-					yield return var35;
-					Texture2D texture21 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[151]);
+					yield return var0;
+					Texture2D texture21 = var0.texture;
+					var0.Dispose();
 					setup.part_face.renderer.material.mainTexture = texture21;
 				}
 			}
@@ -1140,10 +1140,10 @@ public class CustomCharacterManager : MonoBehaviour
 					setup.part_chest.renderer.enabled = true;
 					setup.part_hand_l.renderer.enabled = true;
 					setup.part_hand_r.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[152]);
-					yield return var35;
-					Texture2D texture22 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[152]);
+					yield return var0;
+					Texture2D texture22 = var0.texture;
+					var0.Dispose();
 					setup.part_head.renderer.material.SetTexture("_MainTex", texture22);
 					setup.part_chest.renderer.material.SetTexture("_MainTex", texture22);
 					setup.part_hand_l.renderer.material.SetTexture("_MainTex", texture22);
@@ -1167,10 +1167,10 @@ public class CustomCharacterManager : MonoBehaviour
 					setup.part_leg.renderer.enabled = true;
 					setup.part_upper_body.renderer.enabled = true;
 					setup.part_chest_2.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[153]);
-					yield return var35;
-					Texture2D texture23 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[153]);
+					yield return var0;
+					Texture2D texture23 = var0.texture;
+					var0.Dispose();
 					setup.part_arm_l.renderer.material.SetTexture("_MainTex", texture23);
 					setup.part_arm_r.renderer.material.SetTexture("_MainTex", texture23);
 					setup.part_leg.renderer.material.SetTexture("_MainTex", texture23);
@@ -1187,10 +1187,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_cape.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[154]);
-					yield return var35;
-					Texture2D texture24 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[154]);
+					yield return var0;
+					Texture2D texture24 = var0.texture;
+					var0.Dispose();
 					setup.part_cape.renderer.material.SetTexture("_MainTex", texture24);
 				}
 			}
@@ -1203,10 +1203,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_chest_1.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[158]);
-					yield return var35;
-					Texture2D texture25 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[158]);
+					yield return var0;
+					Texture2D texture25 = var0.texture;
+					var0.Dispose();
 					setup.part_chest_1.renderer.material.SetTexture("_MainTex", texture25);
 				}
 			}
@@ -1219,10 +1219,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_blade_l.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[155]);
-					yield return var35;
-					Texture2D texture26 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[155]);
+					yield return var0;
+					Texture2D texture26 = var0.texture;
+					var0.Dispose();
 					setup.part_3dmg_gas_l.renderer.material.SetTexture("_MainTex", texture26);
 					setup.part_blade_l.renderer.material.SetTexture("_MainTex", texture26);
 					setup.part_3dmg.renderer.material.SetTexture("_MainTex", texture26);
@@ -1238,10 +1238,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_blade_r.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[156]);
-					yield return var35;
-					Texture2D texture27 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[156]);
+					yield return var0;
+					Texture2D texture27 = var0.texture;
+					var0.Dispose();
 					setup.part_blade_r.renderer.material.SetTexture("_MainTex", texture27);
 					setup.part_3dmg_gas_r.renderer.material.SetTexture("_MainTex", texture27);
 					setup.part_3dmg.renderer.material.SetTexture("_MainTex", texture27);
@@ -1260,10 +1260,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_hair.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[304]);
-					yield return var35;
-					Texture2D texture28 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[304]);
+					yield return var0;
+					Texture2D texture28 = var0.texture;
+					var0.Dispose();
 					setup.part_hair.renderer.material.SetTexture("_MainTex", texture28);
 				}
 			}
@@ -1276,10 +1276,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_glass.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[306]);
-					yield return var35;
-					Texture2D texture29 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[306]);
+					yield return var0;
+					Texture2D texture29 = var0.texture;
+					var0.Dispose();
 					setup.part_glass.renderer.material.mainTexture = texture29;
 				}
 			}
@@ -1292,10 +1292,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_face.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[307]);
-					yield return var35;
-					Texture2D texture30 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[307]);
+					yield return var0;
+					Texture2D texture30 = var0.texture;
+					var0.Dispose();
 					setup.part_face.renderer.material.mainTexture = texture30;
 				}
 			}
@@ -1314,10 +1314,10 @@ public class CustomCharacterManager : MonoBehaviour
 					setup.part_chest.renderer.enabled = true;
 					setup.part_hand_l.renderer.enabled = true;
 					setup.part_hand_r.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[308]);
-					yield return var35;
-					Texture2D texture31 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[308]);
+					yield return var0;
+					Texture2D texture31 = var0.texture;
+					var0.Dispose();
 					setup.part_head.renderer.material.SetTexture("_MainTex", texture31);
 					setup.part_chest.renderer.material.SetTexture("_MainTex", texture31);
 					setup.part_hand_l.renderer.material.SetTexture("_MainTex", texture31);
@@ -1341,10 +1341,10 @@ public class CustomCharacterManager : MonoBehaviour
 					setup.part_leg.renderer.enabled = true;
 					setup.part_upper_body.renderer.enabled = true;
 					setup.part_chest_2.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[309]);
-					yield return var35;
-					Texture2D texture32 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[309]);
+					yield return var0;
+					Texture2D texture32 = var0.texture;
+					var0.Dispose();
 					setup.part_arm_l.renderer.material.SetTexture("_MainTex", texture32);
 					setup.part_arm_r.renderer.material.SetTexture("_MainTex", texture32);
 					setup.part_leg.renderer.material.SetTexture("_MainTex", texture32);
@@ -1361,10 +1361,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_cape.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[310]);
-					yield return var35;
-					Texture2D texture33 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[310]);
+					yield return var0;
+					Texture2D texture33 = var0.texture;
+					var0.Dispose();
 					setup.part_cape.renderer.material.SetTexture("_MainTex", texture33);
 				}
 			}
@@ -1377,10 +1377,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_chest_1.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[314]);
-					yield return var35;
-					Texture2D texture34 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[314]);
+					yield return var0;
+					Texture2D texture34 = var0.texture;
+					var0.Dispose();
 					setup.part_chest_1.renderer.material.SetTexture("_MainTex", texture34);
 				}
 			}
@@ -1393,10 +1393,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_blade_l.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[311]);
-					yield return var35;
-					Texture2D texture35 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[311]);
+					yield return var0;
+					Texture2D texture35 = var0.texture;
+					var0.Dispose();
 					setup.part_3dmg_gas_l.renderer.material.SetTexture("_MainTex", texture35);
 					setup.part_blade_l.renderer.material.SetTexture("_MainTex", texture35);
 					setup.part_3dmg.renderer.material.SetTexture("_MainTex", texture35);
@@ -1412,10 +1412,10 @@ public class CustomCharacterManager : MonoBehaviour
 				else
 				{
 					setup.part_blade_r.renderer.enabled = true;
-					WWW var35 = new WWW((string)FengGameManagerMKII.settings[312]);
-					yield return var35;
-					Texture2D texture36 = var35.texture;
-					var35.Dispose();
+					WWW var0 = new WWW((string)FengGameManagerMKII.settings[312]);
+					yield return var0;
+					Texture2D texture36 = var0.texture;
+					var0.Dispose();
 					setup.part_blade_r.renderer.material.SetTexture("_MainTex", texture36);
 					setup.part_3dmg_gas_r.renderer.material.SetTexture("_MainTex", texture36);
 					setup.part_3dmg.renderer.material.SetTexture("_MainTex", texture36);

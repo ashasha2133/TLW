@@ -1,27 +1,26 @@
-namespace Events
+namespace Events;
+
+public class EventElement
 {
-	public class EventElement
+	protected event EventDelegate eventdelegate;
+
+	public void Dispatch(string kEvent)
 	{
-		protected event EventDelegate eventdelegate;
-
-		public void Dispatch(string kEvent)
+		if (this.eventdelegate != null)
 		{
-			if (this.eventdelegate != null)
-			{
-				this.eventdelegate(kEvent);
-			}
+			this.eventdelegate(kEvent);
 		}
+	}
 
-		public static EventElement operator +(EventElement kElement, EventDelegate kDelegate)
-		{
-			kElement.eventdelegate += kDelegate;
-			return kElement;
-		}
+	public static EventElement operator +(EventElement kElement, EventDelegate kDelegate)
+	{
+		kElement.eventdelegate += kDelegate;
+		return kElement;
+	}
 
-		public static EventElement operator -(EventElement kElement, EventDelegate kDelegate)
-		{
-			kElement.eventdelegate -= kDelegate;
-			return kElement;
-		}
+	public static EventElement operator -(EventElement kElement, EventDelegate kDelegate)
+	{
+		kElement.eventdelegate -= kDelegate;
+		return kElement;
 	}
 }

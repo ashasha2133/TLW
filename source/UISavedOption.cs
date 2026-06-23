@@ -71,10 +71,10 @@ public class UISavedOption : MonoBehaviour
 	{
 		if (mList != null)
 		{
-			string @string = PlayerPrefs.GetString(key);
-			if (!string.IsNullOrEmpty(@string))
+			string text = PlayerPrefs.GetString(key);
+			if (!string.IsNullOrEmpty(text))
 			{
-				mList.selection = @string;
+				mList.selection = text;
 			}
 			return;
 		}
@@ -83,13 +83,13 @@ public class UISavedOption : MonoBehaviour
 			mCheck.isChecked = PlayerPrefs.GetInt(key, 1) != 0;
 			return;
 		}
-		string string2 = PlayerPrefs.GetString(key);
+		string text2 = PlayerPrefs.GetString(key);
 		UICheckbox[] componentsInChildren = GetComponentsInChildren<UICheckbox>(includeInactive: true);
 		int i = 0;
 		for (int num = componentsInChildren.Length; i < num; i++)
 		{
 			UICheckbox obj = componentsInChildren[i];
-			obj.isChecked = obj.name == string2;
+			obj.isChecked = obj.name == text2;
 		}
 	}
 

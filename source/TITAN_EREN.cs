@@ -144,7 +144,7 @@ public class TITAN_EREN : MONO
 			playAnimation("born");
 			isPlayRoar = false;
 		}
-		//playSound("snd_eren_shift");
+		playSound("snd_eren_shift");
 		if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE)
 		{
 			Object.Instantiate(CacheResources.Load("FX/Thunder"), base.transform.position + Vector3.up * 23f, Quaternion.Euler(270f, 0f, 0f));
@@ -192,7 +192,7 @@ public class TITAN_EREN : MONO
 		}
 		else
 		{
-			if (IN_GAME_MAIN_CAMERA.gametype != 0 && !base.photonView.isMine)
+			if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !base.photonView.isMine)
 			{
 				return;
 			}
@@ -207,7 +207,7 @@ public class TITAN_EREN : MONO
 			}
 			else
 			{
-				if (IN_GAME_MAIN_CAMERA.gametype != 0 && !base.photonView.isMine)
+				if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !base.photonView.isMine)
 				{
 					return;
 				}
@@ -456,7 +456,7 @@ public class TITAN_EREN : MONO
 
 	public void lateUpdate()
 	{
-		if ((!IN_GAME_MAIN_CAMERA.isPausing || IN_GAME_MAIN_CAMERA.gametype != 0) && !rockLift && (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE || base.photonView.isMine))
+		if ((!IN_GAME_MAIN_CAMERA.isPausing || IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE) && !rockLift && (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE || base.photonView.isMine))
 		{
 			Transform transform = Camera.main.transform;
 			Quaternion to = Quaternion.Euler(transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0f);
@@ -493,7 +493,7 @@ public class TITAN_EREN : MONO
 			mipmap = false;
 		}
 		Renderer[] componentsInChildren = GetComponentsInChildren<Renderer>();
-		foreach (Renderer iteratorVariable2 in componentsInChildren)
+		foreach (Renderer iteratorVariable4 in componentsInChildren)
 		{
 			if (!RCextensions.CheckIP(url))
 			{
@@ -508,18 +508,18 @@ public class TITAN_EREN : MONO
 				if (!FengGameManagerMKII.linkHash[2].ContainsKey(url))
 				{
 					iteratorVariable1 = true;
-					iteratorVariable2.material.mainTexture = mainTexture;
-					FengGameManagerMKII.linkHash[2].Add(url, iteratorVariable2.material);
-					iteratorVariable2.material = (Material)FengGameManagerMKII.linkHash[2][url];
+					iteratorVariable4.material.mainTexture = mainTexture;
+					FengGameManagerMKII.linkHash[2].Add(url, iteratorVariable4.material);
+					iteratorVariable4.material = (Material)FengGameManagerMKII.linkHash[2][url];
 				}
 				else
 				{
-					iteratorVariable2.material = (Material)FengGameManagerMKII.linkHash[2][url];
+					iteratorVariable4.material = (Material)FengGameManagerMKII.linkHash[2][url];
 				}
 			}
 			else
 			{
-				iteratorVariable2.material = (Material)FengGameManagerMKII.linkHash[2][url];
+				iteratorVariable4.material = (Material)FengGameManagerMKII.linkHash[2][url];
 			}
 		}
 		if (iteratorVariable1)
@@ -604,19 +604,22 @@ public class TITAN_EREN : MONO
 
 	private void playSound(string sndname)
 	{
-		//playsoundRPC(sndname);
-		if (IN_GAME_MAIN_CAMERA.gametype != 0)
+		playsoundRPC(sndname);
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE)
 		{
 			object[] parameters = new object[1] { sndname };
-			//base.photonView.RPC("playsoundRPC", PhotonTargets.Others, parameters);
+			base.photonView.RPC("playsoundRPC", PhotonTargets.Others, parameters);
 		}
 	}
 
 	[RPC]
 	private void playsoundRPC(string sndname)
 	{
-		//base.transform.Find(sndname).GetComponent<AudioSource>().volume = 0.2f;
-		//base.transform.Find(sndname).GetComponent<AudioSource>().Play();
+		if (AudioListener.volume > 0f)
+		{
+			base.transform.Find(sndname).GetComponent<AudioSource>().volume = 0.2f;
+			base.transform.Find(sndname).GetComponent<AudioSource>().Play();
+		}
 	}
 
 	[RPC]
@@ -650,7 +653,7 @@ public class TITAN_EREN : MONO
 			rock.transform.position = base.transform.position;
 			rock.transform.rotation = base.transform.rotation;
 		}
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && !base.photonView.isMine)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !base.photonView.isMine)
 		{
 			return;
 		}
@@ -739,7 +742,8 @@ public class TITAN_EREN : MONO
 					}
 					else
 					{
-						Vector3 vector2 = (targetCheckPt = (Vector3)checkPoints[0]);
+						Vector3 vector2 = (Vector3)checkPoints[0];
+						targetCheckPt = vector2;
 						checkPoints.RemoveAt(0);
 						GameObject[] array = GameObject.FindGameObjectsWithTag("titanRespawn2");
 						GameObject gameObject = CacheGameObject.Find("titanRespawnTrost" + (7 - checkPoints.Count));
@@ -905,19 +909,25 @@ public class TITAN_EREN : MONO
 			if (base.animation["run"].normalizedTime % 1f > 0.3f && base.animation["run"].normalizedTime % 1f < 0.75f && stepSoundPhase == 2)
 			{
 				stepSoundPhase = 1;
-				Transform obj = base.transform.Find("snd_eren_foot");
-				//obj.GetComponent<AudioSource>().Stop();
-				//obj.GetComponent<AudioSource>().Play();
+				Transform transform = base.transform.Find("snd_eren_foot");
+				transform.GetComponent<AudioSource>().Stop();
+				if (AudioListener.volume > 0f)
+				{
+					transform.GetComponent<AudioSource>().Play();
+				}
 			}
 			if (base.animation["run"].normalizedTime % 1f > 0.75f && stepSoundPhase == 1)
 			{
 				stepSoundPhase = 2;
-				Transform obj2 = base.transform.Find("snd_eren_foot");
-				//obj2.GetComponent<AudioSource>().Stop();
-				//obj2.GetComponent<AudioSource>().Play();
+				Transform transform2 = base.transform.Find("snd_eren_foot");
+				transform2.GetComponent<AudioSource>().Stop();
+				if (AudioListener.volume > 0f)
+				{
+					transform2.GetComponent<AudioSource>().Play();
+				}
 			}
 		}
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && !base.photonView.isMine)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !base.photonView.isMine)
 		{
 			return;
 		}
@@ -939,9 +949,9 @@ public class TITAN_EREN : MONO
 				hasDieSteam = true;
 				if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE)
 				{
-					GameObject obj3 = (GameObject)Object.Instantiate(CacheResources.Load("FX/FXtitanDie1"));
-					obj3.transform.position = base.transform.Find("Amarture/Core/Controller_Body/hip").position;
-					obj3.transform.localScale = base.transform.localScale;
+					GameObject obj = (GameObject)Object.Instantiate(CacheResources.Load("FX/FXtitanDie1"));
+					obj.transform.position = base.transform.Find("Amarture/Core/Controller_Body/hip").position;
+					obj.transform.localScale = base.transform.localScale;
 				}
 				else if (base.photonView.isMine)
 				{
@@ -952,9 +962,9 @@ public class TITAN_EREN : MONO
 			{
 				if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE)
 				{
-					GameObject obj4 = (GameObject)Object.Instantiate(CacheResources.Load("FX/FXtitanDie"));
-					obj4.transform.position = base.transform.Find("Amarture/Core/Controller_Body/hip").position;
-					obj4.transform.localScale = base.transform.localScale;
+					GameObject obj2 = (GameObject)Object.Instantiate(CacheResources.Load("FX/FXtitanDie"));
+					obj2.transform.position = base.transform.Find("Amarture/Core/Controller_Body/hip").position;
+					obj2.transform.localScale = base.transform.localScale;
 					Object.Destroy(base.gameObject);
 				}
 				else if (base.photonView.isMine)
@@ -966,7 +976,7 @@ public class TITAN_EREN : MONO
 		}
 		else
 		{
-			if (IN_GAME_MAIN_CAMERA.gametype != 0 && !base.photonView.isMine)
+			if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !base.photonView.isMine)
 			{
 				return;
 			}
@@ -1084,10 +1094,10 @@ public class TITAN_EREN : MONO
 				{
 					if (hitTargets.Count > 0)
 					{
-						Transform transform = (Transform)hitTargets[0];
-						if (transform != null)
+						Transform transform3 = (Transform)hitTargets[0];
+						if (transform3 != null)
 						{
-							base.transform.rotation = Quaternion.Euler(0f, Quaternion.LookRotation(transform.position - base.transform.position).eulerAngles.y, 0f);
+							base.transform.rotation = Quaternion.Euler(0f, Quaternion.LookRotation(transform3.position - base.transform.position).eulerAngles.y, 0f);
 							facingDirection = base.transform.rotation.eulerAngles.y;
 						}
 					}
@@ -1114,15 +1124,15 @@ public class TITAN_EREN : MONO
 					{
 						if (attackAnimation == "attack_combo_002")
 						{
-							//playSound("snd_eren_swing2");
+							playSound("snd_eren_swing2");
 						}
 						else if (attackAnimation == "attack_combo_001")
 						{
-							//playSound("snd_eren_swing1");
+							playSound("snd_eren_swing1");
 						}
 						else if (attackAnimation == "attack_combo_003")
 						{
-							//playSound("snd_eren_swing3");
+							playSound("snd_eren_swing3");
 						}
 						attackChkOnce = true;
 					}
@@ -1183,7 +1193,7 @@ public class TITAN_EREN : MONO
 							}
 						}
 						hitTargets.Add(array[i].gameObject.transform.root);
-						if (IN_GAME_MAIN_CAMERA.gametype != 0)
+						if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE)
 						{
 							PhotonNetwork.Instantiate("hitMeatBIG", (array[i].transform.position + attackBox.position) * 0.5f, Quaternion.Euler(270f, 0f, 0f), 0);
 						}
@@ -1208,7 +1218,7 @@ public class TITAN_EREN : MONO
 				if (base.animation["born"].normalizedTime >= 0.28f && !isPlayRoar)
 				{
 					isPlayRoar = true;
-					//playSound("snd_eren_roar");
+					playSound("snd_eren_roar");
 				}
 				if (base.animation["born"].normalizedTime >= 0.5f && base.animation["born"].normalizedTime <= 0.7f)
 				{
@@ -1217,7 +1227,7 @@ public class TITAN_EREN : MONO
 				if (base.animation["born"].normalizedTime >= 1f)
 				{
 					crossFade("idle", 0.1f);
-					if (IN_GAME_MAIN_CAMERA.gametype != 0)
+					if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE)
 					{
 						if (PhotonNetwork.isMasterClient)
 						{

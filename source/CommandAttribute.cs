@@ -1,16 +1,16 @@
 using System;
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-public class MyCommandAttribute : Attribute
+public class CommandAttribute : Attribute
 {
 	public string Name { get; private set; }
 
-	public MyCommandAttribute()
+	public CommandAttribute()
 	{
 		Name = null;
 	}
 
-	public MyCommandAttribute(string name)
+	public CommandAttribute(string name)
 	{
 		Name = name;
 	}

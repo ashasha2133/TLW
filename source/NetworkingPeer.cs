@@ -11,6 +11,25 @@ using UnityEngine;
 
 internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 {
+	public class SpamCounter
+	{
+		public int count;
+
+		public float time;
+
+		public SpamCounter()
+		{
+			reset();
+			count++;
+		}
+
+		public void reset()
+		{
+			count = 0;
+			time = Time.time;
+		}
+	}
+
 	private HashSet<int> allowedReceivingGroups;
 
 	public static Dictionary<short, List<GameObject>> actorGO;
@@ -94,6 +113,8 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 	internal static Yield yield;
 
 	private static DateTime lastViewUpdate;
+
+	public static Dictionary<PhotonPlayer, Dictionary<string, SpamCounter>> instantiateCounter;
 
 	private string[] validProps = new string[49]
 	{
@@ -199,6 +220,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 		UsePrefabCache = true;
 		ipAddr = new List<string>();
 		lastViewUpdate = DateTime.Now;
+		instantiateCounter = new Dictionary<PhotonPlayer, Dictionary<string, SpamCounter>>();
 		ProtocolToNameServerPort = new Dictionary<ConnectionProtocol, int>
 		{
 			{
@@ -541,8 +563,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 			{
 				return false;
 			}
-			object[] array = data[(byte)2] as object[];
-			if (array == null)
+			if (!(data[(byte)2] is object[] array))
 			{
 				return false;
 			}
@@ -569,8 +590,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 		if (view.lastOnSerializeDataSent != null)
 		{
 			object[] lastOnSerializeDataSent = view.lastOnSerializeDataSent;
-			object[] array = data[(byte)1] as object[];
-			if (array == null)
+			if (!(data[(byte)1] is object[] array))
 			{
 				return false;
 			}
@@ -714,7 +734,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 		{
 			return null;
 		}
-		if ((UnityEngine.Object)resourceGameObject == (UnityEngine.Object)null)
+		if (resourceGameObject == null)
 		{
 			if (text.StartsWith("RCAsset/"))
 			{
@@ -770,11 +790,11 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 					}
 				}
 			}
-			RemoveInstantiatedGO(gameObject, localOnly: true, immediate: false, 0f);
+			RemoveInstantiatedGO(gameObject, true, false, 0f);
 		}
-		GameObject gameObject2;
-		GameObject gameObject4 = (instantiatedObjects[num] = (gameObject2 = val.gameObject));
-		photonView = gameObject4.GetComponent<PhotonView>();
+		GameObject gameObject4;
+		GameObject gameObject2 = (instantiatedObjects[num] = (gameObject4 = val.gameObject));
+		photonView = gameObject2.GetComponent<PhotonView>();
 		if (photonView != null)
 		{
 			int viewID = photonView.viewID;
@@ -785,11 +805,11 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 		}
 		if (actorGO.ContainsKey(photonPlayer.ActorID))
 		{
-			actorGO[photonPlayer.ActorID].Add(gameObject2);
+			actorGO[photonPlayer.ActorID].Add(gameObject4);
 		}
 		else
 		{
-			actorGO.Add(photonPlayer.ActorID, new List<GameObject> { gameObject2 });
+			actorGO.Add(photonPlayer.ActorID, new List<GameObject> { gameObject4 });
 		}
 		FengGameManagerMKII.instance.SendMessage(PhotonNetworkingMessage.OnPhotonInstantiate.ToString(), new PhotonMessageInfo(photonPlayer, (int)evData[6], photonView), SendMessageOptions.DontRequireReceiver);
 		return val;
@@ -1014,6 +1034,67 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 		{
 			OpRaiseEvent(200, hashtable, sendReliable: true, options);
 		}
+	}
+
+	private static int checkInstantiateSPAM(string str, PhotonPlayer sender)
+	{
+		str = str.ToLower();
+		switch (str)
+		{
+		case "UI_IN_GAME":
+			return 1;
+		case "aottg_hero 1":
+			return 5;
+		case "fx/flarebullet1":
+		case "fx/flarebullet2":
+		case "fx/flarebullet3":
+			return 5;
+		case "hook":
+			return 60;
+		case "aot_supply":
+			return 15;
+		case "colossal_titan":
+		case "female_titan":
+			return 2;
+		case "fx/fxtitanspawn":
+		case "titan_ver3.1":
+			return 150;
+		case "titan_eren_trost":
+			return 20;
+		case "titan_new_1":
+		case "titan_new_2":
+		case "fx/thunder":
+			return 5;
+		default:
+			return 50;
+		}
+	}
+
+	private static bool trackInstantiate(PhotonPlayer sender, string key)
+	{
+		key = key.ToLower();
+		if (!instantiateCounter.ContainsKey(sender))
+		{
+			instantiateCounter.Add(sender, new Dictionary<string, SpamCounter>());
+		}
+		if (!instantiateCounter[sender].ContainsKey(key))
+		{
+			instantiateCounter[sender].Add(key, new SpamCounter());
+		}
+		else
+		{
+			instantiateCounter[sender][key].count++;
+		}
+		if (instantiateCounter[sender][key].count > checkInstantiateSPAM(key, sender))
+		{
+			FengGameManagerMKII.ThrowJusticeDefensive(sender, "Instantiate " + key + " SPAM (" + instantiateCounter[sender][key].count + ")");
+			return false;
+		}
+		if (Time.time - instantiateCounter[sender][key].time > 1f)
+		{
+			instantiateCounter[sender][key].reset();
+		}
+		return true;
 	}
 
 	public void ExecuteRPC(ExitGames.Client.Photon.Hashtable rpcData, PhotonPlayer sender)
@@ -1299,11 +1380,13 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 				else if (rpcList.Contains(text))
 				{
 					int num7 = 0;
-					foreach (string rpc in rpcList)
 					{
-						num7 = ((!(rpc == text)) ? (num7 + 1) : (num7 + 1));
+						foreach (string rpc in rpcList)
+						{
+							num7 = ((!(rpc == text)) ? (num7 + 1) : (num7 + 1));
+						}
+						return;
 					}
-					return;
 				}
 				if (num5 != 0)
 				{
@@ -1495,6 +1578,10 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 			RemovePlayer(actorID, playerWithID);
 			object[] parameters = new object[1] { playerWithID };
 			SendMonoMessage(PhotonNetworkingMessage.OnPhotonPlayerDisconnected, parameters);
+			if (instantiateCounter.ContainsKey(playerWithID))
+			{
+				instantiateCounter[playerWithID].Clear();
+			}
 		}
 	}
 
@@ -1534,6 +1621,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 		{
 			SendMonoMessage(PhotonNetworkingMessage.OnLeftRoom);
 		}
+		instantiateCounter.Clear();
 		HERO.BombStatsCounter.Clear();
 	}
 
@@ -1624,36 +1712,32 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 		{
 			return true;
 		}
-		if (one is Vector3)
+		if (one is object target)
 		{
-			Vector3 target = (Vector3)one;
 			Vector3 second = (Vector3)two;
-			if (target.AlmostEquals(second, PhotonNetwork.precisionForVectorSynchronization))
+			if (((Vector3)target).AlmostEquals(second, PhotonNetwork.precisionForVectorSynchronization))
 			{
 				return true;
 			}
 		}
-		else if (one is Vector2)
+		else if (one is object target2)
 		{
-			Vector2 target2 = (Vector2)one;
 			Vector2 second2 = (Vector2)two;
-			if (target2.AlmostEquals(second2, PhotonNetwork.precisionForVectorSynchronization))
+			if (((Vector2)target2).AlmostEquals(second2, PhotonNetwork.precisionForVectorSynchronization))
 			{
 				return true;
 			}
 		}
-		else if (one is Quaternion)
+		else if (one is object target3)
 		{
-			Quaternion target3 = (Quaternion)one;
 			Quaternion second3 = (Quaternion)two;
-			if (target3.AlmostEquals(second3, PhotonNetwork.precisionForQuaternionSynchronization))
+			if (((Quaternion)target3).AlmostEquals(second3, PhotonNetwork.precisionForQuaternionSynchronization))
 			{
 				return true;
 			}
 		}
-		else if (one is float)
+		else if (one is float target4)
 		{
-			float target4 = (float)one;
 			float second4 = (float)two;
 			if (target4.AlmostEquals(second4, PhotonNetwork.precisionForFloatSynchronization))
 			{
@@ -1697,13 +1781,12 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 					short num = 2;
 					if (!hashtable.ContainsKey((byte)1))
 					{
-						num = (short)(num - 1);
+						num--;
 					}
 					short num2 = num;
 					while (num2 < hashtable.Count)
 					{
-						ExitGames.Client.Photon.Hashtable hashtable2;
-						if ((hashtable2 = hashtable[num2] as ExitGames.Client.Photon.Hashtable) != null)
+						if (hashtable[num2] is ExitGames.Client.Photon.Hashtable hashtable2)
 						{
 							if (hashtable2 == null)
 							{
@@ -1769,7 +1852,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 								FengGameManagerMKII.ThrowJusticeDefensive(sender, "OSR(" + base.ByteCountCurrentDispatch + "b) not (short)2 " + hashtable);
 								return false;
 							}
-							num2 = (short)(num2 + 1);
+							num2++;
 							continue;
 						}
 						FengGameManagerMKII.ThrowJusticeDefensive(sender, "OSR(" + base.ByteCountCurrentDispatch + "b) invalid index " + hashtable);
@@ -1872,43 +1955,41 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 			return;
 		case 201:
 		case 206:
-		{
 			if (base.ByteCountCurrentDispatch > 6500)
 			{
 				FengGameManagerMKII.ThrowJusticeDefensive(sender, $"Huge ({photonEvent.Code}) - ({base.ByteCountCurrentDispatch}) - {photonEvent.Parameters.ToStringFull()}");
-				return;
 			}
-			if (!(photonEvent[245] is ExitGames.Client.Photon.Hashtable))
+			else if (!(photonEvent[245] is ExitGames.Client.Photon.Hashtable))
 			{
 				FengGameManagerMKII.ThrowJusticeDefensive(sender, "OSR not hash (" + base.ByteCountCurrentDispatch + ") " + photonEvent.Parameters.ToStringFull());
-				return;
 			}
-			ExitGames.Client.Photon.Hashtable hashtable2 = photonEvent[245] as ExitGames.Client.Photon.Hashtable;
-			if (hashtable2 == null || !(hashtable2[(byte)0] is int))
+			else
 			{
-				return;
-			}
-			int networkTime = (int)hashtable2[(byte)0];
-			short correctPrefix = -1;
-			short num5 = 1;
-			if (hashtable2.ContainsKey((byte)1))
-			{
-				if (!(hashtable2[(byte)1] is short))
+				if (!(photonEvent[245] is ExitGames.Client.Photon.Hashtable hashtable) || !(hashtable[(byte)0] is int))
 				{
 					return;
 				}
-				correctPrefix = (short)hashtable2[(byte)1];
-				num5 = 2;
-			}
-			for (short num6 = num5; num6 < hashtable2.Count; num6 = (short)(num6 + 1))
-			{
-				if (CheckOSR(photonEvent[245], sender))
+				int networkTime = (int)hashtable[(byte)0];
+				short correctPrefix = -1;
+				short num = 1;
+				if (hashtable.ContainsKey((byte)1))
 				{
-					OnSerializeRead(hashtable2[num6] as ExitGames.Client.Photon.Hashtable, sender, networkTime, correctPrefix);
+					if (!(hashtable[(byte)1] is short))
+					{
+						return;
+					}
+					correctPrefix = (short)hashtable[(byte)1];
+					num = 2;
+				}
+				for (short num2 = num; num2 < hashtable.Count; num2++)
+				{
+					if (CheckOSR(photonEvent[245], sender))
+					{
+						OnSerializeRead(hashtable[num2] as ExitGames.Client.Photon.Hashtable, sender, networkTime, correctPrefix);
+					}
 				}
 			}
 			return;
-		}
 		case 202:
 		{
 			if (base.ByteCountCurrentDispatch > 200)
@@ -1921,10 +2002,10 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 				FengGameManagerMKII.ThrowJusticeDefensive(sender, "DI not hashtable " + photonEvent.Parameters.ToStringFull());
 				return;
 			}
-			ExitGames.Client.Photon.Hashtable hashtable2 = photonEvent[245] as ExitGames.Client.Photon.Hashtable;
-			if (hashtable2[(byte)0] is string)
+			ExitGames.Client.Photon.Hashtable hashtable8 = photonEvent[245] as ExitGames.Client.Photon.Hashtable;
+			if (hashtable8[(byte)0] is string)
 			{
-				string text3 = (string)hashtable2[(byte)0];
+				string text3 = (string)hashtable8[(byte)0];
 				if (text3 == null)
 				{
 					FengGameManagerMKII.ThrowJusticeDefensive(sender, "DI null string " + photonEvent.Parameters.ToStringFull());
@@ -1933,19 +2014,27 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 				{
 					FengGameManagerMKII.ThrowJusticeDefensive(sender, "DI big string " + photonEvent.Parameters.ToStringFull());
 				}
-				else if (hashtable2.ContainsKey((byte)7))
+				else
 				{
-					int num7 = (int)hashtable2[(byte)7];
+					if (!hashtable8.ContainsKey((byte)7))
+					{
+						return;
+					}
+					int num7 = (int)hashtable8[(byte)7];
 					int num8 = sender.ID * PhotonNetwork.MAX_VIEW_IDS;
 					int num9 = num8 + PhotonNetwork.MAX_VIEW_IDS;
 					if (num7 < num8 || num7 > num9)
 					{
 						FengGameManagerMKII.ThrowJusticeDefensive(sender, "DI: view " + photonEvent.Parameters.ToStringFull());
 					}
-					else if (hashtable2.ContainsKey((byte)6))
+					else if (hashtable8.ContainsKey((byte)6))
 					{
-						_ = (int)hashtable2[(byte)6];
-						DoInstantiate2(hashtable2, sender, null);
+						if (!sender.isLocal && sender != null && !FengGameManagerMKII.instance.disableEventAntispam)
+						{
+							trackInstantiate(sender, text3);
+						}
+						_ = (int)hashtable8[(byte)6];
+						DoInstantiate2(hashtable8, sender, null);
 					}
 				}
 			}
@@ -1977,81 +2066,77 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 			}
 			return;
 		case 204:
-		{
 			if (base.ByteCountCurrentDispatch > 100)
 			{
 				FengGameManagerMKII.ThrowJusticeDefensive(sender, $"Huge ({photonEvent.Code}) - ({base.ByteCountCurrentDispatch}) - {photonEvent.Parameters.ToStringFull()}");
-				return;
 			}
-			if (!(photonEvent[245] is ExitGames.Client.Photon.Hashtable))
+			else if (!(photonEvent[245] is ExitGames.Client.Photon.Hashtable))
 			{
 				FengGameManagerMKII.ThrowJusticeDefensive(sender, "204 not hash " + photonEvent.Parameters.ToStringFull());
-				return;
-			}
-			ExitGames.Client.Photon.Hashtable hashtable2 = photonEvent[245] as ExitGames.Client.Photon.Hashtable;
-			if (hashtable2 == null)
-			{
-				return;
-			}
-			if (hashtable2.Keys.Count != 1)
-			{
-				FengGameManagerMKII.ThrowJusticeDefensive(sender, "204 keys length " + photonEvent.Parameters.ToStringFull());
-			}
-			else if (hashtable2[(byte)0] is int)
-			{
-				int key2 = (int)hashtable2[(byte)0];
-				GameObject value = null;
-				instantiatedObjects.TryGetValue(key2, out value);
-				if (value != null && sender != null)
-				{
-					RemoveInstantiatedGO(value, localOnly: true);
-				}
 			}
 			else
 			{
-				FengGameManagerMKII.ThrowJusticeDefensive(sender, "204 invalid (byte)0 " + photonEvent.Parameters.ToStringFull());
+				if (!(photonEvent[245] is ExitGames.Client.Photon.Hashtable hashtable6))
+				{
+					return;
+				}
+				if (hashtable6.Keys.Count != 1)
+				{
+					FengGameManagerMKII.ThrowJusticeDefensive(sender, "204 keys length " + photonEvent.Parameters.ToStringFull());
+				}
+				else if (hashtable6[(byte)0] is int)
+				{
+					int key2 = (int)hashtable6[(byte)0];
+					GameObject value = null;
+					instantiatedObjects.TryGetValue(key2, out value);
+					if (value != null && sender != null)
+					{
+						RemoveInstantiatedGO(value, localOnly: true);
+					}
+				}
+				else
+				{
+					FengGameManagerMKII.ThrowJusticeDefensive(sender, "204 invalid (byte)0 " + photonEvent.Parameters.ToStringFull());
+				}
 			}
 			return;
-		}
 		case 207:
-		{
 			if (base.ByteCountCurrentDispatch > 100)
 			{
 				FengGameManagerMKII.ThrowJusticeDefensive(sender, $"Huge ({photonEvent.Code}) - ({base.ByteCountCurrentDispatch}) - {photonEvent.Parameters.ToStringFull()}");
-				return;
 			}
-			if (!(photonEvent[245] is ExitGames.Client.Photon.Hashtable))
+			else if (!(photonEvent[245] is ExitGames.Client.Photon.Hashtable))
 			{
 				FengGameManagerMKII.ThrowJusticeDefensive(sender, "207 not hash " + photonEvent.Parameters.ToStringFull());
-				return;
-			}
-			ExitGames.Client.Photon.Hashtable hashtable2 = photonEvent[245] as ExitGames.Client.Photon.Hashtable;
-			if (hashtable2 == null)
-			{
-				return;
-			}
-			if (hashtable2.Keys.Count != 1)
-			{
-				FengGameManagerMKII.ThrowJusticeDefensive(sender, "207 keys length " + photonEvent.Parameters.ToStringFull());
-			}
-			else if (hashtable2[(byte)0] is int)
-			{
-				int num2 = (int)hashtable2[(byte)0];
-				if (num2 < 0 && sender != null && (sender.isMasterClient || sender.isLocal))
-				{
-					DestroyAll(localOnly: true);
-				}
-				else if (sender != null && (sender.isMasterClient || sender.isLocal || num2 != PhotonNetwork.player.ID))
-				{
-					DestroyPlayerObjects(num2, localOnly: true);
-				}
 			}
 			else
 			{
-				FengGameManagerMKII.ThrowJusticeDefensive(sender, "207 invalid (byte)0 " + photonEvent.Parameters.ToStringFull());
+				if (!(photonEvent[245] is ExitGames.Client.Photon.Hashtable hashtable7))
+				{
+					return;
+				}
+				if (hashtable7.Keys.Count != 1)
+				{
+					FengGameManagerMKII.ThrowJusticeDefensive(sender, "207 keys length " + photonEvent.Parameters.ToStringFull());
+				}
+				else if (hashtable7[(byte)0] is int)
+				{
+					int num4 = (int)hashtable7[(byte)0];
+					if (num4 < 0 && sender != null && (sender.isMasterClient || sender.isLocal))
+					{
+						DestroyAll(localOnly: true);
+					}
+					else if (sender != null && (sender.isMasterClient || sender.isLocal || num4 != PhotonNetwork.player.ID))
+					{
+						DestroyPlayerObjects(num4, localOnly: true);
+					}
+				}
+				else
+				{
+					FengGameManagerMKII.ThrowJusticeDefensive(sender, "207 invalid (byte)0 " + photonEvent.Parameters.ToStringFull());
+				}
 			}
 			return;
-		}
 		case 208:
 		{
 			if (base.ByteCountCurrentDispatch > 500)
@@ -2064,19 +2149,19 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 				FengGameManagerMKII.ThrowJusticeDefensive(sender, "208 not hash" + photonEvent.Parameters.ToStringFull());
 				return;
 			}
-			ExitGames.Client.Photon.Hashtable hashtable2 = (ExitGames.Client.Photon.Hashtable)photonEvent[245];
-			if (hashtable2.Keys.Count != 1)
+			ExitGames.Client.Photon.Hashtable hashtable8 = (ExitGames.Client.Photon.Hashtable)photonEvent[245];
+			if (hashtable8.Keys.Count != 1)
 			{
 				FengGameManagerMKII.ThrowJusticeDefensive(sender, "208 keys length" + photonEvent.Parameters.ToStringFull());
 				return;
 			}
-			if (!(hashtable2[(byte)1] is int))
+			if (!(hashtable8[(byte)1] is int))
 			{
 				FengGameManagerMKII.ThrowJusticeDefensive(sender, "208 invalid (byte)1" + photonEvent.Parameters.ToStringFull());
 				return;
 			}
-			int num4 = (int)hashtable2[(byte)1];
-			if (sender != null && sender.isMasterClient && num4 == sender.ID)
+			int num6 = (int)hashtable8[(byte)1];
+			if (sender != null && sender.isMasterClient && num6 == sender.ID)
 			{
 				return;
 			}
@@ -2089,27 +2174,27 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 					PhotonNetwork.SetMasterClient(PhotonNetwork.player);
 				}
 			}
-			else if (num4 == mLocalActor.ID)
+			else if (num6 == mLocalActor.ID)
 			{
-				SetMasterClient(num4, sync: false);
+				SetMasterClient(num6, sync: false);
 			}
 			else if (sender == null || sender.isMasterClient || sender.isLocal)
 			{
-				SetMasterClient(num4, sync: false);
+				SetMasterClient(num6, sync: false);
 			}
 			return;
 		}
 		case 226:
 			if (sender == null)
 			{
-				object obj2 = photonEvent[229];
-				object obj3 = photonEvent[227];
-				object obj4 = photonEvent[228];
-				if (obj2 is int && obj3 is int && obj4 is int)
+				object obj = photonEvent[229];
+				object obj2 = photonEvent[227];
+				object obj3 = photonEvent[228];
+				if (obj is int && obj2 is int && obj3 is int)
 				{
-					mPlayersInRoomsCount = (int)obj2;
-					mPlayersOnMasterCount = (int)obj3;
-					mGameCount = (int)obj4;
+					mPlayersInRoomsCount = (int)obj;
+					mPlayersOnMasterCount = (int)obj2;
+					mGameCount = (int)obj3;
 				}
 			}
 			else if (!FengGameManagerMKII.ignoreList.Contains(key))
@@ -2126,12 +2211,11 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 		case 229:
 			if (sender == null)
 			{
-				ExitGames.Client.Photon.Hashtable hashtable2 = photonEvent[222] as ExitGames.Client.Photon.Hashtable;
-				if (hashtable2 == null)
+				if (!(photonEvent[222] is ExitGames.Client.Photon.Hashtable hashtable10))
 				{
 					return;
 				}
-				foreach (DictionaryEntry item in hashtable2)
+				foreach (DictionaryEntry item in hashtable10)
 				{
 					string text4 = (string)item.Key;
 					RoomInfo roomInfo = new RoomInfo(text4, (ExitGames.Client.Photon.Hashtable)item.Value);
@@ -2156,13 +2240,12 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 		case 230:
 			if (sender == null)
 			{
-				ExitGames.Client.Photon.Hashtable hashtable2 = photonEvent[222] as ExitGames.Client.Photon.Hashtable;
-				if (hashtable2 == null)
+				if (!(photonEvent[222] is ExitGames.Client.Photon.Hashtable hashtable9))
 				{
 					return;
 				}
 				mGameList = new Dictionary<string, RoomInfo>();
-				foreach (DictionaryEntry item2 in hashtable2)
+				foreach (DictionaryEntry item2 in hashtable9)
 				{
 					string text2 = (string)item2.Key;
 					mGameList[text2] = new RoomInfo(text2, (ExitGames.Client.Photon.Hashtable)item2.Value);
@@ -2177,166 +2260,161 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 			}
 			return;
 		case 253:
-		{
 			if (base.ByteCountCurrentDispatch > 580)
 			{
 				FengGameManagerMKII.ThrowJusticeDefensive(sender, $"Huge ({photonEvent.Code}) - ({base.ByteCountCurrentDispatch}) - {photonEvent.Parameters.ToStringFull()}");
-				return;
 			}
-			if (photonEvent == null || !(photonEvent[253] is int))
+			else if (photonEvent == null || !(photonEvent[253] is int))
 			{
 				if (sender != null)
 				{
 					FengGameManagerMKII.ThrowJusticeDefensive(sender, "false prop change");
 				}
-				return;
-			}
-			object obj = photonEvent[253];
-			if (!(obj is int))
-			{
-				return;
-			}
-			int num = (int)obj;
-			ExitGames.Client.Photon.Hashtable gameProperties = null;
-			ExitGames.Client.Photon.Hashtable hashtable = null;
-			if (num != 0)
-			{
-				ExitGames.Client.Photon.Hashtable hashtable2 = photonEvent[251] as ExitGames.Client.Photon.Hashtable;
-				if (hashtable2 != null)
-				{
-					hashtable = hashtable2;
-					if (sender != null)
-					{
-						PhotonPlayer photonPlayer = PhotonPlayer.Find(num);
-						if (photonPlayer == null)
-						{
-							FengGameManagerMKII.ThrowJusticeDefensive(sender, "deletes all props");
-							return;
-						}
-						hashtable["sender"] = sender;
-						if (sender != photonPlayer)
-						{
-							if (hashtable.ContainsKey("isTitan"))
-							{
-								FengGameManagerMKII.ThrowJusticeDefensive(sender, "changing race");
-								return;
-							}
-							if (hashtable.ContainsKey("dead"))
-							{
-								FengGameManagerMKII.ThrowJusticeDefensive(sender, "changing visibility");
-								return;
-							}
-							ExitGames.Client.Photon.Hashtable customProperties = photonPlayer.customProperties;
-							List<object> list = new List<object>();
-							ExitGames.Client.Photon.Hashtable hashtable3 = new ExitGames.Client.Photon.Hashtable();
-							foreach (DictionaryEntry item3 in hashtable)
-							{
-								if (!list.Contains(item3.Key) && !validProps.Contains(item3.Key.ToString()))
-								{
-									FengGameManagerMKII.ThrowJusticeDefensive(sender, "sets custom prop on " + photonPlayer.uiname.hexColor() + " {" + photonPlayer.ID + "}: " + hashtable);
-									hashtable3.Add(item3.Key, null);
-								}
-								if (!customProperties.ContainsKey(item3.Key))
-								{
-									continue;
-								}
-								if (item3.Value == null)
-								{
-									FengGameManagerMKII.ThrowJusticeDefensive(sender, string.Concat("deletes prop ", item3.Key, "of ", photonPlayer.uiname.hexColor(), " {", photonPlayer.ID, "}"));
-									hashtable3.Add(item3.Key, customProperties[item3.Key]);
-								}
-								else if (item3.Value != null && !hashtable.ContainsKey("kills") && !hashtable.ContainsKey("deaths") && !hashtable.ContainsKey("max_dmg") && !hashtable.ContainsKey("total_dmg"))
-								{
-									FengGameManagerMKII.ThrowJusticeDefensive(sender, string.Concat("sets value on ", photonPlayer.uiname.hexColor(), " {", photonPlayer.ID, "}: (", item3.Key, ") (", item3.Value, ")"));
-									hashtable3.Add(item3.Key, customProperties[item3.Key]);
-								}
-								else if (!sender.isMasterClient)
-								{
-									if (hashtable.ContainsKey("kills") && (Convert.ToInt32(hashtable["kills"].ToString()) - photonPlayer.customProperties["kills"].ToInt32() > 1 || Convert.ToInt32(hashtable["kills"].ToString()) < 0))
-									{
-										FengGameManagerMKII.ThrowJusticeDefensive(sender, string.Concat("sets kill on ", photonPlayer.uiname.hexColor(), " {", photonPlayer.ID, "}: (", item3.Value, ")"));
-										hashtable3.Add(item3.Key, customProperties[item3.Key]);
-									}
-									else if (hashtable.ContainsKey("max_dmg") && (Convert.ToInt32(hashtable["max_dmg"].ToString()) >= 16000 || Convert.ToInt32(hashtable["max_dmg"].ToString()) < 0))
-									{
-										FengGameManagerMKII.ThrowJusticeDefensive(sender, string.Concat("sets max_dmg on ", photonPlayer.uiname.hexColor(), " {", photonPlayer.ID, "}: (", item3.Value, ")"));
-										hashtable3.Add(item3.Key, customProperties[item3.Key]);
-									}
-									else if (hashtable.ContainsKey("total_dmg") && (Convert.ToInt32(hashtable["total_dmg"].ToString()) - photonPlayer.customProperties["total_dmg"].ToInt32() >= 16000 || Convert.ToInt32(hashtable["total_dmg"].ToString()) < 0))
-									{
-										FengGameManagerMKII.ThrowJusticeDefensive(sender, string.Concat("sets total_dmg on ", photonPlayer.uiname.hexColor(), " {", photonPlayer.ID, "}: (", item3.Value, ")"));
-										hashtable3.Add(item3.Key, customProperties[item3.Key]);
-									}
-									else if (hashtable.ContainsKey("deaths") && (Convert.ToInt32(hashtable["deaths"].ToString()) - photonPlayer.customProperties["deaths"].ToInt32() > 1 || Convert.ToInt32(hashtable["deaths"].ToString()) < 0))
-									{
-										FengGameManagerMKII.ThrowJusticeDefensive(sender, string.Concat("sets deaths on ", photonPlayer.uiname.hexColor(), " {", photonPlayer.ID, "}: (", item3.Value, ")"));
-										hashtable3.Add(item3.Key, customProperties[item3.Key]);
-									}
-								}
-							}
-							if (hashtable3.Count > 0)
-							{
-								PhotonNetwork.player.SetCustomProperties(hashtable3);
-							}
-						}
-						if (hashtable.ContainsKey("RCBombRadius") && (RCextensions.returnFloatFromObject(hashtable["RCBombRadius"]) - 20f) / 4f > 10f)
-						{
-							FengGameManagerMKII.ThrowJusticeDefensive(sender, "Bomb Rad " + (RCextensions.returnFloatFromObject(hashtable["RCBombRadius"]) - 20f) / 4f);
-							return;
-						}
-						if (!sender.isLocal && num == sender.ID && (hashtable.ContainsKey("statACL") || hashtable.ContainsKey("statBLA") || hashtable.ContainsKey("statGAS") || hashtable.ContainsKey("statSPD")))
-						{
-							if (hashtable.ContainsKey("statACL") && RCextensions.returnIntFromObject(hashtable["statACL"]) > 150)
-							{
-								FengGameManagerMKII.instance.kickPlayerRC(sender, ban: true, "excessive stats.");
-								return;
-							}
-							if (hashtable.ContainsKey("statBLA") && RCextensions.returnIntFromObject(hashtable["statBLA"]) > 125)
-							{
-								FengGameManagerMKII.instance.kickPlayerRC(sender, ban: true, "excessive stats.");
-								return;
-							}
-							if (hashtable.ContainsKey("statGAS") && RCextensions.returnIntFromObject(hashtable["statGAS"]) > 150)
-							{
-								FengGameManagerMKII.instance.kickPlayerRC(sender, ban: true, "excessive stats.");
-								return;
-							}
-							if (hashtable.ContainsKey("statSPD") && RCextensions.returnIntFromObject(hashtable["statSPD"]) > 140)
-							{
-								FengGameManagerMKII.instance.kickPlayerRC(sender, ban: true, "excessive stats.");
-								return;
-							}
-						}
-						if (hashtable.ContainsKey("name"))
-						{
-							if (num != sender.ID)
-							{
-								InstantiateTracker.instance.resetPropertyTracking(num);
-							}
-							else if (!InstantiateTracker.instance.PropertiesChanged(sender))
-							{
-								return;
-							}
-						}
-						if (FengGameManagerMKII.instance.DCPeopleList.Contains(RCextensions.returnStringFromObject(sender.customProperties["name"])))
-						{
-							FengGameManagerMKII.ThrowJusticeDefensive(sender, "DC List");
-						}
-					}
-				}
 			}
 			else
 			{
-				ExitGames.Client.Photon.Hashtable hashtable2 = photonEvent[251] as ExitGames.Client.Photon.Hashtable;
-				if (hashtable2 == null)
+				if (!(photonEvent[253] is int num3))
 				{
 					return;
 				}
-				gameProperties = hashtable2;
+				ExitGames.Client.Photon.Hashtable gameProperties = null;
+				ExitGames.Client.Photon.Hashtable hashtable2 = null;
+				if (num3 != 0)
+				{
+					if (photonEvent[251] is ExitGames.Client.Photon.Hashtable hashtable3)
+					{
+						hashtable2 = hashtable3;
+						if (sender != null)
+						{
+							PhotonPlayer photonPlayer = PhotonPlayer.Find(num3);
+							if (photonPlayer == null)
+							{
+								FengGameManagerMKII.ThrowJusticeDefensive(sender, "deletes all props");
+								return;
+							}
+							hashtable2["sender"] = sender;
+							if (sender != photonPlayer)
+							{
+								if (hashtable2.ContainsKey("isTitan"))
+								{
+									FengGameManagerMKII.ThrowJusticeDefensive(sender, "changing race");
+									return;
+								}
+								if (hashtable2.ContainsKey("dead"))
+								{
+									FengGameManagerMKII.ThrowJusticeDefensive(sender, "changing visibility");
+									return;
+								}
+								ExitGames.Client.Photon.Hashtable customProperties = photonPlayer.customProperties;
+								List<object> list = new List<object>();
+								ExitGames.Client.Photon.Hashtable hashtable4 = new ExitGames.Client.Photon.Hashtable();
+								foreach (DictionaryEntry item3 in hashtable2)
+								{
+									if (!list.Contains(item3.Key) && !validProps.Contains(item3.Key.ToString()))
+									{
+										FengGameManagerMKII.ThrowJusticeDefensive(sender, "sets custom prop on " + photonPlayer.uiname.hexColor() + " {" + photonPlayer.ID + "}: " + hashtable2);
+										hashtable4.Add(item3.Key, null);
+									}
+									if (!customProperties.ContainsKey(item3.Key))
+									{
+										continue;
+									}
+									if (item3.Value == null)
+									{
+										FengGameManagerMKII.ThrowJusticeDefensive(sender, string.Concat("deletes prop ", item3.Key, "of ", photonPlayer.uiname.hexColor(), " {", photonPlayer.ID, "}"));
+										hashtable4.Add(item3.Key, customProperties[item3.Key]);
+									}
+									else if (item3.Value != null && !hashtable2.ContainsKey("kills") && !hashtable2.ContainsKey("deaths") && !hashtable2.ContainsKey("max_dmg") && !hashtable2.ContainsKey("total_dmg"))
+									{
+										FengGameManagerMKII.ThrowJusticeDefensive(sender, string.Concat("sets value on ", photonPlayer.uiname.hexColor(), " {", photonPlayer.ID, "}: (", item3.Key, ") (", item3.Value, ")"));
+										hashtable4.Add(item3.Key, customProperties[item3.Key]);
+									}
+									else if (!sender.isMasterClient)
+									{
+										if (hashtable2.ContainsKey("kills") && (Convert.ToInt32(hashtable2["kills"].ToString()) - photonPlayer.customProperties["kills"].ToInt32() > 1 || Convert.ToInt32(hashtable2["kills"].ToString()) < 0))
+										{
+											FengGameManagerMKII.ThrowJusticeDefensive(sender, string.Concat("sets kill on ", photonPlayer.uiname.hexColor(), " {", photonPlayer.ID, "}: (", item3.Value, ")"));
+											hashtable4.Add(item3.Key, customProperties[item3.Key]);
+										}
+										else if (hashtable2.ContainsKey("max_dmg") && (Convert.ToInt32(hashtable2["max_dmg"].ToString()) >= 16000 || Convert.ToInt32(hashtable2["max_dmg"].ToString()) < 0))
+										{
+											FengGameManagerMKII.ThrowJusticeDefensive(sender, string.Concat("sets max_dmg on ", photonPlayer.uiname.hexColor(), " {", photonPlayer.ID, "}: (", item3.Value, ")"));
+											hashtable4.Add(item3.Key, customProperties[item3.Key]);
+										}
+										else if (hashtable2.ContainsKey("total_dmg") && (Convert.ToInt32(hashtable2["total_dmg"].ToString()) - photonPlayer.customProperties["total_dmg"].ToInt32() >= 16000 || Convert.ToInt32(hashtable2["total_dmg"].ToString()) < 0))
+										{
+											FengGameManagerMKII.ThrowJusticeDefensive(sender, string.Concat("sets total_dmg on ", photonPlayer.uiname.hexColor(), " {", photonPlayer.ID, "}: (", item3.Value, ")"));
+											hashtable4.Add(item3.Key, customProperties[item3.Key]);
+										}
+										else if (hashtable2.ContainsKey("deaths") && (Convert.ToInt32(hashtable2["deaths"].ToString()) - photonPlayer.customProperties["deaths"].ToInt32() > 1 || Convert.ToInt32(hashtable2["deaths"].ToString()) < 0))
+										{
+											FengGameManagerMKII.ThrowJusticeDefensive(sender, string.Concat("sets deaths on ", photonPlayer.uiname.hexColor(), " {", photonPlayer.ID, "}: (", item3.Value, ")"));
+											hashtable4.Add(item3.Key, customProperties[item3.Key]);
+										}
+									}
+								}
+								if (hashtable4.Count > 0)
+								{
+									PhotonNetwork.player.SetCustomProperties(hashtable4);
+								}
+							}
+							if (hashtable2.ContainsKey("RCBombRadius") && (RCextensions.returnFloatFromObject(hashtable2["RCBombRadius"]) - 20f) / 4f > 10f)
+							{
+								FengGameManagerMKII.ThrowJusticeDefensive(sender, "Bomb Rad " + (RCextensions.returnFloatFromObject(hashtable2["RCBombRadius"]) - 20f) / 4f);
+								return;
+							}
+							if (!sender.isLocal && num3 == sender.ID && (hashtable2.ContainsKey("statACL") || hashtable2.ContainsKey("statBLA") || hashtable2.ContainsKey("statGAS") || hashtable2.ContainsKey("statSPD")))
+							{
+								if (hashtable2.ContainsKey("statACL") && RCextensions.returnIntFromObject(hashtable2["statACL"]) > 150)
+								{
+									FengGameManagerMKII.instance.kickPlayerRC(sender, ban: true, "excessive stats.");
+									return;
+								}
+								if (hashtable2.ContainsKey("statBLA") && RCextensions.returnIntFromObject(hashtable2["statBLA"]) > 125)
+								{
+									FengGameManagerMKII.instance.kickPlayerRC(sender, ban: true, "excessive stats.");
+									return;
+								}
+								if (hashtable2.ContainsKey("statGAS") && RCextensions.returnIntFromObject(hashtable2["statGAS"]) > 150)
+								{
+									FengGameManagerMKII.instance.kickPlayerRC(sender, ban: true, "excessive stats.");
+									return;
+								}
+								if (hashtable2.ContainsKey("statSPD") && RCextensions.returnIntFromObject(hashtable2["statSPD"]) > 140)
+								{
+									FengGameManagerMKII.instance.kickPlayerRC(sender, ban: true, "excessive stats.");
+									return;
+								}
+							}
+							if (hashtable2.ContainsKey("name"))
+							{
+								if (num3 != sender.ID)
+								{
+									InstantiateTracker.instance.resetPropertyTracking(num3);
+								}
+								else if (!InstantiateTracker.instance.PropertiesChanged(sender))
+								{
+									return;
+								}
+							}
+							if (FengGameManagerMKII.instance.DCPeopleList.Contains(RCextensions.returnStringFromObject(sender.customProperties["name"])))
+							{
+								FengGameManagerMKII.ThrowJusticeDefensive(sender, "DC List");
+							}
+						}
+					}
+				}
+				else
+				{
+					if (!(photonEvent[251] is ExitGames.Client.Photon.Hashtable hashtable5))
+					{
+						return;
+					}
+					gameProperties = hashtable5;
+				}
+				ReadoutProperties(gameProperties, hashtable2, num3);
 			}
-			ReadoutProperties(gameProperties, hashtable, num);
 			return;
-		}
 		case 254:
 			HandleEventLeave(key);
 			return;
@@ -2355,11 +2433,11 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 				return;
 			}
 			int[] array = (int[])photonEvent[252];
-			foreach (int num3 in array)
+			foreach (int num5 in array)
 			{
-				if (mLocalActor.ID != num3 && !mActors.ContainsKey(num3))
+				if (mLocalActor.ID != num5 && !mActors.ContainsKey(num5))
 				{
-					AddNewPlayer(num3, new PhotonPlayer(isLocal: false, num3, string.Empty));
+					AddNewPlayer(num5, new PhotonPlayer(isLocal: false, num5, string.Empty));
 				}
 			}
 			if (mLastJoinType == JoinType.JoinOrCreateOnDemand && mLocalActor.ID == 1)
@@ -2386,8 +2464,8 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 				FengGameManagerMKII.ThrowJusticeDefensive(sender, $"Huge Invalid ({photonEvent.Code}) - ({base.ByteCountCurrentDispatch}) - {photonEvent.Parameters.ToStringFull()}");
 				return;
 			}
-			object obj = photonEvent[245];
-			PhotonNetwork.OnEventCall(photonEvent.Code, obj, key);
+			object content = photonEvent[245];
+			PhotonNetwork.OnEventCall(photonEvent.Code, content, key);
 		}
 	}
 
@@ -2739,7 +2817,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 		else if (view.observed is Transform)
 		{
 			Transform transform = (Transform)view.observed;
-			if (view.onSerializeTransformOption != 0 && view.onSerializeTransformOption != OnSerializeTransform.PositionAndRotation && view.onSerializeTransformOption != OnSerializeTransform.All)
+			if (view.onSerializeTransformOption != OnSerializeTransform.OnlyPosition && view.onSerializeTransformOption != OnSerializeTransform.PositionAndRotation && view.onSerializeTransformOption != OnSerializeTransform.All)
 			{
 				list.Add(null);
 			}
@@ -2775,7 +2853,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 			{
 				list.Add(null);
 			}
-			if (view.onSerializeRigidBodyOption != 0)
+			if (view.onSerializeRigidBodyOption != OnSerializeRigidBody.OnlyVelocity)
 			{
 				list.Add(rigidbody.angularVelocity);
 			}
@@ -3271,7 +3349,7 @@ internal class NetworkingPeer : LoadbalancingPeer, IPhotonPeerListener
 
 	internal void DestroyLeftOver<T>(T mono, bool localOnly = false) where T : Photon.MonoBehaviour
 	{
-		if ((UnityEngine.Object)mono == (UnityEngine.Object)null)
+		if (mono == null)
 		{
 			return;
 		}

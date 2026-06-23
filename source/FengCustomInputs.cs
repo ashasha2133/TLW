@@ -457,15 +457,15 @@ public class FengCustomInputs : MonoBehaviour
 
 	private void loadConfig()
 	{
-		string @string = PlayerPrefs.GetString("KeyCodes");
-		string string2 = PlayerPrefs.GetString("Joystick_input");
-		string string3 = PlayerPrefs.GetString("Names_input");
+		string text = PlayerPrefs.GetString("KeyCodes");
+		string text2 = PlayerPrefs.GetString("Joystick_input");
+		string text3 = PlayerPrefs.GetString("Names_input");
 		char[] separator = new char[1] { '*' };
-		string[] array = @string.Split(separator);
+		string[] array = text.Split(separator);
 		char[] separator2 = new char[1] { '*' };
-		joystickString = string2.Split(separator2);
+		joystickString = text2.Split(separator2);
 		char[] separator3 = new char[1] { '*' };
-		inputString = string3.Split(separator3);
+		inputString = text3.Split(separator3);
 		for (int i = 0; i < DescriptionString.Length; i++)
 		{
 			int.TryParse(array[i], out var result);
@@ -645,7 +645,7 @@ public class FengCustomInputs : MonoBehaviour
 
 	private void Update()
 	{
-		if (!menuOn || true)
+		if (!menuOn)
 		{
 			inputSetBools();
 		}

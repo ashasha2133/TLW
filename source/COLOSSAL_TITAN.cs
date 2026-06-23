@@ -579,7 +579,7 @@ public class COLOSSAL_TITAN : MONO
 
 	private void playSound(string sndname)
 	{
-		//playsoundRPC(sndname);
+		playsoundRPC(sndname);
 		if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.MULTIPLAYER)
 		{
 			if (FengGameManagerMKII.LAN)
@@ -590,7 +590,7 @@ public class COLOSSAL_TITAN : MONO
 			else if (PhotonNetwork.isMasterClient)
 			{
 				object[] parameters = new object[1] { sndname };
-				//base.photonView.RPC("playsoundRPC", PhotonTargets.Others, parameters);
+				base.photonView.RPC("playsoundRPC", PhotonTargets.Others, parameters);
 			}
 		}
 	}
@@ -598,7 +598,10 @@ public class COLOSSAL_TITAN : MONO
 	[RPC]
 	private void playsoundRPC(string sndname)
 	{
-		//base.transform.Find(sndname).GetComponent<AudioSource>().Play();
+		if (AudioListener.volume > 0f)
+		{
+			base.transform.Find(sndname).GetComponent<AudioSource>().Play();
+		}
 	}
 
 	[RPC]

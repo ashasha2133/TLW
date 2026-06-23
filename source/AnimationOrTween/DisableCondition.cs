@@ -1,9 +1,8 @@
-namespace AnimationOrTween
+namespace AnimationOrTween;
+
+public enum DisableCondition
 {
-	public enum DisableCondition
-	{
-		DisableAfterForward = 1,
-		DisableAfterReverse = -1,
-		DoNotDisable = 0
-	}
+	DisableAfterForward = 1,
+	DisableAfterReverse = -1,
+	DoNotDisable = 0
 }

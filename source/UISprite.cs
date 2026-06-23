@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [ExecuteInEditMode]
@@ -299,7 +298,7 @@ public class UISprite : UIWidget
 			{
 				num = 1f - num;
 			}
-			num *= (float)Math.E * 449f / 777f;
+			num *= 1.570796f;
 			float num2 = Mathf.Sin(num);
 			float num3 = Mathf.Cos(num);
 			if (num2 > num3)
@@ -435,22 +434,22 @@ public class UISprite : UIWidget
 						Rotate(array3, 1 - i);
 						Rotate(array4, 1 - i);
 					}
-					float from;
+					float num9;
 					float to;
 					if (i == 1)
 					{
-						from = ((!mInvert) ? 1f : 0.5f);
+						num9 = ((!mInvert) ? 1f : 0.5f);
 						to = ((!mInvert) ? 0.5f : 1f);
 					}
 					else
 					{
-						from = ((!mInvert) ? 0.5f : 1f);
+						num9 = ((!mInvert) ? 0.5f : 1f);
 						to = ((!mInvert) ? 1f : 0.5f);
 					}
-					array3[1].y = Mathf.Lerp(from, to, array3[1].y);
-					array3[2].y = Mathf.Lerp(from, to, array3[2].y);
-					array4[1].y = Mathf.Lerp(from, to, array4[1].y);
-					array4[2].y = Mathf.Lerp(from, to, array4[2].y);
+					array3[1].y = Mathf.Lerp(num9, to, array3[1].y);
+					array3[2].y = Mathf.Lerp(num9, to, array3[2].y);
+					array4[1].y = Mathf.Lerp(num9, to, array4[1].y);
+					array4[2].y = Mathf.Lerp(num9, to, array4[2].y);
 					float fill = mFillAmount * 2f - (float)i;
 					bool flag = i % 2 == 1;
 					if (!AdjustRadial(array3, array4, fill, !flag))
@@ -465,23 +464,23 @@ public class UISprite : UIWidget
 					{
 						for (int j = 0; j < 4; j++)
 						{
-							from = Mathf.Lerp(array[0].x, array[2].x, array3[j].x);
+							num9 = Mathf.Lerp(array[0].x, array[2].x, array3[j].x);
 							to = Mathf.Lerp(array[0].y, array[2].y, array3[j].y);
 							float x2 = Mathf.Lerp(array2[0].x, array2[2].x, array4[j].x);
 							float y2 = Mathf.Lerp(array2[0].y, array2[2].y, array4[j].y);
-							verts.Add(new Vector3(from, to, 0f));
+							verts.Add(new Vector3(num9, to, 0f));
 							uvs.Add(new Vector2(x2, y2));
 							cols.Add(item);
 						}
 						continue;
 					}
-					for (int num9 = 3; num9 > -1; num9--)
+					for (int num10 = 3; num10 > -1; num10--)
 					{
-						from = Mathf.Lerp(array[0].x, array[2].x, array3[num9].x);
-						to = Mathf.Lerp(array[0].y, array[2].y, array3[num9].y);
-						float x3 = Mathf.Lerp(array2[0].x, array2[2].x, array4[num9].x);
-						float y3 = Mathf.Lerp(array2[0].y, array2[2].y, array4[num9].y);
-						verts.Add(new Vector3(from, to, 0f));
+						num9 = Mathf.Lerp(array[0].x, array[2].x, array3[num10].x);
+						to = Mathf.Lerp(array[0].y, array[2].y, array3[num10].y);
+						float x3 = Mathf.Lerp(array2[0].x, array2[2].x, array4[num10].x);
+						float y3 = Mathf.Lerp(array2[0].y, array2[2].y, array4[num10].y);
+						verts.Add(new Vector3(num9, to, 0f));
 						uvs.Add(new Vector2(x3, y3));
 						cols.Add(item);
 					}
@@ -522,15 +521,15 @@ public class UISprite : UIWidget
 					}
 					for (int l = 0; l < 4; l++)
 					{
-						int num10 = ((!mInvert) ? (k * 4) : ((3 - k) * 4));
-						float from2 = array5[num10];
-						float to2 = array5[num10 + 1];
-						float from3 = array5[num10 + 2];
-						float to3 = array5[num10 + 3];
-						array6[l].x = Mathf.Lerp(from2, to2, array6[l].x);
-						array6[l].y = Mathf.Lerp(from3, to3, array6[l].y);
-						array7[l].x = Mathf.Lerp(from2, to2, array7[l].x);
-						array7[l].y = Mathf.Lerp(from3, to3, array7[l].y);
+						int num11 = ((!mInvert) ? (k * 4) : ((3 - k) * 4));
+						float num12 = array5[num11];
+						float to2 = array5[num11 + 1];
+						float num13 = array5[num11 + 2];
+						float to3 = array5[num11 + 3];
+						array6[l].x = Mathf.Lerp(num12, to2, array6[l].x);
+						array6[l].y = Mathf.Lerp(num13, to3, array6[l].y);
+						array7[l].x = Mathf.Lerp(num12, to2, array7[l].x);
+						array7[l].y = Mathf.Lerp(num13, to3, array7[l].y);
 					}
 					float fill2 = mFillAmount * 4f - (float)k;
 					bool flag2 = k % 2 == 1;
@@ -556,12 +555,12 @@ public class UISprite : UIWidget
 						}
 						continue;
 					}
-					for (int num11 = 3; num11 > -1; num11--)
+					for (int num14 = 3; num14 > -1; num14--)
 					{
-						float x6 = Mathf.Lerp(array[0].x, array[2].x, array6[num11].x);
-						float y6 = Mathf.Lerp(array[0].y, array[2].y, array6[num11].y);
-						float x7 = Mathf.Lerp(array2[0].x, array2[2].x, array7[num11].x);
-						float y7 = Mathf.Lerp(array2[0].y, array2[2].y, array7[num11].y);
+						float x6 = Mathf.Lerp(array[0].x, array[2].x, array6[num14].x);
+						float y6 = Mathf.Lerp(array[0].y, array[2].y, array6[num14].y);
+						float x7 = Mathf.Lerp(array2[0].x, array2[2].x, array7[num14].x);
+						float y7 = Mathf.Lerp(array2[0].y, array2[2].y, array7[num14].y);
 						verts.Add(new Vector3(x6, y6, 0f));
 						uvs.Add(new Vector2(x7, y7));
 						cols.Add(item);

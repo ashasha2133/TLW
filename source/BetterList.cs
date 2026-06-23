@@ -169,10 +169,10 @@ public class BetterList<T>
 	{
 		if (buffer != null)
 		{
-			EqualityComparer<T> @default = EqualityComparer<T>.Default;
+			EqualityComparer<T> equalityComparer = EqualityComparer<T>.Default;
 			for (int i = 0; i < size; i++)
 			{
-				if (@default.Equals(buffer[i], item))
+				if (equalityComparer.Equals(buffer[i], item))
 				{
 					size--;
 					buffer[i] = default(T);

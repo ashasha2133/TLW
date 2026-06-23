@@ -22,25 +22,25 @@ public class UIButtonSound : MonoBehaviour
 
 	private void OnClick()
 	{
-		if (base.enabled && trigger == Trigger.OnClick)
+		if (base.enabled && trigger == Trigger.OnClick && AudioListener.volume > 0f && FengGameManagerMKII.InterfaceVolume > 0f && GameSettings.Clicking > 0)
 		{
-			//NGUITools.PlaySound(audioClip, volume, pitch);
+			NGUITools.PlaySound(audioClip, volume, pitch);
 		}
 	}
 
 	private void OnHover(bool isOver)
 	{
-		if (base.enabled && ((isOver && trigger == Trigger.OnMouseOver) || (!isOver && trigger == Trigger.OnMouseOut)))
+		if (base.enabled && ((isOver && trigger == Trigger.OnMouseOver) || (!isOver && trigger == Trigger.OnMouseOut)) && AudioListener.volume > 0f && FengGameManagerMKII.InterfaceVolume > 0f && GameSettings.Clicking > 0)
 		{
-			//NGUITools.PlaySound(audioClip, volume, pitch);
+			NGUITools.PlaySound(audioClip, volume, pitch);
 		}
 	}
 
 	private void OnPress(bool isPressed)
 	{
-		if (base.enabled && ((isPressed && trigger == Trigger.OnPress) || (!isPressed && trigger == Trigger.OnRelease)))
+		if (base.enabled && ((isPressed && trigger == Trigger.OnPress) || (!isPressed && trigger == Trigger.OnRelease)) && AudioListener.volume > 0f && FengGameManagerMKII.InterfaceVolume > 0f && GameSettings.Clicking > 0)
 		{
-			//NGUITools.PlaySound(audioClip, volume, pitch);
+			NGUITools.PlaySound(audioClip, volume, pitch);
 		}
 	}
 }

@@ -106,7 +106,7 @@ public class UIButtonTween : MonoBehaviour
 		mTweens = ((!includeChildren) ? gameObject.GetComponents<UITweener>() : gameObject.GetComponentsInChildren<UITweener>());
 		if (mTweens.Length == 0)
 		{
-			if (disableWhenFinished != 0)
+			if (disableWhenFinished != DisableCondition.DoNotDisable)
 			{
 				NGUITools.SetActive(tweenTarget, state: false);
 			}

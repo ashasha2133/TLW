@@ -182,7 +182,8 @@ public class PVPcheckPoint : Photon.MonoBehaviour
 
 	private float getHeight(Vector3 pt)
 	{
-		if (Physics.Raycast(layerMask: ((LayerMask)(1 << LayerMask.NameToLayer("Ground"))).value, origin: pt, direction: -Vector3.up, hitInfo: out var hitInfo, distance: 1000f))
+		LayerMask layerMask = 1 << LayerMask.NameToLayer("Ground");
+		if (Physics.Raycast(pt, -Vector3.up, out var hitInfo, 1000f, layerMask.value))
 		{
 			return hitInfo.point.y;
 		}

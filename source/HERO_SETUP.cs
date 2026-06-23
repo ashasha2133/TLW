@@ -141,11 +141,12 @@ public class HERO_SETUP : MonoBehaviour
 		SkinnedMeshRenderer component2 = go2.GetComponent<SkinnedMeshRenderer>();
 		for (int i = 0; i < component2.sharedMesh.subMeshCount; i++)
 		{
-			CombineInstance combineInstance = default(CombineInstance);
-			combineInstance.mesh = component2.sharedMesh;
-			combineInstance.transform = component2.transform.localToWorldMatrix;
-			combineInstance.subMeshIndex = i;
-			CombineInstance item = combineInstance;
+			CombineInstance item = new CombineInstance
+			{
+				mesh = component2.sharedMesh,
+				transform = component2.transform.localToWorldMatrix,
+				subMeshIndex = i
+			};
 			list.Add(item);
 			for (int j = 0; j < materialList.Count; j++)
 			{

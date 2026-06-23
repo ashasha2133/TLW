@@ -188,14 +188,13 @@ public static class RCextensions
 				try
 				{
 					link.LoadImageIntoTexture(texture2D);
-					return texture2D;
 				}
 				catch
 				{
 					texture2D = new Texture2D(4, 4, TextureFormat.DXT1, mipmap: false);
 					link.LoadImageIntoTexture(texture2D);
-					return texture2D;
 				}
+				return texture2D;
 			}
 			link.LoadImageIntoTexture(texture2D);
 			return texture2D;
@@ -418,24 +417,24 @@ public static class RCextensions
 		List<string> list = new List<string>();
 		if (typeof(T).IsValueType)
 		{
-			foreach (T item4 in collection)
+			foreach (T item3 in collection)
 			{
-				string item2;
-				if (!string.IsNullOrEmpty(item2 = item4.ToString()))
+				string item;
+				if (!string.IsNullOrEmpty(item = item3.ToString()))
 				{
-					list.Add(item2);
+					list.Add(item);
 				}
 			}
-			list = new List<string>(collection.Select((T item) => item.ToString()));
+			list = new List<string>(collection.Select((T val) => val.ToString()));
 		}
 		else
 		{
-			foreach (T item5 in collection)
+			foreach (T item4 in collection)
 			{
-				string item3;
-				if (item5 != null && !string.IsNullOrEmpty(item3 = item5.ToString()))
+				string item2;
+				if (item4 != null && !string.IsNullOrEmpty(item2 = item4.ToString()))
 				{
-					list.Add(item3);
+					list.Add(item2);
 				}
 			}
 		}
@@ -472,13 +471,9 @@ public static class RCextensions
 
 	public static string returnStringFromObject(object obj)
 	{
-		if (obj != null)
+		if (obj != null && obj is string result)
 		{
-			string text = obj as string;
-			if (text != null)
-			{
-				return text;
-			}
+			return result;
 		}
 		return string.Empty;
 	}

@@ -1,61 +1,60 @@
 using UnityEngine;
 
-namespace CLEARSKIES
+namespace CLEARSKIES;
+
+internal static class RespawnPositions
 {
-	internal static class RespawnPositions
+	private static Vector3[] titanpos;
+
+	public static Vector3 RandomTitanPos
 	{
-		private static Vector3[] titanpos;
-
-		public static Vector3 RandomTitanPos
+		get
 		{
-			get
+			if (titanpos != null)
 			{
-				if (titanpos != null)
-				{
-					return titanpos[Random.Range(0, titanpos.Length)];
-				}
-				GameObject[] array = GameObject.FindGameObjectsWithTag("titanRespawn");
-				if (array != null)
-				{
-					titanpos = new Vector3[array.Length];
-					for (int i = 0; i < array.Length; i++)
-					{
-						titanpos[i] = array[i].transform.position;
-					}
-				}
-				if (titanpos != null)
-				{
-					return titanpos[Random.Range(0, titanpos.Length)];
-				}
-				return Vector3.zero;
+				return titanpos[Random.Range(0, titanpos.Length)];
 			}
-		}
-
-		public static Vector3[] TitanPositions
-		{
-			get
+			GameObject[] array = GameObject.FindGameObjectsWithTag("titanRespawn");
+			if (array != null)
 			{
-				if (titanpos != null)
+				titanpos = new Vector3[array.Length];
+				for (int i = 0; i < array.Length; i++)
 				{
-					return titanpos;
+					titanpos[i] = array[i].transform.position;
 				}
-				GameObject[] array = GameObject.FindGameObjectsWithTag("titanRespawn");
-				if (array != null)
-				{
-					titanpos = new Vector3[array.Length];
-					for (int i = 0; i < array.Length; i++)
-					{
-						titanpos[i] = array[i].transform.position;
-					}
-					return titanpos;
-				}
-				return new Vector3[0];
 			}
+			if (titanpos != null)
+			{
+				return titanpos[Random.Range(0, titanpos.Length)];
+			}
+			return Vector3.zero;
 		}
+	}
 
-		public static void Dispose()
+	public static Vector3[] TitanPositions
+	{
+		get
 		{
-			titanpos = null;
+			if (titanpos != null)
+			{
+				return titanpos;
+			}
+			GameObject[] array = GameObject.FindGameObjectsWithTag("titanRespawn");
+			if (array != null)
+			{
+				titanpos = new Vector3[array.Length];
+				for (int i = 0; i < array.Length; i++)
+				{
+					titanpos[i] = array[i].transform.position;
+				}
+				return titanpos;
+			}
+			return new Vector3[0];
 		}
+	}
+
+	public static void Dispose()
+	{
+		titanpos = null;
 	}
 }

@@ -47,7 +47,7 @@ public class TITAN : MONO
 
 	public float attackWait = 1f;
 
-	//public AudioSource baseAudioSource;
+	public AudioSource baseAudioSource;
 
 	public List<Collider> baseColliders;
 
@@ -151,7 +151,7 @@ public class TITAN : MONO
 
 	public TitanTrigger myTitanTrigger;
 
-	public new Transform neck;
+	private new Transform neck;
 
 	private bool needFreshCorePosition;
 
@@ -508,7 +508,7 @@ public class TITAN : MONO
 	{
 		CacheComponnents();
 		CacheTransforms();
-		//baseAudioSource = baseT.Find("snd_titan_foot").GetComponent<AudioSource>();
+		baseAudioSource = baseT.Find("snd_titan_foot").GetComponent<AudioSource>();
 		camT = Camera.main.transform;
 		baseR = base.rigidbody;
 		baseColliders = new List<Collider>();
@@ -572,7 +572,7 @@ public class TITAN : MONO
 	{
 		float num = rad * myLevel;
 		Vector3 b = head.position - Vector3.up * 1.5f * myLevel;
-		foreach (GameObject allhero in InRoomChat.lockin ? InRoomChat.myallheroes : FengGameManagerMKII.allheroes)
+		foreach (GameObject allhero in FengGameManagerMKII.allheroes)
 		{
 			if (!(allhero != null))
 			{
@@ -656,7 +656,7 @@ public class TITAN : MONO
 	{
 		float num = rad * myLevel;
 		Vector3 b = head.position + Vector3.up * 1.5f * myLevel;
-		foreach (GameObject allhero in InRoomChat.lockin ? InRoomChat.myallheroes : FengGameManagerMKII.allheroes)
+		foreach (GameObject allhero in FengGameManagerMKII.allheroes)
 		{
 			if (allhero == null)
 			{
@@ -795,7 +795,7 @@ public class TITAN : MONO
 				IN_GAME_MAIN_CAMERA.mainCamera.gameOver = true;
 				ExitGames.Client.Photon.Hashtable hashtable = new ExitGames.Client.Photon.Hashtable();
 				hashtable.Add("dead", true);
-                hashtable.Add("deaths", (int)PhotonNetwork.player.customProperties["deaths"] + 1);
+				hashtable.Add("deaths", (int)PhotonNetwork.player.customProperties["deaths"] + 1);
 				PhotonNetwork.player.SetCustomProperties(hashtable);
 			}
 		}
@@ -868,7 +868,7 @@ public class TITAN : MONO
 		{
 			return;
 		}
-		//playSound("snd_titan_head_blow");
+		playSound("snd_titan_head_blow");
 		baseT.rotation = Quaternion.Euler(0f, Quaternion.LookRotation(attacker - baseT.position).eulerAngles.y, 0f);
 		hasDie = true;
 		hitAnimation = "die_headOff";
@@ -898,7 +898,7 @@ public class TITAN : MONO
 				IN_GAME_MAIN_CAMERA.mainCamera.gameOver = true;
 				ExitGames.Client.Photon.Hashtable hashtable = new ExitGames.Client.Photon.Hashtable();
 				hashtable.Add("dead", true);
-                hashtable.Add("deaths", (int)PhotonNetwork.player.customProperties["deaths"] + 1);
+				hashtable.Add("deaths", (int)PhotonNetwork.player.customProperties["deaths"] + 1);
 				PhotonNetwork.player.SetCustomProperties(hashtable);
 			}
 		}
@@ -931,7 +931,7 @@ public class TITAN : MONO
 
 	private void eatSet(HERO grabTarget)
 	{
-		if (!(grabTarget == null) && ((IN_GAME_MAIN_CAMERA.gametype != 0 && (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.MULTIPLAYER || !basePV.isMine)) || !grabTarget.isGrabbed))
+		if (!(grabTarget == null) && ((IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.MULTIPLAYER || !basePV.isMine)) || !grabTarget.isGrabbed))
 		{
 			grabToRight();
 			if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.MULTIPLAYER && basePV.isMine)
@@ -951,7 +951,7 @@ public class TITAN : MONO
 
 	private void eatSetL(HERO grabTarget)
 	{
-		if (!(grabTarget == null) && ((IN_GAME_MAIN_CAMERA.gametype != 0 && (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.MULTIPLAYER || !basePV.isMine)) || !grabTarget.GetComponent<HERO>().isGrabbed))
+		if (!(grabTarget == null) && ((IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.MULTIPLAYER || !basePV.isMine)) || !grabTarget.GetComponent<HERO>().isGrabbed))
 		{
 			grabToLeft();
 			if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.MULTIPLAYER && basePV.isMine)
@@ -1106,8 +1106,8 @@ public class TITAN : MONO
 		GameObject gameObject = null;
 		float num = float.PositiveInfinity;
 		Vector3 position = baseT.position;
-		float num2 = ((abnormalType != 0) ? 180f : 100f);
-		foreach (GameObject allhero in InRoomChat.lockin ? InRoomChat.myallheroes : FengGameManagerMKII.allheroes)
+		float num2 = ((abnormalType != AbnormalType.NORMAL) ? 180f : 100f);
+		foreach (GameObject allhero in FengGameManagerMKII.allheroes)
 		{
 			Transform transform;
 			if (!(allhero != null) || !((transform = allhero.transform) != null))
@@ -1165,7 +1165,7 @@ public class TITAN : MONO
 
 	private void FixedUpdate()
 	{
-		if ((IN_GAME_MAIN_CAMERA.isPausing && IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE) || (IN_GAME_MAIN_CAMERA.gametype != 0 && !basePV.isMine))
+		if ((IN_GAME_MAIN_CAMERA.isPausing && IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE) || (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !basePV.isMine))
 		{
 			return;
 		}
@@ -1366,7 +1366,7 @@ public class TITAN : MONO
 				{
 					num += 0.05f;
 				}
-				if (abnormalType != 0)
+				if (abnormalType != AbnormalType.NORMAL)
 				{
 					num += 0.1f;
 				}
@@ -1528,7 +1528,7 @@ public class TITAN : MONO
 				}
 				if (abnormalType != AbnormalType.TYPE_PUNK)
 				{
-					if (abnormalType != 0)
+					if (abnormalType != AbnormalType.NORMAL)
 					{
 						return new string[1] { "attack_kick" };
 					}
@@ -1562,7 +1562,7 @@ public class TITAN : MONO
 				}
 				if (abnormalType != AbnormalType.TYPE_PUNK)
 				{
-					if (abnormalType != 0)
+					if (abnormalType != AbnormalType.NORMAL)
 					{
 						return new string[1] { "attack_kick" };
 					}
@@ -1598,9 +1598,7 @@ public class TITAN : MONO
 
 	private GameObject getNearestHero()
 	{
-		if (InRoomChat.lockin)
-            return InRoomChat.myallheroes.MinValueOrNull((GameObject hero) => Vector3.Distance(hero.transform.position, baseT.position), (GameObject hero) => hero != null);
-        return FengGameManagerMKII.allheroes.MinValueOrNull((GameObject hero) => Vector3.Distance(hero.transform.position, baseT.position), (GameObject hero) => hero != null);
+		return FengGameManagerMKII.allheroes.MinValueOrNull((GameObject hero) => Vector3.Distance(hero.transform.position, baseT.position), (GameObject hero) => hero != null);
 	}
 
 	private int getPunkNumber()
@@ -1848,9 +1846,7 @@ public class TITAN : MONO
 	[RPC]
 	public void hitAnkleRPC(int viewID)
 	{
-        if (InRoomChat.lockin && !((int)PhotonNetwork.player.customProperties["team"] == 2 ? AHSSShotGunCollider.basePV.viewID == viewID : TriggerColliderWeapon.basePV.viewID == viewID))
-            return;
-        if (hasDie || state == TitanState.down)
+		if (hasDie || state == TitanState.down)
 		{
 			return;
 		}
@@ -1876,8 +1872,6 @@ public class TITAN : MONO
 	[RPC]
 	public void hitEyeRPC(int viewID)
 	{
-		if (InRoomChat.lockin && !((int)PhotonNetwork.player.customProperties["team"] == 2 ? AHSSShotGunCollider.basePV.viewID == viewID : TriggerColliderWeapon.basePV.viewID == viewID))
-			return;
 		if (!hasDie && (PhotonView.Find(viewID).gameObject.transform.position - neck.position).magnitude < 20f)
 		{
 			if (basePV.isMine && grabbedTarget != null)
@@ -2079,14 +2073,20 @@ public class TITAN : MONO
 			if (baseA["run_walk"].normalizedTime % 1f > 0.1f && baseA["run_walk"].normalizedTime % 1f < 0.6f && stepSoundPhase == 2)
 			{
 				stepSoundPhase = 1;
-				//baseAudioSource.Stop();
-				//baseAudioSource.Play();
+				baseAudioSource.Stop();
+				if (AudioListener.volume > 0f)
+				{
+					baseAudioSource.Play();
+				}
 			}
 			else if (baseA["run_walk"].normalizedTime % 1f > 0.6f && stepSoundPhase == 1)
 			{
 				stepSoundPhase = 2;
-				//baseAudioSource.Stop();
-				//baseAudioSource.Play();
+				baseAudioSource.Stop();
+				if (AudioListener.volume > 0f)
+				{
+					baseAudioSource.Play();
+				}
 			}
 		}
 		else if (baseA.IsPlaying("crawler_run"))
@@ -2094,14 +2094,20 @@ public class TITAN : MONO
 			if (baseA["crawler_run"].normalizedTime % 1f > 0.1f && baseA["crawler_run"].normalizedTime % 1f < 0.56f && stepSoundPhase == 2)
 			{
 				stepSoundPhase = 1;
-				//baseAudioSource.Stop();
-				//baseAudioSource.Play();
+				baseAudioSource.Stop();
+				if (AudioListener.volume > 0f)
+				{
+					baseAudioSource.Play();
+				}
 			}
 			else if (baseA["crawler_run"].normalizedTime % 1f > 0.56f && stepSoundPhase == 1)
 			{
 				stepSoundPhase = 2;
-				//baseAudioSource.Stop();
-				//baseAudioSource.Play();
+				baseAudioSource.Stop();
+				if (AudioListener.volume > 0f)
+				{
+					baseAudioSource.Play();
+				}
 			}
 		}
 		else if (baseA.IsPlaying("run_abnormal"))
@@ -2109,14 +2115,20 @@ public class TITAN : MONO
 			if (baseA["run_abnormal"].normalizedTime % 1f > 0.47f && baseA["run_abnormal"].normalizedTime % 1f < 0.95f && stepSoundPhase == 2)
 			{
 				stepSoundPhase = 1;
-				//baseAudioSource.Stop();
-				//baseAudioSource.Play();
+				baseAudioSource.Stop();
+				if (AudioListener.volume > 0f)
+				{
+					baseAudioSource.Play();
+				}
 			}
 			else if ((baseA["run_abnormal"].normalizedTime % 1f > 0.95f || baseA["run_abnormal"].normalizedTime % 1f < 0.47f) && stepSoundPhase == 1)
 			{
 				stepSoundPhase = 2;
-				//baseAudioSource.Stop();
-				//baseAudioSource.Play();
+				baseAudioSource.Stop();
+				if (AudioListener.volume > 0f)
+				{
+					baseAudioSource.Play();
+				}
 			}
 		}
 		headMovement2();
@@ -2199,10 +2211,10 @@ public class TITAN : MONO
 					}
 					if (!FengGameManagerMKII.linkHash[0].ContainsKey(eye))
 					{
-						WWW link2 = new WWW(eye);
-						yield return link2;
-						Texture2D mainTexture = RCextensions.loadimage(link2, mipmap, 200000);
-						link2.Dispose();
+						WWW link = new WWW(eye);
+						yield return link;
+						Texture2D mainTexture = RCextensions.loadimage(link, mipmap, 200000);
+						link.Dispose();
 						if (!FengGameManagerMKII.linkHash[0].ContainsKey(eye))
 						{
 							iteratorVariable1 = true;
@@ -2231,10 +2243,10 @@ public class TITAN : MONO
 				}
 				if (!FengGameManagerMKII.linkHash[2].ContainsKey(body))
 				{
-					WWW link2 = new WWW(body);
-					yield return link2;
-					Texture2D mainTexture2 = RCextensions.loadimage(link2, mipmap, 1000000);
-					link2.Dispose();
+					WWW link = new WWW(body);
+					yield return link;
+					Texture2D mainTexture2 = RCextensions.loadimage(link, mipmap, 1000000);
+					link.Dispose();
 					if (!FengGameManagerMKII.linkHash[2].ContainsKey(body))
 					{
 						iteratorVariable1 = true;
@@ -2345,7 +2357,7 @@ public class TITAN : MONO
 	[RPC]
 	private void netDie()
 	{
-        asClientLookTarget = false;
+		asClientLookTarget = false;
 		if (!hasDie)
 		{
 			hasDie = true;
@@ -2356,7 +2368,7 @@ public class TITAN : MONO
 				IN_GAME_MAIN_CAMERA.mainCamera.gameOver = true;
 				ExitGames.Client.Photon.Hashtable hashtable = new ExitGames.Client.Photon.Hashtable();
 				hashtable.Add("dead", true);
-                hashtable.Add("deaths", (int)PhotonNetwork.player.customProperties["deaths"] + 1);
+				hashtable.Add("deaths", (int)PhotonNetwork.player.customProperties["deaths"] + 1);
 				PhotonNetwork.player.SetCustomProperties(hashtable);
 			}
 			dieAnimation();
@@ -2589,18 +2601,21 @@ public class TITAN : MONO
 
 	private void playSound(string sndname)
 	{
-		//playsoundRPC(sndname);
+		playsoundRPC(sndname);
 		if (basePV.isMine)
 		{
 			object[] parameters = new object[1] { sndname };
-			//basePV.RPC("playsoundRPC", PhotonTargets.Others, parameters);
+			basePV.RPC("playsoundRPC", PhotonTargets.Others, parameters);
 		}
 	}
 
 	[RPC]
 	private void playsoundRPC(string sndname)
 	{
-		//baseT.Find(sndname).GetComponent<AudioSource>().Play();
+		if (AudioListener.volume > 0f)
+		{
+			baseT.Find(sndname).GetComponent<AudioSource>().Play();
+		}
 	}
 
 	public void pt()
@@ -2794,7 +2809,7 @@ public class TITAN : MONO
 				num = 4;
 			}
 		}
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && basePV.isMine)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && basePV.isMine)
 		{
 			object[] parameters = new object[1] { num };
 			basePV.RPC("netSetAbnormalType", PhotonTargets.AllBuffered, parameters);
@@ -2898,7 +2913,7 @@ public class TITAN : MONO
 	private void setmyLevel()
 	{
 		baseA.cullingType = AnimationCullingType.BasedOnRenderers;
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && basePV.isMine)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && basePV.isMine)
 		{
 			object[] parameters = new object[3]
 			{
@@ -3048,7 +3063,7 @@ public class TITAN : MONO
 			FengGameManagerMKII.instance.sendKillInfo(t1: false, string.Empty, t2: true, (string)PhotonNetwork.player.customProperties["name"], 0);
 		}
 		FengGameManagerMKII.instance.needChooseSide = true;
-		FengGameManagerMKII.justSuicide = true;
+		FengGameManagerMKII.instance.justSuicide = true;
 	}
 
 	public void testVisual(bool setCollider)
@@ -3075,7 +3090,7 @@ public class TITAN : MONO
 	public void titanGetHit(int viewID, int speed)
 	{
 		PhotonView photonView = PhotonView.Find(viewID);
-        if (!(photonView != null) || !((photonView.gameObject.transform.position - neck.position).magnitude < lagMax) || hasDie || !(Time.time - healthTime > 0.2f) || (InRoomChat.lockin && !((int)PhotonNetwork.player.customProperties["team"] == 2 ? AHSSShotGunCollider.basePV.viewID == viewID : TriggerColliderWeapon.basePV.viewID == viewID)))
+		if (!(photonView != null) || !((photonView.gameObject.transform.position - neck.position).magnitude < lagMax) || hasDie || !(Time.time - healthTime > 0.2f))
 		{
 			return;
 		}
@@ -3111,7 +3126,7 @@ public class TITAN : MONO
 		}
 		else
 		{
-            FengGameManagerMKII.PView.RPC("netShowDamage", photonView.owner, speed);
+			FengGameManagerMKII.PView.RPC("netShowDamage", photonView.owner, speed);
 		}
 	}
 
@@ -3163,7 +3178,7 @@ public class TITAN : MONO
 	public void update()
 	{
 		UpdateHeroDistance();
-		if ((IN_GAME_MAIN_CAMERA.isPausing && IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE) || myDifficulty < 0 || (IN_GAME_MAIN_CAMERA.gametype != 0 && !basePV.isMine))
+		if ((IN_GAME_MAIN_CAMERA.isPausing && IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE) || myDifficulty < 0 || (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !basePV.isMine))
 		{
 			return;
 		}
@@ -3506,14 +3521,7 @@ public class TITAN : MONO
 		}
 		else if (state == TitanState.attack)
 		{
-            //foreach (var src in GameObject.FindObjectsOfType<AudioSource>())
-            //{
-            //    if (src.name != "NotificationSound")
-            //    {
-            //        src.mute = true;
-            //    }
-            //}
-            if (attackAnimation == "combo")
+			if (attackAnimation == "combo")
 			{
 				if (nonAI)
 				{
@@ -4099,16 +4107,15 @@ public class TITAN : MONO
 						checkPoints = new ArrayList();
 						idle();
 					}
+					return;
 				}
-				else
+				if (checkPoints.Count == 4)
 				{
-					if (checkPoints.Count == 4)
-					{
-						FengGameManagerMKII.instance.sendChatContentInfo("<color=#A8FF24>*WARNING!* An abnormal titan is approaching the north gate!</color>");
-					}
-					Vector3 vector7 = (targetCheckPt = (Vector3)checkPoints[0]);
-					checkPoints.RemoveAt(0);
+					FengGameManagerMKII.instance.sendChatContentInfo("<color=#A8FF24>*WARNING!* An abnormal titan is approaching the north gate!</color>");
 				}
+				Vector3 vector7 = (Vector3)checkPoints[0];
+				targetCheckPt = vector7;
+				checkPoints.RemoveAt(0);
 			}
 			else
 			{

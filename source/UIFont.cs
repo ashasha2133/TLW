@@ -689,7 +689,7 @@ public class UIFont : MonoBehaviour
 			int num4 = 0;
 			int num5 = size;
 			int num6 = num5 + mSpacingY;
-			bool flag2 = encoding && symbolStyle != 0 && hasSymbols;
+			bool flag2 = encoding && symbolStyle != SymbolStyle.None && hasSymbols;
 			for (int i = 0; i < length; i++)
 			{
 				char c = text[i];
@@ -783,7 +783,7 @@ public class UIFont : MonoBehaviour
 		int num2 = num;
 		BMGlyph bMGlyph = null;
 		int num3 = length;
-		bool flag = encoding && symbolStyle != 0 && hasSymbols;
+		bool flag = encoding && symbolStyle != SymbolStyle.None && hasSymbols;
 		bool flag2 = isDynamic;
 		if (flag2)
 		{
@@ -950,7 +950,7 @@ public class UIFont : MonoBehaviour
 			float num8 = uvRect.width / (float)mFont.texWidth;
 			float num9 = mUVRect.height / (float)mFont.texHeight;
 			int length = text.Length;
-			bool flag2 = encoding && symbolStyle != 0 && hasSymbols && sprite != null;
+			bool flag2 = encoding && symbolStyle != SymbolStyle.None && hasSymbols && sprite != null;
 			for (int i = 0; i < length; i++)
 			{
 				char c = text[i];
@@ -960,7 +960,7 @@ public class UIFont : MonoBehaviour
 					{
 						num3 = num4;
 					}
-					if (alignment != 0)
+					if (alignment != Alignment.Left)
 					{
 						Align(verts, num2, alignment, num4, lineWidth);
 						num2 = verts.size;
@@ -1122,7 +1122,7 @@ public class UIFont : MonoBehaviour
 					verts.Add(new Vector3(zero2.x, zero2.y));
 				}
 			}
-			if (alignment != 0 && num2 < verts.size)
+			if (alignment != Alignment.Left && num2 < verts.size)
 			{
 				Align(verts, num2, alignment, num4, lineWidth);
 				num2 = verts.size;
@@ -1249,7 +1249,7 @@ public class UIFont : MonoBehaviour
 		bool flag = true;
 		bool flag2 = maxLineCount != 1;
 		int num4 = 1;
-		bool flag3 = encoding && symbolStyle != 0 && hasSymbols;
+		bool flag3 = encoding && symbolStyle != SymbolStyle.None && hasSymbols;
 		bool flag4 = isDynamic;
 		if (flag4)
 		{

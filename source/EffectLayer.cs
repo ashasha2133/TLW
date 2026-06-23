@@ -314,12 +314,12 @@ public class EffectLayer : MonoBehaviour
 				arrayList.Add(value);
 			}
 		}
-		if (RotAffectorEnable && RotateType != 0)
+		if (RotAffectorEnable && RotateType != RSTYPE.NONE)
 		{
 			Affector value2 = ((RotateType != RSTYPE.CURVE) ? new RotateAffector(DeltaRot, node) : new RotateAffector(RotateCurve, node));
 			arrayList.Add(value2);
 		}
-		if (ScaleAffectorEnable && ScaleType != 0)
+		if (ScaleAffectorEnable && ScaleType != RSTYPE.NONE)
 		{
 			Affector value3 = ((ScaleType != RSTYPE.CURVE) ? new ScaleAffector(DeltaScaleX, DeltaScaleY, node) : new ScaleAffector(ScaleXCurve, ScaleYCurve, node));
 			arrayList.Add(value3);

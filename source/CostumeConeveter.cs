@@ -111,7 +111,7 @@ public class CostumeConeveter
 		heroCostume.sex = IntToSex(PlayerPrefs.GetInt(slot + "sex"));
 		heroCostume.id = PlayerPrefs.GetInt(slot + "heroCostumeId");
 		heroCostume.costumeId = PlayerPrefs.GetInt(slot + "costumeId");
-		heroCostume.cape = ((PlayerPrefs.GetInt(slot + "cape") == 1) ? true : false);
+		heroCostume.cape = PlayerPrefs.GetInt(slot + "cape") == 1;
 		heroCostume.hairInfo = ((IntToSex(PlayerPrefs.GetInt(slot + "sex")) == SEX.FEMALE) ? CostumeHair.hairsF[PlayerPrefs.GetInt(slot + "hairInfo")] : CostumeHair.hairsM[PlayerPrefs.GetInt(slot + "hairInfo")]);
 		heroCostume.eye_texture_id = PlayerPrefs.GetInt(slot + "eye_texture_id");
 		heroCostume.beard_texture_id = PlayerPrefs.GetInt(slot + "beard_texture_id");
@@ -141,7 +141,7 @@ public class CostumeConeveter
 			costumeId = (int)player.customProperties["costumeId"],
 			id = (int)player.customProperties["heroCostumeId"],
 			cape = (bool)player.customProperties["cape"],
-			hairInfo = ((sEX != 0) ? CostumeHair.hairsF[(int)player.customProperties["hairInfo"]] : CostumeHair.hairsM[(int)player.customProperties["hairInfo"]]),
+			hairInfo = ((sEX != SEX.MALE) ? CostumeHair.hairsF[(int)player.customProperties["hairInfo"]] : CostumeHair.hairsM[(int)player.customProperties["hairInfo"]]),
 			eye_texture_id = (int)player.customProperties["eye_texture_id"],
 			beard_texture_id = (int)player.customProperties["beard_texture_id"],
 			glass_texture_id = (int)player.customProperties["glass_texture_id"],

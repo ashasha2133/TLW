@@ -1,8 +1,7 @@
-namespace AnimationOrTween
+namespace AnimationOrTween;
+
+public enum EnableCondition
 {
-	public enum EnableCondition
-	{
-		DoNothing,
-		EnableThenPlay
-	}
+	DoNothing,
+	EnableThenPlay
 }

@@ -1,13 +1,12 @@
-namespace Utility
+namespace Utility;
+
+public class FeedEntry
 {
-	public class FeedEntry
-	{
-		public float RoundTime { get; set; }
+	public float RoundTime { get; set; }
 
-		public int Damage { get; set; }
+	public int Damage { get; set; }
 
-		public string ChatElement { get; set; }
+	public string ChatElement { get; set; }
 
-		public int Index { get; set; }
-	}
+	public int Index { get; set; }
 }

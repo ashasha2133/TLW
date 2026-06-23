@@ -434,7 +434,7 @@ public class UIPanel : MonoBehaviour
 		{
 			return false;
 		}
-		if (mClipping != 0)
+		if (mClipping != UIDrawCall.Clipping.None)
 		{
 			UpdateTransformMatrix();
 			Vector3 vector = worldToLocal.MultiplyPoint3x4(worldPos);
@@ -646,7 +646,7 @@ public class UIPanel : MonoBehaviour
 	public void UpdateDrawcalls()
 	{
 		Vector4 vector = Vector4.zero;
-		if (mClipping != 0)
+		if (mClipping != UIDrawCall.Clipping.None)
 		{
 			vector = new Vector4(mClipRange.x, mClipRange.y, mClipRange.z * 0.5f, mClipRange.w * 0.5f);
 		}
@@ -688,7 +688,7 @@ public class UIPanel : MonoBehaviour
 		}
 		mMatrixTime = mUpdateTime;
 		worldToLocal = cachedTransform.worldToLocalMatrix;
-		if (mClipping != 0)
+		if (mClipping != UIDrawCall.Clipping.None)
 		{
 			Vector2 vector = new Vector2(mClipRange.z, mClipRange.w);
 			if (vector.x == 0f)

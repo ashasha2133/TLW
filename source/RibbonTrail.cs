@@ -180,15 +180,15 @@ public class RibbonTrail
 			}
 			Element element2 = ElementArray[num];
 			Element element3 = ElementArray[num2];
-			Vector3 from = element.Position - element2.Position;
+			Vector3 vector = element.Position - element2.Position;
 			Vector3 to = element2.Position - element3.Position;
-			float num3 = Vector3.Angle(from, to);
+			float num3 = Vector3.Angle(vector, to);
 			if (num3 > 60f)
 			{
-				Vector3 vector = (element.Position + element3.Position) / 2f - element2.Position;
+				Vector3 vector2 = (element.Position + element3.Position) / 2f - element2.Position;
 				Vector3 currentVelocity = Vector3.zero;
 				float smoothTime = 0.1f / (num3 / 60f);
-				element2.Position = Vector3.SmoothDamp(element2.Position, element2.Position + vector.normalized * element2.Width, ref currentVelocity, smoothTime);
+				element2.Position = Vector3.SmoothDamp(element2.Position, element2.Position + vector2.normalized * element2.Width, ref currentVelocity, smoothTime);
 			}
 		}
 	}

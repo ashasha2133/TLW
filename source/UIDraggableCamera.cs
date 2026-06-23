@@ -60,13 +60,13 @@ public class UIDraggableCamera : IgnoreTimeScale
 		{
 			return Vector3.zero;
 		}
-		Vector3 vector = new Vector3(mCam.rect.xMin * (float)Screen.width, mCam.rect.yMin * (float)Screen.height, 0f);
-		Vector3 vector2 = new Vector3(mCam.rect.xMax * (float)Screen.width, mCam.rect.yMax * (float)Screen.height, 0f);
-		vector = mCam.ScreenToWorldPoint(vector);
-		vector2 = mCam.ScreenToWorldPoint(vector2);
+		Vector3 position = new Vector3(mCam.rect.xMin * (float)Screen.width, mCam.rect.yMin * (float)Screen.height, 0f);
+		Vector3 position2 = new Vector3(mCam.rect.xMax * (float)Screen.width, mCam.rect.yMax * (float)Screen.height, 0f);
+		position = mCam.ScreenToWorldPoint(position);
+		position2 = mCam.ScreenToWorldPoint(position2);
 		Vector2 minRect = new Vector2(mBounds.min.x, mBounds.min.y);
 		Vector2 maxRect = new Vector2(mBounds.max.x, mBounds.max.y);
-		return NGUIMath.ConstrainRect(minRect, maxRect, vector, vector2);
+		return NGUIMath.ConstrainRect(minRect, maxRect, position, position2);
 	}
 
 	public bool ConstrainToBounds(bool immediate)

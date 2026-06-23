@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class TableElement
 {
 	public string rawContent;
@@ -23,7 +25,7 @@ public class TableElement
 		this.width = width;
 	}
 
-	public TableElement(string content, string type = "", string boxSize = "", bool hasAction = false, string rawContent = "")
+	public TableElement(string content, string type = "", string boxSize = "", bool hasAction = false, string rawContent = "", float scaleFactor = 1f)
 	{
 		this.content = content;
 		this.hasAction = hasAction;
@@ -39,33 +41,33 @@ public class TableElement
 		{
 			color = "white";
 			bold = true;
-			size = 18;
+			size = Mathf.RoundToInt(18f * scaleFactor);
 		}
 		else if (type == "cell")
 		{
 			color = "white";
 			bold = false;
-			size = 14;
+			size = Mathf.RoundToInt(14f * scaleFactor);
 		}
 		else
 		{
 			color = "white";
 			bold = false;
-			size = 12;
+			size = Mathf.RoundToInt(12f * scaleFactor);
 		}
 		switch (boxSize)
 		{
 		case "small":
-			width = 70;
+			width = Mathf.RoundToInt(70f * scaleFactor);
 			break;
 		case "medium":
-			width = 120;
+			width = Mathf.RoundToInt(120f * scaleFactor);
 			break;
 		case "large":
-			width = 180;
+			width = Mathf.RoundToInt(180f * scaleFactor);
 			break;
 		default:
-			width = 120;
+			width = Mathf.RoundToInt(120f * scaleFactor);
 			break;
 		}
 	}

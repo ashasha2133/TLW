@@ -233,7 +233,7 @@ public class UIDraggablePanel : IgnoreTimeScale
 			{
 				MoveAbsolute(vector);
 			}
-			if (restrictWithinPanel && mPanel.clipping != 0 && dragEffect != DragEffect.MomentumAndSpring)
+			if (restrictWithinPanel && mPanel.clipping != UIDrawCall.Clipping.None && dragEffect != DragEffect.MomentumAndSpring)
 			{
 				RestrictWithinBounds(instant: true);
 			}
@@ -253,7 +253,7 @@ public class UIDraggablePanel : IgnoreTimeScale
 			return;
 		}
 		float num = UpdateRealTimeDelta();
-		if (showScrollBars != 0)
+		if (showScrollBars != ShowCondition.Always)
 		{
 			bool flag = false;
 			bool flag2 = false;
@@ -289,7 +289,7 @@ public class UIDraggablePanel : IgnoreTimeScale
 				mScroll = NGUIMath.SpringLerp(mScroll, 0f, 20f, num);
 				Vector3 absolute = NGUIMath.SpringDampen(ref mMomentum, 9f, num);
 				MoveAbsolute(absolute);
-				if (restrictWithinPanel && mPanel.clipping != 0)
+				if (restrictWithinPanel && mPanel.clipping != UIDrawCall.Clipping.None)
 				{
 					RestrictWithinBounds(instant: false);
 				}
@@ -390,7 +390,7 @@ public class UIDraggablePanel : IgnoreTimeScale
 			mPlane = new Plane(mTrans.rotation * Vector3.back, mLastPos);
 			return;
 		}
-		if (restrictWithinPanel && mPanel.clipping != 0 && dragEffect == DragEffect.MomentumAndSpring)
+		if (restrictWithinPanel && mPanel.clipping != UIDrawCall.Clipping.None && dragEffect == DragEffect.MomentumAndSpring)
 		{
 			RestrictWithinBounds(instant: false);
 		}
@@ -493,12 +493,12 @@ public class UIDraggablePanel : IgnoreTimeScale
 		if (horizontalScrollBar != null)
 		{
 			horizontalScrollBar.onChange = (UIScrollBar.OnScrollBarChange)Delegate.Combine(horizontalScrollBar.onChange, new UIScrollBar.OnScrollBarChange(OnHorizontalBar));
-			horizontalScrollBar.alpha = ((showScrollBars != 0 && !shouldMoveHorizontally) ? 0f : 1f);
+			horizontalScrollBar.alpha = ((showScrollBars != ShowCondition.Always && !shouldMoveHorizontally) ? 0f : 1f);
 		}
 		if (verticalScrollBar != null)
 		{
 			verticalScrollBar.onChange = (UIScrollBar.OnScrollBarChange)Delegate.Combine(verticalScrollBar.onChange, new UIScrollBar.OnScrollBarChange(OnVerticalBar));
-			verticalScrollBar.alpha = ((showScrollBars != 0 && !shouldMoveVertically) ? 0f : 1f);
+			verticalScrollBar.alpha = ((showScrollBars != ShowCondition.Always && !shouldMoveVertically) ? 0f : 1f);
 		}
 	}
 

@@ -104,19 +104,19 @@ internal class LoadbalancingPeer : PhotonPeer
 			{
 				roomOptions = new RoomOptions();
 			}
-			Hashtable hashtable2 = (Hashtable)(dictionary[248] = new Hashtable());
-			hashtable2.MergeStringKeys(roomOptions.customRoomProperties);
-			hashtable2[(byte)253] = roomOptions.isOpen;
-			hashtable2[(byte)254] = roomOptions.isVisible;
-			hashtable2[(byte)250] = roomOptions.customRoomPropertiesForLobby;
+			Hashtable hashtable = (Hashtable)(dictionary[248] = new Hashtable());
+			hashtable.MergeStringKeys(roomOptions.customRoomProperties);
+			hashtable[(byte)253] = roomOptions.isOpen;
+			hashtable[(byte)254] = roomOptions.isVisible;
+			hashtable[(byte)250] = roomOptions.customRoomPropertiesForLobby;
 			if (roomOptions.maxPlayers > 0)
 			{
-				hashtable2[byte.MaxValue] = roomOptions.maxPlayers;
+				hashtable[byte.MaxValue] = roomOptions.maxPlayers;
 			}
 			if (roomOptions.cleanupCacheOnLeave)
 			{
 				dictionary[241] = true;
-				hashtable2[(byte)249] = true;
+				hashtable[(byte)249] = true;
 			}
 		}
 		return OpCustom(227, dictionary, sendReliable: true, 0);
@@ -176,7 +176,7 @@ internal class LoadbalancingPeer : PhotonPeer
 		{
 			dictionary[249] = playerProperties;
 		}
-		if (matchingType != 0)
+		if (matchingType != MatchmakingMode.FillRoom)
 		{
 			dictionary[223] = (byte)matchingType;
 		}
@@ -221,19 +221,19 @@ internal class LoadbalancingPeer : PhotonPeer
 				{
 					roomOptions = new RoomOptions();
 				}
-				Hashtable hashtable2 = (Hashtable)(dictionary[248] = new Hashtable());
-				hashtable2.MergeStringKeys(roomOptions.customRoomProperties);
-				hashtable2[(byte)253] = roomOptions.isOpen;
-				hashtable2[(byte)254] = roomOptions.isVisible;
-				hashtable2[(byte)250] = roomOptions.customRoomPropertiesForLobby;
+				Hashtable hashtable = (Hashtable)(dictionary[248] = new Hashtable());
+				hashtable.MergeStringKeys(roomOptions.customRoomProperties);
+				hashtable[(byte)253] = roomOptions.isOpen;
+				hashtable[(byte)254] = roomOptions.isVisible;
+				hashtable[(byte)250] = roomOptions.customRoomPropertiesForLobby;
 				if (roomOptions.maxPlayers > 0)
 				{
-					hashtable2[byte.MaxValue] = roomOptions.maxPlayers;
+					hashtable[byte.MaxValue] = roomOptions.maxPlayers;
 				}
 				if (roomOptions.cleanupCacheOnLeave)
 				{
 					dictionary[241] = true;
-					hashtable2[(byte)249] = true;
+					hashtable[(byte)249] = true;
 				}
 			}
 		}
@@ -263,11 +263,11 @@ internal class LoadbalancingPeer : PhotonPeer
 		}
 		else
 		{
-			if (raiseEventOptions.CachingOption != 0)
+			if (raiseEventOptions.CachingOption != EventCaching.DoNotCache)
 			{
 				dictionary[247] = (byte)raiseEventOptions.CachingOption;
 			}
-			if (raiseEventOptions.Receivers != 0)
+			if (raiseEventOptions.Receivers != ReceiverGroup.Others)
 			{
 				dictionary[246] = (byte)raiseEventOptions.Receivers;
 			}

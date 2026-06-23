@@ -369,46 +369,50 @@ public static class NGUITools
 		return 0;
 	}
 
-	//public static AudioSource PlaySound(AudioClip clip)
-	//{
-	//	return PlaySound(clip, 1f, 1f);
-	//}
+	public static AudioSource PlaySound(AudioClip clip)
+	{
+		return PlaySound(clip, 1f, 1f);
+	}
 
-	//public static AudioSource PlaySound(AudioClip clip, float volume, float pitch)
-	//{
-	//	volume *= soundVolume;
-	//	if (clip != null && volume > 0.01f)
-	//	{
-	//		if (mListener == null)
-	//		{
-	//			mListener = Object.FindObjectOfType(typeof(AudioListener)) as AudioListener;
-	//			if (mListener == null)
-	//			{
-	//				Camera camera = Camera.main;
-	//				if (camera == null)
-	//				{
-	//					camera = Object.FindObjectOfType(typeof(Camera)) as Camera;
-	//				}
-	//				if (camera != null)
-	//				{
-	//					mListener = camera.gameObject.AddComponent<AudioListener>();
-	//				}
-	//			}
-	//		}
-	//		if (mListener != null && mListener.enabled && GetActive(mListener.gameObject))
-	//		{
-	//			AudioSource audioSource = mListener.audio;
-	//			if (audioSource == null)
-	//			{
-	//				audioSource = mListener.gameObject.AddComponent<AudioSource>();
-	//			}
-	//			audioSource.pitch = pitch;
-	//			//audioSource.PlayOneShot(clip, volume);
-	//			return audioSource;
-	//		}
-	//	}
-	//	return null;
-	//}
+	public static AudioSource PlaySound(AudioClip clip, float volume, float pitch)
+	{
+		if (AudioListener.volume <= 0f || FengGameManagerMKII.InterfaceVolume <= 0f)
+		{
+			return null;
+		}
+		volume *= soundVolume * FengGameManagerMKII.InterfaceVolume;
+		if (clip != null && volume > 0.01f)
+		{
+			if (mListener == null)
+			{
+				mListener = Object.FindObjectOfType(typeof(AudioListener)) as AudioListener;
+				if (mListener == null)
+				{
+					Camera camera = Camera.main;
+					if (camera == null)
+					{
+						camera = Object.FindObjectOfType(typeof(Camera)) as Camera;
+					}
+					if (camera != null)
+					{
+						mListener = camera.gameObject.AddComponent<AudioListener>();
+					}
+				}
+			}
+			if (mListener != null && mListener.enabled && GetActive(mListener.gameObject))
+			{
+				AudioSource audioSource = mListener.audio;
+				if (audioSource == null)
+				{
+					audioSource = mListener.gameObject.AddComponent<AudioSource>();
+				}
+				audioSource.pitch = pitch;
+				audioSource.PlayOneShot(clip, volume);
+				return audioSource;
+			}
+		}
+		return null;
+	}
 
 	public static int RandomRange(int min, int max)
 	{

@@ -88,26 +88,16 @@ public class UIMainReferences : MonoBehaviour
 		}
 	}
 
-    private void Awake()
-    {
-        UIRefer = this;
-        if (isGAMEFirstLaunch)
-        {
-            if (Fullscreen)
-            {
-                Resolution res = Screen.currentResolution;
-                Screen.SetResolution(res.width, res.height, false);
-                Screen.fullScreen = false;
-                BorderlessHelper.MakeBorderlessFullscreen();
-            }
-            else
-            {
-                Screen.SetResolution(Width, Height, false);
-            }
-        }
-    }
+	private void Awake()
+	{
+		UIRefer = this;
+		if (isGAMEFirstLaunch)
+		{
+			Screen.SetResolution(Width, Height, Fullscreen);
+		}
+	}
 
-    private void Destroy()
+	private void Destroy()
 	{
 		UIRefer = null;
 	}

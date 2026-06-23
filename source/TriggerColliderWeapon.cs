@@ -10,7 +10,7 @@ public class TriggerColliderWeapon : MonoBehaviour
 
 	public ArrayList currentHitsII = new ArrayList();
 
-	//public AudioSource meatDie;
+	public AudioSource meatDie;
 
 	public int myTeam = 1;
 
@@ -22,7 +22,7 @@ public class TriggerColliderWeapon : MonoBehaviour
 
 	private Transform baseT;
 
-	public static PhotonView basePV;
+	private PhotonView basePV;
 
 	private IN_GAME_MAIN_CAMERA mainCamera;
 
@@ -80,8 +80,11 @@ public class TriggerColliderWeapon : MonoBehaviour
 			mainCamera.startShake(0.1f, 0.1f);
 			if (transform.root.gameObject.CompareTag("titan"))
 			{
-				//hero.slashHit.Play();
-				if (IN_GAME_MAIN_CAMERA.gametype != 0)
+				if (AudioListener.volume > 0f)
+				{
+					hero.slashHit.Play();
+				}
+				if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE)
 				{
 					PhotonNetwork.Instantiate("hitMeat", baseT.position, Quaternion.Euler(270f, 0f, 0f), 0, null);
 				}
@@ -153,7 +156,10 @@ public class TriggerColliderWeapon : MonoBehaviour
 			}
 			component.hitPosition = (baseT.position + transform2.position) * 0.5f;
 			currentHits.Add(component);
-			//meatDie.Play();
+			if (AudioListener.volume > 0f)
+			{
+				meatDie.Play();
+			}
 			MONO component2 = root.GetComponent<MONO>();
 			switch (component2.species)
 			{

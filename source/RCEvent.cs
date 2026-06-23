@@ -70,6 +70,7 @@ public class RCEvent
 			switch (eventType)
 			{
 			case 0:
+			{
 				foreach (TITAN titan in FengGameManagerMKII.titans)
 				{
 					if (FengGameManagerMKII.titanVariables.ContainsKey(foreachVariableName))
@@ -86,6 +87,7 @@ public class RCEvent
 					}
 				}
 				break;
+			}
 			case 1:
 			{
 				PhotonPlayer[] playerList = PhotonNetwork.playerList;

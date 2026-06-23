@@ -281,10 +281,10 @@ public class UIDrawCall : MonoBehaviour
 
 	private void UpdateMaterials()
 	{
-		if (mClipping != 0)
+		if (mClipping != Clipping.None)
 		{
 			Shader shader = null;
-			if (mClipping != 0)
+			if (mClipping != Clipping.None)
 			{
 				string text = mSharedMat.shader.name.Replace(" (AlphaClip)", string.Empty).Replace(" (SoftClip)", string.Empty);
 				if (mClipping == Clipping.HardClip || mClipping == Clipping.AlphaClip)

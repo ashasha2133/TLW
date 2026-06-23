@@ -120,7 +120,7 @@ public class UIDragObject : IgnoreTimeScale
 			vector.Scale(scale);
 			vector = target.TransformDirection(vector);
 		}
-		if (dragEffect != 0)
+		if (dragEffect != DragEffect.None)
 		{
 			mMomentum = Vector3.Lerp(mMomentum, mMomentum + vector * (0.01f * momentumAmount), 0.67f);
 		}
@@ -129,7 +129,7 @@ public class UIDragObject : IgnoreTimeScale
 			Vector3 localPosition = target.localPosition;
 			target.position += vector;
 			mBounds.center += target.localPosition - localPosition;
-			if (dragEffect != DragEffect.MomentumAndSpring && mPanel.clipping != 0 && mPanel.ConstrainTargetToBounds(target, ref mBounds, immediate: true))
+			if (dragEffect != DragEffect.MomentumAndSpring && mPanel.clipping != UIDrawCall.Clipping.None && mPanel.ConstrainTargetToBounds(target, ref mBounds, immediate: true))
 			{
 				mMomentum = Vector3.zero;
 				mScroll = 0f;
@@ -169,7 +169,7 @@ public class UIDragObject : IgnoreTimeScale
 			Transform transform = UICamera.currentCamera.transform;
 			mPlane = new Plane(((mPanel == null) ? transform.rotation : mPanel.cachedTransform.rotation) * Vector3.back, mLastPos);
 		}
-		else if (restrictWithinPanel && mPanel.clipping != 0 && dragEffect == DragEffect.MomentumAndSpring)
+		else if (restrictWithinPanel && mPanel.clipping != UIDrawCall.Clipping.None && dragEffect == DragEffect.MomentumAndSpring)
 		{
 			mPanel.ConstrainTargetToBounds(target, ref mBounds, immediate: false);
 		}

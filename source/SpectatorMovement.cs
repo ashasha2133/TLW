@@ -16,11 +16,7 @@ public class SpectatorMovement : MonoBehaviour
 
 	private void Update()
 	{
-		if (inputManager.isInput[InputCode.restart])
-		{
-            FengGameManagerMKII.justSuicide = true;
-        }
-        if (!disable)
+		if (!disable)
 		{
 			float num = speed;
 			if (inputManager.isInput[InputCode.jump])

@@ -48,7 +48,8 @@ public class ByteReader
 				if (array.Length == 2)
 				{
 					string key = array[0].Trim();
-					string text3 = (dictionary[key] = array[1].Trim().Replace("\\n", "\n"));
+					string value = array[1].Trim().Replace("\\n", "\n");
+					dictionary[key] = value;
 				}
 			}
 		}

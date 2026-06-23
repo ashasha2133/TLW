@@ -1,70 +1,69 @@
 using BRM;
 using UnityEngine;
 
-namespace Photon
+namespace Photon;
+
+public class MonoBehaviour : UnityEngine.MonoBehaviour
 {
-	public class MonoBehaviour : UnityEngine.MonoBehaviour
+	internal Pool pool;
+
+	internal Pool homePool;
+
+	internal bool isBackground;
+
+	private PhotonView view;
+
+	public new PhotonView networkView => PhotonView.Get(this);
+
+	public PhotonView photonView
 	{
-		internal Pool pool;
-
-		internal Pool homePool;
-
-		internal bool isBackground;
-
-		private PhotonView view;
-
-		public new PhotonView networkView => PhotonView.Get(this);
-
-		public PhotonView photonView
+		get
 		{
-			get
+			if (view != null)
 			{
-				if (view != null)
-				{
-					return view;
-				}
-				return view = GetComponent<PhotonView>();
+				return view;
 			}
+			return view = GetComponent<PhotonView>();
 		}
+	}
 
-		public bool isLocal
+	public bool isLocal
+	{
+		get
 		{
-			get
+			if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE)
 			{
-				if (IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE)
-				{
-					return true;
-				}
-				PhotonView photonView = this.photonView;
-				if (photonView != null)
-				{
-					return photonView.isMine;
-				}
-				return false;
+				return true;
 			}
+			PhotonView photonView = this.photonView;
+			if (photonView != null)
+			{
+				return photonView.isMine;
+			}
+			return false;
 		}
+	}
 
-		private void Awake()
+	private void Awake()
+	{
+		if (this is PhotonView)
 		{
-			if (this is PhotonView)
-			{
-				if ((bool)(view = (PhotonView)this) && !isBackground)
-				{
-					isBackground = view.isSceneView;
-				}
-			}
-			else if ((bool)(view = GetComponent<PhotonView>()) && !isBackground)
+			if ((bool)(view = (PhotonView)this) && !isBackground)
 			{
 				isBackground = view.isSceneView;
 			}
 		}
-
-		private void OnDestroy()
+		else if ((bool)(view = GetComponent<PhotonView>()) && !isBackground)
 		{
-			if (pool != null)
-			{
-				pool.Clear();
-			}
+			isBackground = view.isSceneView;
+		}
+	}
+
+	private void OnDestroy()
+	{
+		if (pool != null)
+		{
+			pool.Clear();
 		}
 	}
 }

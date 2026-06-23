@@ -22,10 +22,10 @@ public class OnJoinedInstantiate : MonoBehaviour
 			{
 				vector = SpawnPosition.position;
 			}
-			Vector3 vector2 = Random.insideUnitSphere;
-			vector2.y = 0f;
-			vector2 = vector2.normalized;
-			PhotonNetwork.Instantiate(position: vector + PositionOffset * vector2, prefabName: obj.name, rotation: Quaternion.identity, group: 0);
+			Vector3 insideUnitSphere = Random.insideUnitSphere;
+			insideUnitSphere.y = 0f;
+			insideUnitSphere = insideUnitSphere.normalized;
+			PhotonNetwork.Instantiate(position: vector + PositionOffset * insideUnitSphere, prefabName: obj.name, rotation: Quaternion.identity, group: 0);
 		}
 	}
 }

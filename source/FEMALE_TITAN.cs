@@ -717,7 +717,7 @@ public class FEMALE_TITAN : MONO
 
 	private void FixedUpdate()
 	{
-		if ((IN_GAME_MAIN_CAMERA.isPausing && IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE) || (IN_GAME_MAIN_CAMERA.gametype != 0 && !base.photonView.isMine))
+		if ((IN_GAME_MAIN_CAMERA.isPausing && IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE) || (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !base.photonView.isMine))
 		{
 			return;
 		}
@@ -1165,19 +1165,25 @@ public class FEMALE_TITAN : MONO
 			if (base.animation["run"].normalizedTime % 1f > 0.1f && base.animation["run"].normalizedTime % 1f < 0.6f && stepSoundPhase == 2)
 			{
 				stepSoundPhase = 1;
-				Transform obj = base.transform.Find("snd_titan_foot");
-				//obj.GetComponent<AudioSource>().Stop();
-				//obj.GetComponent<AudioSource>().Play();
+				Transform transform = base.transform.Find("snd_titan_foot");
+				transform.GetComponent<AudioSource>().Stop();
+				if (AudioListener.volume > 0f)
+				{
+					transform.GetComponent<AudioSource>().Play();
+				}
 			}
 			if (base.animation["run"].normalizedTime % 1f > 0.6f && stepSoundPhase == 1)
 			{
 				stepSoundPhase = 2;
-				Transform obj2 = base.transform.Find("snd_titan_foot");
-				//obj2.GetComponent<AudioSource>().Stop();
-				//obj2.GetComponent<AudioSource>().Play();
+				Transform transform2 = base.transform.Find("snd_titan_foot");
+				transform2.GetComponent<AudioSource>().Stop();
+				if (AudioListener.volume > 0f)
+				{
+					transform2.GetComponent<AudioSource>().Play();
+				}
 			}
 		}
-		if (IN_GAME_MAIN_CAMERA.gametype != 0)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE)
 		{
 			_ = base.photonView.isMine;
 		}
@@ -1194,16 +1200,22 @@ public class FEMALE_TITAN : MONO
 			if (base.animation["run"].normalizedTime % 1f > 0.1f && base.animation["run"].normalizedTime % 1f < 0.6f && stepSoundPhase == 2)
 			{
 				stepSoundPhase = 1;
-				Transform obj = base.transform.Find("snd_titan_foot");
-				//obj.GetComponent<AudioSource>().Stop();
-				//obj.GetComponent<AudioSource>().Play();
+				Transform transform = base.transform.Find("snd_titan_foot");
+				transform.GetComponent<AudioSource>().Stop();
+				if (AudioListener.volume > 0f)
+				{
+					transform.GetComponent<AudioSource>().Play();
+				}
 			}
 			if (base.animation["run"].normalizedTime % 1f > 0.6f && stepSoundPhase == 1)
 			{
 				stepSoundPhase = 2;
-				Transform obj2 = base.transform.Find("snd_titan_foot");
-				//obj2.GetComponent<AudioSource>().Stop();
-				//obj2.GetComponent<AudioSource>().Play();
+				Transform transform2 = base.transform.Find("snd_titan_foot");
+				transform2.GetComponent<AudioSource>().Stop();
+				if (AudioListener.volume > 0f)
+				{
+					transform2.GetComponent<AudioSource>().Play();
+				}
 			}
 		}
 		updateLabel();
@@ -1231,7 +1243,7 @@ public class FEMALE_TITAN : MONO
 			mipmap = false;
 		}
 		Renderer[] componentsInChildren = GetComponentsInChildren<Renderer>();
-		foreach (Renderer iteratorVariable2 in componentsInChildren)
+		foreach (Renderer iteratorVariable4 in componentsInChildren)
 		{
 			if (!RCextensions.CheckIP(url))
 			{
@@ -1246,18 +1258,18 @@ public class FEMALE_TITAN : MONO
 				if (!FengGameManagerMKII.linkHash[2].ContainsKey(url))
 				{
 					iteratorVariable1 = true;
-					iteratorVariable2.material.mainTexture = mainTexture;
-					FengGameManagerMKII.linkHash[2].Add(url, iteratorVariable2.material);
-					iteratorVariable2.material = (Material)FengGameManagerMKII.linkHash[2][url];
+					iteratorVariable4.material.mainTexture = mainTexture;
+					FengGameManagerMKII.linkHash[2].Add(url, iteratorVariable4.material);
+					iteratorVariable4.material = (Material)FengGameManagerMKII.linkHash[2][url];
 				}
 				else
 				{
-					iteratorVariable2.material = (Material)FengGameManagerMKII.linkHash[2][url];
+					iteratorVariable4.material = (Material)FengGameManagerMKII.linkHash[2][url];
 				}
 			}
 			else
 			{
-				iteratorVariable2.material = (Material)FengGameManagerMKII.linkHash[2][url];
+				iteratorVariable4.material = (Material)FengGameManagerMKII.linkHash[2][url];
 			}
 		}
 		if (iteratorVariable1)
@@ -1335,18 +1347,21 @@ public class FEMALE_TITAN : MONO
 
 	private void playSound(string sndname)
 	{
-		//playsoundRPC(sndname);
+		playsoundRPC(sndname);
 		if (Network.peerType == NetworkPeerType.Server)
 		{
 			object[] parameters = new object[1] { sndname };
-			//base.photonView.RPC("playsoundRPC", PhotonTargets.Others, parameters);
+			base.photonView.RPC("playsoundRPC", PhotonTargets.Others, parameters);
 		}
 	}
 
 	[RPC]
 	private void playsoundRPC(string sndname)
 	{
-		//base.transform.Find(sndname).GetComponent<AudioSource>().Play();
+		if (AudioListener.volume > 0f)
+		{
+			base.transform.Find(sndname).GetComponent<AudioSource>().Play();
+		}
 	}
 
 	[RPC]
@@ -1522,7 +1537,7 @@ public class FEMALE_TITAN : MONO
 
 	public void update()
 	{
-		if ((IN_GAME_MAIN_CAMERA.isPausing && IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE) || (IN_GAME_MAIN_CAMERA.gametype != 0 && !base.photonView.isMine))
+		if ((IN_GAME_MAIN_CAMERA.isPausing && IN_GAME_MAIN_CAMERA.gametype == GAMETYPE.SINGLE) || (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !base.photonView.isMine))
 		{
 			return;
 		}
@@ -1669,7 +1684,7 @@ public class FEMALE_TITAN : MONO
 				if (!attackChkOnce)
 				{
 					attackChkOnce = true;
-					//playSound("snd_eren_swing" + UnityEngine.Random.Range(1, 3));
+					playSound("snd_eren_swing" + UnityEngine.Random.Range(1, 3));
 				}
 				RaycastHit[] array2 = checkHitCapsule(checkHitCapsuleStart.position, checkHitCapsuleEnd.position, checkHitCapsuleR);
 				foreach (RaycastHit raycastHit in array2)

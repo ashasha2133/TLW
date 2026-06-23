@@ -70,7 +70,7 @@ public class UIPopupList : MonoBehaviour
 
 	public float textScale = 1f;
 
-	//private AudioSource Clicking;
+	private AudioSource Clicking;
 
 	private bool handleEvents
 	{
@@ -130,17 +130,17 @@ public class UIPopupList : MonoBehaviour
 
 	private void Update()
 	{
-		if (Input.GetMouseButtonDown(0) && GameSettings.Clicking > 0)
+		if (Input.GetMouseButtonDown(0) && GameSettings.Clicking > 0 && AudioListener.volume > 0f && FengGameManagerMKII.InterfaceVolume > 0f)
 		{
-			//Clicking.Play();
+			Clicking.Play();
 		}
 	}
 
 	private void Start()
 	{
-		//Clicking = Camera.main.gameObject.AddComponent<AudioSource>();
-		//Clicking.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("click");
-		//Clicking.volume = FengGameManagerMKII.InterfaceVolume;
+		Clicking = Camera.main.gameObject.AddComponent<AudioSource>();
+		Clicking.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("click");
+		Clicking.volume = FengGameManagerMKII.InterfaceVolume;
 		if (!(textLabel != null))
 		{
 			return;
@@ -442,7 +442,7 @@ public class UIPopupList : MonoBehaviour
 			UIButtonSound uIButtonSound = components[i];
 			if (uIButtonSound.trigger == UIButtonSound.Trigger.OnClick)
 			{
-				//NGUITools.PlaySound(uIButtonSound.audioClip, uIButtonSound.volume, 1f);
+				NGUITools.PlaySound(uIButtonSound.audioClip, uIButtonSound.volume, 1f);
 			}
 		}
 	}

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BTN_Enter_PWD : MonoBehaviour
 {
-	//private AudioSource room_slide;
+	private AudioSource room_slide;
 
 	private Texture2D textureBackgroundBlack;
 
@@ -21,9 +21,12 @@ public class BTN_Enter_PWD : MonoBehaviour
 
 	private void Start()
 	{
-		//room_slide = Camera.main.gameObject.AddComponent<AudioSource>();
-		//room_slide.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("room_slide");
-		//room_slide.volume = FengGameManagerMKII.InterfaceVolume;
+		if (AudioListener.volume > 0f && FengGameManagerMKII.InterfaceVolume > 0f)
+		{
+			room_slide = Camera.main.gameObject.AddComponent<AudioSource>();
+			room_slide.clip = (AudioClip)FengGameManagerMKII.someBundle.Load("room_slide");
+			room_slide.volume = FengGameManagerMKII.InterfaceVolume;
+		}
 		if (textureBackgroundBlack == null)
 		{
 			textureBackgroundBlack = new Texture2D(1, 1, TextureFormat.ARGB32, mipmap: false);
@@ -36,10 +39,10 @@ public class BTN_Enter_PWD : MonoBehaviour
 	private IEnumerator Giffy()
 	{
 		numbers[0] = true;
-		//if (!room_slide.isPlaying)
-		//{
-		//	//room_slide.Play();
-		//}
+		if (!room_slide.isPlaying && AudioListener.volume > 0f && FengGameManagerMKII.InterfaceVolume > 0f)
+		{
+			room_slide.Play();
+		}
 		yield return new WaitForSeconds(0.1f);
 		numbers[1] = true;
 		yield return new WaitForSeconds(0.1f);
@@ -65,7 +68,7 @@ public class BTN_Enter_PWD : MonoBehaviour
 			if (numbers[2] && GUI.Button(GUIHelpers.AlignRect(400f, 20f, GUIHelpers.Alignment.CENTER, 0f, 20f), "<color=lime><b>Join</b></color>" + (failedJoin ? " <color=red>(wrong pass)</color>" : "")))
 			{
 				SimpleAES simpleAES = new SimpleAES();
-				if (text == simpleAES.Decrypt(PanelMultiJoinPWD.Password) || true)
+				if (text == simpleAES.Decrypt(PanelMultiJoinPWD.Password))
 				{
 					PhotonNetwork.JoinRoom(PanelMultiJoinPWD.roomName);
 				}

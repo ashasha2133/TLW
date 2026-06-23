@@ -105,7 +105,7 @@ public class UIButtonPlayAnimation : MonoBehaviour
 			UICamera.selectedObject = null;
 		}
 		int num = 0 - playDirection;
-		Direction direction = (Direction)((!forward) ? num : ((int)playDirection));
+		Direction direction = ((!forward) ? ((Direction)num) : playDirection);
 		ActiveAnimation activeAnimation = ActiveAnimation.Play(target, clipName, direction, ifDisabledOnPlay, disableWhenFinished);
 		if (activeAnimation != null)
 		{

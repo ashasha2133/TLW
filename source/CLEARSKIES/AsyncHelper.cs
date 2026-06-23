@@ -1,39 +1,38 @@
 using System;
 using System.Threading;
 
-namespace CLEARSKIES
+namespace CLEARSKIES;
+
+public static class AsyncHelper
 {
-	public static class AsyncHelper
+	public static void BeginInBackground(Action method)
 	{
-		public static void BeginInBackground(Action method)
+		Execute(delegate
 		{
-			Execute(delegate
-			{
-				method();
-			});
-		}
+			method();
+		});
+	}
 
-		public static void BeginInBackground<T>(Action<T> method, T val)
+	public static void BeginInBackground<T>(Action<T> method, T val)
+	{
+		Execute(delegate
 		{
-			Execute(delegate
-			{
-				method(val);
-			});
-		}
+			method(val);
+		});
+	}
 
-		public static void BeginInBackground<T, T2>(Action<T, T2> method, T val, T2 val2)
+	public static void BeginInBackground<T, T2>(Action<T, T2> method, T val, T2 val2)
+	{
+		Execute(delegate
 		{
-			Execute(delegate
-			{
-				method(val, val2);
-			});
-		}
+			method(val, val2);
+		});
+	}
 
-		private static void Execute(Action method)
-		{
-			Thread thread = new Thread(method.Invoke);
-			thread.IsBackground = true;
-			thread.Start();
-		}
+	private static void Execute(Action method)
+	{
+		Thread thread = new Thread(method.Invoke);
+		thread.IsBackground = true;
+		thread.Start();
 	}
 }

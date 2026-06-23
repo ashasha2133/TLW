@@ -48,8 +48,7 @@ public class StyledItemButtonImageText : StyledItem
 			}
 			return;
 		}
-		Data data = o as Data;
-		if (data == null)
+		if (!(o is Data data))
 		{
 			if (textCtrl != null)
 			{

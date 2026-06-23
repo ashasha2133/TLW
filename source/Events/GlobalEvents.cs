@@ -1,14 +1,13 @@
-namespace Events
+namespace Events;
+
+public static class GlobalEvents
 {
-	public static class GlobalEvents
+	public delegate void OnGameStateResetHandler();
+
+	public static event OnGameStateResetHandler OnGameStateReset;
+
+	public static void DispatchOnGameStateReset()
 	{
-		public delegate void OnGameStateResetHandler();
-
-		public static event OnGameStateResetHandler OnGameStateReset;
-
-		public static void DispatchOnGameStateReset()
-		{
-			GlobalEvents.OnGameStateReset?.Invoke();
-		}
+		GlobalEvents.OnGameStateReset?.Invoke();
 	}
 }

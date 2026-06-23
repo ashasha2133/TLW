@@ -75,8 +75,7 @@ public class RoomInfo
 
 	public override bool Equals(object p)
 	{
-		Room room = p as Room;
-		if (room != null)
+		if (p is Room room)
 		{
 			return nameField.Equals(room.nameField);
 		}

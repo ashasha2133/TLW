@@ -174,7 +174,7 @@ public class RockThrow : Photon.MonoBehaviour
 		baseT.Rotate(r);
 		v -= 20f * Vector3.up * Time.deltaTime;
 		baseT.position += v * Time.deltaTime;
-		if (IN_GAME_MAIN_CAMERA.gametype != 0 && !basePV.isMine)
+		if (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE && !basePV.isMine)
 		{
 			return;
 		}

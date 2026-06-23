@@ -79,6 +79,8 @@ public class RCAction
 
 	private RCActionHelper[] parameters;
 
+	private static readonly Hashtable _reusableActionProps = new Hashtable();
+
 	public RCAction(int category, int type, RCEvent next, RCActionHelper[] helpers)
 	{
 		actionClass = category;
@@ -92,6 +94,20 @@ public class RCAction
 		InRoomChat.ChatInstanse.addLINE(str);
 	}
 
+	private void SetPlayerProperty(PhotonPlayer player, string key, object value)
+	{
+		try
+		{
+			_reusableActionProps.Clear();
+			_reusableActionProps.Add(key, value);
+			player.SetCustomProperties(_reusableActionProps);
+		}
+		finally
+		{
+			_reusableActionProps.Clear();
+		}
+	}
+
 	public void doAction()
 	{
 		switch (actionClass)
@@ -102,17 +118,17 @@ public class RCAction
 		case 1:
 		{
 			string text4 = parameters[0].returnString(null);
-			int num3 = parameters[1].returnInt(null);
+			int num2 = parameters[1].returnInt(null);
 			switch (actionType)
 			{
 			case 0:
 				if (!FengGameManagerMKII.intVariables.ContainsKey(text4))
 				{
-					FengGameManagerMKII.intVariables.Add(text4, num3);
+					FengGameManagerMKII.intVariables.Add(text4, num2);
 				}
 				else
 				{
-					FengGameManagerMKII.intVariables[text4] = num3;
+					FengGameManagerMKII.intVariables[text4] = num2;
 				}
 				break;
 			case 1:
@@ -122,7 +138,7 @@ public class RCAction
 				}
 				else
 				{
-					FengGameManagerMKII.intVariables[text4] = (int)FengGameManagerMKII.intVariables[text4] + num3;
+					FengGameManagerMKII.intVariables[text4] = (int)FengGameManagerMKII.intVariables[text4] + num2;
 				}
 				break;
 			case 2:
@@ -132,7 +148,7 @@ public class RCAction
 				}
 				else
 				{
-					FengGameManagerMKII.intVariables[text4] = (int)FengGameManagerMKII.intVariables[text4] - num3;
+					FengGameManagerMKII.intVariables[text4] = (int)FengGameManagerMKII.intVariables[text4] - num2;
 				}
 				break;
 			case 3:
@@ -142,7 +158,7 @@ public class RCAction
 				}
 				else
 				{
-					FengGameManagerMKII.intVariables[text4] = (int)FengGameManagerMKII.intVariables[text4] * num3;
+					FengGameManagerMKII.intVariables[text4] = (int)FengGameManagerMKII.intVariables[text4] * num2;
 				}
 				break;
 			case 4:
@@ -152,7 +168,7 @@ public class RCAction
 				}
 				else
 				{
-					FengGameManagerMKII.intVariables[text4] = (int)FengGameManagerMKII.intVariables[text4] / num3;
+					FengGameManagerMKII.intVariables[text4] = (int)FengGameManagerMKII.intVariables[text4] / num2;
 				}
 				break;
 			case 5:
@@ -162,7 +178,7 @@ public class RCAction
 				}
 				else
 				{
-					FengGameManagerMKII.intVariables[text4] = (int)FengGameManagerMKII.intVariables[text4] % num3;
+					FengGameManagerMKII.intVariables[text4] = (int)FengGameManagerMKII.intVariables[text4] % num2;
 				}
 				break;
 			case 6:
@@ -172,17 +188,17 @@ public class RCAction
 				}
 				else
 				{
-					FengGameManagerMKII.intVariables[text4] = (int)Math.Pow((int)FengGameManagerMKII.intVariables[text4], num3);
+					FengGameManagerMKII.intVariables[text4] = (int)Math.Pow((int)FengGameManagerMKII.intVariables[text4], num2);
 				}
 				break;
 			case 12:
 				if (!FengGameManagerMKII.intVariables.ContainsKey(text4))
 				{
-					FengGameManagerMKII.intVariables.Add(text4, UnityEngine.Random.Range(num3, parameters[2].returnInt(null)));
+					FengGameManagerMKII.intVariables.Add(text4, UnityEngine.Random.Range(num2, parameters[2].returnInt(null)));
 				}
 				else
 				{
-					FengGameManagerMKII.intVariables[text4] = UnityEngine.Random.Range(num3, parameters[2].returnInt(null));
+					FengGameManagerMKII.intVariables[text4] = UnityEngine.Random.Range(num2, parameters[2].returnInt(null));
 				}
 				break;
 			case 7:
@@ -298,17 +314,17 @@ public class RCAction
 		case 4:
 		{
 			string key2 = parameters[0].returnString(null);
-			float num2 = parameters[1].returnFloat(null);
+			float num = parameters[1].returnFloat(null);
 			switch (actionType)
 			{
 			case 0:
 				if (!FengGameManagerMKII.floatVariables.ContainsKey(key2))
 				{
-					FengGameManagerMKII.floatVariables.Add(key2, num2);
+					FengGameManagerMKII.floatVariables.Add(key2, num);
 				}
 				else
 				{
-					FengGameManagerMKII.floatVariables[key2] = num2;
+					FengGameManagerMKII.floatVariables[key2] = num;
 				}
 				break;
 			case 1:
@@ -318,7 +334,7 @@ public class RCAction
 				}
 				else
 				{
-					FengGameManagerMKII.floatVariables[key2] = (float)FengGameManagerMKII.floatVariables[key2] + num2;
+					FengGameManagerMKII.floatVariables[key2] = (float)FengGameManagerMKII.floatVariables[key2] + num;
 				}
 				break;
 			case 2:
@@ -328,7 +344,7 @@ public class RCAction
 				}
 				else
 				{
-					FengGameManagerMKII.floatVariables[key2] = (float)FengGameManagerMKII.floatVariables[key2] - num2;
+					FengGameManagerMKII.floatVariables[key2] = (float)FengGameManagerMKII.floatVariables[key2] - num;
 				}
 				break;
 			case 3:
@@ -338,7 +354,7 @@ public class RCAction
 				}
 				else
 				{
-					FengGameManagerMKII.floatVariables[key2] = (float)FengGameManagerMKII.floatVariables[key2] * num2;
+					FengGameManagerMKII.floatVariables[key2] = (float)FengGameManagerMKII.floatVariables[key2] * num;
 				}
 				break;
 			case 4:
@@ -348,7 +364,7 @@ public class RCAction
 				}
 				else
 				{
-					FengGameManagerMKII.floatVariables[key2] = (float)FengGameManagerMKII.floatVariables[key2] / num2;
+					FengGameManagerMKII.floatVariables[key2] = (float)FengGameManagerMKII.floatVariables[key2] / num;
 				}
 				break;
 			case 5:
@@ -358,7 +374,7 @@ public class RCAction
 				}
 				else
 				{
-					FengGameManagerMKII.floatVariables[key2] = (float)FengGameManagerMKII.floatVariables[key2] % num2;
+					FengGameManagerMKII.floatVariables[key2] = (float)FengGameManagerMKII.floatVariables[key2] % num;
 				}
 				break;
 			case 6:
@@ -368,17 +384,17 @@ public class RCAction
 				}
 				else
 				{
-					FengGameManagerMKII.floatVariables[key2] = (float)Math.Pow((int)FengGameManagerMKII.floatVariables[key2], num2);
+					FengGameManagerMKII.floatVariables[key2] = (float)Math.Pow((int)FengGameManagerMKII.floatVariables[key2], num);
 				}
 				break;
 			case 12:
 				if (!FengGameManagerMKII.floatVariables.ContainsKey(key2))
 				{
-					FengGameManagerMKII.floatVariables.Add(key2, UnityEngine.Random.Range(num2, parameters[2].returnFloat(null)));
+					FengGameManagerMKII.floatVariables.Add(key2, UnityEngine.Random.Range(num, parameters[2].returnFloat(null)));
 				}
 				else
 				{
-					FengGameManagerMKII.floatVariables[key2] = UnityEngine.Random.Range(num2, parameters[2].returnFloat(null));
+					FengGameManagerMKII.floatVariables[key2] = UnityEngine.Random.Range(num, parameters[2].returnFloat(null));
 				}
 				break;
 			case 7:
@@ -436,7 +452,7 @@ public class RCAction
 				{
 					HERO obj = (HERO)FengGameManagerMKII.heroHash[iD2];
 					obj.markDie();
-					obj.photonView.RPC("netDie2", PhotonTargets.All, -1, parameters[1].returnString(null) + " ");
+					obj.photonView.RPC("netDie2", PhotonTargets.All, -1, parameters[1].returnString(null) + " ", Vector3.zero);
 				}
 				else
 				{
@@ -464,82 +480,38 @@ public class RCAction
 				break;
 			}
 			case 4:
-			{
-				Hashtable hashtable11 = new Hashtable();
-				hashtable11.Add("kills", parameters[1].returnInt(null));
-				photonPlayer.SetCustomProperties(hashtable11);
+				SetPlayerProperty(photonPlayer, "kills", parameters[1].returnInt(null));
 				break;
-			}
 			case 5:
-			{
-				Hashtable hashtable10 = new Hashtable();
-				hashtable10.Add("deaths", parameters[1].returnInt(null));
-				photonPlayer.SetCustomProperties(hashtable10);
+				SetPlayerProperty(photonPlayer, "deaths", parameters[1].returnInt(null));
 				break;
-			}
 			case 6:
-			{
-				Hashtable hashtable9 = new Hashtable();
-				hashtable9.Add("max_dmg", parameters[1].returnInt(null));
-				photonPlayer.SetCustomProperties(hashtable9);
+				SetPlayerProperty(photonPlayer, "max_dmg", parameters[1].returnInt(null));
 				break;
-			}
 			case 7:
-			{
-				Hashtable hashtable8 = new Hashtable();
-				hashtable8.Add("total_dmg", parameters[1].returnInt(null));
-				photonPlayer.SetCustomProperties(hashtable8);
+				SetPlayerProperty(photonPlayer, "total_dmg", parameters[1].returnInt(null));
 				break;
-			}
 			case 8:
-			{
-				Hashtable hashtable7 = new Hashtable();
-				hashtable7.Add("name", parameters[1].returnString(null));
-				photonPlayer.SetCustomProperties(hashtable7);
+				SetPlayerProperty(photonPlayer, "name", parameters[1].returnString(null));
 				break;
-			}
 			case 9:
-			{
-				Hashtable hashtable6 = new Hashtable();
-				hashtable6.Add("guildName", parameters[1].returnString(null));
-				photonPlayer.SetCustomProperties(hashtable6);
+				SetPlayerProperty(photonPlayer, "guildName", parameters[1].returnString(null));
 				break;
-			}
 			case 10:
-			{
-				Hashtable hashtable5 = new Hashtable();
-				hashtable5.Add("RCteam", parameters[1].returnInt(null));
-				photonPlayer.SetCustomProperties(hashtable5);
+				SetPlayerProperty(photonPlayer, "RCteam", parameters[1].returnInt(null));
 				break;
-			}
 			case 11:
-			{
-				Hashtable hashtable4 = new Hashtable();
-				hashtable4.Add("customInt", parameters[1].returnInt(null));
-				photonPlayer.SetCustomProperties(hashtable4);
+				SetPlayerProperty(photonPlayer, "customInt", parameters[1].returnInt(null));
 				break;
-			}
 			case 12:
-			{
-				Hashtable hashtable3 = new Hashtable();
-				hashtable3.Add("customBool", parameters[1].returnBool(null));
-				photonPlayer.SetCustomProperties(hashtable3);
+				SetPlayerProperty(photonPlayer, "customBool", parameters[1].returnBool(null));
 				break;
-			}
 			case 13:
-			{
-				Hashtable hashtable2 = new Hashtable();
-				hashtable2.Add("customString", parameters[1].returnString(null));
-				photonPlayer.SetCustomProperties(hashtable2);
+				SetPlayerProperty(photonPlayer, "customString", parameters[1].returnString(null));
 				break;
-			}
 			case 14:
-			{
-				Hashtable hashtable = new Hashtable();
-				hashtable.Add("RCteam", parameters[1].returnFloat(null));
-				photonPlayer.SetCustomProperties(hashtable);
+				SetPlayerProperty(photonPlayer, "RCteam", parameters[1].returnFloat(null));
 				break;
-			}
 			}
 			break;
 		}
@@ -566,7 +538,8 @@ public class RCAction
 			case 3:
 			{
 				TITAN tITAN2 = parameters[0].returnTitan(null);
-				int num = (tITAN2.currentHealth = parameters[1].returnInt(null));
+				int currentHealth = parameters[1].returnInt(null);
+				tITAN2.currentHealth = currentHealth;
 				if (tITAN2.maxHealth == 0)
 				{
 					tITAN2.maxHealth = tITAN2.currentHealth;

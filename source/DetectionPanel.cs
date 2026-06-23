@@ -150,9 +150,9 @@ internal class DetectionPanel : MonoBehaviour
 		{
 			num = 1L;
 		}
-		string text2 = string.Format("<color=#00FF00>Out {0,4}</color> | <color=#FF0000>In {1,4}</color> | <color=#ADD8E6>Sum {2,4}</color>", trafficStatsGameLevel.TotalOutgoingMessageCount, trafficStatsGameLevel.TotalIncomingMessageCount, trafficStatsGameLevel.TotalMessageCount);
+		string text2 = $"<color=#00FF00>Out {trafficStatsGameLevel.TotalOutgoingMessageCount,4}</color> | <color=#FF0000>In {trafficStatsGameLevel.TotalIncomingMessageCount,4}</color> | <color=#ADD8E6>Sum {trafficStatsGameLevel.TotalMessageCount,4}</color>";
 		string text3 = $"{num}sec average:";
-		string text4 = string.Format("<color=#00FF00>Out {0,4}</color> |  <color=#FF0000>In {1,4}</color> | <color=#ADD8E6>Sum {2,4}</color>", trafficStatsGameLevel.TotalOutgoingMessageCount / num, trafficStatsGameLevel.TotalIncomingMessageCount / num, trafficStatsGameLevel.TotalMessageCount / num);
+		string text4 = $"<color=#00FF00>Out {trafficStatsGameLevel.TotalOutgoingMessageCount / num,4}</color> |  <color=#FF0000>In {trafficStatsGameLevel.TotalIncomingMessageCount / num,4}</color> | <color=#ADD8E6>Sum {trafficStatsGameLevel.TotalMessageCount / num,4}</color>";
 		GUILayout.Label(text2, FontStyle);
 		GUILayout.Label(text3, FontStyle);
 		GUILayout.Label(text4, FontStyle);

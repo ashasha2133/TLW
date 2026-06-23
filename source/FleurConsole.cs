@@ -116,7 +116,7 @@ public class FleurConsole : Photon.MonoBehaviour
 
 	public void OnGUI()
 	{
-		if (!IsVisible || (!PhotonNetwork.inRoom && (IN_GAME_MAIN_CAMERA.gametype != 0 || (int)FengGameManagerMKII.settings[244] != 2)))
+		if (!IsVisible || (!PhotonNetwork.inRoom && (IN_GAME_MAIN_CAMERA.gametype != GAMETYPE.SINGLE || (int)FengGameManagerMKII.settings[244] != 2)))
 		{
 			return;
 		}

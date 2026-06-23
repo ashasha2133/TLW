@@ -3,10 +3,10 @@ using System;
 [Flags]
 public enum SPECIES
 {
-	Titan = 0x0,
-	FemaleTitan = 0x1,
-	ColossalTitan = 0x2,
-	TitanEren = 0x3,
-	Hero = 0x4,
-	Horse = 0x5
+	Titan = 0,
+	FemaleTitan = 1,
+	ColossalTitan = 2,
+	TitanEren = 3,
+	Hero = 4,
+	Horse = 5
 }

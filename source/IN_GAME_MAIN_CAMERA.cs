@@ -15,7 +15,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 
 	public RotationAxes axes;
 
-	//public AudioSource bgmusic;
+	public AudioSource bgmusic;
 
 	public static float cameraDistance = 0.6f;
 
@@ -459,10 +459,6 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 			break;
 		case CAMERA_TYPE.TPS:
 		{
-			if (!FengCustomInputs.Inputs.menuOn && !gameOver)
-			{
-				Screen.lockCursor = true;
-			}
 			float angle = 0f;
 			float num = 0f;
 			if ((int)FengGameManagerMKII.settings[300] == 0)
@@ -486,10 +482,6 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 			break;
 		}
 		case CAMERA_TYPE.NewTPS:
-			if (!FengCustomInputs.Inputs.menuOn)
-			{
-				Screen.lockCursor = true;
-			}
 			rotationY += Input.GetAxis("Mouse Y") * 2.5f * (sensitivityMulti * 2f);
 			rotationY = Mathf.Clamp(rotationY, -60f, 60f);
 			rotationY = Mathf.Max(rotationY, -999f + heightMulti * 2f);
@@ -1042,8 +1034,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 			Screen.lockCursor = false;
 			return;
 		}
-		//InRoomChat.Write(gameOver.ToString());
-		if (gametype != 0 && gameOver)
+		if (gametype != GAMETYPE.SINGLE && gameOver)
 		{
 			if (FengCustomInputs.Inputs.isInputDown[InputCode.attack1])
 			{
@@ -1058,9 +1049,9 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 			}
 			if (FengCustomInputs.Inputs.isInputDown[InputCode.flare1])
 			{
-                List<GameObject> list = new List<GameObject>(FengGameManagerMKII.allheroes.Where((GameObject h) => h != null));
+				List<GameObject> list = new List<GameObject>(FengGameManagerMKII.allheroes.Where((GameObject h) => h != null));
 				currentPeekPlayerIndex++;
-                if (currentPeekPlayerIndex >= list.Count)
+				if (currentPeekPlayerIndex >= list.Count)
 				{
 					currentPeekPlayerIndex = 0;
 				}
@@ -1070,7 +1061,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 					setSpectorMode(val: false);
 					lockAngle = false;
 				}
-            }
+			}
 			if (FengCustomInputs.Inputs.isInputDown[InputCode.flare2])
 			{
 				List<GameObject> list = new List<GameObject>(FengGameManagerMKII.allheroes.Where((GameObject h) => h != null));
@@ -1090,30 +1081,31 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 					lockAngle = false;
 				}
 			}
-            if (FengCustomInputs.Inputs.isInputDown[InputCode.pause])
-            {
-                FengCustomInputs.Inputs.justUPDATEME();
-                if (!FengCustomInputs.Inputs.menuOn)
-                {
-                    isPausing = true;
-                    if (gametype == GAMETYPE.SINGLE)
-                    {
-                        Time.timeScale = 0f;
-                    }
-                    FengCustomInputs.Inputs.menuOn = (Screen.showCursor = true);
-                    Screen.lockCursor = false;
-                }
-                else
-                {
-                    isPausing = false;
-                    FengGameManagerMKII.instance.saveSettings();
-                    FengGameManagerMKII.instance.quitSetting();
-                }
-            }
-            if (spectatorMode)
+			if (spectatorMode)
 			{
 				return;
 			}
+		}
+		if (FengCustomInputs.Inputs.isInputDown[InputCode.pause])
+		{
+			if (isPausing)
+			{
+				if (main_object != null && mainT != null)
+				{
+					Vector3 position = mainT.position;
+					position = MainObjectPosition;
+					position += Vector3.up * heightMulti;
+					mainT.position = Vector3.Lerp(mainT.position, position - mainT.forward * 5f, Time.deltaTime * 1f);
+				}
+				return;
+			}
+			isPausing = !isPausing;
+			if (gametype == GAMETYPE.SINGLE)
+			{
+				Time.timeScale = 0f;
+			}
+			FengCustomInputs.Inputs.menuOn = (Screen.showCursor = true);
+			Screen.lockCursor = false;
 		}
 		if (needSetHUD)
 		{
@@ -1131,11 +1123,9 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 			}
 			else
 			{
-                Screen.SetResolution(Display.main.systemWidth, Display.main.systemHeight, false);
-                Screen.fullScreen = false;
-                BorderlessHelper.MakeBorderlessFullscreen();
-            }
-            needSetHUD = true;
+				Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, fullscreen: true);
+			}
+			needSetHUD = true;
 		}
 		if (FengCustomInputs.Inputs.isInputDown[InputCode.restart])
 		{
@@ -1163,7 +1153,7 @@ public class IN_GAME_MAIN_CAMERA : MonoBehaviour
 				break;
 			case CAMERA_TYPE.NewTPS:
 				cameraMode = CAMERA_TYPE.TPS;
-				Screen.lockCursor = false;
+				Screen.lockCursor = true;
 				break;
 			}
 			if ((int)FengGameManagerMKII.settings[245] == 1 || main_object.GetComponent<HERO>() == null)

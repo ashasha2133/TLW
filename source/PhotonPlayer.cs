@@ -208,7 +208,7 @@ public class PhotonPlayer
 		PhotonPlayer[] playerList = PhotonNetwork.playerList;
 		foreach (PhotonPlayer photonPlayer in playerList)
 		{
-			if (photonPlayer.Tlw)
+			if (photonPlayer.Tlw || photonPlayer.NewTlw)
 			{
 				list.Add(photonPlayer.ID);
 			}
@@ -325,8 +325,7 @@ public class PhotonPlayer
 
 	public override bool Equals(object p)
 	{
-		PhotonPlayer photonPlayer = p as PhotonPlayer;
-		if (photonPlayer != null)
+		if (p is PhotonPlayer photonPlayer)
 		{
 			return GetHashCode() == photonPlayer.GetHashCode();
 		}

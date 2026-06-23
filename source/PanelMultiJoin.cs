@@ -301,7 +301,7 @@ public class PanelMultiJoin : MonoBehaviour
 			string text = array2[0].ToString().StripHex();
 			string text2 = array2[1].ToString().StripHex();
 			string text3 = array2[2].ToString().StripHex();
-			if ((array2.Length == 7 && text.Length <= 300 && text2.Length > 1 && text3.Length > 1) || true)
+			if (array2.Length == 7 && text.Length <= 300 && text2.Length > 1 && text3.Length > 1)
 			{
 				string text4 = array2[0].ToString();
 				ThymesUtils.GetAllBracketHexOccurrences(text4);
@@ -310,26 +310,9 @@ public class PanelMultiJoin : MonoBehaviour
 				{
 					text5 = text5.Remove(250).StripColor() + "...";
 				}
-				if (GUILayout.Button(string.Concat(new object[15]
+				if (roomInfo != null && (!HideFullServers || roomInfo.maxPlayers != roomInfo.playerCount) && (!HidePassServers || array2[5] == "") && (!HideClosedServers || roomInfo.open) && (!HideRMaxServers || (roomInfo.maxPlayers < 26 && roomInfo.maxPlayers != 0)) && roomInfo.name.ToLower().Contains(filter.ToLower()) && GUILayout.Button(((array2[5] != "") ? "<size=15><color=#f51282><b>[PWD]  </b></color>" : "<size=15>") + ((text5.Length <= 540) ? text5 : "<color=#FF0000>Absolute Unit of a server name.</color>") + " <b>|</b> " + ((array2[1].ToString().hexColor().Length <= 100) ? array2[1].ToString().hexColor() : "<color=#FF0000>Absolute Unit of a map name.</color>") + " <b>|</b> " + array2[2].ToString().hexColor() + " <b>|</b> " + array2[4].ToString().hexColor() + " <b>|</b> (" + roomInfo.playerCount.ToString().hexColor() + "/" + roomInfo.maxPlayers.ToString().hexColor() + ")" + (roomInfo.open ? " <color=lime><b></b></color>" : " <b>::</b> <color=red><b>Closed</b></color>") + ((array2[6].ToString().Length == 10 && array2[5] == "" && roomInfo.maxPlayers == byte.MaxValue) ? "<color=#ffbdf8> (My bot)</color></size>" : "</size>"), GUILayout.Height(40f)))
 				{
-					(array2[5] != "") ? "<size=15><color=#f51282><b>[PWD]  </b></color>" : "<size=15>",
-					(text5.Length <= 540) ? text5 : "<color=#FF0000>Absolute Unit of a server name.</color>",
-					" <b>|</b> ",
-					(array2[1].ToString().hexColor().Length <= 100) ? array2[1].ToString().hexColor() : "<color=#FF0000>Absolute Unit of a map name.</color>",
-					" <b>|</b> ",
-					array2[2].ToString().hexColor(),
-					" <b>|</b> ",
-					array2[4].ToString().hexColor(),
-					" <b>|</b> (",
-					roomInfo.playerCount.ToString().hexColor(),
-					"/",
-					roomInfo.maxPlayers.ToString().hexColor(),
-					")",
-					roomInfo.open ? " <color=lime><b></b></color>" : " <b>::</b> <color=red><b>Closed</b></color>",
-					(array2[6].ToString().Length == 10 && array2[5] == "" && roomInfo.maxPlayers == byte.MaxValue) ? "<color=#ffbdf8> (My bot)</color></size>" : "</size>"
-				}), GUILayout.Height(40f)))
-				{
-                    connectToIndex(5, roomInfo.name);
+					connectToIndex(5, roomInfo.name);
 				}
 			}
 		}
@@ -364,7 +347,7 @@ public class PanelMultiJoin : MonoBehaviour
 		num = 10 * (currentPage - 1) + index;
 		char[] separator = new char[1] { "`"[0] };
 		string[] array = roomName.Split(separator);
-		if ((array[5] != string.Empty && false) || false)
+		if (array[5] != string.Empty)
 		{
 			PanelMultiJoinPWD.Password = array[5];
 			PanelMultiJoinPWD.roomName = roomName;
@@ -373,7 +356,7 @@ public class PanelMultiJoin : MonoBehaviour
 		}
 		else
 		{
-            PhotonNetwork.JoinRoom(roomName);
+			PhotonNetwork.JoinRoom(roomName);
 		}
 	}
 }
