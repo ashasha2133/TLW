@@ -76,6 +76,8 @@ public class InRoomChat : Photon.MonoBehaviour
 
 	public static bool god;
 
+	public static bool botRevOn;
+
 	public static bool lockin;
 
     public static List<GameObject> myallheroes = new List<GameObject>();
@@ -159,6 +161,7 @@ public class InRoomChat : Photon.MonoBehaviour
 		botOn = true;
 		kdEnabled = true;
 		god = true;
+		botRevOn = true;
 		lockin = false;
 		ud = new UrbanDictionary();
         MessageHistoryUpdatecache = true;
@@ -725,6 +728,7 @@ public class InRoomChat : Photon.MonoBehaviour
 	[BotCommand("revive")]
 	private void SelfRev(string[] args)
 	{
+		if (!botRevOn) return;
 		if (GameSettings.bombMode == 1) return;
 		int.TryParse(args[args.Length - 1], out int num);
 		if (NetworkingPeer.mActors.TryGetValue(num, out var value))
@@ -736,7 +740,13 @@ public class InRoomChat : Photon.MonoBehaviour
 		}
 	}
 
-	[MyCommand("clone")]
+    [MyCommand("botrev")]
+    private void BotRevToggle(string[] args)
+    {
+		botRevOn = !botRevOn;
+    }
+
+    [MyCommand("clone")]
     private void Clone(string[] args)
     {
         if (PlayerPrefs.HasKey("characterUsed"))
@@ -1624,7 +1634,6 @@ public class InRoomChat : Photon.MonoBehaviour
 		int num = Convert.ToInt32(args[1]);
 		if (NetworkingPeer.mActors.TryGetValue(num, out var value))
 		{
-			Write($"<color=#FFCC00>Player {num} has been revived.</color>");
 			if (value.customProperties["dead"] != null && RCextensions.returnBoolFromObject(value.customProperties["dead"]) && RCextensions.returnIntFromObject(value.customProperties["isTitan"]) != 2)
 			{
 				FengGameManagerMKII.instance.photonView.RPC("respawnHeroInNewRound", value);

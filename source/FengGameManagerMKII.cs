@@ -924,6 +924,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
     [RPC]
 	private void Chat(string content, string sender, PhotonMessageInfo info)
 	{
+		bool revmsg = content.Replace(" ", "") == "-rev";
 		if (content.Contains("Wave : "))
 		{
 			StartCoroutine(stayDeadFaggot());	
@@ -948,7 +949,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			name = sender == "" ? info.sender.isLocal || info.sender.isMasterClient ? "" : content.StripColor().Split(' ')[0].Replace(":", "") : sender.StripColor();
 			
 			//if(!(content.StartsWith("<color=#A8FF24>Wave : ") && content.EndsWith("</color>")) && !(content.StartsWith("<color=#FFCC00>") && (content.EndsWith(" wins!</color>") || content.EndsWith(" wins.</color>"))))
-			if(name != "")
+			if(name != "" && !revmsg)
 			{
                 var source = Camera.main.gameObject.AddComponent<AudioSource>();
                 source.name = "NotificationSound"; // give it a name for filtering
@@ -969,6 +970,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 					return;
 				}
 			}
+			if (!revmsg)
 			InRoomChat.Write(content);
 
             File.AppendAllText(Environment.CurrentDirectory + "\\Chats\\" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt", "\n " + content.StripColor().StripHex() + Environment.NewLine);
