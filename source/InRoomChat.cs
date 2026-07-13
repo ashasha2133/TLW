@@ -753,7 +753,7 @@ public class InRoomChat : Photon.MonoBehaviour
 		{
 			for (int i = 0; i < ((args.Length > 1 && int.TryParse(args[1], out var n)) ? n : 1) ; i++)
 			{
-				CharacterSelection.ChoosePlayer(PlayerPrefs.GetString("characterUsed"));
+				FengGameManagerMKII.instance.SpawnPlayerAt2(PlayerPrefs.GetString("characterUsed"), HERO.FindMyHero(PhotonNetwork.player.ID).baseG);
             }
 		}
     }
