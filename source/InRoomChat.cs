@@ -1366,6 +1366,8 @@ public class InRoomChat : Photon.MonoBehaviour
 		Write("");
 	}
 
+	[MyCommand("clearc")]
+	[MyCommand("clearconsole")]
 	[MyCommand("clearl")]
 	[MyCommand("clearlog")]
 	private void logClear(string[] args)
