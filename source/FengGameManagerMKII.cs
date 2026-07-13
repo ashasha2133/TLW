@@ -961,7 +961,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			{
 				content = sender + ":" + content;
 			}
-			content = DateTime.Now.ToString("h:mm:ss") + " <color=#FFC000>[" + Convert.ToString(info.sender.ID) + "]</color> " + content;
+			content = DateTime.Now.ToString("HH:mm:ss") + " <color=#FFC000>[" + Convert.ToString(info.sender.ID) + "]</color> " + content;
 			if (!info.sender.isLocal)
 			{
 				if (!ignoreList.Contains(info.sender.ID) && (content.Length > 4000 || content.StripColor().StripHex().Length > 1000))
@@ -1057,7 +1057,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			{
 				content = sender + ":" + content;
 			}
-            content = DateTime.Now.ToString("h:mm:ss") + " <color=#FFC000>[" + Convert.ToString(info.sender.ID) + "] FROM</color> " + content;
+            content = DateTime.Now.ToString("HH:mm:ss") + " <color=#FFC000>[" + Convert.ToString(info.sender.ID) + "] FROM</color> " + content;
 			if (!ignoreList.Contains(info.sender.ID) && (content.Length > 4000 || content.StripColor().StripHex().Length > 1000) && !info.sender.isLocal)
 			{
 				if (!ignoreList.Contains(info.sender.ID) && (content.Length > 4000 || content.StripColor().StripHex().Length > 1000))
@@ -1862,7 +1862,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 	public void UpdateGameHuds(GAMEMODE mode)
 	{
 		string text = string.Empty;
-		string text2 = DateTime.Now.ToString("h:mm:ss") + "\n";
+		string text2 = DateTime.Now.ToString("HH:mm:ss") + "\n";
 		text2 += "Time : " + ((int)timeTotalServer).ToString() + "\n";
         int hours = (int)timeTotalServer / 3600;
         int minutes = ((int)timeTotalServer % 3600) / 60;
@@ -10970,7 +10970,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 		{
 			text = "〔big name〕";
 		}
-		FleurConsole.instance.Log("<color=#" + alternativefinalhex() + ">" + DateTime.Now.ToString("h:mm:ss") + "</color> <color=#" + finalhex() + ">Player Joined </color>" + text + " <color=#" + finalhex() + ">{</color>" + player.ID + "<color=#" + finalhex() + ">}</color>", FleurConsole.DebugType.STATE);
+		FleurConsole.instance.Log("<color=#" + alternativefinalhex() + ">" + DateTime.Now.ToString("HH:mm:ss") + "</color> <color=#" + finalhex() + ">Player Joined </color>" + text + " <color=#" + finalhex() + ">{</color>" + player.ID + "<color=#" + finalhex() + ">}</color>", FleurConsole.DebugType.STATE);
 		if (PhotonNetwork.isMasterClient)
 		{
 			if (PView == null)
@@ -11222,7 +11222,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			{
 				text = "〔big name〕";
 			}
-			FleurConsole.instance.Log("<color=#" + finalhex() + ">" + DateTime.Now.ToString("h:mm:ss") + "</color> <color=#" + alternativefinalhex() + ">Player Left</color>" + text + " <color=#" + alternativefinalhex() + ">{</color>" + player.ID + "<color=#" + alternativefinalhex() + ">}</color>", FleurConsole.DebugType.STATE);
+			FleurConsole.instance.Log("<color=#" + finalhex() + ">" + DateTime.Now.ToString("HH:mm:ss") + "</color> <color=#" + alternativefinalhex() + ">Player Left</color>" + text + " <color=#" + alternativefinalhex() + ">{</color>" + player.ID + "<color=#" + alternativefinalhex() + ">}</color>", FleurConsole.DebugType.STATE);
 			FengGameManagerMKII.OnPlayerLeave?.Invoke(new OnPlayerLeaveArgs
 			{
 				ViewId = player.ID,
