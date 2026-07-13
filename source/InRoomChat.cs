@@ -724,6 +724,48 @@ public class InRoomChat : Photon.MonoBehaviour
         Chat(": " + (UnityEngine.Random.Range(0, 2) == 1 ? "Heads" : "Tails"));
     }
 
+	int player1 = 0;
+	int player2 = 0;
+    [BotCommand("rps")]
+    [BotCommand("accept")]
+    [BotCommand("decline")]
+    [BotCommand("1")]
+    [BotCommand("2")]
+    [BotCommand("3")]
+    [BotCommand("4")]
+    private void RockPaperScissors(string[] args)
+    {
+		if (botOn)
+		{
+			if (args[0] == "rps")
+			{
+				if (!int.TryParse(args[args.Length - 1], out player1))
+				{
+					Write("UNEXPECTED FUCKING ERROR: LAST ARGS = " + args[args.Length - 1]);
+					return;
+				}
+                if (!int.TryParse(args[1], out player2))
+                {
+                    string name = string.Join(" ", args.Skip(1).Take(args.Length - 2).ToArray());
+
+                    foreach (KeyValuePair<int, PhotonPlayer> value in NetworkingPeer.mActors)
+                    {
+                        if (RCextensions.StripHex(value.Value.uiname).ToLower() == name.ToLower())
+                        {
+                            player2 = value.Key;
+                            break;
+                        }
+                    }
+                    if (player2 == 0)
+					{
+						Chat("No such player was found");
+						return;
+					}
+                }
+            }
+		}
+    }
+
     [BotCommand("rev")]
 	[BotCommand("revive")]
 	private void SelfRev(string[] args)
