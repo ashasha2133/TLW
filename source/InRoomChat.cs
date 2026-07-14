@@ -80,13 +80,13 @@ public class InRoomChat : Photon.MonoBehaviour
 
 	public static bool lockin;
 
-    public static List<GameObject> myallheroes = new List<GameObject>();
+	public static List<GameObject> myallheroes = new List<GameObject>();
 
-    public static bool kdEnabled;
+	public static bool kdEnabled;
 
 	private static UrbanDictionary ud;
 
-    public bool IsVisible = true;
+	public bool IsVisible = true;
 
 	public Stopwatch timeOfFade = new Stopwatch();
 
@@ -164,7 +164,7 @@ public class InRoomChat : Photon.MonoBehaviour
 		botRevOn = true;
 		lockin = false;
 		ud = new UrbanDictionary();
-        MessageHistoryUpdatecache = true;
+		MessageHistoryUpdatecache = true;
 		MessageHistoryCache = string.Empty;
 		CommandList = new Dictionary<string, string>
 		{
@@ -210,30 +210,30 @@ public class InRoomChat : Photon.MonoBehaviour
 			{ "<color=yellow>/j</color>", " (autorejoins the room, will also randomize your name as it fakes being disconnected)" },
 			{ "<color=yellow>/menu</color>", " (to open menu, for people who unbound their menu on 'None' key or put it on key like Esc which autocloses the mod)" }
 		};
-        MethodInfo[] methods = typeof(InRoomChat).GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+		MethodInfo[] methods = typeof(InRoomChat).GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 
-        Type botCommandAttrType = typeof(BotCommandAttribute);
-        Type myCommandAttrType = typeof(MyCommandAttribute);
+		Type botCommandAttrType = typeof(BotCommandAttribute);
+		Type myCommandAttrType = typeof(MyCommandAttribute);
 
-        foreach (MethodInfo methodInfo in methods)
-        {
-            // Check for BotCommandAttribute
-            var botCommandAttrs = methodInfo.GetCustomAttributes(botCommandAttrType, inherit: false);
-            foreach (BotCommandAttribute attr in botCommandAttrs)
-            {
-                string cmdName = attr.Name ?? methodInfo.Name.ToLower();
-                BotCommandsCache[cmdName.ToLower()] = methodInfo;
-            }
+		foreach (MethodInfo methodInfo in methods)
+		{
+			// Check for BotCommandAttribute
+			var botCommandAttrs = methodInfo.GetCustomAttributes(botCommandAttrType, inherit: false);
+			foreach (BotCommandAttribute attr in botCommandAttrs)
+			{
+				string cmdName = attr.Name ?? methodInfo.Name.ToLower();
+				BotCommandsCache[cmdName.ToLower()] = methodInfo;
+			}
 
-            // Check for MyCommandAttribute
-            var myCommandAttrs = methodInfo.GetCustomAttributes(myCommandAttrType, inherit: false);
-            foreach (MyCommandAttribute attr in myCommandAttrs)
-            {
-                string cmdName = attr.Name ?? methodInfo.Name.ToLower();
-                MyCommandsCache[cmdName.ToLower()] = methodInfo;
-            }
-        }
-    }
+			// Check for MyCommandAttribute
+			var myCommandAttrs = methodInfo.GetCustomAttributes(myCommandAttrType, inherit: false);
+			foreach (MyCommandAttribute attr in myCommandAttrs)
+			{
+				string cmdName = attr.Name ?? methodInfo.Name.ToLower();
+				MyCommandsCache[cmdName.ToLower()] = methodInfo;
+			}
+		}
+	}
 
 	private void Awake()
 	{
@@ -247,35 +247,35 @@ public class InRoomChat : Photon.MonoBehaviour
 
 	public static void BotCommandInvoke(string txt)
 	{
-        string[] array = txt.Split(' ');
-        int[] indices = array
-            .Select((s, i) => new { s, i })
-            .Where(x => x.s.StartsWith("-"))
-            .Select(x => x.i)
-            .ToArray();
+		string[] array = txt.Split(' ');
+		int[] indices = array
+			.Select((s, i) => new { s, i })
+			.Where(x => x.s.StartsWith("-"))
+			.Select(x => x.i)
+			.ToArray();
 
-        foreach (int i in indices)
-        {
-            if (array[i] != "-")
-            {
-                if (BotCommandsCache.TryGetValue(array[i].Substring(1), out var value))
-                {
-                    string[] array2 = array.Skip(i).ToArray();
-                    array2[0] = array2[0].Substring(1);
+		foreach (int i in indices)
+		{
+			if (array[i] != "-")
+			{
+				if (BotCommandsCache.TryGetValue(array[i].Substring(1), out var value))
+				{
+					string[] array2 = array.Skip(i).ToArray();
+					array2[0] = array2[0].Substring(1);
 
-                    if (value.IsStatic)
-                    {
-                        value.Invoke(null, new object[1] { array2 });
-                    }
-                    else
-                    {
-                        value.Invoke(Instance, new object[1] { array2 });
-                    }
-                    break;
-                }
-            }
-        }
-    }
+					if (value.IsStatic)
+					{
+						value.Invoke(null, new object[1] { array2 });
+					}
+					else
+					{
+						value.Invoke(Instance, new object[1] { array2 });
+					}
+					break;
+				}
+			}
+		}
+	}
 
 	public static int Write(string newLine)
 	{
@@ -352,7 +352,7 @@ public class InRoomChat : Photon.MonoBehaviour
 		int num = (int)FengGameManagerMKII.settings[329];
 		LANGUAGE lANGUAGE = (LANGUAGE)num;
 		Enum.GetName(typeof(LANGUAGE), lANGUAGE);
-		Action<string, string> callback = delegate(string translation, string errors)
+		Action<string, string> callback = delegate (string translation, string errors)
 		{
 			if (!errors.IsNullOrEmpty())
 			{
@@ -401,101 +401,101 @@ public class InRoomChat : Photon.MonoBehaviour
 		}
 		switch (Event.current.type)
 		{
-		case EventType.KeyUp:
-			if (Event.current.keyCode != 0 && Event.current.keyCode == FengGameManagerMKII.inputRC.humanKeys[InputCodeRC.chat] && GUI.GetNameOfFocusedControl() != "ChatInput")
-			{
-				GUI.FocusControl("ChatInput");
-			}
-			break;
-		case EventType.KeyDown:
-		{
-			KeyCode keyCode = Event.current.keyCode;
-			if (keyCode == KeyCode.Return || keyCode == KeyCode.KeypadEnter)
-			{
-				if (!string.IsNullOrEmpty(inputLine))
+			case EventType.KeyUp:
+				if (Event.current.keyCode != 0 && Event.current.keyCode == FengGameManagerMKII.inputRC.humanKeys[InputCodeRC.chat] && GUI.GetNameOfFocusedControl() != "ChatInput")
 				{
-					if (GUI.GetNameOfFocusedControl() == "ChatInput")
+					GUI.FocusControl("ChatInput");
+				}
+				break;
+			case EventType.KeyDown:
+				{
+					KeyCode keyCode = Event.current.keyCode;
+					if (keyCode == KeyCode.Return || keyCode == KeyCode.KeypadEnter)
 					{
-                        if (FengGameManagerMKII.RCEvents.ContainsKey("OnChatInput"))
-                        {
-                            string text = (string)FengGameManagerMKII.RCVariableNames["OnChatInput"];
-                            if (FengGameManagerMKII.stringVariables.ContainsKey(text))
-                            {
-                                FengGameManagerMKII.stringVariables[text] = inputLine;
-                            }
-                            else
-                            {
-                                FengGameManagerMKII.stringVariables.Add(text, inputLine);
-                            }
-                            ((RCEvent)FengGameManagerMKII.RCEvents["OnChatInput"]).checkEvent();
-                        }
-                        if (!inputLine.StartsWith("/"))
-                        {
-                            Instance = this;
-                            string text2 = RCextensions.returnStringFromObject(PhotonNetwork.player.customProperties["name"]).hexColor();
-                            if (text2 == string.Empty)
-                            {
-                                text2 = RCextensions.returnStringFromObject(PhotonNetwork.player.customProperties["name"]);
-                                if (PhotonNetwork.player.customProperties["RCteam"] != null)
-                                {
-                                    if (RCextensions.returnIntFromObject(PhotonNetwork.player.customProperties["RCteam"]) == 1)
-                                    {
-                                        text2 = "<color=#00FFFF>" + text2 + "</color>";
-                                    }
-                                    else if (RCextensions.returnIntFromObject(PhotonNetwork.player.customProperties["RCteam"]) == 2)
-                                    {
-                                        text2 = "<color=#FA8072>" + text2 + "</color>";
-                                    }
-                                }
-                            }
-                            if ((int)FengGameManagerMKII.settings[324] == 0)
-                            {
-                                object[] parameters = new object[2]
-                                {
+						if (!string.IsNullOrEmpty(inputLine))
+						{
+							if (GUI.GetNameOfFocusedControl() == "ChatInput")
+							{
+								if (FengGameManagerMKII.RCEvents.ContainsKey("OnChatInput"))
+								{
+									string text = (string)FengGameManagerMKII.RCVariableNames["OnChatInput"];
+									if (FengGameManagerMKII.stringVariables.ContainsKey(text))
+									{
+										FengGameManagerMKII.stringVariables[text] = inputLine;
+									}
+									else
+									{
+										FengGameManagerMKII.stringVariables.Add(text, inputLine);
+									}
+									((RCEvent)FengGameManagerMKII.RCEvents["OnChatInput"]).checkEvent();
+								}
+								if (!inputLine.StartsWith("/"))
+								{
+									Instance = this;
+									string text2 = RCextensions.returnStringFromObject(PhotonNetwork.player.customProperties["name"]).hexColor();
+									if (text2 == string.Empty)
+									{
+										text2 = RCextensions.returnStringFromObject(PhotonNetwork.player.customProperties["name"]);
+										if (PhotonNetwork.player.customProperties["RCteam"] != null)
+										{
+											if (RCextensions.returnIntFromObject(PhotonNetwork.player.customProperties["RCteam"]) == 1)
+											{
+												text2 = "<color=#00FFFF>" + text2 + "</color>";
+											}
+											else if (RCextensions.returnIntFromObject(PhotonNetwork.player.customProperties["RCteam"]) == 2)
+											{
+												text2 = "<color=#FA8072>" + text2 + "</color>";
+											}
+										}
+									}
+									if ((int)FengGameManagerMKII.settings[324] == 0)
+									{
+										object[] parameters = new object[2]
+										{
 									string.Concat(" <color=#", chatcolor, ">" + prefix, (GameSettings.chatStyle == 0) ? inputLine : ((GameSettings.chatStyle == 1) ? ("<b>" + inputLine + "</b>") : ((GameSettings.chatStyle == 2) ? ("<i>" + inputLine + "</i>") : ("<b><i>" + inputLine + "</i></b>"))), suffix, "</color>"),
 									(GameSettings.chatNameStyle == 0) ? chatname : ((GameSettings.chatNameStyle == 1) ? ("<b>" + chatname + "</b>") : ((GameSettings.chatNameStyle == 2) ? ("<i>" + chatname + "</i>") : ("<b><i>" + chatname + "</i></b>")))
-                                };
-                                FengGameManagerMKII.instance.photonView.RPC("Chat", PhotonTargets.All, parameters);
-                                timeOfFade.Reset();
-                                timeOfFade.Start();
-                            }
-                            else
-                            {
-                                TranslateOutgoingMessages(inputLine, PM: false, 0, "");
-                            }
-                        }
-                        else
-                        {
-                            string[] array = inputLine.Substring(1).Split(' ');
-                            if (MyCommandsCache.TryGetValue(array[0], out var value))
-                            {
-                                if (value.IsStatic)
-                                {
-                                    value.Invoke(null, new object[1] { array });
-                                }
-                                else
-                                {
-                                    value.Invoke(this, new object[1] { array });
-                                }
-                            }
-                            else
-                            {
-                                Write("No such command as " + array[0]);
-                            }
-                        }
-                        inputLine = string.Empty;
-                        GUI.FocusControl(string.Empty);
-                        return;
-                    }
-                }
-				GUI.FocusControl("ChatInput");
-			}
-			else if ((Event.current.keyCode == KeyCode.Tab || Event.current.character == '\t') && !IN_GAME_MAIN_CAMERA.isPausing && FengGameManagerMKII.inputRC.humanKeys[InputCodeRC.chat] != KeyCode.Tab)
-			{
-				Event.current.Use();
-			}
-			break;
-		}
+										};
+										FengGameManagerMKII.instance.photonView.RPC("Chat", PhotonTargets.All, parameters);
+										timeOfFade.Reset();
+										timeOfFade.Start();
+									}
+									else
+									{
+										TranslateOutgoingMessages(inputLine, PM: false, 0, "");
+									}
+								}
+								else
+								{
+									string[] array = inputLine.Substring(1).Split(' ');
+									if (MyCommandsCache.TryGetValue(array[0], out var value))
+									{
+										if (value.IsStatic)
+										{
+											value.Invoke(null, new object[1] { array });
+										}
+										else
+										{
+											value.Invoke(this, new object[1] { array });
+										}
+									}
+									else
+									{
+										Write("No such command as " + array[0]);
+									}
+								}
+								inputLine = string.Empty;
+								GUI.FocusControl(string.Empty);
+								return;
+							}
+						}
+						GUI.FocusControl("ChatInput");
+					}
+					else if ((Event.current.keyCode == KeyCode.Tab || Event.current.character == '\t') && !IN_GAME_MAIN_CAMERA.isPausing && FengGameManagerMKII.inputRC.humanKeys[InputCodeRC.chat] != KeyCode.Tab)
+					{
+						Event.current.Use();
+					}
+					break;
+				}
 		}
 		if (!IsVisible)
 		{
@@ -630,21 +630,21 @@ public class InRoomChat : Photon.MonoBehaviour
 		}
 	}
 
-    [MyCommand("on")]
-    [MyCommand("ON")]
-    private void On(string[] args)
-    {
+	[MyCommand("on")]
+	[MyCommand("ON")]
+	private void On(string[] args)
+	{
 		botOn = true;
-        Write("<color=#FFCC00>Internal Bot is ERECT (Turned ON)</color>");
-    }
+		Write("<color=#FFCC00>Internal Bot is ERECT (Turned ON)</color>");
+	}
 
-    [MyCommand("off")]
-    [MyCommand("OFF")]
-    private void Off(string[] args)
-    {
-        botOn = false;
-        Write("<color=#FFCC00>Internal Bot is FLACID (Turned OFF)</color>");
-    }
+	[MyCommand("off")]
+	[MyCommand("OFF")]
+	private void Off(string[] args)
+	{
+		botOn = false;
+		Write("<color=#FFCC00>Internal Bot is FLACID (Turned OFF)</color>");
+	}
 
 	[BotCommand("pls")]
 	private void PlsPenis(string[] args)
@@ -667,32 +667,32 @@ public class InRoomChat : Photon.MonoBehaviour
 							}
 						}
 					}
-					
+
 					if (name == "")
-                        name = string.Join(" ", args.Skip(2).ToArray());
+						name = string.Join(" ", args.Skip(2).ToArray());
 
-                    int size = UnityEngine.Random.Range(0, 33); // Adjust the range as needed
-                    string text = ": ";
-                    if (name != null && name.Trim() != "") text += $"<color=#2CB255>{name}'s dick size is</color>\n";
+					int size = UnityEngine.Random.Range(0, 33); // Adjust the range as needed
+					string text = ": ";
+					if (name != null && name.Trim() != "") text += $"<color=#2CB255>{name}'s dick size is</color>\n";
 
-                    if (size == 0)
-                        text += "<color=#FFDA94>() you don't have a dick you have pussy</color>";
-                    else if (size < 10 && size != 0)
-                        text += "<color=#FFDA94>8" + new string('=', size) + "</color>" + "<color=#710071>D</color> " + size +
-                                " cm micro penis";
-                    else
-                        text += "<color=#FFDA94>8" + new string('=', size) + "</color>" + "<color=#710071>D</color> " + size +
-                                " cm";
+					if (size == 0)
+						text += "<color=#FFDA94>() you don't have a dick you have pussy</color>";
+					else if (size < 10 && size != 0)
+						text += "<color=#FFDA94>8" + new string('=', size) + "</color>" + "<color=#710071>D</color> " + size +
+								" cm micro penis";
+					else
+						text += "<color=#FFDA94>8" + new string('=', size) + "</color>" + "<color=#710071>D</color> " + size +
+								" cm";
 
-                    Chat(text);
-                }
+					Chat(text);
+				}
 			}
 		}
-    }
+	}
 
-    [BotCommand("istrue")]
-    private void IsTrue(string[] args)
-    {
+	[BotCommand("istrue")]
+	private void IsTrue(string[] args)
+	{
 		if (botOn)
 		{
 			int i = UnityEngine.Random.Range(0, 2);
@@ -704,11 +704,11 @@ public class InRoomChat : Photon.MonoBehaviour
 
 			Chat(response);
 		}
-    }
+	}
 
-    [BotCommand("roll")]
-    private void Roll(string[] args)
-    {
+	[BotCommand("roll")]
+	private void Roll(string[] args)
+	{
 		if (args.Length > 1)
 		{
 			if (int.TryParse(args[1], out int num))
@@ -716,19 +716,21 @@ public class InRoomChat : Photon.MonoBehaviour
 				Chat(": You Rolled: " + UnityEngine.Random.Range(1, num + 1));
 			}
 		}
-    }
+	}
 
-    [BotCommand("coin")]
-    private void Coin(string[] args)
-    {
-        Chat(": " + (UnityEngine.Random.Range(0, 2) == 1 ? "Heads" : "Tails"));
-    }
+	[BotCommand("coin")]
+	private void Coin(string[] args)
+	{
+		Chat(": " + (UnityEngine.Random.Range(0, 2) == 1 ? "Heads" : "Tails"));
+	}
 
-	int player1 = 0;
-	int player2 = 0;
+	Dictionary<int, string> rpsPlayers = new Dictionary<int, string>();
+	KeyValuePair<int, string>[] rpsPlayers2 = new KeyValuePair<int, string>[2];
+    string[,] rpsAnswerRandomizer = new string[2, 4];
     [BotCommand("rps")]
     [BotCommand("accept")]
     [BotCommand("decline")]
+    [BotCommand("cancel")]
     [BotCommand("1")]
     [BotCommand("2")]
     [BotCommand("3")]
@@ -737,32 +739,123 @@ public class InRoomChat : Photon.MonoBehaviour
     {
 		if (botOn)
 		{
-			if (args[0] == "rps")
+			if (args[0] == "rps" && (rpsPlayers.Count == 0 || rpsPlayers.ContainsValue("invited")))
 			{
-				if (!int.TryParse(args[args.Length - 1], out player1))
+				if (!int.TryParse(args[args.Length - 1], out int player1))
 				{
 					Write("UNEXPECTED FUCKING ERROR: LAST ARGS = " + args[args.Length - 1]);
+					rpsPlayers.Clear();
 					return;
 				}
-                if (!int.TryParse(args[1], out player2))
-                {
-                    string name = string.Join(" ", args.Skip(1).Take(args.Length - 2).ToArray());
-
-                    foreach (KeyValuePair<int, PhotonPlayer> value in NetworkingPeer.mActors)
-                    {
-                        if (RCextensions.StripHex(value.Value.uiname).ToLower() == name.ToLower())
-                        {
-                            player2 = value.Key;
-                            break;
-                        }
-                    }
-                    if (player2 == 0)
+				if (int.TryParse(args[1], out int player2))
+				{
+					if (!NetworkingPeer.mActors.ContainsKey(player2))
 					{
-						Chat("No such player was found");
+						Chat("No player with ID " + player2);
+						rpsPlayers.Clear();
 						return;
 					}
-                }
+				}
+				else
+				{
+					string name = string.Join(" ", args.Skip(1).Take(args.Length - 2).ToArray());
+
+					foreach (KeyValuePair<int, PhotonPlayer> value in NetworkingPeer.mActors)
+					{
+						if (RCextensions.StripHex(value.Value.uiname).ToLower() == name.ToLower())
+						{
+							player2 = value.Key;
+							break;
+						}
+					}
+					if (player2 == 0)
+					{
+						Chat("No player with name " + name);
+						rpsPlayers.Clear();
+						return;
+					}
+
+				}
+				if (player1 == player2)
+				{
+					Chat("Can't play yourself");
+					rpsPlayers.Clear();
+					return;
+				}
+				rpsPlayers.Add(player1, "host");
+				rpsPlayers.Add(player2, "invited");
+                FengGameManagerMKII.instance.photonView.RPC("Chat", PhotonPlayer.Find(player2), "<color=#FFCC00>You've been invited to play Rock Paper Scissors by " + PhotonPlayer.Find(player1).uiname + "</color>", string.Empty);
+                FengGameManagerMKII.instance.photonView.RPC("Chat", PhotonPlayer.Find(player2), "<color=#FFCC00>Type -accept to play, or -decline to cancel</color>", string.Empty);
             }
+			else
+			{
+				if (rpsPlayers.ContainsKey(int.Parse(args[args.Length - 1])) || int.Parse(args[args.Length - 1]) == PhotonNetwork.player.ID)
+				{
+                    switch (args[0])
+                    {
+                        case "decline":
+                        case "cancel":
+                            Chat("<color=#FFCC00>The game has been canceled</color>");
+                            rpsPlayers.Clear();
+                            break;
+						case "accept":
+							if (rpsPlayers[int.Parse(args[args.Length - 1])] == "invited")
+							{
+								if (rpsPlayers.Count != 2)
+								{
+									Write("in accept not 2 players (?)");
+									foreach (var player in rpsPlayers)
+									{
+										Write("key: " + player.Key.ToString() + "   value: " + player.Value);
+										return;
+									}
+								}
+								rpsPlayers[int.Parse(args[args.Length - 1])] = "guest";
+								foreach (var player in rpsPlayers)
+								{
+									int i;
+									if (player.Value == "host") i = 0;
+									else if (player.Value == "guest") i = 1;
+									else { Write("in -accept - not guest nor host value"); return; }
+									List<string> elements = new() { "Rock", "Paper", "Scissors" };
+									rpsAnswerRandomizer[i, 2] = elements[UnityEngine.Random.Range(0, 3)];
+									rpsAnswerRandomizer[i, 1] = elements[UnityEngine.Random.Range(0, 2)];
+									rpsAnswerRandomizer[i, 0] = elements[0];
+									rpsAnswerRandomizer[i, 3] = rpsAnswerRandomizer[i, UnityEngine.Random.Range(0, 3)];
+
+                                    FengGameManagerMKII.instance.photonView.RPC("Chat", PhotonPlayer.Find(player.Key), "<color=#FFCC00>Type -1,-2,-3 or -4:</color>", string.Empty);
+                                    FengGameManagerMKII.instance.photonView.RPC("Chat", PhotonPlayer.Find(player.Key), "<color=#FFCC00>-1: " + rpsAnswerRandomizer[i, 0] + "</color>", string.Empty);
+                                    FengGameManagerMKII.instance.photonView.RPC("Chat", PhotonPlayer.Find(player.Key), "<color=#FFCC00>-2: " + rpsAnswerRandomizer[i, 1] + "</color>", string.Empty);
+                                    FengGameManagerMKII.instance.photonView.RPC("Chat", PhotonPlayer.Find(player.Key), "<color=#FFCC00>-3: " + rpsAnswerRandomizer[i, 2] + "</color>", string.Empty);
+                                    FengGameManagerMKII.instance.photonView.RPC("Chat", PhotonPlayer.Find(player.Key), "<color=#FFCC00>-4: Random</color>", string.Empty);
+                                }
+                            }
+                            break;
+						case "1":
+						case "2":
+						case "3":
+						case "4":
+							if (rpsPlayers.Count == 0 || rpsPlayers.ContainsValue("invited"))
+							{
+								Chat("Game not started");
+								return;
+							}
+							if (rpsPlayers[int.Parse(args[args.Length - 1])] == "host")
+							{
+								rpsPlayers[int.Parse(args[args.Length - 1])] = rpsAnswerRandomizer[0, int.Parse(args[0]) - 1];
+                            }
+							else if (rpsPlayers[int.Parse(args[args.Length - 1])] == "guest")
+                            {
+                                rpsPlayers[int.Parse(args[args.Length - 1])] = rpsAnswerRandomizer[1, int.Parse(args[0]) - 1];
+                            }
+							if (!rpsPlayers.ContainsValue("host") && !rpsPlayers.ContainsValue("guest"))
+							{
+								
+							}
+                            break;
+                    }
+                }
+			}
 		}
     }
 
