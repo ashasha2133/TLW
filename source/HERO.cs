@@ -4184,24 +4184,7 @@ public class HERO : MONO, IAnarchyScriptHero
 		}
 		falseAttack();
 		breakApart(v, isBite);
-		if(IN_GAME_MAIN_CAMERA.mainCamera.setMainObject(HERO.FindMyHero(PhotonNetwork.player.ID).baseG) != null)
-		{
-            IN_GAME_MAIN_CAMERA.mainCamera.enabled = true;
-            IN_GAME_MAIN_CAMERA.mainCamera.setHUDposition();
-            IN_GAME_MAIN_CAMERA.spectate.disable = true;
-            IN_GAME_MAIN_CAMERA.mouselook.disable = true;
-            IN_GAME_MAIN_CAMERA.mainCamera.gameOver = false;
-            if (IN_GAME_MAIN_CAMERA.cameraMode == CAMERA_TYPE.TPS || IN_GAME_MAIN_CAMERA.cameraMode == CAMERA_TYPE.NewTPS)
-            {
-                Screen.lockCursor = true;
-            }
-            else
-            {
-                Screen.lockCursor = false;
-            }
-            Screen.showCursor = false;
-        }
-		else if (basePV.isMine)
+		if (basePV.isMine)
 		{
 			IN_GAME_MAIN_CAMERA.mainCamera.setSpectorMode(val: false);
 			IN_GAME_MAIN_CAMERA.mainCamera.gameOver = true;
@@ -4284,24 +4267,7 @@ public class HERO : MONO, IAnarchyScriptHero
         //	transform.parent = null;
         //	//transform.GetComponent<AudioSource>().Play();
         //}
-        if (IN_GAME_MAIN_CAMERA.mainCamera.setMainObject(HERO.FindMyHero(PhotonNetwork.player.ID).baseG) != null)
-        {
-            IN_GAME_MAIN_CAMERA.mainCamera.enabled = true;
-            IN_GAME_MAIN_CAMERA.mainCamera.setHUDposition();
-            IN_GAME_MAIN_CAMERA.spectate.disable = true;
-            IN_GAME_MAIN_CAMERA.mouselook.disable = true;
-            IN_GAME_MAIN_CAMERA.mainCamera.gameOver = false;
-            if (IN_GAME_MAIN_CAMERA.cameraMode == CAMERA_TYPE.TPS || IN_GAME_MAIN_CAMERA.cameraMode == CAMERA_TYPE.NewTPS)
-            {
-                Screen.lockCursor = true;
-            }
-            else
-            {
-                Screen.lockCursor = false;
-            }
-            Screen.showCursor = false;
-        }
-        else if (basePV.isMine)
+		if (basePV.isMine)
 		{
 			IN_GAME_MAIN_CAMERA.mainCamera.setMainObject(null);
 			IN_GAME_MAIN_CAMERA.mainCamera.setSpectorMode(val: true);
@@ -4465,24 +4431,7 @@ public class HERO : MONO, IAnarchyScriptHero
 		}
 		falseAttack();
 		breakApart(v, isBite);
-        if (IN_GAME_MAIN_CAMERA.mainCamera.setMainObject(HERO.FindMyHero(PhotonNetwork.player.ID).baseG) != null)
-        {
-            IN_GAME_MAIN_CAMERA.mainCamera.enabled = true;
-            IN_GAME_MAIN_CAMERA.mainCamera.setHUDposition();
-            IN_GAME_MAIN_CAMERA.spectate.disable = true;
-            IN_GAME_MAIN_CAMERA.mouselook.disable = true;
-            IN_GAME_MAIN_CAMERA.mainCamera.gameOver = false;
-            if (IN_GAME_MAIN_CAMERA.cameraMode == CAMERA_TYPE.TPS || IN_GAME_MAIN_CAMERA.cameraMode == CAMERA_TYPE.NewTPS)
-            {
-                Screen.lockCursor = true;
-            }
-            else
-            {
-                Screen.lockCursor = false;
-            }
-            Screen.showCursor = false;
-        }
-        else if (basePV.isMine)
+		if (basePV.isMine)
 		{
 			IN_GAME_MAIN_CAMERA.mainCamera.setSpectorMode(val: false);
 			IN_GAME_MAIN_CAMERA.mainCamera.gameOver = true;
