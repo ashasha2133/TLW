@@ -4178,6 +4178,7 @@ public class FengGameManagerMKII : Photon.MonoBehaviour, IGameManager
 			new ExitGames.Client.Photon.Hashtable()
 		};
 		settings = array;
+		MyButtons.gameServerSets = PlayerPrefs.GetInt("ServerSet", 1);
 		allScrolls = Vector2.zero;
 		tiltSlider = PlayerPrefs.GetFloat("tiltSlider", 5f);
 		distanceSlider = PlayerPrefs.GetFloat("cameraDistance", 1f);

@@ -64,6 +64,8 @@ public class MyButtons : MonoBehaviour
 
 	private static GUIStyle currentStyle;
 
+	public static int gameServerSets; // 0 - old, 1 - aottg2
+
 	private static Texture2D Texture(byte r, byte g, byte b, byte a = byte.MaxValue)
 	{
 		return Texture(MyColor(r, g, b, a));
@@ -149,22 +151,30 @@ public class MyButtons : MonoBehaviour
 		FengGameManagerMKII.ServerType = PlayerPrefs.GetInt("servertype", 0);
 	}
 
-	private string AllRegions(string AskingRegion)
+	private string AllRegions(string AskingRegion)	
 	{
 		string result = "";
 		switch (AskingRegion)
 		{
 		case "eu":
-			result = ((FengGameManagerMKII.LanOrAppID == 0) ? "135.125.239.180" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-eu.exitgamescloud.com"));
-			break;
+			if (gameServerSets == 0) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "135.125.239.180" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-eu.exitgamescloud.com"));
+			else if(gameServerSets == 1) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "eu.aottg2.com" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-eu.exitgamescloud.com"));
+                break;
 		case "us":
-			result = ((FengGameManagerMKII.LanOrAppID == 0) ? "142.44.242.29" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-us.exitgamescloud.com"));
+			if(gameServerSets == 0) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "142.44.242.29" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-us.exitgamescloud.com"));
+			else if (gameServerSets == 1) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "us.aottg2.com" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-us.exitgamescloud.com"));
 			break;
-		case "brazil":
-			result = ((FengGameManagerMKII.LanOrAppID == 0) ? "108.181.69.221" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-sa.exitgames.com"));
+		case "sa":
+			if(gameServerSets == 0) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "108.181.69.221" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-sa.exitgames.com"));
+            else if (gameServerSets == 1) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "sa.aottg2.com" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-sa.exitgames.com"));
 			break;
 		case "asia":
-			result = ((FengGameManagerMKII.LanOrAppID == 0) ? "51.79.164.137" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-asia.exitgamescloud.com"));
+			if (gameServerSets == 0) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "51.79.164.137" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-asia.exitgamescloud.com"));
+            else if (gameServerSets == 1) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "asia.aottg2.com" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-asia.exitgamescloud.com"));
+			break;
+		case "cn":
+			if (gameServerSets == 0) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "47.116.117.128" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-asia.exitgamescloud.com"));
+            else if (gameServerSets == 1) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "cn.aottg2.com" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-asia.exitgamescloud.com"));
 			break;
 		case "turkey":
 			result = ((FengGameManagerMKII.LanOrAppID == 0) ? "app-tr.exitgames.com" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-tr.exitgames.com"));
@@ -212,6 +222,7 @@ public class MyButtons : MonoBehaviour
 		{
 		case 1:
 			PlayerPrefs.SetInt("Region", (int)FengGameManagerMKII.settings[293]);
+			PlayerPrefs.SetInt("ServerSet", gameServerSets);
 			NGUITools.SetActive(GameObject.Find("UIRefer").GetComponent<UIMainReferences>().panelMain, state: false);
 			FengGameManagerMKII.OnPrivateServer = true;
 			if (FengGameManagerMKII.LanOrAppID == 0)
@@ -245,7 +256,7 @@ public class MyButtons : MonoBehaviour
 				{
 					PhotonNetwork.ConnectToMaster(AllRegions("eu"), 4530, FengGameManagerMKII.applicationId, UIMainReferences.version);
 				}
-				TLWWebSocket.Region = "EU";
+				TLWWebSocket.Region = "Europe";
 				break;
 			case 1:
 				if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.Udp)
@@ -260,20 +271,20 @@ public class MyButtons : MonoBehaviour
 				{
 					PhotonNetwork.ConnectToMaster(AllRegions("us"), 4530, FengGameManagerMKII.applicationId, UIMainReferences.version);
 				}
-				TLWWebSocket.Region = "US East";
+				TLWWebSocket.Region = "United States";
 				break;
 			case 2:
 				if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.Udp)
 				{
-					PhotonNetwork.ConnectToMaster(AllRegions("brazil"), 5055, FengGameManagerMKII.applicationId, UIMainReferences.version);
+					PhotonNetwork.ConnectToMaster(AllRegions("sa"), 5055, FengGameManagerMKII.applicationId, UIMainReferences.version);
 				}
 				else if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.WebSocket)
 				{
-					PhotonNetwork.ConnectToMaster(AllRegions("brazil"), 9090, FengGameManagerMKII.applicationId, UIMainReferences.version);
+					PhotonNetwork.ConnectToMaster(AllRegions("sa"), 9090, FengGameManagerMKII.applicationId, UIMainReferences.version);
 				}
 				else if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.Tcp)
 				{
-					PhotonNetwork.ConnectToMaster(AllRegions("brazil"), 4530, FengGameManagerMKII.applicationId, UIMainReferences.version);
+					PhotonNetwork.ConnectToMaster(AllRegions("sa"), 4530, FengGameManagerMKII.applicationId, UIMainReferences.version);
 				}
 				TLWWebSocket.Region = "South America";
 				break;
@@ -295,6 +306,21 @@ public class MyButtons : MonoBehaviour
 			case 4:
 				if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.Udp)
 				{
+					PhotonNetwork.ConnectToMaster(AllRegions("cn"), 5055, FengGameManagerMKII.applicationId, UIMainReferences.version);
+				}
+				else if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.WebSocket)
+				{
+					PhotonNetwork.ConnectToMaster(AllRegions("cn"), 9090, FengGameManagerMKII.applicationId, UIMainReferences.version);
+				}
+				else if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.Tcp)
+				{
+					PhotonNetwork.ConnectToMaster(AllRegions("cn"), 4530, FengGameManagerMKII.applicationId, UIMainReferences.version);
+				}
+				TLWWebSocket.Region = "China";
+				break;
+			case 5:
+				if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.Udp)
+				{
 					PhotonNetwork.ConnectToMaster(AllRegions("turkey"), 5055, FengGameManagerMKII.applicationId, UIMainReferences.version);
 				}
 				else if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.WebSocket)
@@ -307,7 +333,7 @@ public class MyButtons : MonoBehaviour
 				}
 				TLWWebSocket.Region = "Turkiye";
 				break;
-			case 5:
+			case 6:
 				if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.Udp)
 				{
 					PhotonNetwork.ConnectToMaster(AllRegions("australia"), 5055, FengGameManagerMKII.applicationId, UIMainReferences.version);
@@ -322,7 +348,7 @@ public class MyButtons : MonoBehaviour
 				}
 				TLWWebSocket.Region = "Australia";
 				break;
-			case 6:
+			case 7:
 				if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.Udp)
 				{
 					PhotonNetwork.ConnectToMaster(AllRegions("canada"), 5055, FengGameManagerMKII.applicationId, UIMainReferences.version);
@@ -337,7 +363,7 @@ public class MyButtons : MonoBehaviour
 				}
 				TLWWebSocket.Region = "Canada";
 				break;
-			case 7:
+			case 8:
 				if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.Udp)
 				{
 					PhotonNetwork.ConnectToMaster(AllRegions("uswest"), 5055, FengGameManagerMKII.applicationId, UIMainReferences.version);
@@ -352,7 +378,7 @@ public class MyButtons : MonoBehaviour
 				}
 				TLWWebSocket.Region = "US West";
 				break;
-			case 8:
+			case 9:
 				if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.Udp)
 				{
 					PhotonNetwork.ConnectToMaster(AllRegions("ussouth"), 5055, FengGameManagerMKII.applicationId, UIMainReferences.version);
@@ -367,7 +393,7 @@ public class MyButtons : MonoBehaviour
 				}
 				TLWWebSocket.Region = "US Central South";
 				break;
-			case 9:
+			case 10:
 				if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.Udp)
 				{
 					PhotonNetwork.ConnectToMaster(AllRegions("india"), 5055, FengGameManagerMKII.applicationId, UIMainReferences.version);
@@ -382,7 +408,7 @@ public class MyButtons : MonoBehaviour
 				}
 				TLWWebSocket.Region = "India";
 				break;
-			case 10:
+			case 11:
 				if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.Udp)
 				{
 					PhotonNetwork.ConnectToMaster(AllRegions("japan"), 5055, FengGameManagerMKII.applicationId, UIMainReferences.version);
@@ -397,7 +423,7 @@ public class MyButtons : MonoBehaviour
 				}
 				TLWWebSocket.Region = "Japan";
 				break;
-			case 11:
+			case 12:
 				if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.Udp)
 				{
 					PhotonNetwork.ConnectToMaster(AllRegions("korea"), 5055, FengGameManagerMKII.applicationId, UIMainReferences.version);
@@ -412,7 +438,7 @@ public class MyButtons : MonoBehaviour
 				}
 				TLWWebSocket.Region = "South Korea";
 				break;
-			case 12:
+			case 13:
 				if (PhotonNetwork.networkingPeer.UsedProtocol == ConnectionProtocol.Udp)
 				{
 					PhotonNetwork.ConnectToMaster(AllRegions("safrica"), 5055, FengGameManagerMKII.applicationId, UIMainReferences.version);
@@ -657,29 +683,34 @@ public class MyButtons : MonoBehaviour
 			{
 				return;
 			}
-			GUI.Label(new Rect(rect.x - 130f, rect.y + 55f, 60f, 20f), "<b><i><size=14>Region</size></i></b>");
-			GUILayout.BeginArea(new Rect(rect.x - 55f, rect.y + 45f, 195f, 45f), "");
+            //GUI.Label(new Rect(rect.x - 130f, rect.y + 50f, 60f, 20f), "<b><i><size=14>Servers</size></i></b>");
+            GUI.Label(new Rect(rect.x - 130f, rect.y + 50f, 60f, 20f), "<b><i><size=14>" + gameServerSets.ToString() + "</size></i></b>");
+            string[] servers = new string[2] { "Old", "Aottg2" };
+            gameServerSets = GUI.SelectionGrid(new Rect(rect.x - 55f, rect.y + 50f, 195f, 20f), gameServerSets, servers, 2);
+            GUI.Label(new Rect(rect.x - 130f, rect.y + 85f, 60f, 20f), "<b><i><size=14>Region</size></i></b>");
+			GUILayout.BeginArea(new Rect(rect.x - 55f, rect.y + 80f, 195f, 45f), "");
 			RegionsScroll = GUILayout.BeginScrollView(RegionsScroll);
 			GUILayout.BeginHorizontal();
-			string[] array = new string[13]
+			string[] array = new string[14]
 			{
 				((int)FengGameManagerMKII.settings[293] == 0) ? "<color=red>EU</color>" : "EU",
-				((int)FengGameManagerMKII.settings[293] == 1) ? "<color=red>US (East)</color>" : "US (East)",
-				((int)FengGameManagerMKII.settings[293] == 2) ? "<color=red>Brazil</color>" : "Brazil",
+				((int)FengGameManagerMKII.settings[293] == 1) ? "<color=red>US</color>" : "US",
+				((int)FengGameManagerMKII.settings[293] == 2) ? "<color=red>SA</color>" : "SA",
 				((int)FengGameManagerMKII.settings[293] == 3) ? "<color=red>Asia</color>" : "Asia",
-				((int)FengGameManagerMKII.settings[293] == 4) ? "<color=red>Turkiye</color>" : "Turkiye",
-				((int)FengGameManagerMKII.settings[293] == 5) ? "<color=red>Australia</color>" : "Australia",
-				((int)FengGameManagerMKII.settings[293] == 6) ? "<color=red>Canada</color>" : "Canada",
-				((int)FengGameManagerMKII.settings[293] == 7) ? "<color=red>US (West)</color>" : "US (West)",
-				((int)FengGameManagerMKII.settings[293] == 8) ? "<color=red>US (S.Central)</color>" : "US (S.Central)",
-				((int)FengGameManagerMKII.settings[293] == 9) ? "<color=red>India</color>" : "India",
-				((int)FengGameManagerMKII.settings[293] == 10) ? "<color=red>Japan</color>" : "Japan",
-				((int)FengGameManagerMKII.settings[293] == 11) ? "<color=red>S.Korea</color>" : "S.Korea",
-				((int)FengGameManagerMKII.settings[293] == 12) ? "<color=red>S.Africa</color>" : "S.Africa"
+				((int)FengGameManagerMKII.settings[293] == 4) ? "<color=red>CN</color>" : "CN",
+				((int)FengGameManagerMKII.settings[293] == 5) ? "<color=red>Turkiye</color>" : "Turkiye",
+				((int)FengGameManagerMKII.settings[293] == 6) ? "<color=red>Australia</color>" : "Australia",
+				((int)FengGameManagerMKII.settings[293] == 7) ? "<color=red>Canada</color>" : "Canada",
+				((int)FengGameManagerMKII.settings[293] == 8) ? "<color=red>US (West)</color>" : "US (West)",
+				((int)FengGameManagerMKII.settings[293] == 9) ? "<color=red>US (S.Central)</color>" : "US (S.Central)",
+				((int)FengGameManagerMKII.settings[293] == 10) ? "<color=red>India</color>" : "India",
+				((int)FengGameManagerMKII.settings[293] == 11) ? "<color=red>Japan</color>" : "Japan",
+				((int)FengGameManagerMKII.settings[293] == 12) ? "<color=red>S.Korea</color>" : "S.Korea",
+				((int)FengGameManagerMKII.settings[293] == 13) ? "<color=red>S.Africa</color>" : "S.Africa"
 			};
 			if (FengGameManagerMKII.LanOrAppID == 0)
 			{
-				for (int i = 0; i < 4; i++)
+				for (int i = 0; i < 5; i++)
 				{
 					if (GUILayout.Button(array[i], GUILayout.MaxWidth(500f), GUILayout.MaxHeight(20f)))
 					{
@@ -700,30 +731,30 @@ public class MyButtons : MonoBehaviour
 			GUILayout.EndHorizontal();
 			GUILayout.EndScrollView();
 			GUILayout.EndArea();
-			GUI.Label(new Rect(rect.x - 130f, rect.y + 100f, 60f, 20f), "<b><i><size=14>Servers</size></i></b>");
+			GUI.Label(new Rect(rect.x - 130f, rect.y + 130f, 60f, 20f), "<b><i><size=14>Servers</size></i></b>");
 			string[] array2 = new string[3] { "Public", "Private", "Custom" };
-			FengGameManagerMKII.ServerType = GUI.SelectionGrid(new Rect(rect.x - 55f, rect.y + 100f, 195f, 20f), FengGameManagerMKII.ServerType, array2, 3);
+			FengGameManagerMKII.ServerType = GUI.SelectionGrid(new Rect(rect.x - 55f, rect.y + 130f, 195f, 20f), FengGameManagerMKII.ServerType, array2, 3);
 			if (FengGameManagerMKII.ServerType == 2)
 			{
-				FengGameManagerMKII.privateServerField = GUI.TextField(new Rect(rect.x + 78f, rect.y + 125f, 62f, 20f), FengGameManagerMKII.privateServerField, 50);
+				FengGameManagerMKII.privateServerField = GUI.TextField(new Rect(rect.x + 78f, rect.y + 155f, 62f, 20f), FengGameManagerMKII.privateServerField, 50);
 			}
-			GUI.Label(new Rect(rect.x - 130f, rect.y + 150f, 130f, 20f), "<b><i><size=14>Address</size></i></b>");
+			GUI.Label(new Rect(rect.x - 130f, rect.y + 180f, 130f, 20f), "<b><i><size=14>Address</size></i></b>");
 			string[] texts2 = new string[3] { "Normal", "LAN", "AppID" };
-			FengGameManagerMKII.LanOrAppID = GUI.SelectionGrid(new Rect(rect.x - 55f, rect.y + 150f, 195f, 20f), FengGameManagerMKII.LanOrAppID, texts2, 3);
+			FengGameManagerMKII.LanOrAppID = GUI.SelectionGrid(new Rect(rect.x - 55f, rect.y + 180f, 195f, 20f), FengGameManagerMKII.LanOrAppID, texts2, 3);
 			if (FengGameManagerMKII.LanOrAppID == 1)
 			{
-				FengGameManagerMKII.LANField = GUI.TextField(new Rect(rect.x + 10f, rect.y + 180f, 130f, 20f), FengGameManagerMKII.LANField);
+				FengGameManagerMKII.LANField = GUI.TextField(new Rect(rect.x + 10f, rect.y + 210f, 130f, 20f), FengGameManagerMKII.LANField);
 			}
 			else if (FengGameManagerMKII.LanOrAppID == 2)
 			{
-				FengGameManagerMKII.privateAppIDField = GUI.TextField(new Rect(rect.x + 10f, rect.y + 180f, 130f, 20f), FengGameManagerMKII.privateAppIDField);
+				FengGameManagerMKII.privateAppIDField = GUI.TextField(new Rect(rect.x + 10f, rect.y + 210f, 130f, 20f), FengGameManagerMKII.privateAppIDField);
 				if (FengGameManagerMKII.applicationId != FengGameManagerMKII.privateAppIDField && FengGameManagerMKII.privateAppIDField != null && FengGameManagerMKII.privateAppIDField.Length == 36)
 				{
 					PlayerPrefs.SetString("appid", FengGameManagerMKII.privateAppIDField);
 					FengGameManagerMKII.applicationId = FengGameManagerMKII.privateAppIDField;
 				}
 			}
-			GUI.Label(new Rect(rect.x - 55f, rect.y + 205f, 200f, 35f), "<b>Connected to " + array[(int)FengGameManagerMKII.settings[293]] + " " + array2[FengGameManagerMKII.ServerType] + ((FengGameManagerMKII.ServerType == 2) ? ("(" + FengGameManagerMKII.privateServerField + ")") : "") + ", " + ((FengGameManagerMKII.LanOrAppID == 1) ? "LAN" : ((FengGameManagerMKII.LanOrAppID == 2) ? "AppID" : "Normal")) + "</b>");
+			GUI.Label(new Rect(rect.x - 55f, rect.y + 205f, 200f, 35f), "<b>Connected to " + array[(int)FengGameManagerMKII.settings[293]] + " " + array2[FengGameManagerMKII.ServerType] + ((FengGameManagerMKII.ServerType == 2) ? ("(" + FengGameManagerMKII.privateServerField + ")") : "") + ", " + ((FengGameManagerMKII.LanOrAppID == 1) ? "LAN" : ((FengGameManagerMKII.LanOrAppID == 2) ? "AppID" : "Normal")) + "\n" + AllRegions(array[(int)FengGameManagerMKII.settings[293]].StripColor().ToLower()) + "</b>");
 		}
 	}
 

@@ -100,16 +100,24 @@ public class PanelMultiJoin : MonoBehaviour
 		switch (AskingRegion)
 		{
 		case "eu":
-			result = ((FengGameManagerMKII.LanOrAppID == 0) ? "135.125.239.180" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-eu.exitgamescloud.com"));
-			break;
+			if (MyButtons.gameServerSets == 0) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "135.125.239.180" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-eu.exitgamescloud.com"));
+			else if(MyButtons.gameServerSets == 1) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "eu.aottg2.com" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-eu.exitgamescloud.com"));
+                break;
 		case "us":
-			result = ((FengGameManagerMKII.LanOrAppID == 0) ? "142.44.242.29" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-us.exitgamescloud.com"));
+			if(MyButtons.gameServerSets == 0) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "142.44.242.29" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-us.exitgamescloud.com"));
+			else if (MyButtons.gameServerSets == 1) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "us.aottg2.com" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-us.exitgamescloud.com"));
 			break;
-		case "brazil":
-			result = ((FengGameManagerMKII.LanOrAppID == 0) ? "108.181.69.221" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-sa.exitgames.com"));
+		case "sa":
+			if(MyButtons.gameServerSets == 0) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "108.181.69.221" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-sa.exitgames.com"));
+            else if (MyButtons.gameServerSets == 1) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "sa.aottg2.com" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-sa.exitgames.com"));
 			break;
 		case "asia":
-			result = ((FengGameManagerMKII.LanOrAppID == 0) ? "51.79.164.137" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-asia.exitgamescloud.com"));
+			if (MyButtons.gameServerSets == 0) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "51.79.164.137" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-asia.exitgamescloud.com"));
+            else if (MyButtons.gameServerSets == 1) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "asia.aottg2.com" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-asia.exitgamescloud.com"));
+			break;
+		case "cn":
+			if (MyButtons.gameServerSets == 0) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "47.116.117.128" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-asia.exitgamescloud.com"));
+            else if (MyButtons.gameServerSets == 1) result = ((FengGameManagerMKII.LanOrAppID == 0) ? "cn.aottg2.com" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-asia.exitgamescloud.com"));
 			break;
 		case "turkey":
 			result = ((FengGameManagerMKII.LanOrAppID == 0) ? "app-tr.exitgames.com" : ((FengGameManagerMKII.LanOrAppID == 1) ? FengGameManagerMKII.LANField : "app-tr.exitgames.com"));
@@ -184,19 +192,23 @@ public class PanelMultiJoin : MonoBehaviour
 			{
 			case "EU":
 				ConnectToPorts(AllRegions("eu"));
-				TLWWebSocket.Region = "EU";
+				TLWWebSocket.Region = "Europe";
 				break;
-			case "US (East)":
+			case "US":
 				ConnectToPorts(AllRegions("us"));
-				TLWWebSocket.Region = "US East";
+				TLWWebSocket.Region = "United States";
 				break;
-			case "Brazil":
-				ConnectToPorts(AllRegions("brazil"));
+			case "SA":
+				ConnectToPorts(AllRegions("sa"));
 				TLWWebSocket.Region = "South America";
 				break;
 			case "Asia":
 				ConnectToPorts(AllRegions("asia"));
 				TLWWebSocket.Region = "Asia";
+				break;
+			case "CN":
+				ConnectToPorts(AllRegions("cn"));
+				TLWWebSocket.Region = "China";
 				break;
 			case "Turkiye":
 				ConnectToPorts(AllRegions("turkey"));
@@ -245,12 +257,13 @@ public class PanelMultiJoin : MonoBehaviour
 		GUILayout.Label("Search:", GUILayout.Width(50f));
 		filter = GUILayout.TextField(filter, GUILayout.Width(200f));
 		GUILayout.Label("", GUILayout.Width(5f));
-		string[] array = new string[13]
+		string[] array = new string[14]
 		{
-			(TLWWebSocket.Region == "EU, Amsterdam") ? "<color=red>EU</color>" : "EU",
-			(TLWWebSocket.Region == "US East, Washington") ? "<color=red>US (East)</color>" : "US (East)",
-			(TLWWebSocket.Region == "South America, Sao Paulo") ? "<color=red>Brazil</color>" : "Brazil",
-			(TLWWebSocket.Region == "Asia, Singapore") ? "<color=red>Asia</color>" : "Asia",
+			(TLWWebSocket.Region == "Europe") ? "<color=red>EU</color>" : "EU",
+			(TLWWebSocket.Region == "United States") ? "<color=red>US</color>" : "US",
+			(TLWWebSocket.Region == "South America") ? "<color=red>SA</color>" : "SA",
+			(TLWWebSocket.Region == "Asia") ? "<color=red>Asia</color>" : "Asia",
+			(TLWWebSocket.Region == "China") ? "<color=red>CN</color>" : "CN",
 			(TLWWebSocket.Region == "Turkiye, Istanbul") ? "<color=red>Turkiye</color>" : "Turkiye",
 			(TLWWebSocket.Region == "Australia, Melbourne") ? "<color=red>Australia</color>" : "Australia",
 			(TLWWebSocket.Region == "Canada, Montreal") ? "<color=red>Canada</color>" : "Canada",
@@ -265,7 +278,7 @@ public class PanelMultiJoin : MonoBehaviour
 		GUILayout.BeginHorizontal();
 		if (FengGameManagerMKII.LanOrAppID == 0)
 		{
-			for (int i = 0; i < 4; i++)
+			for (int i = 0; i < 5; i++)
 			{
 				if (GUILayout.Button(array[i], GUILayout.MaxWidth(500f), GUILayout.MaxHeight(20f)))
 				{
